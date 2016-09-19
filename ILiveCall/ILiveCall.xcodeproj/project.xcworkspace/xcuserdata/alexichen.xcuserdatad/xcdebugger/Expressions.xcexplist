@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[TCAVIMMIManager initiativeCancelInteractUser:]:TCAVIMMIManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TCAVIMMIManager *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TCAVCallManager forcedCancelInteractUser:]:TCAVCallManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TCAVCallManager *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TCAVCallManager addRenderAndRequest:]:TCAVCallManager.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TIMCustomElem(ShowDescription) showDescriptionOf:]:TIMElem+ShowDescription.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TIMCustomElem *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[ChatViewController sendCallMsg:finish:]:ChatViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(ChatViewController *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TIMCallViewController onStartInvite:]:TIMCallViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TIMCallViewController *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[AppDelegate presentCommingCallViewControllerWith:conversation:isFromChatting:]:AppDelegate.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[TIMCallViewController onCallBottomViewAnswer:]:TIMCallViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TIMCallViewController *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TIMCallViewController isCallChatGroup]:TIMCallViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TIMCallViewController *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[TCAVIMMIManager(ProtectedMethod) addInteractUser:]:TCAVIMMIManager.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(TCAVIMMIManager *const)self">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

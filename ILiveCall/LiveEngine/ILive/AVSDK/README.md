@@ -1,0 +1,1 @@
+因github限制，请到腾讯云cos去下载QAVSDK.framework

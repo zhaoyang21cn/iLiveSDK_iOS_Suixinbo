@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>57415FEA-0202-4223-A5A5-A7D4302F40BE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>8417ab44-c799-11e4-acac-0d5433960dbe++7792</key>
+		<string>http://tc-svn.tencent.com/bpf/bpf_OpenSDK_rep/show_proj/trunk/client/TCShow</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TIMChat/TIMChat.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>8417ab44-c799-11e4-acac-0d5433960dbe++7792</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>8417ab44-c799-11e4-acac-0d5433960dbe++7792</key>
+		<string>http://tc-svn.tencent.com/bpf/bpf_OpenSDK_rep</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://tc-svn.tencent.com/bpf/bpf_OpenSDK_rep/show_proj/trunk/client/TCShow/TIMChat/TIMChat.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>8417ab44-c799-11e4-acac-0d5433960dbe++7792</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8417ab44-c799-11e4-acac-0d5433960dbe++7792</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TCShow</string>
+		</dict>
+	</array>
+</dict>
+</plist>

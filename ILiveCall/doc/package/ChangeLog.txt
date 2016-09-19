@@ -1,0 +1,77 @@
+
+ImSDK 1.9.2
+
+1、支持IPv6
+2、增加票据过期回调
+3、修复退出进程时可能Crash问题
+4、推流录制接口增加水印、多码率等参数
+
+
+ImSDK 1.9.1
+
+1、在1.9.0基础上修复消息去重BUG，变更参考 1.9.0
+
+ImSDK 1.9.0
+
+接口变更（重要）：
+
+1、重要：获取非好友资料 GetFriendsProfile 变更为 GetUsersProfile
+
+功能增加：
+
+1、增加关系链存储和缓存（TIMManager enableFriendshipProxy）
+2、增加关系链同步获取接口和变更回调（需要开启存储）（TIMFriendshipProxy）
+3、增加群资料存储和缓存（TIMManager enableGroupAssistant）
+4、增加群资料同步获取接口和变更回调（需要开启存储）（TIMGroupAssistant）
+5、获取好友资料（包括备注、分组） GetFriendsProfile
+6、设置关系链默认拉取字段（TIMManager initFriendshipSetting）
+7、设置群资料默认拉取字段（TIMManager initGroupSetting）
+8、禁用拉取最近联系人（disableRecentContact）
+9、会话列表增加同步获取最后一条消息
+10、增加创建大群接口（不限制群内人数，适用直播场景）
+11、分优先级发送消息（红包、普通消息、点赞消息）
+12、优化群消息处理性能
+13、指定拉取某些群成员的群资料（如群名片等）
+14、语音消息和文件消息支持传入文件路径（可支持消息重发）
+
+ImSDK 1.8.1
+
+1、增加C2C发在线消息接口（只有对方在线能收到，离线情况下不存储消息）
+2、增加多发消息接口
+3、灯塔SDK更换包名
+
+ImSDK 1.8.0
+
+1、增加检测是否好友接口
+2、增加关系链自定义字段接口
+3、增加消息自定义本地存储（可以标识语音是否已读等状态）
+4、多帐号同时登录（内测）
+5、图片压缩接口
+6、自定义消息sound字段，指定apns声音
+
+ImSDK 1.7.1
+
+1、修复内存泄漏问题
+2、注销失败BUG
+3、其他符号冲突以及crash BUG
+
+ImSDK 1.7.0
+
+1、拆分iOS SDK为多个framework
+2、群资料和群成员资料增加自定义消息字段
+3、OnNewMessage消息增加昵称、群名片
+4、TIMGroupReportElem 增加用户昵称
+5、群转让接口
+6、群未决请求漫游接口
+
+ImSDK 1.6.0
+
+1、增加好友分组功能
+2、增加群名片功能
+3、群成员按照角色过滤
+4、增加微视频消息类型
+5、SDK接口优化，initSdk需要传入sdkappid
+6、批量删除本地消息
+7、修复BUG
+8、APNS推送声音控制
+

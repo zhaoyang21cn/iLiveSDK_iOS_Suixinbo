@@ -1,0 +1,21 @@
+
+必选SDK：
+
+	必须是一个版本成套使用，不同版本不可混用
+	ImSDK.framework 		IM接口SDK
+	QALSDK.framework		网络SDK
+	TLSSDK.framework		登录SDK
+
+可选SDK：
+
+	IMCore.framework		IM核心功能
+		如果使用IM聊天必须加入，如果只用登录功能（如只使用音视频的情况，可不加入）
+		如果不加入IMCore.framework，使用时需 #import "ImSDK/ImSDKSimple.h"，不要包含其他头文件，否则可能会引起编译错误
+	IMSDKBugly.framework	Crash上报功能
+		如无特殊需要，推荐使用，在控制台页面可以查看Crash率等信息
+		如果不加入此SDK，需要调用 [TIMManager sharedInstance] disableCrashReport]; 禁用功能
+
+
+其他SDK：
+	QALHttpSDK.framework		网络透传SDK
+		只有用到网络透传功能时使用
