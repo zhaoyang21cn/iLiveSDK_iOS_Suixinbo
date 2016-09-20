@@ -77,8 +77,13 @@
     
     [dic setObject:@([[NSDate date] timeIntervalSince1970]) forKey:kTCAVCall_CallDate];
     
+    NSError *parseError = nil;
     
-    [post setObject:dic forKey:kTCAVCALL_ActionParam];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+    
+    NSString *actionString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    [post setObject:actionString forKey:kTCAVCALL_ActionParam];
     
     return post;
 }
@@ -153,7 +158,16 @@
                 
                 if (cmd.userAction >= AVIMCMD_Call && cmd.userAction <= AVIMCMD_Call_AllCount)
                 {
-                    NSDictionary *dic = jd[kTCAVCALL_ActionParam];
+                    NSString *actionString = jd[kTCAVCALL_ActionParam];
+                    
+                    NSData *jsonData = [actionString dataUsingEncoding:NSUTF8StringEncoding];
+                    NSError *error = nil;
+                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&error];
+                    
+                    if (error)
+                    {
+                        return nil;
+                    }
                     cmd.avRoomID = [(NSNumber *)[dic objectForKey:kTCAVCall_AVRoomID] intValue];
                     cmd.callSponsor = (NSString *)[dic objectForKey:kTCAVCall_CallSponsor];
                     cmd.imGroupID = (NSString *)[dic objectForKey:kTCAVCall_IMGroupID];
@@ -168,7 +182,7 @@
                 return cmd;
             }
         }
-
+        
     }
     
     TCILDebugLog(@"自定义消息不是AVIMCMD类型");
@@ -204,7 +218,7 @@
         }
         else if(self.groupSender)
         {
-
+            
             TCILiveRoom *room = [[TCILiveRoom alloc] initGroupCallWith:self.avRoomID liveHost:self.callSponsor groupID:self.imGroupID groupType:self.imGroupType curUserID:curid callType:self.callType];
             return room;
         }

@@ -49,9 +49,9 @@ typedef NS_ENUM(NSInteger,CallType) {
 
 - (AVGLBaseView *)createAVGLViewIn:(UIViewController *)vc;
 
-- (AVGLRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect;
+- (AVGLCustomRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect;
 
-- (AVGLRenderView *)addSelfRender:(CGRect)rect;
+- (AVGLCustomRenderView *)addSelfRender:(CGRect)rect;
 
 @end
 
@@ -90,9 +90,9 @@ typedef NS_ENUM(NSInteger,CallType) {
 
 - (AVGLBaseView *)createAVGLViewIn:(UIViewController *)vc;
 
-- (AVGLRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect;
+- (AVGLCustomRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect;
 
-- (AVGLRenderView *)addSelfRender:(CGRect)rect;
+- (AVGLCustomRenderView *)addSelfRender:(CGRect)rect;
 
 @end
 

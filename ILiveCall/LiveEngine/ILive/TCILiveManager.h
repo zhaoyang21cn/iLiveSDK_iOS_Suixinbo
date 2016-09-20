@@ -17,9 +17,9 @@
 
 
 @class AVGLBaseView;
-@class AVGLRenderView;
+@class AVGLCustomRenderView;
 /*
- * 不做网络检查，以及权限检查，以及前后台判断
+ * 不做网络检查，以及权限检查，以及前后台判断，不做音频中断处理
  *
  */
 
@@ -91,9 +91,9 @@
  * @return 返回渲染所用的renderview，以便外部可作其他处理
  */
 
-- (AVGLRenderView *)renderFor:(NSString *)uid;
+- (AVGLCustomRenderView *)renderFor:(NSString *)uid;
 
-- (AVGLRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect;
+- (AVGLCustomRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect;
 
 - (void)removeRenderFor:(NSString *)uid;
 

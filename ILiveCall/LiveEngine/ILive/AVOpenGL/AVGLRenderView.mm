@@ -1229,6 +1229,7 @@ Vertex loadintVertex[4] =
     
     if (_strideBuf && len != _bufLen){
         delete []_strideBuf;
+        _strideBuf = NULL;
     }
     if (!_strideBuf){
         _strideBuf = new Byte[len];

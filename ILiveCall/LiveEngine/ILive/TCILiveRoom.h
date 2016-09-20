@@ -33,6 +33,7 @@
 
 // 进入房间默认开mic
 @property (nonatomic, assign) BOOL autoEnableMic;
+
 // 进入房间相机操作，主播默认打开
 @property (nonatomic, assign) BOOL autoEnableCamera;
 
@@ -44,6 +45,21 @@
 
 // 是否自动请求画面
 @property (nonatomic, assign) BOOL autoRequestView;
+
+// 自动监听直播中（进入音视频房间后）的网络变化，默认YES(自动监听)
+@property (nonatomic, assign) BOOL autoMonitorNetwork;
+
+// 自动监听直播中（进入音视频房间后）的外部电话处理，默认YES(自动监听)
+@property (nonatomic, assign) BOOL autoMonitorCall;
+
+// 自动监听直播中（进入音视频房间后）的互踢下线，默认YES(自动监听)
+@property (nonatomic, assign) BOOL autoMonitorKiekedOffline;
+
+// 自动监听直播中（进入音视频房间后）的音频中断处理，默认YES(自动监听)
+@property (nonatomic, assign) BOOL autoMonitorAudioInterupt;
+
+// 自动监听直播中（进入音视频房间后）的前后台切换逻辑，默认YES(自动监听)，如果己监听前后台切换逻辑，建建为NO
+@property (nonatomic, assign) BOOL autoMonitorForeBackgroundSwitch;
 
 // 退出时，是否要退出IM群
 @property (nonatomic, assign) BOOL isNeedExitIMChatRoom;

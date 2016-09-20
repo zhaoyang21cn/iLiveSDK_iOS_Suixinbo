@@ -37,6 +37,7 @@
 - (void)hangup
 {
     DebugLog(@"user call hangup");
+    [[LiveCallPlatform sharedInstance] setChat:NO];
     [[TCICallManager sharedInstance] endCallCompletion:nil];
 }
 
@@ -55,12 +56,12 @@
     return [[TCICallManager sharedInstance] createAVGLViewIn:vc];
 }
 
-- (AVGLRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect
+- (AVGLCustomRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect
 {
     return [[TCICallManager sharedInstance] addRenderFor:uid atFrame:rect];
 }
 
-- (AVGLRenderView *)addSelfRender:(CGRect)rect
+- (AVGLCustomRenderView *)addSelfRender:(CGRect)rect
 {
     NSString * identifier = [[TCICallManager sharedInstance] host].identifier;
     return [[TCICallManager sharedInstance] addRenderFor:identifier atFrame:rect];
@@ -79,7 +80,8 @@
     }
     
     NSString * identifier = [[TCICallManager sharedInstance] host].identifier;
-    TCILiveRoom *room = [[TCILiveRoom alloc] initC2CCallWith:998998 liveHost:identifier curUserID:identifier callType:_callType==CALL_TYPE_AUDIO ? YES:NO];
+    int roomId = (int)([[NSDate date] timeIntervalSince1970]) % 1000 * 1000 + arc4random() % 1000;
+    TCILiveRoom *room = [[TCILiveRoom alloc] initC2CCallWith:roomId liveHost:identifier curUserID:identifier callType:_callType==CALL_TYPE_AUDIO ? YES:NO];
     [[TCICallManager sharedInstance] enterRoom:room imChatRoomBlock:nil avRoomCallBack:^(BOOL succ, NSError *err) {
         if (succ)
         {

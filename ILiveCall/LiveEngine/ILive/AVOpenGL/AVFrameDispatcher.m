@@ -31,7 +31,7 @@
 
 - (void)dealloc
 {
-    DebugLog(@"[%@] dealloc", [self class]);
+    NSLog(@"[%@] dealloc", [self class]);
     [super dealloc];
 }
 

@@ -19,7 +19,7 @@
 
 
 
-@interface TCILiveManager () <QAVLocalVideoDelegate, QAVRemoteVideoDelegate, QAVRoomDelegate>
+@interface TCILiveManager () <QAVLocalVideoDelegate, QAVRemoteVideoDelegate, QAVRoomDelegate, TIMUserStatusListener>
 {
     AVGLBaseView        *_avglView;
     TCAVFrameDispatcher *_frameDispatcher;
@@ -30,6 +30,12 @@
     
     BOOL _hasEnableCameraBeforeEnterBackground;
     BOOL _hasEnableMicBeforeEnterBackground;
+    
+    
+    // 用于音频退出直播时还原现场
+    NSString                        *_audioSesstionCategory;    // 进入房间时的音频类别
+    NSString                        *_audioSesstionMode;        // 进入房间时的音频模式
+    AVAudioSessionCategoryOptions   _audioSesstionCategoryOptions;       // 进入房间时的音频类别选项
 }
 
 @property (nonatomic, strong) TIMUserProfile *host;
@@ -82,6 +88,39 @@ static TCILiveManager *_sharedInstance = nil;
 - (BOOL)isLiving
 {
     return _isLiving;
+}
+
+- (NSInteger)maxVideoCount
+{
+    return 4;
+}
+
+- (NSInteger)hasVideoCount
+{
+    NSInteger count = 0;
+    for (TCIMemoItem *item in _avStatusList)
+    {
+        count += item.isCameraVideo;
+        count += item.isScreenVideo;
+    }
+    
+    return count;
+}
+
+- (NSInteger)maxMicCount
+{
+    return 6;
+}
+
+- (NSInteger)hasAudioCount
+{
+    NSInteger count = 0;
+    for (TCIMemoItem *item in _avStatusList)
+    {
+        count += item.isAudio;
+    }
+    
+    return count;
 }
 
 #define kEachKickErrorCode 6208
@@ -175,12 +214,105 @@ static TCILiveManager *_sharedInstance = nil;
     [self enterRoom:room imChatRoomBlock:imblock avRoomCallBack:nil avListener:delegate];
 }
 
+- (void)addAudioInterruptListener
+{
+    NSError *error = nil;
+    AVAudioSession *aSession = [AVAudioSession sharedInstance];
+    
+    _audioSesstionCategory = [aSession category];
+    _audioSesstionMode = [aSession mode];
+    _audioSesstionCategoryOptions = [aSession categoryOptions];
+    
+    [aSession setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:&error];
+    [aSession setMode:AVAudioSessionModeDefault error:&error];
+    [aSession setActive:YES error: &error];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAudioInterruption:)  name:AVAudioSessionInterruptionNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAppWillTeminal:) name:UIApplicationWillTerminateNotification object:nil];
+}
+
+- (void)addForeBackgroundListener
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)removeForeBackgroundListener
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)onAudioInterruption:(NSNotification *)notification
+{
+    //DDLogInfo(@"audioInterruption%@",notification.userInfo);
+    NSDictionary *interuptionDict = notification.userInfo;
+    NSNumber* interuptionType = [interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey];
+    if(interuptionType.intValue == AVAudioSessionInterruptionTypeBegan)
+    {
+        TCILDebugLog(@"初中断");
+    }
+    else if (interuptionType.intValue == AVAudioSessionInterruptionTypeEnded)
+    {
+        // siri输入
+        [[AVAudioSession sharedInstance] setActive:YES error: nil];
+        
+    }
+}
+
+- (BOOL)isOtherAudioPlaying
+{
+    UInt32 otherAudioIsPlaying;
+    UInt32 propertySize = sizeof (otherAudioIsPlaying);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    AudioSessionGetProperty(kAudioSessionProperty_OtherAudioIsPlaying, &propertySize, &otherAudioIsPlaying);
+#pragma clang diagnostic pop
+    return otherAudioIsPlaying;
+}
+
+
+- (void)onAppBecomeActive:(NSNotification *)notification
+{
+    if (![self isOtherAudioPlaying])
+    {
+        [[AVAudioSession sharedInstance] setActive:YES error: nil];
+    }
+}
+
+- (void)onAppWillTeminal:(NSNotification*)notification
+{
+    [self exitRoom:nil];
+}
+
+- (void)removeAudioInterruptListener
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionInterruptionNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
+    
+    // [[NSNotificationCenter defaultCenter] removeObserver:self];
+    AVAudioSession *aSession = [AVAudioSession sharedInstance];
+    [aSession setCategory:_audioSesstionCategory withOptions:_audioSesstionCategoryOptions error:nil];
+    [aSession setMode:_audioSesstionMode error:nil];
+}
 // 进入直播间
 - (void)enterRoom:(TCILiveRoom *)room imChatRoomBlock:(TCIRoomBlock)block avRoomCallBack:(TCIRoomBlock)avblock avListener:(id<QAVRoomDelegate>)delegate
 {
-    if (!room)
+    if (!room || room.avRoomID <= 0)
     {
         TCILDebugLog(@"_room不能为空");
+        if (avblock)
+        {
+            NSError *error = [NSError errorWithDomain:@"room不能为空" code:QAV_ERR_INVALID_ARGUMENT userInfo:nil];
+            avblock(NO, error);
+        }
+        
+        if ([delegate respondsToSelector:@selector(OnEnterRoomComplete:)])
+        {
+            [delegate OnEnterRoomComplete:QAV_ERR_INVALID_ARGUMENT];
+        }
         return;
     }
     
@@ -199,6 +331,12 @@ static TCILiveManager *_sharedInstance = nil;
         self.enterRoomBlock = avblock;
         delegate = self;
     }
+    
+    if (_room.config.autoMonitorAudioInterupt)
+    {
+        [self addAudioInterruptListener];
+    }
+        
     
     if (_room.config.isSupportIM)
     {
@@ -256,6 +394,8 @@ static TCILiveManager *_sharedInstance = nil;
                         NSError *err = [NSError errorWithDomain:error code:code userInfo:nil];
                         block(NO, err);
                     }
+                    
+                    [ws removeAudioInterruptListener];
                 }
             }];
             
@@ -273,6 +413,7 @@ static TCILiveManager *_sharedInstance = nil;
                 NSError *err = [NSError errorWithDomain:@"聊天室ID为空" code:-1 userInfo:nil];
                 block(NO, err);
             }
+            [ws removeAudioInterruptListener];
             return;
         }
         [[TIMGroupManager sharedInstance] JoinGroup:roomid msg:nil succ:^{
@@ -303,6 +444,7 @@ static TCILiveManager *_sharedInstance = nil;
                     NSError *err = [NSError errorWithDomain:error code:code userInfo:nil];
                     block(NO, err);
                 }
+                [ws removeAudioInterruptListener];
             }
             
         }];
@@ -342,6 +484,8 @@ static TCILiveManager *_sharedInstance = nil;
             NSError *err = [NSError errorWithDomain:@"TCAVSharedContext未初始化" code:-1 userInfo:nil];
             self.enterRoomBlock(NO, err);
         }
+        
+        [self removeAudioInterruptListener];
         return;
     }
     
@@ -350,8 +494,20 @@ static TCILiveManager *_sharedInstance = nil;
     
     if(QAV_OK != result)
     {
-        TCILDebugLog(@"进房间成功");
-        return;
+        TCILDebugLog(@"进房间失败");
+
+        if (self.enterRoomBlock)
+        {
+            NSError *err = [NSError errorWithDomain:@"TCAVSharedContext未初始化" code:-1 userInfo:nil];
+            self.enterRoomBlock(NO, err);
+        }
+        
+        if (delegate && [delegate respondsToSelector:@selector(OnEnterRoomComplete:)])
+        {
+            [delegate OnEnterRoomComplete:result];
+        }
+        
+        [self removeAudioInterruptListener];
     }
 }
 
@@ -551,16 +707,12 @@ static TCILiveManager *_sharedInstance = nil;
     [_avContext.room requestViewList:identifierList srcTypeList:srcTypeList ret:block];
 }
 
-/*
- * @brief 退出房间，内部统一处理
- * @param imblock:IM退群处理回调
- * @param avblock:AV出房间(-(void)OnExitRoomComplete)回调处理
- */
-- (void)exitRoom:(TCIRoomBlock)avBlock
+
+- (void)innerWillExitRoom:(TCIRoomBlock)avBlock externalExit:(BOOL)fromExternal
 {
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
     self.exitRoomBlock = avBlock;
     
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
     if (_room.config.isSupportIM)
     {
         if (_room.config.isNeedExitIMChatRoom)
@@ -569,9 +721,48 @@ static TCILiveManager *_sharedInstance = nil;
         }
     }
     
+    if (_room.config.autoMonitorNetwork)
+    {
+        [self removeNetworkListener];
+    }
+    
+    if (_room.config.autoMonitorCall)
+    {
+        [self removeCallListener];
+    }
+    
+    if (_room.config.autoMonitorKiekedOffline)
+    {
+        [[TIMManager sharedInstance] setUserStatusListener:nil];
+    }
+    
+    if (_room.config.autoMonitorForeBackgroundSwitch)
+    {
+        [self addForeBackgroundListener];
+    }
+    
     [self releaseResource];
-    [_avContext exitRoom];
+    
+    if (fromExternal)
+    {
+        [_avContext exitRoom];
+    }
+    else
+    {
+        [self OnExitRoomComplete];
+    }
 }
+
+/*
+ * @brief 退出房间，内部统一处理
+ * @param imblock:IM退群处理回调
+ * @param avblock:AV出房间(-(void)OnExitRoomComplete)回调处理
+ */
+- (void)exitRoom:(TCIRoomBlock)avBlock
+{
+    [self innerWillExitRoom:avBlock externalExit:YES];
+}
+
 
 // 主播 : 主播删除直播聊天室
 // 观众 : 观众退出直播聊天室
@@ -668,7 +859,7 @@ static TCILiveManager *_sharedInstance = nil;
         {
             // 有后台模式时，关mic
             // 无后台模式，系统自动关
-            DebugLog(@"进入关开mic");
+            TCILDebugLog(@"进入关开mic");
             [self enableMic:NO];
         }
     }
@@ -692,7 +883,7 @@ static TCILiveManager *_sharedInstance = nil;
         {
             // 有后台模式时，关mic
             // 无后台模式，系统自动关
-            DebugLog(@"进入关开mic");
+            TCILDebugLog(@"进入关开mic");
             [self enableMic:YES];
         }
     }
@@ -811,14 +1002,19 @@ static TCILiveManager *_sharedInstance = nil;
     [_avStatusList removeObject:bi];
 }
 
-- (AVGLRenderView *)renderFor:(NSString *)uid
+- (AVGLCustomRenderView *)renderFor:(NSString *)uid
 {
     AVGLCustomRenderView *glView = (AVGLCustomRenderView *)[_avglView getSubviewForKey:uid];
     return glView;
 }
 
-- (AVGLRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect
+- (AVGLCustomRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect
 {
+    if (![self renderMemoOf:uid] && [self hasVideoCount] >= [self maxVideoCount])
+    {
+        TCILDebugLog(@"已达到最大请求数，不能添加RenderV");
+        return nil;
+    }
     
     if (!_avglView)
     {
@@ -1002,6 +1198,27 @@ static TCILiveManager *_sharedInstance = nil;
     [conv sendMessage:message succ:succ fail:fail];
 }
 
+//=====================================
+
+- (void)addNetworkListener
+{
+    
+}
+
+- (void)addCallListener
+{
+    
+}
+
+- (void)removeNetworkListener
+{
+    
+}
+
+- (void)removeCallListener
+{
+    
+}
 
 //=====================================
 
@@ -1036,6 +1253,26 @@ static TCILiveManager *_sharedInstance = nil;
             [self requestViewList:@[_room.liveHostID] srcTypeList:@[@(QAVVIDEO_SRC_TYPE_CAMERA)] ret:nil];
         }
         
+        if (_room.config.autoMonitorNetwork)
+        {
+            [self addNetworkListener];
+        }
+        
+        if (_room.config.autoMonitorCall)
+        {
+            [self addCallListener];
+        }
+        
+        if (_room.config.autoMonitorKiekedOffline)
+        {
+            [[TIMManager sharedInstance] setUserStatusListener:self];
+        }
+        
+        if (_room.config.autoMonitorForeBackgroundSwitch)
+        {
+            [self addForeBackgroundListener];
+        }
+        
         if (self.enterRoomBlock)
         {
             self.enterRoomBlock(YES, nil);
@@ -1054,8 +1291,45 @@ static TCILiveManager *_sharedInstance = nil;
 }
 
 /**
+ *  踢下线通知
+ */
+- (void)onForceOffline
+{
+    if ([_delegate respondsToSelector:@selector(onKickedOfflineWhenLive)])
+    {
+        [_delegate onKickedOfflineWhenLive];
+    }
+}
+
+/**
+ *  断线重连失败
+ */
+- (void)onReConnFailed:(int)code err:(NSString*)err
+{
+    TCILDebugLog(@"IM断线重连:%d %@", code, err);
+    
+    if ([_delegate respondsToSelector:@selector(onReConnFailedWhenLiveWithError:)])
+    {
+        NSError *error = [NSError errorWithDomain:err code:code userInfo:nil];
+        [_delegate onReConnFailedWhenLiveWithError:error];
+    }
+}
+
+/**
+ *  用户登录的userSig过期（用户需要重新获取userSig后登录）
+ */
+- (void)onUserSigExpired
+{
+    TCILDebugLog(@"IM票据过期");
+    if ([_delegate respondsToSelector:@selector(onCurrentUserSigExpiredWhenLive)])
+    {
+        [_delegate onCurrentUserSigExpiredWhenLive];
+    }
+}
+
+/**
  @brief 本地画面预览回调
- @param 本地视频帧数据
+ @param frameData : 本地视频帧数据
  */
 -(void)OnLocalVideoPreview:(QAVVideoFrame*)frameData
 {
@@ -1107,6 +1381,11 @@ static TCILiveManager *_sharedInstance = nil;
         self.exitRoomBlock(YES, nil);
     }
     self.exitRoomBlock = nil;
+    
+    if (_room.config.autoMonitorAudioInterupt)
+    {
+        [self removeAudioInterruptListener];
+    }
 }
 
 /**
@@ -1116,20 +1395,20 @@ static TCILiveManager *_sharedInstance = nil;
  
  @param reason 退出房间的原因，具体值见返回码。SDK的各种返回码的定义和其他详细说明参考QAVError.h。
  */
+
+// 底层已退房
 -(void)OnRoomDisconnect:(int)reason
 {
+    [self innerWillExitRoom:nil externalExit:NO];
     //    [_delegate onAVExitRoom:_liveOption succ:YES];
+    TCILDebugLog(@"QAVSDK主动退出房间提示 : %d", reason);
+    if ([_delegate respondsToSelector:@selector(onRoomDisconnected:)])
+    {
+        [_delegate onRoomDisconnected:reason];
+    }
 }
 
 
-/**
- @brief 房间成员状态变化通知的函数。
- 
- @details 当房间成员发生状态变化(如是否发音频、是否发视频等)时，会通过该函数通知业务侧。
- 
- @param eventID 状态变化id，详见QAVUpdateEvent的定义。
- @param endpoints 发生状态变化的成员id列表。
- */
 - (NSString *)eventTip:(QAVUpdateEvent)event
 {
     switch (event)
@@ -1189,57 +1468,102 @@ static TCILiveManager *_sharedInstance = nil;
     [self requestViewList:ids srcTypeList:tds ret:nil];
 }
 
+/**
+ @brief 房间成员状态变化通知的函数。
+ 
+ @details 当房间成员发生状态变化(如是否发音频、是否发视频等)时，会通过该函数通知业务侧。
+ 
+ @param eventID 状态变化id，详见QAVUpdateEvent的定义。
+ @param endpoints 发生状态变化的成员id列表。
+ */
 -(void)OnEndpointsUpdateInfo:(QAVUpdateEvent)eventID endpointlist:(NSArray *)endpoints
 {
-            DebugLog(@"endpoints = %@ evenId = %d %@", endpoints, (int)eventID, [self eventTip:eventID]);
+    TCILDebugLog(@"endpoints = %@ evenId = %d %@", endpoints, (int)eventID, [self eventTip:eventID]);
     
-    switch (eventID) {
+    switch (eventID)
+    {
         case QAV_EVENT_ID_ENDPOINT_ENTER:// = 1,             ///< 进入房间事件。
+        {
+            
+        }
+            break;
         case QAV_EVENT_ID_ENDPOINT_EXIT:// = 2,              ///< 退出房间事件。
+        {
+            
+        }
             break;
         case QAV_EVENT_ID_ENDPOINT_HAS_CAMERA_VIDEO:// 3,  ///< 有发摄像头视频事件。
-            
-//            if (_room.config.autoRequestView)
-//            {
+        {
+            if (_room.config.autoRequestView)
+            {
                 [self autoRequestCameraViewOf:endpoints];
-//            }
+            }
+        
+            for (QAVEndpoint *point in endpoints)
+            {
+                TCIMemoItem *item = [self renderMemoOf:point.identifier];
+                item.isCameraVideo = YES;
+            }
+            
+        }
             
             break;
             
         case QAV_EVENT_ID_ENDPOINT_NO_CAMERA_VIDEO:// 4,  ///< 无发摄像头视频事件。
-            
+        {
+            for (QAVEndpoint *point in endpoints)
+            {
+                TCIMemoItem *item = [self renderMemoOf:point.identifier];
+                item.isCameraVideo = NO;
+            }
+        }
             break;
             
         case QAV_EVENT_ID_ENDPOINT_HAS_AUDIO:// = 5,        ///< 有发语音事件。
+        {
+            for (QAVEndpoint *point in endpoints)
+            {
+                TCIMemoItem *item = [self renderMemoOf:point.identifier];
+                item.isAudio = YES;
+            }
+        }
+            break;
         case QAV_EVENT_ID_ENDPOINT_NO_AUDIO:// = 6,         ///< 无发语音事件。
+        {
+            for (QAVEndpoint *point in endpoints)
+            {
+                TCIMemoItem *item = [self renderMemoOf:point.identifier];
+                item.isAudio = NO;
+            }
+        }
+            break;
             
         case QAV_EVENT_ID_ENDPOINT_HAS_SCREEN_VIDEO:// = 7,  ///< 有发屏幕视频事件。
+        {
+            for (QAVEndpoint *point in endpoints)
+            {
+                TCIMemoItem *item = [self renderMemoOf:point.identifier];
+                item.isScreenVideo = YES;
+            }
+        }
+            break;
         case QAV_EVENT_ID_ENDPOINT_NO_SCREEN_VIDEO:// = 8,   ///< 无发屏幕视频事件。
+        {
+            for (QAVEndpoint *point in endpoints)
+            {
+                TCIMemoItem *item = [self renderMemoOf:point.identifier];
+                item.isScreenVideo = NO;
+            }
+        }
+            break;
         default:
             break;
     }
     
-//            if (eventID == QAV_EVENT_ID_ENDPOINT_EXIT)
-//            {
-//                if ([_delegate respondsToSelector:@selector(onAVEndpointExitRoom:)])
-//                {
-//                    
-//                }
-//            }
-//            else if (eventID == QAV_EVENT_ID_ENDPOINT_ENTER)
-//            {
-//                if ([_delegate respondsToSelector:@selector(onAVEndpointEnterRoom:)])
-//                {
-//                    
-//                }
-//            }
-//            else
-//            {
-//                if ([_delegate respondsToSelector:@selector(onAVEndpoints:eventID:)])
-//                {
-//                    
-//                }
-//            }
+    if ([_delegate respondsToSelector:@selector(onEndpointsUpdateInfo:endpointlist:)])
+    {
+        [_delegate onEndpointsUpdateInfo:eventID endpointlist:endpoints];
+    }
 }
 
 - (void)handleSemiCameraVideoList:(NSArray *)identifierList

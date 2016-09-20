@@ -75,12 +75,12 @@
     return [[TCICallManager sharedInstance] createAVGLViewIn:vc];
 }
 
-- (AVGLRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect
+- (AVGLCustomRenderView *)addRenderFor:(NSString *)uid atFrame:(CGRect)rect
 {
     return [[TCICallManager sharedInstance] addRenderFor:uid atFrame:rect];
 }
 
-- (AVGLRenderView *)addSelfRender:(CGRect)rect
+- (AVGLCustomRenderView *)addSelfRender:(CGRect)rect
 {
     NSString * identifier = [[TCICallManager sharedInstance] host].identifier;
     return [[TCICallManager sharedInstance] addRenderFor:identifier atFrame:rect];

@@ -30,6 +30,12 @@
         _autoRequestView = YES;
         _isVoiceCall = NO;
         
+        _autoRequestView = YES;
+        _autoMonitorNetwork = YES;
+        _autoMonitorCall = YES;
+        _autoMonitorKiekedOffline = YES;
+        _autoMonitorForeBackgroundSwitch = YES;
+        
     }
     return self;
 }
@@ -52,6 +58,11 @@
         _autoCameraId = CameraPosFront;
         _autoRequestView = YES;
         
+        _autoRequestView = YES;
+        _autoMonitorNetwork = YES;
+        _autoMonitorCall = YES;
+        _autoMonitorKiekedOffline = YES;
+        _autoMonitorForeBackgroundSwitch = YES;
     }
     return self;
 }
@@ -74,6 +85,11 @@
         _autoCameraId = CameraPosFront;
         _autoRequestView = YES;
         
+        _autoRequestView = YES;
+        _autoMonitorNetwork = YES;
+        _autoMonitorCall = YES;
+        _autoMonitorKiekedOffline = YES;
+        _autoMonitorForeBackgroundSwitch = YES;
     }
     return self;
 }

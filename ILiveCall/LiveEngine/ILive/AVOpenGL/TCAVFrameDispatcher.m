@@ -60,12 +60,20 @@
                 if (!isLocal && isHost && !isFrontCamera)
                 {
                     if ( (peerFrameAngle == 2 && selfFrameAngle == 1) ||
-                        (peerFrameAngle == 0 && selfFrameAngle == 1)  )
+                         (peerFrameAngle == 0 && selfFrameAngle == 1)  )
                     {
                         degree = 180;
                     }
                 }
-                degree = 270+degree;
+                if (peerFrameAngle == 1 || peerFrameAngle == 3)
+                {
+                    degree = [self calcRotateAngle:peerFrameAngle selfAngle:selfFrameAngle];
+                }
+                else
+                {
+                    degree = 270+degree;
+                }
+                
                 //始终全屏显示
                 isFullScreenShow = YES;
                 break;
@@ -94,7 +102,6 @@
         
         [glView setImage:image];
     }
-    
 }
 
 - (float)calcRotateAngle:(int)peerFrameAngle selfAngle:(int)frameAngle
@@ -158,6 +165,10 @@
         // 对方竖屏，自己横屏
         return NO;
     }
+    return YES;
+}
+
+- (BOOL)calcFullScr2{
     return YES;
 }
 @end

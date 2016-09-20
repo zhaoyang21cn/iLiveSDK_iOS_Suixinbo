@@ -13,6 +13,7 @@
 
 @interface TCICallManager ()
 
+@property (nonatomic, copy) NSString *recvID;   // 如果是C2C电话，则为对方的ID，如果为群电话，则为群ID
 @property (nonatomic, copy) TCICallBlock callingBlock;
 
 @end
@@ -60,6 +61,7 @@ static TCICallManager *_sharedInstance = nil;
         {
             if (recvID.length)
             {
+                self.recvID = recvID;
                 TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_C2C receiver:recvID];
                 
                 TIMMessage *mess = [callCmd packToSendMessage];
@@ -115,6 +117,7 @@ static TCICallManager *_sharedInstance = nil;
             NSString *recvID = callCmd.imGroupID;
             if (recvID.length)
             {
+                self.recvID = recvID;
                 TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:recvID];
                 
                 TIMMessage *mess = [callCmd packToSendMessage];
@@ -168,6 +171,15 @@ static TCICallManager *_sharedInstance = nil;
     if (callCmd)
     {
         TCILiveRoom *room = [callCmd parseRoomInfo];
+        
+        if (callCmd.isGroupCall)
+        {
+            self.recvID = callCmd.imGroupID;
+        }
+        else
+        {
+            self.recvID = callCmd.callSponsor;
+        }
         
         self.delegate = delegate;
         __weak typeof(self) ws = self;
@@ -232,7 +244,7 @@ static TCICallManager *_sharedInstance = nil;
         else
         {
             
-            TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_C2C receiver:_room.liveHostID];
+            TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_C2C receiver:recmd.callSponsor];
             [conv sendMessage:mess succ:^{
                 TCILDebugLog(@"回复成功[%@]", recmd);
                 if (completion)
@@ -275,7 +287,7 @@ static TCICallManager *_sharedInstance = nil;
         }
         else
         {
-            TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_C2C receiver:_room.liveHostID];
+            TIMConversation *conv = [[TIMManager sharedInstance] getConversation:TIM_C2C receiver:self.recvID];
             [conv sendMessage:mess succ:^{
                 TCILDebugLog(@"回复成功[%@]", recmd);
             } fail:^(int code, NSString *msg) {
