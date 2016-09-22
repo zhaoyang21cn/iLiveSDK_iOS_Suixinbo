@@ -3,9 +3,9 @@
 ------
 因GitHub有文件大小限制，现将IMSDK以及AVSDK上传到腾讯云COS上。 更新时，请到对应的地址进行更新，并添加到工程下面对应的目录下
 
-IMSDK : http://tcshowsdks-10022853.cos.myqcloud.com/20160830/IMSDK2.2.1.Release.zip 下载后解压，然后再放至对应放到工程目录 TCShow/TCAdapter/TIMAdapter/Framework/IMSDK
+IMSDK : http://tcshowsdks-10022853.cos.myqcloud.com/20160830/IMSDK2.2.1.Release.zip 下载后解压，然后再放至对应放到工程目录 FocusDemo/TCAdapter/TIMAdapter/Framework/IMSDK
+AVSDK：http://tcshowsdks-10022853.cos.myqcloud.com/20160902/AVSDK1.8.2.27.Release.zip 下载后解压，然后再放至对应放到工程目录 FocusDemo/TCAdapter/TCAVIMAdapter/Libs
 
-AVSDK : http://tcshowsdks-10022853.cos.myqcloud.com/20160902/AVSDK1.8.2.27.Release.zip 下载后解压，然后再放至对应放到工程目录 TCShow/TCAdapter/TCAVIMAdapter/Libs
 ------
 
 AVSDK提供自动聚焦功能，用户不需要做任何操作。当用户需要对某一个感兴趣的点手动聚焦时，需要自己实现手动聚焦的功能。当用户希望放大看某一感兴趣点时，需要自己实现缩放功能。本文档提供手动聚焦和缩放功能的实现流程。
@@ -25,4 +25,3 @@ AVSDK提供自动聚焦功能，用户不需要做任何操作。当用户需要
 
 ## 缩放 ##
 > 请参照demo中onDoubleTap函数
-
