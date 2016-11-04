@@ -41,7 +41,7 @@
 
 ![](http://img.blog.csdn.net/20161104162443849)
 
-2、[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip)相关模块SDK并导入工程
+2、[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip)相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程，
 导入之后的工程目录应该是如下图所示，如果不是，请重新导入
 
 ![](http://img.blog.csdn.net/20161104162726288)
