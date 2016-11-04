@@ -38,18 +38,28 @@
 ![](http://img.blog.csdn.net/20161104162412611)
 
 此时工程目录应该是下图这样的，如果不是，请重新创建工程
+
 ![](http://img.blog.csdn.net/20161104162443849)
+
 2、[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip)相关模块SDK并导入工程
 导入之后的工程目录应该是如下图所示，如果不是，请重新导入
+
 ![](http://img.blog.csdn.net/20161104162726288)
+
 3、导入系统库
 导入系统库之后的工程目录应该是如下图所示，如果不是，请重新导入
+
 ![](http://img.blog.csdn.net/20161104162855134)
+
 4、工程配置
 4.1连接配置
+
 ![](http://img.blog.csdn.net/20161104162928476)
+
 4.2 Bitcode配置
+
 ![](http://img.blog.csdn.net/20161104162940211)
+
 
 
 注：完成以上4个步骤，ILiveSDK集成工作已经完成，接下来验证一下是否集成成功，在ViewController中打印ILiveSDK版本号，
