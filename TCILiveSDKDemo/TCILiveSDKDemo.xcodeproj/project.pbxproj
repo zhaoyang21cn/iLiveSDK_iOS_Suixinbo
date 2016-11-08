@@ -12,8 +12,6 @@
 		CF2425831DCC5A2C00750BF7 /* IMSDKBugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24257E1DCC5A2C00750BF7 /* IMSDKBugly.framework */; };
 		CF2425841DCC5A2C00750BF7 /* QALSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24257F1DCC5A2C00750BF7 /* QALSDK.framework */; };
 		CF2425851DCC5A2C00750BF7 /* TLSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2425801DCC5A2C00750BF7 /* TLSSDK.framework */; };
-		CF2425891DCC5E6A00750BF7 /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2425881DCC5E6A00750BF7 /* TILLiveSDK.framework */; };
-		CF24258D1DCC65E800750BF7 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24258C1DCC65E800750BF7 /* ILiveSDK.framework */; };
 		CF24258F1DCC6FFD00750BF7 /* TILCallSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24258E1DCC6FFD00750BF7 /* TILCallSDK.framework */; };
 		CF47772F1DCC439600CBAB67 /* QAVSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF47771F1DCC439600CBAB67 /* QAVSDK.framework */; };
 		CF4777301DCC439600CBAB67 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = CF4777201DCC439600CBAB67 /* README.md */; };
@@ -21,6 +19,12 @@
 		CF4777321DCC439600CBAB67 /* Shaderv.glsl in Resources */ = {isa = PBXBuildFile; fileRef = CF4777221DCC439600CBAB67 /* Shaderv.glsl */; };
 		CF4777331DCC439600CBAB67 /* xplatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4777231DCC439600CBAB67 /* xplatform.framework */; };
 		CF47773B1DCC439600CBAB67 /* readme in Resources */ = {isa = PBXBuildFile; fileRef = CF47772D1DCC439600CBAB67 /* readme */; };
+		CF49B9D71DD0966C0088D04A /* LiveLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9D31DD0966C0088D04A /* LiveLoginViewController.m */; };
+		CF49B9D81DD0966C0088D04A /* LiveRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9D51DD0966C0088D04A /* LiveRegisterViewController.m */; };
+		CF49B9DD1DD0973C0088D04A /* CallLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9DA1DD0973C0088D04A /* CallLoginViewController.m */; };
+		CF49B9DE1DD0973C0088D04A /* CallRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9DC1DD0973C0088D04A /* CallRegisterViewController.m */; };
+		CF49B9E01DD0AD620088D04A /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF49B9DF1DD0AD620088D04A /* TILLiveSDK.framework */; };
+		CF49B9E21DD0AE470088D04A /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF49B9E11DD0AE470088D04A /* ILiveSDK.framework */; };
 		CFB121DD1DBF02C300AAE22B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DC1DBF02C300AAE22B /* main.m */; };
 		CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DF1DBF02C300AAE22B /* AppDelegate.m */; };
 		CFB121E61DBF02C300AAE22B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E41DBF02C300AAE22B /* Main.storyboard */; };
@@ -50,8 +54,6 @@
 		CFE421771DCA0697004DE029 /* LiveJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4216E1DCA0697004DE029 /* LiveJoinViewController.m */; };
 		CFE421781DCA0697004DE029 /* LiveLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421701DCA0697004DE029 /* LiveLiveViewController.m */; };
 		CFE4217B1DCA0697004DE029 /* LiveMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421761DCA0697004DE029 /* LiveMainViewController.m */; };
-		CFE421801DCA07DA004DE029 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4217D1DCA07DA004DE029 /* LoginViewController.m */; };
-		CFE421811DCA07DA004DE029 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4217F1DCA07DA004DE029 /* RegisterViewController.m */; };
 		CFE421841DCA080D004DE029 /* DemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421831DCA080D004DE029 /* DemoTableViewController.m */; };
 		CFE4218A1DCA10FE004DE029 /* CallMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421891DCA10FE004DE029 /* CallMainViewController.m */; };
 		CFE4218D1DCA1325004DE029 /* CallMakeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4218C1DCA1325004DE029 /* CallMakeViewController.m */; };
@@ -82,8 +84,6 @@
 		CF24257E1DCC5A2C00750BF7 /* IMSDKBugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMSDKBugly.framework; sourceTree = "<group>"; };
 		CF24257F1DCC5A2C00750BF7 /* QALSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QALSDK.framework; sourceTree = "<group>"; };
 		CF2425801DCC5A2C00750BF7 /* TLSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TLSSDK.framework; sourceTree = "<group>"; };
-		CF2425881DCC5E6A00750BF7 /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
-		CF24258C1DCC65E800750BF7 /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		CF24258E1DCC6FFD00750BF7 /* TILCallSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILCallSDK.framework; sourceTree = "<group>"; };
 		CF4777161DCC404500CBAB67 /* ILiveSDKDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILiveSDKDemo.pch; sourceTree = "<group>"; };
 		CF47771F1DCC439600CBAB67 /* QAVSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QAVSDK.framework; sourceTree = "<group>"; };
@@ -92,6 +92,16 @@
 		CF4777221DCC439600CBAB67 /* Shaderv.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderv.glsl; sourceTree = "<group>"; };
 		CF4777231DCC439600CBAB67 /* xplatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = xplatform.framework; sourceTree = "<group>"; };
 		CF47772D1DCC439600CBAB67 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
+		CF49B9D21DD0966C0088D04A /* LiveLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveLoginViewController.h; sourceTree = "<group>"; };
+		CF49B9D31DD0966C0088D04A /* LiveLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveLoginViewController.m; sourceTree = "<group>"; };
+		CF49B9D41DD0966C0088D04A /* LiveRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRegisterViewController.h; sourceTree = "<group>"; };
+		CF49B9D51DD0966C0088D04A /* LiveRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveRegisterViewController.m; sourceTree = "<group>"; };
+		CF49B9D91DD0973C0088D04A /* CallLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallLoginViewController.h; sourceTree = "<group>"; };
+		CF49B9DA1DD0973C0088D04A /* CallLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallLoginViewController.m; sourceTree = "<group>"; };
+		CF49B9DB1DD0973C0088D04A /* CallRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRegisterViewController.h; sourceTree = "<group>"; };
+		CF49B9DC1DD0973C0088D04A /* CallRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRegisterViewController.m; sourceTree = "<group>"; };
+		CF49B9DF1DD0AD620088D04A /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
+		CF49B9E11DD0AE470088D04A /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCILiveSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFB121DC1DBF02C300AAE22B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CFB121DE1DBF02C300AAE22B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -131,10 +141,6 @@
 		CFE421701DCA0697004DE029 /* LiveLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveLiveViewController.m; sourceTree = "<group>"; };
 		CFE421751DCA0697004DE029 /* LiveMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveMainViewController.h; sourceTree = "<group>"; };
 		CFE421761DCA0697004DE029 /* LiveMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveMainViewController.m; sourceTree = "<group>"; };
-		CFE4217C1DCA07DA004DE029 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		CFE4217D1DCA07DA004DE029 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		CFE4217E1DCA07DA004DE029 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
-		CFE4217F1DCA07DA004DE029 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		CFE421821DCA080D004DE029 /* DemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTableViewController.h; sourceTree = "<group>"; };
 		CFE421831DCA080D004DE029 /* DemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTableViewController.m; sourceTree = "<group>"; };
 		CFE421881DCA10FE004DE029 /* CallMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMainViewController.h; sourceTree = "<group>"; };
@@ -153,7 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFB122551DBF4E2500AAE22B /* libprotobuf.tbd in Frameworks */,
-				CF24258D1DCC65E800750BF7 /* ILiveSDK.framework in Frameworks */,
+				CF49B9E21DD0AE470088D04A /* ILiveSDK.framework in Frameworks */,
 				CFB122531DBF4E1200AAE22B /* libsqlite3.tbd in Frameworks */,
 				CFB122511DBF4E0900AAE22B /* Foundation.framework in Frameworks */,
 				CF2425851DCC5A2C00750BF7 /* TLSSDK.framework in Frameworks */,
@@ -165,7 +171,7 @@
 				CF47772F1DCC439600CBAB67 /* QAVSDK.framework in Frameworks */,
 				CF24258F1DCC6FFD00750BF7 /* TILCallSDK.framework in Frameworks */,
 				CFB122491DBF4DEF00AAE22B /* CoreGraphics.framework in Frameworks */,
-				CF2425891DCC5E6A00750BF7 /* TILLiveSDK.framework in Frameworks */,
+				CF49B9E01DD0AD620088D04A /* TILLiveSDK.framework in Frameworks */,
 				CFB122471DBF4DE600AAE22B /* CoreMedia.framework in Frameworks */,
 				CFB122451DBF4DDF00AAE22B /* CoreTelephony.framework in Frameworks */,
 				CFB122431DBF4DD800AAE22B /* SystemConfiguration.framework in Frameworks */,
@@ -216,9 +222,9 @@
 		CF4777241DCC439600CBAB67 /* ILiveSDK */ = {
 			isa = PBXGroup;
 			children = (
+				CF49B9E11DD0AE470088D04A /* ILiveSDK.framework */,
+				CF49B9DF1DD0AD620088D04A /* TILLiveSDK.framework */,
 				CF24258E1DCC6FFD00750BF7 /* TILCallSDK.framework */,
-				CF24258C1DCC65E800750BF7 /* ILiveSDK.framework */,
-				CF2425881DCC5E6A00750BF7 /* TILLiveSDK.framework */,
 			);
 			path = ILiveSDK;
 			sourceTree = "<group>";
@@ -262,10 +268,6 @@
 			children = (
 				CFE4216B1DCA0697004DE029 /* TILCallDemo */,
 				CFE4216C1DCA0697004DE029 /* TILLiveDemo */,
-				CFE4217C1DCA07DA004DE029 /* LoginViewController.h */,
-				CFE4217D1DCA07DA004DE029 /* LoginViewController.m */,
-				CFE4217E1DCA07DA004DE029 /* RegisterViewController.h */,
-				CFE4217F1DCA07DA004DE029 /* RegisterViewController.m */,
 				CFE421821DCA080D004DE029 /* DemoTableViewController.h */,
 				CFE421831DCA080D004DE029 /* DemoTableViewController.m */,
 				CFB121DE1DBF02C300AAE22B /* AppDelegate.h */,
@@ -338,6 +340,10 @@
 		CFE4216B1DCA0697004DE029 /* TILCallDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CF49B9D91DD0973C0088D04A /* CallLoginViewController.h */,
+				CF49B9DA1DD0973C0088D04A /* CallLoginViewController.m */,
+				CF49B9DB1DD0973C0088D04A /* CallRegisterViewController.h */,
+				CF49B9DC1DD0973C0088D04A /* CallRegisterViewController.m */,
 				CFE421881DCA10FE004DE029 /* CallMainViewController.h */,
 				CFE421891DCA10FE004DE029 /* CallMainViewController.m */,
 				CFE4218B1DCA1325004DE029 /* CallMakeViewController.h */,
@@ -353,6 +359,10 @@
 		CFE4216C1DCA0697004DE029 /* TILLiveDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CF49B9D21DD0966C0088D04A /* LiveLoginViewController.h */,
+				CF49B9D31DD0966C0088D04A /* LiveLoginViewController.m */,
+				CF49B9D41DD0966C0088D04A /* LiveRegisterViewController.h */,
+				CF49B9D51DD0966C0088D04A /* LiveRegisterViewController.m */,
 				CFE4216D1DCA0697004DE029 /* LiveJoinViewController.h */,
 				CFE4216E1DCA0697004DE029 /* LiveJoinViewController.m */,
 				CFE4216F1DCA0697004DE029 /* LiveLiveViewController.h */,
@@ -500,18 +510,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFE421841DCA080D004DE029 /* DemoTableViewController.m in Sources */,
+				CF49B9DE1DD0973C0088D04A /* CallRegisterViewController.m in Sources */,
 				CFE421781DCA0697004DE029 /* LiveLiveViewController.m in Sources */,
 				CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */,
 				CFE421771DCA0697004DE029 /* LiveJoinViewController.m in Sources */,
 				CF4777301DCC439600CBAB67 /* README.md in Sources */,
 				CFE4218D1DCA1325004DE029 /* CallMakeViewController.m in Sources */,
+				CF49B9D81DD0966C0088D04A /* LiveRegisterViewController.m in Sources */,
 				CFE421901DCA1334004DE029 /* CallRecvViewController.m in Sources */,
-				CFE421801DCA07DA004DE029 /* LoginViewController.m in Sources */,
+				CF49B9DD1DD0973C0088D04A /* CallLoginViewController.m in Sources */,
 				CFE421A21DCB2A03004DE029 /* CallIncomingListener.m in Sources */,
 				CFB121DD1DBF02C300AAE22B /* main.m in Sources */,
 				CFE4217B1DCA0697004DE029 /* LiveMainViewController.m in Sources */,
-				CFE421811DCA07DA004DE029 /* RegisterViewController.m in Sources */,
 				CFE4218A1DCA10FE004DE029 /* CallMainViewController.m in Sources */,
+				CF49B9D71DD0966C0088D04A /* LiveLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

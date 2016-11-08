@@ -10,6 +10,8 @@
 #import "LiveLiveViewController.h"
 #import "LiveJoinViewController.h"
 
+
+
 @interface LiveMainViewController () <UITextFieldDelegate>
 @end
 
@@ -17,7 +19,19 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    [self.navigationItem setHidesBackButton:YES];
     self.userLabel.text = [[ILiveLoginManager getInstance] getLoginId];
+}
+
+//登出
+- (IBAction)logout:(id)sender {
+    __weak typeof(self) ws = self;
+    [[ILiveLoginManager getInstance] tlsLogout:^{
+        [ws.navigationController popViewControllerAnimated:YES];
+    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
+        [ws.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 //创建直播

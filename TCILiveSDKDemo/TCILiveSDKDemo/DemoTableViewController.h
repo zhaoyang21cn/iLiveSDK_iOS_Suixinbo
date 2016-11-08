@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DemoTableViewController : UITableViewController
-- (IBAction)logout:(id)sender;
 
 @end

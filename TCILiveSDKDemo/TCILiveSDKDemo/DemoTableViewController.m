@@ -18,7 +18,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    [self.navigationItem setHidesBackButton:YES];
     [self setDemo];
 }
 
@@ -54,13 +53,4 @@
     [self performSegueWithIdentifier:segue sender:nil];
 }
 
-//登出
-- (IBAction)logout:(id)sender {
-    __weak typeof(self) ws = self;
-    [[ILiveLoginManager getInstance] iLiveLogout:^{
-        [ws.navigationController popViewControllerAnimated:YES];
-    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-        [ws.navigationController popViewControllerAnimated:YES];
-    }];
-}
 @end

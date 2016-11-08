@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *hostTextField;
 @property (weak, nonatomic) IBOutlet UILabel *errLabel;
 
+- (IBAction)logout:(id)sender;
 - (IBAction)createLive:(id)sender;
 - (IBAction)joinLive:(id)sender;
 @end

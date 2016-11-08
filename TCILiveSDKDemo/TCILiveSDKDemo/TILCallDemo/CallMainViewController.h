@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *peerTextField;
 @property (weak, nonatomic) IBOutlet UILabel *errLabel;
 - (IBAction)makeCall:(id)sender;
+- (IBAction)logout:(id)sender;
 
 @end
