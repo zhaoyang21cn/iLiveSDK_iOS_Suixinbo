@@ -33,8 +33,8 @@ addRenderAt:forKey:|ILiveGLBaseView	|创建渲染子视图
 
 
 #ILiveSDK集成和使用
-##1、新建工程
-###1.1创建Single View Application
+## 1、新建工程
+### 1.1创建Single View Application
 ![](http://img.blog.csdn.net/20161104162329407)
 
 命名ILiveSDKDemo
@@ -44,22 +44,22 @@ addRenderAt:forKey:|ILiveGLBaseView	|创建渲染子视图
 
 ![](http://img.blog.csdn.net/20161104162443849)
 
-2、[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip)相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程，
+## 2、[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip)相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程，
 导入之后的工程目录应该是如下图所示，如果不是，请重新导入
 
 ![](http://img.blog.csdn.net/20161104162726288)
 
-3、导入系统库
+## 3、导入系统库
 导入系统库之后的工程目录应该是如下图所示，如果不是，请重新导入
 
 ![](http://img.blog.csdn.net/20161104162855134)
 
-4、工程配置
+## 4、工程配置
 4.1连接配置
 
 ![](http://img.blog.csdn.net/20161104162928476)
 
-4.2 Bitcode配置
+### 4.2 Bitcode配置
 
 ![](http://img.blog.csdn.net/20161104162940211)
 
@@ -75,7 +75,7 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 
 下面的步骤是简单的使用接口方法，一下操作是建立在集成成功的基础上进行的：
 调用顺序和示例代码：
-##5、初始化和登录
+## 5、初始化和登录
 
 ```
 [[ILiveSDK getInstance] initSdk:[kSdkAppId intValue] accountType:[kSdkAccountType intValue]];
@@ -86,7 +86,7 @@ NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
 }];
 ```
 
-##6、创建房间(主播)
+## 6、创建房间(主播)
 
 ```
 __weak LiveViewController *ws = self;
@@ -98,7 +98,7 @@ NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
 }];
 ```
 
-##7、加入房间(观众)
+## 7、加入房间(观众)
 
 ```
 __weak LiveViewController *ws = self;
@@ -110,7 +110,7 @@ NSLog(@"-----> join room fail,%@ %d %@",module, errId, errMsg);
 }];
 ```
 
-##8、添加渲染视图
+## 8、添加渲染视图
 注：添加渲染视图必须在创建房间成功回调之后，addRenderAt:forKey接口，如果是主播端，那直接传主播的登录id，如果是观众端，就传如画面所属成员的id(主播id)，也就是说，这里保证key一定是画面所属成员的id。
 ```
 ILiveGLBaseView *baseView = [[ILiveRoomManager getInstance] createGLViewIn:ws.view];
