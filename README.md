@@ -3,7 +3,7 @@
 
 主要功能接口列表：
 | 接口 | 所属类别 | 描述
-|---|---|
+|---|---|---|
 |initSdk:accountType|ILiveSDK|ILiveSDK初始化接口，传入appid和accountType
 |tlsLogin:pwd:succ:fail:|ILiveLoginManager|托管模式登录接口，传入用户名和密码
 |tlsLogout:succ:fail:|ILiveLoginManager	|托管模式登出接口
@@ -146,17 +146,17 @@ AccountType：对应SDKAppID的帐号类型
 ####托管模式
 ```
 [[ILiveLoginManager getInstance] tlsLogin:name pwd:pwd succ:^{
-    NSLog(@"登录成功");
+NSLog(@"登录成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"登录失败");
+NSLog(@"登录失败");
 }];
 ```
 ####独立模式
 ```
 [[ILiveLoginManager getInstance] iLiveLogin:name sig:sig succ:^{
-    NSLog(@"登录成功");
+NSLog(@"登录成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"登录失败");
+NSLog(@"登录失败");
 }];
 ```
 ###1.3 创建房间（进入房间）
@@ -166,11 +166,11 @@ ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption]; //默认主�
 TILLiveManager *manager = [TILLiveManager getInstance];
 [manager setAVRootView:self.view]; //设置渲染承载的视图
 [manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
-    
+
 [manager createRoom:self.roomId option:option succ:^{
-    NSLog(@"创建房间成功");
+NSLog(@"创建房间成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"创建房间失败");
+NSLog(@"创建房间失败");
 }];
 ```
 ####观众进入房间
@@ -181,9 +181,9 @@ TILLiveManager *manager = [TILLiveManager getInstance];
 [manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
 
 [manager joinRoom:self.roomId option:option succ:^{
-    NSLog(@"进入房间成功");
+NSLog(@"进入房间成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"进入房间失败");
+NSLog(@"进入房间失败");
 }];
 ```
 到此，主播可以开始主播，观众可以看到主播画面。
@@ -210,50 +210,50 @@ msg.recvId = recvId;                //被邀请者id
 msg.type = ILVLIVE_IMTYPE_C2C;      //C2C消息类型
 
 [manager sendCustomMessage:msg succ:^{
-    NSLog(@"邀请成功");
+NSLog(@"邀请成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"邀请失败"); 
+NSLog(@"邀请失败"); 
 }];
 ```
 ```
 // 3. 观众接受邀请开始上麦（观众在消息回调中可以收到主播发送自定义消息）
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg{
-    TILLiveManager *manager = [TILLiveManager getInstance];
-    switch (msg.cmd) {
-        case ILVLIVE_IMCMD_INVITE:
-        {
-            //收到邀请调用上麦接口
-            [manager upToVideoMember:ILVLIVEAUTH_INTERACT role:@"腾讯云后台配置的角色" succ:^{
-                NSLog(@"上麦成功"); 
-            } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-                NSLog(@"上麦失败"); 
-            }];
-        }
-        default:
-            break;
-    }
+TILLiveManager *manager = [TILLiveManager getInstance];
+switch (msg.cmd) {
+case ILVLIVE_IMCMD_INVITE:
+{
+//收到邀请调用上麦接口
+[manager upToVideoMember:ILVLIVEAUTH_INTERACT role:@"腾讯云后台配置的角色" succ:^{
+NSLog(@"上麦成功"); 
+} failed:^(NSString *moudle, int errId, NSString *errMsg) {
+NSLog(@"上麦失败"); 
+}];
+}
+default:
+break;
+}
 }
 ```
 ```
 // 4. 主播或观众添加上麦者渲染位置（主播或观众在音视频事件回调中收到摄像头打开事件时，指定上麦观众的渲染位置）
 - (void)onUserUpdateInfo:(ILVLiveAVEvent)event users:(NSArray *)users
 {
-    TILLiveManager *manager = [TILLiveManager getInstance];
-    switch (event) {
-        case ILVLIVE_AVEVENT_CAMERA_ON:
-        {
-            for (NSString *user in users) {
-                //因为主播的渲染位置创建或进入房间的时候已经指定，这里不需要再指定。
-                //当然也可根据自己的逻辑再此处指定主播的渲染位置。
-                if(![user isEqualToString:self.host]){ 
-                    [manager addAVRenderView:CGRectMake(20, 20, 120, 160) forKey:user];
-                }
-            }
-            break;
-        }
-        default:
-            break;
-    }
+TILLiveManager *manager = [TILLiveManager getInstance];
+switch (event) {
+case ILVLIVE_AVEVENT_CAMERA_ON:
+{
+for (NSString *user in users) {
+//因为主播的渲染位置创建或进入房间的时候已经指定，这里不需要再指定。
+//当然也可根据自己的逻辑再此处指定主播的渲染位置。
+if(![user isEqualToString:self.host]){ 
+[manager addAVRenderView:CGRectMake(20, 20, 120, 160) forKey:user];
+}
+}
+break;
+}
+default:
+break;
+}
 }
 ```
 到此，观众完成上麦，可以和主播以及其他观众视频互动。
@@ -267,16 +267,16 @@ ILVLiveTextMessage *msg = [[ILVLiveTextMessage alloc] init];
 msg.text = text;                    //消息内容
 msg.type = ILVLIVE_IMTYPE_GROUP;    //群消息（也可发C2C消息）
 [manager sendTextMessage:msg succ:^{
-    NSLog(@"发送成功");
+NSLog(@"发送成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"发送失败");
+NSLog(@"发送失败");
 }];## 标题 ##
 ```
 
 ```
 // 2. 文本消息接收（在文本消息回调中接受文本消息）
 - (void)onTextMessage:(ILVLiveTextMessage *)msg{
-     NSLog(@"收到消息：%@", msg.text);
+NSLog(@"收到消息：%@", msg.text);
 }
 ```
 
@@ -305,90 +305,90 @@ ILiveCallSDK是基于ILiveSDK的，ILiveCallSDK使用之前需要初始化和登
 ##2、初始化TILC2CCallSDK
 
 ```
-    TILC2CCallConfig * c2cConfig = [[TILC2CCallConfig alloc] init];
-    c2cConfig.callType = TILCALL_TYPE_VIDEO;
-    c2cConfig.isSponsor = YES;
-    c2cConfig.peerId = self.peerId;
-    c2cConfig.heartBeatInterval = 3;
-    c2cConfig.callStatusListener = self;
-    TILC2CSponsorConfig * sponsorConfig = [[TILC2CSponsorConfig alloc] init];
-    sponsorConfig.waitLimit = 10;
-    sponsorConfig.callId = (int)([[NSDate date] timeIntervalSince1970]) % 1000 * 1000 + arc4random() % 1000;
-    c2cConfig.sponsorConfig = sponsorConfig;
-    
-    self.call = [[TILC2CCall alloc] initWithConfig:c2cConfig];
+TILC2CCallConfig * c2cConfig = [[TILC2CCallConfig alloc] init];
+c2cConfig.callType = TILCALL_TYPE_VIDEO;
+c2cConfig.isSponsor = YES;
+c2cConfig.peerId = self.peerId;
+c2cConfig.heartBeatInterval = 3;
+c2cConfig.callStatusListener = self;
+TILC2CSponsorConfig * sponsorConfig = [[TILC2CSponsorConfig alloc] init];
+sponsorConfig.waitLimit = 10;
+sponsorConfig.callId = (int)([[NSDate date] timeIntervalSince1970]) % 1000 * 1000 + arc4random() % 1000;
+c2cConfig.sponsorConfig = sponsorConfig;
+
+self.call = [[TILC2CCall alloc] initWithConfig:c2cConfig];
 ```
 
 ##3、 添加渲染根视图
 
 ```
-    UIView *baseView = [self.call createRenderViewIn:self.view];
-    [self.view sendSubviewToBack:baseView];
+UIView *baseView = [self.call createRenderViewIn:self.view];
+[self.view sendSubviewToBack:baseView];
 ```
 
 ##4、发起通话请求
 发起通话请求会创建房间和发起请求
 
 ```
-    __weak typeof(self) ws = self;
-    [self.call makeCall:nil custom:nil result:^(TILCallError *err) {
-        if(err){
-            ws.errLabel.text = [NSString stringWithFormat:@"code:%d,msg=%@",err.code,err.errMsg];
-            [ws dismissViewControllerAnimated:YES completion:nil];
-        }
-        else{
-            self.errLabel.text = [NSString stringWithFormat:@"等待%@的接听",self.peerId];
-            NSString *myId = [[ILiveLoginManager getInstance] getLoginId];
-            [ws.call addRenderFor:myId atFrame:self.view.bounds];
-        }
-    }];
-         - (void)addSelfRender:(CGRect)rect;
-        - (void)makeCall:(NSString*)callTip custom:(NSString*)custom result:(TILResultBlock)result;
+__weak typeof(self) ws = self;
+[self.call makeCall:nil custom:nil result:^(TILCallError *err) {
+if(err){
+ws.errLabel.text = [NSString stringWithFormat:@"code:%d,msg=%@",err.code,err.errMsg];
+[ws dismissViewControllerAnimated:YES completion:nil];
+}
+else{
+self.errLabel.text = [NSString stringWithFormat:@"等待%@的接听",self.peerId];
+NSString *myId = [[ILiveLoginManager getInstance] getLoginId];
+[ws.call addRenderFor:myId atFrame:self.view.bounds];
+}
+}];
+- (void)addSelfRender:(CGRect)rect;
+- (void)makeCall:(NSString*)callTip custom:(NSString*)custom result:(TILResultBlock)result;
 ```
 
 ##5、 添加渲染子视图
 ```
-    - (void)onCallEstablish
-    {
-        self.errLabel.text = [NSString stringWithFormat:@"通话建立成功"];
-        CGRect frame = CGRectMake(20, 20, 120, 160);
-        [self.call addRenderFor:self.peerId atFrame:self.view.bounds];
-        [self.call removeSelfRender];
-        [self.call addSelfRender:frame];
-    ｝
+- (void)onCallEstablish
+{
+self.errLabel.text = [NSString stringWithFormat:@"通话建立成功"];
+CGRect frame = CGRectMake(20, 20, 120, 160);
+[self.call addRenderFor:self.peerId atFrame:self.view.bounds];
+[self.call removeSelfRender];
+[self.call addSelfRender:frame];
+｝
 ```
 
 ##6、接收通话请求
 
-   
+
 
 ```
- __weak typeof(self) ws = self;
-    [self.call accept:^(TILCallError *err) {
-        if(err){
-            ws.errLabel.text = [NSString stringWithFormat:@"code:%d,msg=%@",err.code,err.errMsg];
-            [ws dismissViewControllerAnimated:YES completion:nil];
-        }
-        else{
-            ws.errLabel.text = [NSString stringWithFormat:@"通话建立成功"];
-            CGRect frame = CGRectMake(20, 20, 120, 160);
-            
-            [ws.call addRenderFor:ws.peerId atFrame:ws.view.bounds];
-            NSString *myId = [[ILiveLoginManager getInstance] getLoginId];
-            [ws.call addRenderFor:myId atFrame:frame];
-            
-            [self setButtonEnable:YES];
-        }
-    }];
-    UIView *baseView = [self.call createRenderViewIn:self.view];
-    [self.view sendSubviewToBack:baseView];
+__weak typeof(self) ws = self;
+[self.call accept:^(TILCallError *err) {
+if(err){
+ws.errLabel.text = [NSString stringWithFormat:@"code:%d,msg=%@",err.code,err.errMsg];
+[ws dismissViewControllerAnimated:YES completion:nil];
+}
+else{
+ws.errLabel.text = [NSString stringWithFormat:@"通话建立成功"];
+CGRect frame = CGRectMake(20, 20, 120, 160);
+
+[ws.call addRenderFor:ws.peerId atFrame:ws.view.bounds];
+NSString *myId = [[ILiveLoginManager getInstance] getLoginId];
+[ws.call addRenderFor:myId atFrame:frame];
+
+[self setButtonEnable:YES];
+}
+}];
+UIView *baseView = [self.call createRenderViewIn:self.view];
+[self.view sendSubviewToBack:baseView];
 ```
-            
+
 ##7、 挂断
 挂断会退出房间
 ```
- [self.call hangup:^(TILCallError *err) {
-        [ws dismissViewControllerAnimated:YES completion:nil];
-    }];
+[self.call hangup:^(TILCallError *err) {
+[ws dismissViewControllerAnimated:YES completion:nil];
+}];
 ```
 ##8、API文档
