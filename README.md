@@ -6,12 +6,12 @@
 | --- | --- | --- |
 | initSdk:accountType | ILiveSDK | ILiveSDK初始化接口，传入appid和accountType |
 | tlsLogin:pwd:succ:fail: | ILiveLoginManager | 托管模式登录接口，传入用户名和密码 |
-| tlsLogout:succ:fail: | ILiveLoginManager	| 托管模式登出接口 |
+| tlsLogout:succ:fail: | ILiveLoginManager | 托管模式登出接口 |
 | iLiveLogin:sig:succ:fail: | ILiveLoginManager | 独立模式登录接口 |
 | iLiveLogout:succ:fail: | ILiveLoginManager | 独立模式登出接口 |
 | createRoom:option:succ:fail: | ILiveRoomManager | 创建直播间(主播端调用) |
 | joinRoom:iotion:succ:fail | ILiveRoomManager | 加入直播间(观众端调用) |
-| quitRoom:succ:fail | ILiveRoomManager|退出直播间 |
+| quitRoom:succ:fail | ILiveRoomManager | 退出直播间 |
 | createGLViewIn: | ILiveRoomManager | 创建渲染根视图 |
 | addRenderAt:forKey: | ILiveGLBaseView	| 创建渲染子视图 |
 
