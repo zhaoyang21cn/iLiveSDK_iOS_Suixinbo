@@ -52,4 +52,4 @@ TILCallSDK(多人通话)集成和使用
 
 错误码
 
-参考这里 https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md
+请参考这里 https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md
