@@ -21,7 +21,7 @@
 ![](http://img.blog.csdn.net/20161104162443849)
 
 2.下载相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程
-导入之后的工程目录应该是如下图所示，如果不是，请重新导入。（文章开头处有下载链接）
+导入之后的工程目录应该是如下图所示，如果不是，请重新导入。（Framework下载看这里[这里](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos)）
 
 ![](http://img.blog.csdn.net/20161104162726288)
 
@@ -69,11 +69,8 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 **参数说明：**
 
 参数 | 说明 
-
---- | --- | 
-
+--- | --- 
 | appid | 腾讯云控制台分配的sdkAppid，见[接入指引](https://www.qcloud.com/doc/product/269/%E5%BA%94%E7%94%A8%E6%8E%A5%E5%85%A5%E6%8C%87%E5%BC%95)
-
 | accountType | 腾讯云控制台分配的accountType
 
 
