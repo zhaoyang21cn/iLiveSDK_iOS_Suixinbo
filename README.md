@@ -35,17 +35,17 @@ addRenderAt:forKey:|ILiveGLBaseView	|创建渲染子视图
 
 ----------
 
-> # ILiveSDK(互动直播基础功能SDK)集成和使用
+# ILiveSDK(互动直播基础功能SDK)集成和使用
 
-> 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
-
-------
-> # TILLiveSDK(直播)集成和使用
-
-> 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md
+请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
 
 ------
+# TILLiveSDK(直播)集成和使用
 
-> # TILCallSDK(多人通话)集成和使用
+请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md
 
-> 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
+------
+
+# TILCallSDK(多人通话)集成和使用
+
+请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
