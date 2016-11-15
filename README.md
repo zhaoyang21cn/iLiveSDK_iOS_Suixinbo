@@ -300,7 +300,7 @@ ILVLIVE_IMCMD_CUSTOM_UP_LIMIT      = 0x900,
 自定义消息的发送和接收与主播邀请观众上麦类似，此处不再赘述。
 
 ------
-# TILCallSDK集成和使用
+# TILCallSDK(多人通话)集成和使用
 -------
 
 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
