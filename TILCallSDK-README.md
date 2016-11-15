@@ -10,27 +10,32 @@
 
 ### 1.1 开始集成
 
-1. 创建Single View Application
+1.创建Single View Application
 ![](http://img.blog.csdn.net/20161104162329407)
 
-2. 命名ILiveSDKDemo
+命名ILiveSDKDemo
 ![](http://img.blog.csdn.net/20161104162412611)
 
-3. 此时工程目录应该是下图这样的，如果不是，请重新创建工程
+此时工程目录应该是下图这样的，如果不是，请重新创建工程
+
 ![](http://img.blog.csdn.net/20161104162443849)
 
-4. 下载相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程
-导入之后的工程目录应该是如下图所示，如果不是，请重新导入.(Frameworks下载看[这里](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos))
+2.下载相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程
+导入之后的工程目录应该是如下图所示，如果不是，请重新导入。（文章开头处有下载链接）
+
 ![](http://img.blog.csdn.net/20161104162726288)
 
-5. 导入系统库
+3.导入系统库
 导入系统库之后的工程目录应该是如下图所示，如果不是，请重新导入
-![](http://img.blog.csdn.net/20161104162855134)s
 
-6. 连接配置
+![](http://img.blog.csdn.net/20161104162855134)
+
+4.连接配置
+
 ![](http://img.blog.csdn.net/20161104162928476)
 
-7. Bitcode配置
+5.Bitcode配置
+
 ![](http://img.blog.csdn.net/20161104162940211)
 
 **注：完成以上步骤，ILiveSDK集成工作已经完成，接下来验证一下是否集成成功，在ViewController中打印ILiveSDK版本号。**
