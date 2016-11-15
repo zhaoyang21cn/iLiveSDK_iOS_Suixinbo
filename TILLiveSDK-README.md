@@ -1,14 +1,14 @@
 
-简介：TILLiveSDK在ILiveSDK能力平台上，致力于提供一套完整的直播解决方案，提供“连麦”，“多画面特效”，打造跨平台一对多，多对多的酷炫直播场景。TILLiveSDK旨在无限可能的降低用户接入成本，从用户角度考虑问题，全方位考虑用户接入体验，并提供接入服务专业定向支持，为用户应用上线保驾护航，本文档目的在于帮助用户快速接入使用TILLiveSDK,达到主播创建直播间，开始上行视频，观众进入直播间拉取下行视频，主播观众互动连麦等功能。
+简介：TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、进入直播、邀请上麦、文本互动等功能，旨在为用户提供一套快速集成音视频能力的直播业务解决方案。顺利集成只需要一天就能打造属于自己的直播APP。
 
 ----------
 
-## 1. 预先集成ILiveSDK
+# 1. 预先集成ILiveSDK
 
 用户在使用TILCallSDK前需要预先集成、初始化和登录ILiveSDK，集成步骤见下文。
 <span id="ILiveSDK"></span>
 
-### 1.1 开始集成
+## 1.1 开始集成
 
 1.创建Single View Application
 ![](http://img.blog.csdn.net/20161104162329407)
@@ -48,22 +48,20 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 如果打印失败，请检查以上5个步骤。
 
 
-------
-# TILLiveSDK集成和使用
-------
+# 2. TILLiveSDK集成和使用
 TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、进入直播、邀请上麦、文本互动等功能，旨在为用户提供一套快速集成音视频能力的直播业务解决方案。顺利集成只需要一天就能打造属于自己的直播APP。
 
 > * 基础功能（直播，观看）
 > * 高级功能（上麦，文本互动）
 
-## 1. 基础功能
+## 2.1 基础功能
 使用TILiveSDK只需要以下三步就可以开始直播啦。
 > * 初始化ILiveSDK
 > * 帐号登录
 > * 创建房间（进入房间）
 
 
-### 1.1 初始化ILiveSDK
+### 2.1.1 初始化ILiveSDK
 在应用启动的时候初始化ILiveSDK。
 ```
 [[ILiveSDK getInstance] initSdk:SDKAppID accountType:AccountType];
@@ -71,10 +69,10 @@ TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、�
 SDKAppID: 在腾讯云申请的APP唯一标识
 AccountType：对应SDKAppID的帐号类型
 ```
-### 1.2 帐号登录
+### 2.1.2 帐号登录
 托管模式：用户帐号系统托管到腾讯云。
 独立模式：用户帐号系统由用户自己的服务器维护。独立模式需要获取sig
-####托管模式
+#### 托管模式
 ```
 [[ILiveLoginManager getInstance] tlsLogin:name pwd:pwd succ:^{
 NSLog(@"登录成功");
@@ -82,7 +80,7 @@ NSLog(@"登录成功");
 NSLog(@"登录失败");
 }];
 ```
-####独立模式
+#### 独立模式
 ```
 [[ILiveLoginManager getInstance] iLiveLogin:name sig:sig succ:^{
 NSLog(@"登录成功");
@@ -90,7 +88,7 @@ NSLog(@"登录成功");
 NSLog(@"登录失败");
 }];
 ```
-### 1.3 创建房间（进入房间）
+### 2.1.3 创建房间（进入房间）
 #### 主播创建房间
 ```
 ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption]; //默认主播配置
@@ -118,13 +116,13 @@ NSLog(@"进入房间失败");
 }];
 ```
 到此，主播可以开始主播，观众可以看到主播画面。
-## 2. 高级功能
+## 2.2 高级功能
 
 > * 观众上麦
 > * 文本互动
 > * 其他个性化功能
 
-### 2.1 观众上麦
+### 2.2.1 观众上麦
 ```
 // 1. 在创建或进入房间前设置事件和消息监听。
 TILLiveManager *manager = [TILLiveManager getInstance];
@@ -189,7 +187,7 @@ break;
 ```
 到此，观众完成上麦，可以和主播以及其他观众视频互动。
 
-### 2.2 文本互动
+### 2.2.2 文本互动
 主播或观众可以发送文本消息进行互动。
 ```
 // 1. 发送文本消息
@@ -211,7 +209,7 @@ NSLog(@"收到消息：%@", msg.text);
 }
 ```
 
-### 2.3 其他个性化功能
+### 2.2.3 其他个性化功能
 大部分个性化功能可以以自定义消息为信令通道来实现。如点赞、送礼物等。但是信令范围必须控制在以下范围。
 ```
 /**
