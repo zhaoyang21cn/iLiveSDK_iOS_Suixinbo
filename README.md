@@ -36,100 +36,21 @@ addRenderAt:forKey:|ILiveGLBaseView	|创建渲染子视图
 ----------
 
 
-#ILiveSDK集成和使用
-## 1、新建工程
-### 1.1创建Single View Application
-![](http://img.blog.csdn.net/20161104162329407)
 
-命名ILiveSDKDemo
-![](http://img.blog.csdn.net/20161104162412611)
-
-此时工程目录应该是下图这样的，如果不是，请重新创建工程
-
-![](http://img.blog.csdn.net/20161104162443849)
-
-## 2、下载相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程
-导入之后的工程目录应该是如下图所示，如果不是，请重新导入。（文章开头处有下载链接）
-
-![](http://img.blog.csdn.net/20161104162726288)
-
-## 3、导入系统库
-导入系统库之后的工程目录应该是如下图所示，如果不是，请重新导入
-
-![](http://img.blog.csdn.net/20161104162855134)
-
-## 4、工程配置
-4.1连接配置
-
-![](http://img.blog.csdn.net/20161104162928476)
-
-### 4.2 Bitcode配置
-
-![](http://img.blog.csdn.net/20161104162940211)
-
-
-
-注：完成以上4个步骤，ILiveSDK集成工作已经完成，接下来验证一下是否集成成功，在ViewController中打印ILiveSDK版本号，
-
-```
-NSString *ver = [[ILiveSDK getInstance] getVersion];
-NSLog(@”ILiveSDK Version is %@”, ver);
-```
-如果打印失败，请检查以上4个步骤。
-
-下面的步骤是简单的使用接口方法，一下操作是建立在集成成功的基础上进行的：
-调用顺序和示例代码：
-## 5、初始化和登录
-
-```
-[[ILiveSDK getInstance] initSdk:[kSdkAppId intValue] accountType:[kSdkAccountType intValue]];
-[[ILiveLoginManager getInstance] tlsLogin:@"userid" pwd:password succ:^{
-NSLog(@"-----> succ");
-} failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
-}];
-```
-
-## 6、创建房间(主播)
-
-```
-__weak LiveViewController *ws = self;
-ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
-[[ILiveRoomManager getInstance] createRoom:47589374 option:option succ:^{
-NSLog(@"-----> create room succ");
-} failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
-}];
-```
-
-## 7、加入房间(观众)
-
-```
-__weak LiveViewController *ws = self;
-ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
-[[ILiveRoomManager getInstance] joinRoom:47589374 option:option succ:^{
-NSLog(@"-----> join room succ");
-} failed:^(NSString *module, int errId, NSString *errMsg) {
-NSLog(@"-----> join room fail,%@ %d %@",module, errId, errMsg);
-}];
-```
-
-## 8、添加渲染视图
-注：添加渲染视图必须在创建房间成功回调之后，addRenderAt:forKey接口，如果是主播端，那直接传主播的登录id，如果是观众端，就传如画面所属成员的id(主播id)，也就是说，这里保证key一定是画面所属成员的id。
-```
-ILiveGLBaseView *baseView = [[ILiveRoomManager getInstance] createGLViewIn:ws.view];
-[baseView addRenderAt:ws.view.bounds forKey:@"userid"];
-```
-以上步骤如果都执行成功，那么在测试机上可以看到视屏画面了。
-## 9、API文档
 ------
-#TILLiveSDK(直播)集成和使用
+ILiveSDK(互动直播基础功能SDK)集成和使用
+------
+
+请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
+
+------
+TILLiveSDK(直播)集成和使用
 ------
 
 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md
 
 ------
-# TILCallSDK(多人通话)集成和使用
+TILCallSDK(多人通话)集成和使用
 -------
 
 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
