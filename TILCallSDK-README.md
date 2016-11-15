@@ -45,7 +45,7 @@ NSString *ver = [[ILiveSDK getInstance] getVersion];
 NSLog(@”ILiveSDK Version is %@”, ver);
 ```
 
-如果打印失败，请检查以上7个步骤。
+如果打印失败，请检查以上5个步骤。
 
 ### 1.2 初始化SDK
 
