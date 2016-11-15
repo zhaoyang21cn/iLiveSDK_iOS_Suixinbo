@@ -143,8 +143,9 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 ```
 
 **参数说明：**
-参数 | 说明 
---- | --- | 
+
+参数 | 说明
+--- | ---  
 | listener | TILCallIncomingCallListener，监听收到的通话请求
 
 通话请求对象TILC2CCallInvitation的定义如下：
