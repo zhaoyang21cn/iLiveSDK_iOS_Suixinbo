@@ -1,4 +1,4 @@
-﻿
+
  因GitHub有文件大小限制，现将ILiveSDK、IMSDK、AVSDK以及相关Framework上传到腾讯云COS上。 更新时，请到对应的地址进行更新，并添加到工程下面对应的目录下.
 
 Frameworks : http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip 下载后解压，然后再放至对应放到工程目录 TILLiveSDKShow/
@@ -35,22 +35,17 @@ addRenderAt:forKey:|ILiveGLBaseView	|创建渲染子视图
 
 ----------
 
+> # ILiveSDK(互动直播基础功能SDK)集成和使用
 
-
-------
-ILiveSDK(互动直播基础功能SDK)集成和使用
-------
-
-请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
+> 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
 
 ------
-TILLiveSDK(直播)集成和使用
+> # TILLiveSDK(直播)集成和使用
+
+> 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md
+
 ------
 
-请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md
+> # TILCallSDK(多人通话)集成和使用
 
-------
-TILCallSDK(多人通话)集成和使用
--------
-
-请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
+> 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
