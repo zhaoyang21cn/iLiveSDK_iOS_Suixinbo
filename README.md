@@ -47,3 +47,9 @@ TILLiveSDK(直播)集成和使用
 TILCallSDK(多人通话)集成和使用
 
 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILCallSDK-README.md
+
+------
+
+错误码
+
+参考这里 https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md
