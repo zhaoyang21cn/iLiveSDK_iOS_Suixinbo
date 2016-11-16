@@ -21,22 +21,22 @@ AVSDK提供自动聚焦功能，用户不需要做任何操作。当用户需要
 
 - (CGPoint)layerPointOfInterestForPoint:(CGPoint)point
 {
-FocusDemoViewController *liveViewController = (FocusDemoViewController *)_liveController;
+    FocusDemoViewController *liveViewController = (FocusDemoViewController *)_liveController;
 
-CGRect rect = [liveViewController.livePreview.imageView relativePositionTo:[UIApplication sharedApplication].keyWindow];
+    CGRect rect = [liveViewController.livePreview.imageView relativePositionTo:[UIApplication sharedApplication].keyWindow];
 
-BOOL isContain = CGRectContainsPoint(rect, point);
+    BOOL isContain = CGRectContainsPoint(rect, point);
 
-if (isContain)
-{
-CGFloat x = (point.x - rect.origin.x)/rect.size.width;
-CGFloat y = (point.y - rect.origin.y)/rect.size.height;
+    if (isContain)
+    {
+        CGFloat x = (point.x - rect.origin.x)/rect.size.width;
+        CGFloat y = (point.y - rect.origin.y)/rect.size.height;
 
-CGPoint layerPoint = CGPointMake(x, y);
+        CGPoint layerPoint = CGPointMake(x, y);
 
-return layerPoint;
-}
-return CGPointMake(0, 0);
+        return layerPoint;
+    }
+    return CGPointMake(0, 0);
 }
 ```
 
@@ -49,19 +49,19 @@ return CGPointMake(0, 0);
 //响应双击事件
 - (void)onDoubleTap:(UITapGestureRecognizer *)tapGesture
 {
-CGPoint point = [tapGesture locationInView:self.view];
+    CGPoint point = [tapGesture locationInView:self.view];
 
-[_focusView.layer removeAllAnimations];
+    [_focusView.layer removeAllAnimations];
 
-__weak FocusDemoUIViewController *ws = self;
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-[ws layoutFoucsView:point];
-});
+    __weak FocusDemoUIViewController *ws = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+          [ws layoutFoucsView:point];
+    });
 
-static BOOL isscale = YES;
-CGFloat rate = isscale ? 1.0 : -2.0;
-[ self zoomPreview:rate];
-isscale = !isscale;
+    static BOOL isscale = YES;
+    CGFloat rate = isscale ? 1.0 : -2.0;
+    [ self zoomPreview:rate];
+    isscale = !isscale;
 }
 ```
 
@@ -69,47 +69,46 @@ isscale = !isscale;
 //缩放
 -(void)zoomPreview:(float)rate
 {
-// 以下是获取AVCaptureSession演示摄像头缩放的。iphone4s暂时不支持。
-if ([FocusDemoUIViewController isIphone4S:self])
-{
-return;
-}
-//to do
-QAVVideoCtrl *videoCtrl = [_roomEngine getVideoCtrl];
-AVCaptureSession *session = [videoCtrl getCaptureSession];
-if (session)
-{
-for( AVCaptureDeviceInput *input in session.inputs)
-{
+    // 以下是获取AVCaptureSession演示摄像头缩放的。iphone4s暂时不支持。
+    if ([FocusDemoUIViewController isIphone4S:self])
+    {
+       return;
+    }
+    //to do
+    QAVVideoCtrl *videoCtrl = [_roomEngine getVideoCtrl];
+    AVCaptureSession *session = [videoCtrl getCaptureSession];
+    if (session)
+    {
+        for( AVCaptureDeviceInput *input in session.inputs)
+        {
+            NSError* error = nil;
+            AVCaptureDevice*device = input.device;
 
-NSError* error = nil;
-AVCaptureDevice*device = input.device;
+            if ( ![device hasMediaType:AVMediaTypeVideo] )
+            continue;
 
-if ( ![device hasMediaType:AVMediaTypeVideo] )
-continue;
+            BOOL ret = [device lockForConfiguration:&error];
+            if (error)
+            {
+                DebugLog(@"ret = %d",ret);
+            }
 
-BOOL ret = [device lockForConfiguration:&error];
-if (error)
-{
-DebugLog(@"ret = %d",ret);
-}
-
-if (device.videoZoomFactor == 1.0)
-{
-CGFloat current = 2.0;
-if (current < device.activeFormat.videoMaxZoomFactor)
-{
-[device rampToVideoZoomFactor:current withRate:10];
-}
-}
-else
-{
-[device rampToVideoZoomFactor:1.0 withRate:10];
-}
-[device unlockForConfiguration];
-break;
-}
-}
+            if (device.videoZoomFactor == 1.0)
+            {
+               CGFloat current = 2.0;
+               if (current < device.activeFormat.videoMaxZoomFactor)
+               {
+                 [device rampToVideoZoomFactor:current withRate:10];
+               }
+            }
+            else
+            {
+                [device rampToVideoZoomFactor:1.0 withRate:10];
+            }
+            [device unlockForConfiguration];
+            break;
+        }
+    }
 }
 ```
 
