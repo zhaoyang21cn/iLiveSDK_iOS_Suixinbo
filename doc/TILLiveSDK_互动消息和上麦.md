@@ -21,52 +21,52 @@ msg.recvId = recvId;                //被邀请者id
 msg.type = ILVLIVE_IMTYPE_C2C;      //C2C消息类型
 
 [manager sendCustomMessage:msg succ:^{
-NSLog(@"邀请成功");
+    NSLog(@"邀请成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"邀请失败"); 
+    NSLog(@"邀请失败"); 
 }];
 ```
 ```
 // 3. 观众接受邀请开始上麦（观众在消息回调中可以收到主播发送自定义消息）
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg
 {
-TILLiveManager *manager = [TILLiveManager getInstance];
-switch (msg.cmd) 
-{
-case ILVLIVE_IMCMD_INVITE:
-{
-//收到邀请调用上麦接口
-[manager upToVideoMember:ILVLIVEAUTH_INTERACT role:@"腾讯云后台配置的角色" succ:^{
-NSLog(@"上麦成功"); 
-} failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"上麦失败"); 
-}];
-}
-break;
-}
+  TILLiveManager *manager = [TILLiveManager getInstance];
+  switch (msg.cmd) 
+  {
+    case ILVLIVE_IMCMD_INVITE:
+    {
+      //收到邀请调用上麦接口
+      [manager upToVideoMember:ILVLIVEAUTH_INTERACT role:@"腾讯云后台配置的角色" succ:^{
+          NSLog(@"上麦成功"); 
+      } failed:^(NSString *moudle, int errId, NSString *errMsg) {
+          NSLog(@"上麦失败"); 
+      }];
+    }
+    break;
+  }
 }
 ```
 ```
 // 4. 主播或观众添加上麦者渲染位置（主播或观众在音视频事件回调中收到摄像头打开事件时，指定上麦观众的渲染位置）
 - (void)onUserUpdateInfo:(ILVLiveAVEvent)event users:(NSArray *)users
 {
-TILLiveManager *manager = [TILLiveManager getInstance];
-switch (event) 
-{
-case ILVLIVE_AVEVENT_CAMERA_ON:
-{
-for (NSString *user in users) 
-{
-//因为主播的渲染位置创建或进入房间的时候已经指定，这里不需要再指定。
-//当然也可根据自己的逻辑再此处指定主播的渲染位置。
-if(![user isEqualToString:self.host])
-{ 
-[manager addAVRenderView:CGRectMake(20, 20, 120, 160) forKey:user];
-}
-}	
-}
-break;
-}
+  TILLiveManager *manager = [TILLiveManager getInstance];
+  switch (event) 
+  {
+    case ILVLIVE_AVEVENT_CAMERA_ON:
+    {
+      for (NSString *user in users) 
+      {
+        //因为主播的渲染位置创建或进入房间的时候已经指定，这里不需要再指定。
+        //当然也可根据自己的逻辑再此处指定主播的渲染位置。
+        if(![user isEqualToString:self.host])
+        { 
+          [manager addAVRenderView:CGRectMake(20, 20, 120, 160) forKey:user];
+        }
+      }	
+    }
+    break;
+  }
 }
 ```
 到此，观众完成上麦，可以和主播以及其他观众视频互动。
@@ -80,9 +80,9 @@ ILVLiveTextMessage *msg = [[ILVLiveTextMessage alloc] init];
 msg.text = text;                    //消息内容
 msg.type = ILVLIVE_IMTYPE_GROUP;    //群消息（也可发C2C消息）
 [manager sendTextMessage:msg succ:^{
-NSLog(@"发送成功");
+  NSLog(@"发送成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"发送失败");
+  NSLog(@"发送失败");
 }];
 ```
 
@@ -90,7 +90,7 @@ NSLog(@"发送失败");
 // 2. 文本消息接收（在文本消息回调中接受文本消息）
 - (void)onTextMessage:(ILVLiveTextMessage *)msg
 {
-NSLog(@"收到消息：%@", msg.text);
+  NSLog(@"收到消息：%@", msg.text);
 }
 ```
 
