@@ -80,9 +80,9 @@ ILVLiveTextMessage *msg = [[ILVLiveTextMessage alloc] init];
 msg.text = text;                    //消息内容
 msg.type = ILVLIVE_IMTYPE_GROUP;    //群消息（也可发C2C消息）
 [manager sendTextMessage:msg succ:^{
-  NSLog(@"发送成功");
+     NSLog(@"发送成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-  NSLog(@"发送失败");
+     NSLog(@"发送失败");
 }];
 ```
 
@@ -90,7 +90,7 @@ msg.type = ILVLIVE_IMTYPE_GROUP;    //群消息（也可发C2C消息）
 // 2. 文本消息接收（在文本消息回调中接受文本消息）
 - (void)onTextMessage:(ILVLiveTextMessage *)msg
 {
-  NSLog(@"收到消息：%@", msg.text);
+    NSLog(@"收到消息：%@", msg.text);
 }
 ```
 
