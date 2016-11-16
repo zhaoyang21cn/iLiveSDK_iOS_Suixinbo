@@ -22,9 +22,9 @@
 
 ```
 [[ILiveLoginManager getInstance] tlsLogin:name pwd:pwd succ:^{
-NSLog(@"登录成功");
+    NSLog(@"登录成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"登录失败");
+    NSLog(@"登录失败");
 }];
 ```
 
@@ -32,9 +32,9 @@ NSLog(@"登录失败");
 
 ```
 [[ILiveLoginManager getInstance] iLiveLogin:name sig:sig succ:^{
-NSLog(@"登录成功");
+    NSLog(@"登录成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"登录失败");
+    NSLog(@"登录失败");
 }];
 ```
 
@@ -49,9 +49,9 @@ TILLiveManager *manager = [TILLiveManager getInstance];
 [manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
 
 [manager createRoom:self.roomId option:option succ:^{
-NSLog(@"创建房间成功");
+    NSLog(@"创建房间成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"创建房间失败");
+    NSLog(@"创建房间失败");
 }];
 ```
 
@@ -64,9 +64,9 @@ TILLiveManager *manager = [TILLiveManager getInstance];
 [manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
 
 [manager joinRoom:self.roomId option:option succ:^{
-NSLog(@"进入房间成功");
+    NSLog(@"进入房间成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"进入房间失败");
+    NSLog(@"进入房间失败");
 }];
 ```
 
