@@ -86,4 +86,4 @@ ILiveGLBaseView *baseView = [[ILiveRoomManager getInstance] createGLViewIn:ws.vi
 [baseView addRenderAt:ws.view.bounds forKey:@"userid"];
 ```
 以上步骤如果都执行成功，那么在测试机上可以看到视屏画面了。
-## 9、API文档
+## 9、[API文档](https://zhaoyang21cn.github.io/ilivesdk_help/ios_help/)
