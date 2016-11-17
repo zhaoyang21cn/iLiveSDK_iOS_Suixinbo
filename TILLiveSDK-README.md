@@ -75,17 +75,17 @@ AccountType：对应SDKAppID的帐号类型
 #### 托管模式
 ```
 [[ILiveLoginManager getInstance] tlsLogin:name pwd:pwd succ:^{
-NSLog(@"登录成功");
+    NSLog(@"登录成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"登录失败");
+    NSLog(@"登录失败");
 }];
 ```
 #### 独立模式
 ```
 [[ILiveLoginManager getInstance] iLiveLogin:name sig:sig succ:^{
-NSLog(@"登录成功");
+    NSLog(@"登录成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"登录失败");
+    NSLog(@"登录失败");
 }];
 ```
 ### 2.1.3 创建房间（进入房间）
@@ -97,9 +97,9 @@ TILLiveManager *manager = [TILLiveManager getInstance];
 [manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
 
 [manager createRoom:self.roomId option:option succ:^{
-NSLog(@"创建房间成功");
+    NSLog(@"创建房间成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"创建房间失败");
+    NSLog(@"创建房间失败");
 }];
 ```
 #### 观众进入房间
@@ -110,9 +110,9 @@ TILLiveManager *manager = [TILLiveManager getInstance];
 [manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
 
 [manager joinRoom:self.roomId option:option succ:^{
-NSLog(@"进入房间成功");
+    NSLog(@"进入房间成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"进入房间失败");
+    NSLog(@"进入房间失败");
 }];
 ```
 到此，主播可以开始主播，观众可以看到主播画面。
@@ -139,50 +139,47 @@ msg.recvId = recvId;                //被邀请者id
 msg.type = ILVLIVE_IMTYPE_C2C;      //C2C消息类型
 
 [manager sendCustomMessage:msg succ:^{
-NSLog(@"邀请成功");
+    NSLog(@"邀请成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"邀请失败"); 
+    NSLog(@"邀请失败"); 
 }];
 ```
 ```
 // 3. 观众接受邀请开始上麦（观众在消息回调中可以收到主播发送自定义消息）
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg{
 TILLiveManager *manager = [TILLiveManager getInstance];
-switch (msg.cmd) {
-case ILVLIVE_IMCMD_INVITE:
+switch (msg.cmd) 
 {
-//收到邀请调用上麦接口
-[manager upToVideoMember:ILVLIVEAUTH_INTERACT role:@"腾讯云后台配置的角色" succ:^{
-NSLog(@"上麦成功"); 
-} failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"上麦失败"); 
-}];
-}
-default:
-break;
-}
+    case ILVLIVE_IMCMD_INVITE:
+    {
+      //收到邀请调用上麦接口
+      [manager upToVideoMember:ILVLIVEAUTH_INTERACT role:@"腾讯云后台配置的角色" succ:^{
+          NSLog(@"上麦成功"); 
+      } failed:^(NSString *moudle, int errId, NSString *errMsg) {
+          NSLog(@"上麦失败"); 
+      }];
+    }
 }
 ```
 ```
 // 4. 主播或观众添加上麦者渲染位置（主播或观众在音视频事件回调中收到摄像头打开事件时，指定上麦观众的渲染位置）
 - (void)onUserUpdateInfo:(ILVLiveAVEvent)event users:(NSArray *)users
 {
-TILLiveManager *manager = [TILLiveManager getInstance];
-switch (event) {
-case ILVLIVE_AVEVENT_CAMERA_ON:
-{
-for (NSString *user in users) {
-//因为主播的渲染位置创建或进入房间的时候已经指定，这里不需要再指定。
-//当然也可根据自己的逻辑再此处指定主播的渲染位置。
-if(![user isEqualToString:self.host]){ 
-[manager addAVRenderView:CGRectMake(20, 20, 120, 160) forKey:user];
-}
-}
-break;
-}
-default:
-break;
-}
+    TILLiveManager *manager = [TILLiveManager getInstance];
+    switch (event) {
+    case ILVLIVE_AVEVENT_CAMERA_ON:
+    {
+        for (NSString *user in users) 
+        {
+          //因为主播的渲染位置创建或进入房间的时候已经指定，这里不需要再指定。
+          //当然也可根据自己的逻辑再此处指定主播的渲染位置。
+          if(![user isEqualToString:self.host])
+          { 
+             [manager addAVRenderView:CGRectMake(20, 20, 120, 160) forKey:user];
+          }
+          break;
+        }
+    }
 }
 ```
 到此，观众完成上麦，可以和主播以及其他观众视频互动。
@@ -196,16 +193,17 @@ ILVLiveTextMessage *msg = [[ILVLiveTextMessage alloc] init];
 msg.text = text;                    //消息内容
 msg.type = ILVLIVE_IMTYPE_GROUP;    //群消息（也可发C2C消息）
 [manager sendTextMessage:msg succ:^{
-NSLog(@"发送成功");
+    NSLog(@"发送成功");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"发送失败");
-}];## 标题 ##
+    NSLog(@"发送失败");
+}];
 ```
 
 ```
 // 2. 文本消息接收（在文本消息回调中接受文本消息）
-- (void)onTextMessage:(ILVLiveTextMessage *)msg{
-NSLog(@"收到消息：%@", msg.text);
+- (void)onTextMessage:(ILVLiveTextMessage *)msg
+{
+    NSLog(@"收到消息：%@", msg.text);
 }
 ```
 
