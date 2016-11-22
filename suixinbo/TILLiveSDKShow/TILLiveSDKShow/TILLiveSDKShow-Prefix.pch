@@ -14,12 +14,14 @@
 
 #import <ImSDK/ImSDK.h>
 #import <QAVSDK/QAVSDK.h>
-#import <QALSDK/QalSDKProxy.h>
 #import <TLSSDK/TLSHelper.h>
+#import <QALSDK/QalSDKProxy.h>
 #import <IMSDKBugly/IMSDKBugly.h>
+
 #import <ILiveSDK/ILiveCoreHeader.h>
 #import <TILLiveSDK/TILLiveSDK.h>
-#import <TILCallSDK/TILCallSDK.h>
+
+
 
 #import "ConstHeader.h"
 

@@ -149,9 +149,7 @@
 
 - (void)onCamera:(UIButton *)button
 {
-    cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
-    cameraPos wiilSwitchPos = pos == CameraPosFront ? CameraPosBack : CameraPosFront;
-    [[ILiveRoomManager getInstance] switchCamera:wiilSwitchPos succ:^{
+    [[ILiveRoomManager getInstance] switchCamera:^{
         NSLog(@"switch camera succ");
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSString *errInfo = [NSString stringWithFormat:@"switch camera fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
