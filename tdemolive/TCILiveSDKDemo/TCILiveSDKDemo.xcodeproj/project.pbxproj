@@ -1,0 +1,805 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CF2425811DCC5A2C00750BF7 /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24257C1DCC5A2C00750BF7 /* IMCore.framework */; };
+		CF2425821DCC5A2C00750BF7 /* ImSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24257D1DCC5A2C00750BF7 /* ImSDK.framework */; };
+		CF2425831DCC5A2C00750BF7 /* IMSDKBugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24257E1DCC5A2C00750BF7 /* IMSDKBugly.framework */; };
+		CF2425841DCC5A2C00750BF7 /* QALSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24257F1DCC5A2C00750BF7 /* QALSDK.framework */; };
+		CF2425851DCC5A2C00750BF7 /* TLSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2425801DCC5A2C00750BF7 /* TLSSDK.framework */; };
+		CF24258F1DCC6FFD00750BF7 /* TILCallSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF24258E1DCC6FFD00750BF7 /* TILCallSDK.framework */; };
+		CF47772F1DCC439600CBAB67 /* QAVSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF47771F1DCC439600CBAB67 /* QAVSDK.framework */; };
+		CF4777301DCC439600CBAB67 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = CF4777201DCC439600CBAB67 /* README.md */; };
+		CF4777311DCC439600CBAB67 /* Shaderf.glsl in Resources */ = {isa = PBXBuildFile; fileRef = CF4777211DCC439600CBAB67 /* Shaderf.glsl */; };
+		CF4777321DCC439600CBAB67 /* Shaderv.glsl in Resources */ = {isa = PBXBuildFile; fileRef = CF4777221DCC439600CBAB67 /* Shaderv.glsl */; };
+		CF4777331DCC439600CBAB67 /* xplatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4777231DCC439600CBAB67 /* xplatform.framework */; };
+		CF47773B1DCC439600CBAB67 /* readme in Resources */ = {isa = PBXBuildFile; fileRef = CF47772D1DCC439600CBAB67 /* readme */; };
+		CF49B9D71DD0966C0088D04A /* LiveLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9D31DD0966C0088D04A /* LiveLoginViewController.m */; };
+		CF49B9D81DD0966C0088D04A /* LiveRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9D51DD0966C0088D04A /* LiveRegisterViewController.m */; };
+		CF49B9DD1DD0973C0088D04A /* CallLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9DA1DD0973C0088D04A /* CallLoginViewController.m */; };
+		CF49B9DE1DD0973C0088D04A /* CallRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF49B9DC1DD0973C0088D04A /* CallRegisterViewController.m */; };
+		CF49B9E01DD0AD620088D04A /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF49B9DF1DD0AD620088D04A /* TILLiveSDK.framework */; };
+		CF49B9E21DD0AE470088D04A /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF49B9E11DD0AE470088D04A /* ILiveSDK.framework */; };
+		CFB121DD1DBF02C300AAE22B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DC1DBF02C300AAE22B /* main.m */; };
+		CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DF1DBF02C300AAE22B /* AppDelegate.m */; };
+		CFB121E61DBF02C300AAE22B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E41DBF02C300AAE22B /* Main.storyboard */; };
+		CFB121E81DBF02C300AAE22B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E71DBF02C300AAE22B /* Assets.xcassets */; };
+		CFB121EB1DBF02C300AAE22B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E91DBF02C300AAE22B /* LaunchScreen.storyboard */; };
+		CFB121F61DBF02C300AAE22B /* TCILiveSDKDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121F51DBF02C300AAE22B /* TCILiveSDKDemoTests.m */; };
+		CFB122011DBF02C300AAE22B /* TCILiveSDKDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB122001DBF02C300AAE22B /* TCILiveSDKDemoUITests.m */; };
+		CFB122311DBF4D8B00AAE22B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122301DBF4D8B00AAE22B /* Accelerate.framework */; };
+		CFB122331DBF4D9200AAE22B /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122321DBF4D9200AAE22B /* libbz2.tbd */; };
+		CFB122351DBF4D9A00AAE22B /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122341DBF4D9A00AAE22B /* libresolv.tbd */; };
+		CFB122371DBF4DA200AAE22B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122361DBF4DA200AAE22B /* libc++.tbd */; };
+		CFB122391DBF4DA900AAE22B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122381DBF4DA900AAE22B /* AVFoundation.framework */; };
+		CFB1223B1DBF4DB000AAE22B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1223A1DBF4DB000AAE22B /* UIKit.framework */; };
+		CFB1223D1DBF4DB700AAE22B /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1223C1DBF4DB700AAE22B /* libstdc++.tbd */; };
+		CFB1223F1DBF4DBF00AAE22B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1223E1DBF4DBF00AAE22B /* libiconv.tbd */; };
+		CFB122411DBF4DC500AAE22B /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122401DBF4DC500AAE22B /* VideoToolbox.framework */; };
+		CFB122431DBF4DD800AAE22B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122421DBF4DD800AAE22B /* SystemConfiguration.framework */; };
+		CFB122451DBF4DDF00AAE22B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122441DBF4DDF00AAE22B /* CoreTelephony.framework */; };
+		CFB122471DBF4DE600AAE22B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122461DBF4DE600AAE22B /* CoreMedia.framework */; };
+		CFB122491DBF4DEF00AAE22B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122481DBF4DEF00AAE22B /* CoreGraphics.framework */; };
+		CFB1224B1DBF4DF600AAE22B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1224A1DBF4DF600AAE22B /* libz.tbd */; };
+		CFB1224D1DBF4DFD00AAE22B /* libstdc++.6.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1224C1DBF4DFD00AAE22B /* libstdc++.6.tbd */; };
+		CFB1224F1DBF4E0400AAE22B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB1224E1DBF4E0400AAE22B /* CoreVideo.framework */; };
+		CFB122511DBF4E0900AAE22B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122501DBF4E0900AAE22B /* Foundation.framework */; };
+		CFB122531DBF4E1200AAE22B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122521DBF4E1200AAE22B /* libsqlite3.tbd */; };
+		CFB122551DBF4E2500AAE22B /* libprotobuf.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB122541DBF4E2500AAE22B /* libprotobuf.tbd */; };
+		CFE421771DCA0697004DE029 /* LiveJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4216E1DCA0697004DE029 /* LiveJoinViewController.m */; };
+		CFE421781DCA0697004DE029 /* LiveLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421701DCA0697004DE029 /* LiveLiveViewController.m */; };
+		CFE4217B1DCA0697004DE029 /* LiveMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421761DCA0697004DE029 /* LiveMainViewController.m */; };
+		CFE421841DCA080D004DE029 /* DemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421831DCA080D004DE029 /* DemoTableViewController.m */; };
+		CFE4218A1DCA10FE004DE029 /* CallMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421891DCA10FE004DE029 /* CallMainViewController.m */; };
+		CFE4218D1DCA1325004DE029 /* CallMakeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4218C1DCA1325004DE029 /* CallMakeViewController.m */; };
+		CFE421901DCA1334004DE029 /* CallRecvViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE4218F1DCA1334004DE029 /* CallRecvViewController.m */; };
+		CFE421A21DCB2A03004DE029 /* CallIncomingListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE421A11DCB2A03004DE029 /* CallIncomingListener.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CFB121F21DBF02C300AAE22B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFB121D01DBF02C300AAE22B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFB121D71DBF02C300AAE22B;
+			remoteInfo = TCILiveSDKDemo;
+		};
+		CFB121FD1DBF02C300AAE22B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CFB121D01DBF02C300AAE22B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFB121D71DBF02C300AAE22B;
+			remoteInfo = TCILiveSDKDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CF24257C1DCC5A2C00750BF7 /* IMCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMCore.framework; sourceTree = "<group>"; };
+		CF24257D1DCC5A2C00750BF7 /* ImSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ImSDK.framework; sourceTree = "<group>"; };
+		CF24257E1DCC5A2C00750BF7 /* IMSDKBugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMSDKBugly.framework; sourceTree = "<group>"; };
+		CF24257F1DCC5A2C00750BF7 /* QALSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QALSDK.framework; sourceTree = "<group>"; };
+		CF2425801DCC5A2C00750BF7 /* TLSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TLSSDK.framework; sourceTree = "<group>"; };
+		CF24258E1DCC6FFD00750BF7 /* TILCallSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILCallSDK.framework; sourceTree = "<group>"; };
+		CF4777161DCC404500CBAB67 /* ILiveSDKDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILiveSDKDemo.pch; sourceTree = "<group>"; };
+		CF47771F1DCC439600CBAB67 /* QAVSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QAVSDK.framework; sourceTree = "<group>"; };
+		CF4777201DCC439600CBAB67 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CF4777211DCC439600CBAB67 /* Shaderf.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderf.glsl; sourceTree = "<group>"; };
+		CF4777221DCC439600CBAB67 /* Shaderv.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderv.glsl; sourceTree = "<group>"; };
+		CF4777231DCC439600CBAB67 /* xplatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = xplatform.framework; sourceTree = "<group>"; };
+		CF47772D1DCC439600CBAB67 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
+		CF49B9D21DD0966C0088D04A /* LiveLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveLoginViewController.h; sourceTree = "<group>"; };
+		CF49B9D31DD0966C0088D04A /* LiveLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveLoginViewController.m; sourceTree = "<group>"; };
+		CF49B9D41DD0966C0088D04A /* LiveRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRegisterViewController.h; sourceTree = "<group>"; };
+		CF49B9D51DD0966C0088D04A /* LiveRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveRegisterViewController.m; sourceTree = "<group>"; };
+		CF49B9D91DD0973C0088D04A /* CallLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallLoginViewController.h; sourceTree = "<group>"; };
+		CF49B9DA1DD0973C0088D04A /* CallLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallLoginViewController.m; sourceTree = "<group>"; };
+		CF49B9DB1DD0973C0088D04A /* CallRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRegisterViewController.h; sourceTree = "<group>"; };
+		CF49B9DC1DD0973C0088D04A /* CallRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRegisterViewController.m; sourceTree = "<group>"; };
+		CF49B9DF1DD0AD620088D04A /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
+		CF49B9E11DD0AE470088D04A /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
+		CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCILiveSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFB121DC1DBF02C300AAE22B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CFB121DE1DBF02C300AAE22B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CFB121DF1DBF02C300AAE22B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CFB121E51DBF02C300AAE22B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CFB121E71DBF02C300AAE22B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CFB121EA1DBF02C300AAE22B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CFB121EC1DBF02C300AAE22B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFB121F11DBF02C300AAE22B /* TCILiveSDKDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCILiveSDKDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFB121F51DBF02C300AAE22B /* TCILiveSDKDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCILiveSDKDemoTests.m; sourceTree = "<group>"; };
+		CFB121F71DBF02C300AAE22B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFB121FC1DBF02C300AAE22B /* TCILiveSDKDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCILiveSDKDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFB122001DBF02C300AAE22B /* TCILiveSDKDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TCILiveSDKDemoUITests.m; sourceTree = "<group>"; };
+		CFB122021DBF02C300AAE22B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFB122301DBF4D8B00AAE22B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CFB122321DBF4D9200AAE22B /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		CFB122341DBF4D9A00AAE22B /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		CFB122361DBF4DA200AAE22B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		CFB122381DBF4DA900AAE22B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		CFB1223A1DBF4DB000AAE22B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CFB1223C1DBF4DB700AAE22B /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		CFB1223E1DBF4DBF00AAE22B /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		CFB122401DBF4DC500AAE22B /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		CFB122421DBF4DD800AAE22B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		CFB122441DBF4DDF00AAE22B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		CFB122461DBF4DE600AAE22B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		CFB122481DBF4DEF00AAE22B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CFB1224A1DBF4DF600AAE22B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		CFB1224C1DBF4DFD00AAE22B /* libstdc++.6.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.tbd"; path = "usr/lib/libstdc++.6.tbd"; sourceTree = SDKROOT; };
+		CFB1224E1DBF4E0400AAE22B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		CFB122501DBF4E0900AAE22B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CFB122521DBF4E1200AAE22B /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		CFB122541DBF4E2500AAE22B /* libprotobuf.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libprotobuf.tbd; path = usr/lib/libprotobuf.tbd; sourceTree = SDKROOT; };
+		CFE4216D1DCA0697004DE029 /* LiveJoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveJoinViewController.h; sourceTree = "<group>"; };
+		CFE4216E1DCA0697004DE029 /* LiveJoinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveJoinViewController.m; sourceTree = "<group>"; };
+		CFE4216F1DCA0697004DE029 /* LiveLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveLiveViewController.h; sourceTree = "<group>"; };
+		CFE421701DCA0697004DE029 /* LiveLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveLiveViewController.m; sourceTree = "<group>"; };
+		CFE421751DCA0697004DE029 /* LiveMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveMainViewController.h; sourceTree = "<group>"; };
+		CFE421761DCA0697004DE029 /* LiveMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveMainViewController.m; sourceTree = "<group>"; };
+		CFE421821DCA080D004DE029 /* DemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTableViewController.h; sourceTree = "<group>"; };
+		CFE421831DCA080D004DE029 /* DemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTableViewController.m; sourceTree = "<group>"; };
+		CFE421881DCA10FE004DE029 /* CallMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMainViewController.h; sourceTree = "<group>"; };
+		CFE421891DCA10FE004DE029 /* CallMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMainViewController.m; sourceTree = "<group>"; };
+		CFE4218B1DCA1325004DE029 /* CallMakeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallMakeViewController.h; sourceTree = "<group>"; };
+		CFE4218C1DCA1325004DE029 /* CallMakeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallMakeViewController.m; sourceTree = "<group>"; };
+		CFE4218E1DCA1334004DE029 /* CallRecvViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallRecvViewController.h; sourceTree = "<group>"; };
+		CFE4218F1DCA1334004DE029 /* CallRecvViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallRecvViewController.m; sourceTree = "<group>"; };
+		CFE421A01DCB2A03004DE029 /* CallIncomingListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallIncomingListener.h; sourceTree = "<group>"; };
+		CFE421A11DCB2A03004DE029 /* CallIncomingListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallIncomingListener.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CFB121D51DBF02C300AAE22B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFB122551DBF4E2500AAE22B /* libprotobuf.tbd in Frameworks */,
+				CF49B9E21DD0AE470088D04A /* ILiveSDK.framework in Frameworks */,
+				CFB122531DBF4E1200AAE22B /* libsqlite3.tbd in Frameworks */,
+				CFB122511DBF4E0900AAE22B /* Foundation.framework in Frameworks */,
+				CF2425851DCC5A2C00750BF7 /* TLSSDK.framework in Frameworks */,
+				CF2425831DCC5A2C00750BF7 /* IMSDKBugly.framework in Frameworks */,
+				CFB1224F1DBF4E0400AAE22B /* CoreVideo.framework in Frameworks */,
+				CFB1224D1DBF4DFD00AAE22B /* libstdc++.6.tbd in Frameworks */,
+				CFB1224B1DBF4DF600AAE22B /* libz.tbd in Frameworks */,
+				CF2425841DCC5A2C00750BF7 /* QALSDK.framework in Frameworks */,
+				CF47772F1DCC439600CBAB67 /* QAVSDK.framework in Frameworks */,
+				CF24258F1DCC6FFD00750BF7 /* TILCallSDK.framework in Frameworks */,
+				CFB122491DBF4DEF00AAE22B /* CoreGraphics.framework in Frameworks */,
+				CF49B9E01DD0AD620088D04A /* TILLiveSDK.framework in Frameworks */,
+				CFB122471DBF4DE600AAE22B /* CoreMedia.framework in Frameworks */,
+				CFB122451DBF4DDF00AAE22B /* CoreTelephony.framework in Frameworks */,
+				CFB122431DBF4DD800AAE22B /* SystemConfiguration.framework in Frameworks */,
+				CFB122411DBF4DC500AAE22B /* VideoToolbox.framework in Frameworks */,
+				CFB1223F1DBF4DBF00AAE22B /* libiconv.tbd in Frameworks */,
+				CFB1223D1DBF4DB700AAE22B /* libstdc++.tbd in Frameworks */,
+				CF2425821DCC5A2C00750BF7 /* ImSDK.framework in Frameworks */,
+				CFB1223B1DBF4DB000AAE22B /* UIKit.framework in Frameworks */,
+				CFB122391DBF4DA900AAE22B /* AVFoundation.framework in Frameworks */,
+				CFB122371DBF4DA200AAE22B /* libc++.tbd in Frameworks */,
+				CFB122351DBF4D9A00AAE22B /* libresolv.tbd in Frameworks */,
+				CFB122331DBF4D9200AAE22B /* libbz2.tbd in Frameworks */,
+				CF2425811DCC5A2C00750BF7 /* IMCore.framework in Frameworks */,
+				CF4777331DCC439600CBAB67 /* xplatform.framework in Frameworks */,
+				CFB122311DBF4D8B00AAE22B /* Accelerate.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFB121EE1DBF02C300AAE22B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFB121F91DBF02C300AAE22B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CF47771E1DCC439600CBAB67 /* AVSDK */ = {
+			isa = PBXGroup;
+			children = (
+				CF47771F1DCC439600CBAB67 /* QAVSDK.framework */,
+				CF4777201DCC439600CBAB67 /* README.md */,
+				CF4777211DCC439600CBAB67 /* Shaderf.glsl */,
+				CF4777221DCC439600CBAB67 /* Shaderv.glsl */,
+				CF4777231DCC439600CBAB67 /* xplatform.framework */,
+			);
+			path = AVSDK;
+			sourceTree = "<group>";
+		};
+		CF4777241DCC439600CBAB67 /* ILiveSDK */ = {
+			isa = PBXGroup;
+			children = (
+				CF49B9E11DD0AE470088D04A /* ILiveSDK.framework */,
+				CF49B9DF1DD0AD620088D04A /* TILLiveSDK.framework */,
+				CF24258E1DCC6FFD00750BF7 /* TILCallSDK.framework */,
+			);
+			path = ILiveSDK;
+			sourceTree = "<group>";
+		};
+		CF4777281DCC439600CBAB67 /* IMSDK */ = {
+			isa = PBXGroup;
+			children = (
+				CF24257C1DCC5A2C00750BF7 /* IMCore.framework */,
+				CF24257D1DCC5A2C00750BF7 /* ImSDK.framework */,
+				CF24257E1DCC5A2C00750BF7 /* IMSDKBugly.framework */,
+				CF24257F1DCC5A2C00750BF7 /* QALSDK.framework */,
+				CF2425801DCC5A2C00750BF7 /* TLSSDK.framework */,
+				CF47772D1DCC439600CBAB67 /* readme */,
+			);
+			path = IMSDK;
+			sourceTree = "<group>";
+		};
+		CFB121CF1DBF02C300AAE22B = {
+			isa = PBXGroup;
+			children = (
+				CFB1221B1DBF4BE500AAE22B /* Frameworks */,
+				CFB121DA1DBF02C300AAE22B /* TCILiveSDKDemo */,
+				CFB121F41DBF02C300AAE22B /* TCILiveSDKDemoTests */,
+				CFB121FF1DBF02C300AAE22B /* TCILiveSDKDemoUITests */,
+				CFB121D91DBF02C300AAE22B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CFB121D91DBF02C300AAE22B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */,
+				CFB121F11DBF02C300AAE22B /* TCILiveSDKDemoTests.xctest */,
+				CFB121FC1DBF02C300AAE22B /* TCILiveSDKDemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CFB121DA1DBF02C300AAE22B /* TCILiveSDKDemo */ = {
+			isa = PBXGroup;
+			children = (
+				CFE4216B1DCA0697004DE029 /* TILCallDemo */,
+				CFE4216C1DCA0697004DE029 /* TILLiveDemo */,
+				CFE421821DCA080D004DE029 /* DemoTableViewController.h */,
+				CFE421831DCA080D004DE029 /* DemoTableViewController.m */,
+				CFB121DE1DBF02C300AAE22B /* AppDelegate.h */,
+				CFB121DF1DBF02C300AAE22B /* AppDelegate.m */,
+				CFB121E41DBF02C300AAE22B /* Main.storyboard */,
+				CFB121E71DBF02C300AAE22B /* Assets.xcassets */,
+				CFB121E91DBF02C300AAE22B /* LaunchScreen.storyboard */,
+				CFB121EC1DBF02C300AAE22B /* Info.plist */,
+				CFB121DB1DBF02C300AAE22B /* Supporting Files */,
+				CF4777161DCC404500CBAB67 /* ILiveSDKDemo.pch */,
+			);
+			path = TCILiveSDKDemo;
+			sourceTree = "<group>";
+		};
+		CFB121DB1DBF02C300AAE22B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CFB121DC1DBF02C300AAE22B /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CFB121F41DBF02C300AAE22B /* TCILiveSDKDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				CFB121F51DBF02C300AAE22B /* TCILiveSDKDemoTests.m */,
+				CFB121F71DBF02C300AAE22B /* Info.plist */,
+			);
+			path = TCILiveSDKDemoTests;
+			sourceTree = "<group>";
+		};
+		CFB121FF1DBF02C300AAE22B /* TCILiveSDKDemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CFB122001DBF02C300AAE22B /* TCILiveSDKDemoUITests.m */,
+				CFB122021DBF02C300AAE22B /* Info.plist */,
+			);
+			path = TCILiveSDKDemoUITests;
+			sourceTree = "<group>";
+		};
+		CFB1221B1DBF4BE500AAE22B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CF47771E1DCC439600CBAB67 /* AVSDK */,
+				CF4777241DCC439600CBAB67 /* ILiveSDK */,
+				CF4777281DCC439600CBAB67 /* IMSDK */,
+				CFB122541DBF4E2500AAE22B /* libprotobuf.tbd */,
+				CFB122521DBF4E1200AAE22B /* libsqlite3.tbd */,
+				CFB122501DBF4E0900AAE22B /* Foundation.framework */,
+				CFB1224E1DBF4E0400AAE22B /* CoreVideo.framework */,
+				CFB1224C1DBF4DFD00AAE22B /* libstdc++.6.tbd */,
+				CFB1224A1DBF4DF600AAE22B /* libz.tbd */,
+				CFB122481DBF4DEF00AAE22B /* CoreGraphics.framework */,
+				CFB122461DBF4DE600AAE22B /* CoreMedia.framework */,
+				CFB122441DBF4DDF00AAE22B /* CoreTelephony.framework */,
+				CFB122421DBF4DD800AAE22B /* SystemConfiguration.framework */,
+				CFB122401DBF4DC500AAE22B /* VideoToolbox.framework */,
+				CFB1223E1DBF4DBF00AAE22B /* libiconv.tbd */,
+				CFB1223C1DBF4DB700AAE22B /* libstdc++.tbd */,
+				CFB1223A1DBF4DB000AAE22B /* UIKit.framework */,
+				CFB122381DBF4DA900AAE22B /* AVFoundation.framework */,
+				CFB122361DBF4DA200AAE22B /* libc++.tbd */,
+				CFB122341DBF4D9A00AAE22B /* libresolv.tbd */,
+				CFB122321DBF4D9200AAE22B /* libbz2.tbd */,
+				CFB122301DBF4D8B00AAE22B /* Accelerate.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		CFE4216B1DCA0697004DE029 /* TILCallDemo */ = {
+			isa = PBXGroup;
+			children = (
+				CF49B9D91DD0973C0088D04A /* CallLoginViewController.h */,
+				CF49B9DA1DD0973C0088D04A /* CallLoginViewController.m */,
+				CF49B9DB1DD0973C0088D04A /* CallRegisterViewController.h */,
+				CF49B9DC1DD0973C0088D04A /* CallRegisterViewController.m */,
+				CFE421881DCA10FE004DE029 /* CallMainViewController.h */,
+				CFE421891DCA10FE004DE029 /* CallMainViewController.m */,
+				CFE4218B1DCA1325004DE029 /* CallMakeViewController.h */,
+				CFE4218C1DCA1325004DE029 /* CallMakeViewController.m */,
+				CFE4218E1DCA1334004DE029 /* CallRecvViewController.h */,
+				CFE4218F1DCA1334004DE029 /* CallRecvViewController.m */,
+				CFE421A01DCB2A03004DE029 /* CallIncomingListener.h */,
+				CFE421A11DCB2A03004DE029 /* CallIncomingListener.m */,
+			);
+			path = TILCallDemo;
+			sourceTree = "<group>";
+		};
+		CFE4216C1DCA0697004DE029 /* TILLiveDemo */ = {
+			isa = PBXGroup;
+			children = (
+				CF49B9D21DD0966C0088D04A /* LiveLoginViewController.h */,
+				CF49B9D31DD0966C0088D04A /* LiveLoginViewController.m */,
+				CF49B9D41DD0966C0088D04A /* LiveRegisterViewController.h */,
+				CF49B9D51DD0966C0088D04A /* LiveRegisterViewController.m */,
+				CFE4216D1DCA0697004DE029 /* LiveJoinViewController.h */,
+				CFE4216E1DCA0697004DE029 /* LiveJoinViewController.m */,
+				CFE4216F1DCA0697004DE029 /* LiveLiveViewController.h */,
+				CFE421701DCA0697004DE029 /* LiveLiveViewController.m */,
+				CFE421751DCA0697004DE029 /* LiveMainViewController.h */,
+				CFE421761DCA0697004DE029 /* LiveMainViewController.m */,
+			);
+			path = TILLiveDemo;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CFB121D71DBF02C300AAE22B /* TCILiveSDKDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFB122051DBF02C300AAE22B /* Build configuration list for PBXNativeTarget "TCILiveSDKDemo" */;
+			buildPhases = (
+				CFB121D41DBF02C300AAE22B /* Sources */,
+				CFB121D51DBF02C300AAE22B /* Frameworks */,
+				CFB121D61DBF02C300AAE22B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TCILiveSDKDemo;
+			productName = TCILiveSDKDemo;
+			productReference = CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CFB121F01DBF02C300AAE22B /* TCILiveSDKDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFB122081DBF02C300AAE22B /* Build configuration list for PBXNativeTarget "TCILiveSDKDemoTests" */;
+			buildPhases = (
+				CFB121ED1DBF02C300AAE22B /* Sources */,
+				CFB121EE1DBF02C300AAE22B /* Frameworks */,
+				CFB121EF1DBF02C300AAE22B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CFB121F31DBF02C300AAE22B /* PBXTargetDependency */,
+			);
+			name = TCILiveSDKDemoTests;
+			productName = TCILiveSDKDemoTests;
+			productReference = CFB121F11DBF02C300AAE22B /* TCILiveSDKDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CFB121FB1DBF02C300AAE22B /* TCILiveSDKDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CFB1220B1DBF02C300AAE22B /* Build configuration list for PBXNativeTarget "TCILiveSDKDemoUITests" */;
+			buildPhases = (
+				CFB121F81DBF02C300AAE22B /* Sources */,
+				CFB121F91DBF02C300AAE22B /* Frameworks */,
+				CFB121FA1DBF02C300AAE22B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CFB121FE1DBF02C300AAE22B /* PBXTargetDependency */,
+			);
+			name = TCILiveSDKDemoUITests;
+			productName = TCILiveSDKDemoUITests;
+			productReference = CFB121FC1DBF02C300AAE22B /* TCILiveSDKDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CFB121D01DBF02C300AAE22B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = kennethmiao;
+				TargetAttributes = {
+					CFB121D71DBF02C300AAE22B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = DBB3G9KNQ2;
+					};
+					CFB121F01DBF02C300AAE22B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = DBB3G9KNQ2;
+						TestTargetID = CFB121D71DBF02C300AAE22B;
+					};
+					CFB121FB1DBF02C300AAE22B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = DBB3G9KNQ2;
+						TestTargetID = CFB121D71DBF02C300AAE22B;
+					};
+				};
+			};
+			buildConfigurationList = CFB121D31DBF02C300AAE22B /* Build configuration list for PBXProject "TCILiveSDKDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CFB121CF1DBF02C300AAE22B;
+			productRefGroup = CFB121D91DBF02C300AAE22B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CFB121D71DBF02C300AAE22B /* TCILiveSDKDemo */,
+				CFB121F01DBF02C300AAE22B /* TCILiveSDKDemoTests */,
+				CFB121FB1DBF02C300AAE22B /* TCILiveSDKDemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CFB121D61DBF02C300AAE22B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF47773B1DCC439600CBAB67 /* readme in Resources */,
+				CFB121EB1DBF02C300AAE22B /* LaunchScreen.storyboard in Resources */,
+				CF4777311DCC439600CBAB67 /* Shaderf.glsl in Resources */,
+				CFB121E81DBF02C300AAE22B /* Assets.xcassets in Resources */,
+				CF4777321DCC439600CBAB67 /* Shaderv.glsl in Resources */,
+				CFB121E61DBF02C300AAE22B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFB121EF1DBF02C300AAE22B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFB121FA1DBF02C300AAE22B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CFB121D41DBF02C300AAE22B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFE421841DCA080D004DE029 /* DemoTableViewController.m in Sources */,
+				CF49B9DE1DD0973C0088D04A /* CallRegisterViewController.m in Sources */,
+				CFE421781DCA0697004DE029 /* LiveLiveViewController.m in Sources */,
+				CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */,
+				CFE421771DCA0697004DE029 /* LiveJoinViewController.m in Sources */,
+				CF4777301DCC439600CBAB67 /* README.md in Sources */,
+				CFE4218D1DCA1325004DE029 /* CallMakeViewController.m in Sources */,
+				CF49B9D81DD0966C0088D04A /* LiveRegisterViewController.m in Sources */,
+				CFE421901DCA1334004DE029 /* CallRecvViewController.m in Sources */,
+				CF49B9DD1DD0973C0088D04A /* CallLoginViewController.m in Sources */,
+				CFE421A21DCB2A03004DE029 /* CallIncomingListener.m in Sources */,
+				CFB121DD1DBF02C300AAE22B /* main.m in Sources */,
+				CFE4217B1DCA0697004DE029 /* LiveMainViewController.m in Sources */,
+				CFE4218A1DCA10FE004DE029 /* CallMainViewController.m in Sources */,
+				CF49B9D71DD0966C0088D04A /* LiveLoginViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFB121ED1DBF02C300AAE22B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFB121F61DBF02C300AAE22B /* TCILiveSDKDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFB121F81DBF02C300AAE22B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFB122011DBF02C300AAE22B /* TCILiveSDKDemoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CFB121F31DBF02C300AAE22B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFB121D71DBF02C300AAE22B /* TCILiveSDKDemo */;
+			targetProxy = CFB121F21DBF02C300AAE22B /* PBXContainerItemProxy */;
+		};
+		CFB121FE1DBF02C300AAE22B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFB121D71DBF02C300AAE22B /* TCILiveSDKDemo */;
+			targetProxy = CFB121FD1DBF02C300AAE22B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CFB121E41DBF02C300AAE22B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CFB121E51DBF02C300AAE22B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CFB121E91DBF02C300AAE22B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CFB121EA1DBF02C300AAE22B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CFB122031DBF02C300AAE22B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CFB122041DBF02C300AAE22B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CFB122061DBF02C300AAE22B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 43YJ58H38Q;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/ILiveSDK",
+					"$(PROJECT_DIR)/Frameworks/AVSDK",
+					"$(PROJECT_DIR)/Frameworks/IMSDK",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/TCILiveSDKDemo/ILiveSDKDemo.pch";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TCILiveSDKDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCILiveSDKDemo666;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		CFB122071DBF02C300AAE22B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 43YJ58H38Q;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks/ILiveSDK",
+					"$(PROJECT_DIR)/Frameworks/AVSDK",
+					"$(PROJECT_DIR)/Frameworks/IMSDK",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/TCILiveSDKDemo/ILiveSDKDemo.pch";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TCILiveSDKDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCILiveSDKDemo666;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		CFB122091DBF02C300AAE22B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = TCILiveSDKDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCILiveSDKDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TCILiveSDKDemo.app/TCILiveSDKDemo";
+			};
+			name = Debug;
+		};
+		CFB1220A1DBF02C300AAE22B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = TCILiveSDKDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCILiveSDKDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TCILiveSDKDemo.app/TCILiveSDKDemo";
+			};
+			name = Release;
+		};
+		CFB1220C1DBF02C300AAE22B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = TCILiveSDKDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCILiveSDKDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = TCILiveSDKDemo;
+			};
+			name = Debug;
+		};
+		CFB1220D1DBF02C300AAE22B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = TCILiveSDKDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCILiveSDKDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = TCILiveSDKDemo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CFB121D31DBF02C300AAE22B /* Build configuration list for PBXProject "TCILiveSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFB122031DBF02C300AAE22B /* Debug */,
+				CFB122041DBF02C300AAE22B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFB122051DBF02C300AAE22B /* Build configuration list for PBXNativeTarget "TCILiveSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFB122061DBF02C300AAE22B /* Debug */,
+				CFB122071DBF02C300AAE22B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFB122081DBF02C300AAE22B /* Build configuration list for PBXNativeTarget "TCILiveSDKDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFB122091DBF02C300AAE22B /* Debug */,
+				CFB1220A1DBF02C300AAE22B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CFB1220B1DBF02C300AAE22B /* Build configuration list for PBXNativeTarget "TCILiveSDKDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFB1220C1DBF02C300AAE22B /* Debug */,
+				CFB1220D1DBF02C300AAE22B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CFB121D01DBF02C300AAE22B /* Project object */;
+}
