@@ -5,48 +5,7 @@
 
 # 1. 预先集成ILiveSDK
 
-用户在使用TILCallSDK前需要预先集成、初始化和登录ILiveSDK，集成步骤见下文。
-<span id="ILiveSDK"></span>
-
-## 1.1 开始集成
-
-1.创建Single View Application
-![](http://img.blog.csdn.net/20161104162329407)
-
-命名ILiveSDKDemo
-![](http://img.blog.csdn.net/20161104162412611)
-
-此时工程目录应该是下图这样的，如果不是，请重新创建工程
-
-![](http://img.blog.csdn.net/20161104162443849)
-
-2.下载相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程
-导入之后的工程目录应该是如下图所示，如果不是，请重新导入。（Framework下载看这里[这里](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos)）
-
-![](http://img.blog.csdn.net/20161104162726288)
-
-3.导入系统库
-导入系统库之后的工程目录应该是如下图所示，如果不是，请重新导入
-
-![](http://img.blog.csdn.net/20161104162855134)
-
-4.连接配置
-
-![](http://img.blog.csdn.net/20161104162928476)
-
-5.Bitcode配置
-
-![](http://img.blog.csdn.net/20161104162940211)
-
-**注：完成以上步骤，ILiveSDK集成工作已经完成，接下来验证一下是否集成成功，在ViewController中打印ILiveSDK版本号。**
-
-```
-NSString *ver = [[ILiveSDK getInstance] getVersion];
-NSLog(@”ILiveSDK Version is %@”, ver);
-```
-
-如果打印失败，请检查以上5个步骤。
-
+用户在使用TILLiveSDK前需要预先集成、初始化和登录ILiveSDK，[集成ILiveSDK步骤](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md)。
 
 # 2. TILLiveSDK集成和使用
 TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、进入直播、邀请上麦、文本互动等功能，旨在为用户提供一套快速集成音视频能力的直播业务解决方案。顺利集成只需要一天就能打造属于自己的直播APP。
