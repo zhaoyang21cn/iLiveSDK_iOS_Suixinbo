@@ -1,6 +1,8 @@
 
 简介：TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、进入直播、邀请上麦、文本互动等功能，旨在为用户提供一套快速集成音视频能力的直播业务解决方案。顺利集成只需要一天就能打造属于自己的直播APP。
 
+TILLiveSDK下载地址:http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK_1.0.0.zip
+
 ----------
 
 # 1. 预先集成ILiveSDK
