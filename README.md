@@ -1,7 +1,8 @@
 
- 因GitHub有文件大小限制，现将ILiveSDK、IMSDK、AVSDK以及相关Framework上传到腾讯云COS上。 更新时，请到对应的地址进行更新，并添加到工程下面对应的目录下.
+ 因GitHub有文件大小限制，现将IMSDK、AVSDK以及相关Framework上传到腾讯云COS上。 更新时，请到对应的地址进行更新，并添加到工程下面对应的目录下.
 
-Frameworks : http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks.zip 下载后解压，然后再放至对应放到工程目录 TILLiveSDKShow/
+IMSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK.zip
+AVSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip
 
 主要功能接口列表：
 
