@@ -27,8 +27,8 @@
     NSDictionary *liveDic = [NSDictionary dictionaryWithObjectsAndKeys:@"简单直播",kDemoName,@"toLive",kDemoSegue,nil];
     [self.demoArray addObject:liveDic];
     //双人视频
-    NSDictionary *callDic = [NSDictionary dictionaryWithObjectsAndKeys:@"双人视频",kDemoName,@"toCall",kDemoSegue,nil];
-    [self.demoArray addObject:callDic];
+//    NSDictionary *callDic = [NSDictionary dictionaryWithObjectsAndKeys:@"双人视频",kDemoName,@"toCall",kDemoSegue,nil];
+//    [self.demoArray addObject:callDic];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
