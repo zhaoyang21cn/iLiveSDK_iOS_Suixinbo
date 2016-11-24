@@ -4,6 +4,7 @@
 IMSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK.zip
 AVSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip
 
+------
 ILiveSDK(互动直播基础功能SDK)集成和使用
 
 请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
