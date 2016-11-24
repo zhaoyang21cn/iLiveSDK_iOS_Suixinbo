@@ -3,6 +3,8 @@
 
 TILLiveSDK下载地址:http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK_1.0.0.zip
 
+![](http://mc.qcloudimg.com/static/img/ad9de8957129351ffe24b54c44520490/image.png)
+
 ----------
 
 # 1. 预先集成ILiveSDK
