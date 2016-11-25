@@ -84,5 +84,9 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
 #define kUserUpVideo_Notification       @"kUserUpVideo_Notification"
 #define kUserDownVideo_Notification     @"kUserDownVideo_Notification"
 
+/******************** role string **********************/
+#define kSxbRole_Host       @"LiveMaster"
+#define kSxbRole_Guest      @"Guest"
+#define kSxbRole_Interact   @"LiveGuest"
 
 #endif /* ConstHeader_h */

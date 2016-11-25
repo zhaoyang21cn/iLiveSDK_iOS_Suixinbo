@@ -135,6 +135,7 @@
     TCShowLiveListItem *item = _datas[indexPath.row];
     
     ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+    option.controlRole = kSxbRole_Guest;
     
     __weak typeof(self) ws = self;
     [[TILLiveManager getInstance] joinRoom:item.avRoomId option:option succ:^{

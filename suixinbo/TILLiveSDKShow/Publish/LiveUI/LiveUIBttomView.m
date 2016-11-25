@@ -134,7 +134,7 @@
 - (void)onDownVideo:(UIButton *)button
 {
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:@"user" succ:^{
+    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
         NSLog(@"down video succ");
         ws.isUpVideo = NO;
         [ws layoutSubviews];

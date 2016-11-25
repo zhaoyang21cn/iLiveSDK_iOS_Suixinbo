@@ -87,7 +87,7 @@
 //上麦
 - (void)upToVideo:(id)sender
 {
-    [[TILLiveManager getInstance] upToVideoMember:ILVLIVEAUTH_INTERACT role:@"user" succ:^{
+    [[TILLiveManager getInstance] upToVideoMember:ILVLIVEAUTH_INTERACT role:kSxbRole_Interact succ:^{
         NSLog(@"up video succ");
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
@@ -99,7 +99,7 @@
 //下麦
 - (void)downToVideo:(id)sender
 {
-    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:@"user" succ:^{
+    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
         NSLog(@"down video succ");
         [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
     } failed:^(NSString *moudle, int errId, NSString *errMsg) {

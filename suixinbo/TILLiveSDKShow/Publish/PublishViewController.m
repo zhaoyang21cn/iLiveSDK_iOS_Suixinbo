@@ -87,6 +87,7 @@
     __weak PublishViewController *ws = self;
     
     ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
+    option.controlRole = kSxbRole_Host;
     
     LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
     [self.view addSubview:createRoomWaitView];
