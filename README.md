@@ -1,9 +1,13 @@
 # ILiveSDK集成和使用文档
  因GitHub有文件大小限制，现将IMSDK、AVSDK以及相关Framework上传到腾讯云COS上。 更新时，请到对应的地址进行更新，并添加到工程下面对应的目录下.
 
-ILiveSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.0.0.zip
-IMSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK.zip
-AVSDK:http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip
+1、ILiveSDK下载地址:http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.0.0.zip
+
+2、TILLiveSDK下载地址:http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK_1.0.0.zip
+
+3、IMSDK下载地址:http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK.zip
+
+4、AVSDK下载地址:http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip
 
 ------
 ILiveSDK(互动直播基础功能SDK)集成和使用
