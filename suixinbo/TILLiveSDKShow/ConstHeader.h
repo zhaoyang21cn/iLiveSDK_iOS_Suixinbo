@@ -9,8 +9,8 @@
 #ifndef ConstHeader_h
 #define ConstHeader_h
 
-#define ShowAppId       @"1400001692"
-#define ShowAccountType @"884"
+#define ShowAppId       @"1400019301"
+#define ShowAccountType @"8871"
 
 
 /******************** color ******************************/
