@@ -13,6 +13,8 @@ FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/_CodeSignature
 
 *.xcuserstate
 
+*.xcuserdatad
+
 FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/_CodeSignature/CodeResources
 
 FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/Headers/QAVAppChannel.h
@@ -25,3 +27,4 @@ FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/Headers/QAVCom
 
 suixinbo/Frameworks/
 tdemolive/Frameworks/
+
