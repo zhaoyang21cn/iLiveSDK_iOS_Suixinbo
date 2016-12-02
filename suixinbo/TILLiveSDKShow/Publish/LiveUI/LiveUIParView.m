@@ -201,7 +201,7 @@ UIAlertController *_alert;
 {
     ILivePushOption *option = [[ILivePushOption alloc] init];
     
-    ChannelInfo *info = [[ChannelInfo alloc] init];
+    ILiveChannelInfo *info = [[ILiveChannelInfo alloc] init];
     info.channelName = [NSString stringWithFormat:@"新随心播推流_%@",[[ILiveLoginManager getInstance] getLoginId]];
     info.channelDesc = [NSString stringWithFormat:@"新随心播推流描述测试文本"];
     
