@@ -87,23 +87,111 @@
 //上麦
 - (void)upToVideo:(id)sender
 {
-    [[TILLiveManager getInstance] upToVideoMember:ILVLIVEAUTH_INTERACT role:kSxbRole_Interact succ:^{
-        NSLog(@"up video succ");
+//    [[TILLiveManager getInstance] upToVideoMember:ILVLIVEAUTH_INTERACT role:kSxbRole_Interact succ:^{
+//        NSLog(@"up video succ");
+//        
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        NSLog(@"up video  fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+//    }];
+    
+    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
+    msg.type = ILVLIVE_IMTYPE_C2C;
+    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
+    msg.recvId = _liveItem.host.uid;
+    
+    __weak typeof(self) ws = self;
+    [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
+        
+        NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
+        
+        TILLiveManager *manager = [TILLiveManager getInstance];
+        [manager addAVRenderView:[ws getRenderFrame] forKey:loginId];
+        
+        ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
+        
+        
+        [roomManager changeAuthority:QAV_AUTH_BITS_DEFAULT authBuf:nil succ:^{
+            
+            NSLog(@"QAV_AUTH_BITS_DEFAULT");
+            
+            [roomManager changeRole:kSxbRole_Interact succ:^{
+                
+                NSLog(@"changeRole");
+                
+                [roomManager enableCamera:CameraPosFront enable:YES succ:^{
+                    
+                    NSLog(@"enable camera YES");
+                    
+                    [roomManager enableMic:YES succ:^{
+                        
+                        NSLog(@"enable mic YES");
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
+                        
+                    } failed:^(NSString *module, int errId, NSString *errMsg) {
+                        
+                    }];
+                    
+                } failed:^(NSString *module, int errId, NSString *errMsg) {
+                    
+                }];
+
+            } failed:^(NSString *module, int errId, NSString *errMsg) {
+                
+            }];
+            
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            
+        }];
+        
+        
+        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"up video  fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        
     }];
 }
 
 //下麦
 - (void)downToVideo:(id)sender
 {
-    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
-        NSLog(@"down video succ");
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
-    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
+//    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
+//        NSLog(@"down video succ");
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
+//    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
+//        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
+//    }];
+    
+//    __weak typeof(self) ws = self;
+    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
+    UInt64 auth = QAV_AUTH_BITS_JOIN_ROOM | QAV_AUTH_BITS_RECV_AUDIO | QAV_AUTH_BITS_RECV_VIDEO | QAV_AUTH_BITS_RECV_SUB;
+    
+    [manager changeAuthority:auth authBuf:nil succ:^ {
+        TCILDebugLog(@"down to video: change auth succ");
+        [manager changeRole:kSxbRole_Guest succ:^ {
+            TCILDebugLog(@"down to video: change role succ");
+            cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
+            [manager enableCamera:pos enable:NO succ:^{
+                TCILDebugLog(@"down to video: disable camera succ");
+                [manager enableMic:NO succ:^{
+                    TCILDebugLog(@"down to video: disable mic succ");
+                    
+                } failed:^(NSString *module, int errId, NSString *errMsg) {
+                    TCILDebugLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                    
+                }];
+            } failed:^(NSString *module, int errId, NSString *errMsg) {
+                TCILDebugLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                
+            }];
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            TCILDebugLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+            
+        }];
+    } failed:^(NSString *module, int errId, NSString *errMsg) {
+        TCILDebugLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+        
     }];
 }
 
@@ -124,12 +212,13 @@
 
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg
 {
+    int cmd = msg.cmd;
     if (msg.type == ILVLIVE_IMTYPE_C2C)
     {
-        switch (msg.cmd)
+        switch (cmd)
         {
-
-            case ILVLIVE_IMCMD_INVITE:
+            
+            case AVIMCMD_Multi_Host_Invite:
             {
                 [self showAlert:@"收到视频邀请" message:msg.sendId okTitle:@"接收" cancelTitle:@"拒绝" ok:^(UIAlertAction * _Nonnull action) {
                     [self upToVideo:nil];
@@ -138,24 +227,30 @@
                 }];
             }
                 break;
-
-            case ShowCustomCmd_DownVideo:
-
-                [self downToVideo:nil];
+            case AVIMCMD_Multi_CancelInteract:
+                if (msg.recvId == [[ILiveLoginManager getInstance] getLoginId])
+                {
+                    [self downToVideo:nil];
+                }
+                break;
+            default:
                 break;
         }
     }
     else if (msg.type == ILVLIVE_IMTYPE_GROUP)
     {
-        switch (msg.cmd) {
-            case ShowCustomCmd_Praise:
+        switch (cmd) {
+            case AVIMCMD_Praise:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:nil];
                 break;
-           case ShowCustomCmd_JoinRoom:
+           case AVIMCMD_Multi_Interact_Join:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kUserJoinRoom_Notification object:nil];
                 break;
             case ILVLIVE_IMCMD_LEAVE:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kUserExitRoom_Notification object:nil];
+                break;
+            
+            default:
                 break;
         }
     }

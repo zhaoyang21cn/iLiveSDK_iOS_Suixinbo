@@ -155,7 +155,7 @@
 {
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_GROUP;
-    msg.cmd = (ILVLiveIMCmd)ShowCustomCmd_JoinRoom;
+    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
     msg.sendId = [[ILiveLoginManager getInstance] getLoginId];
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     

@@ -133,13 +133,46 @@
 
 - (void)onDownVideo:(UIButton *)button
 {
+//    __weak typeof(self) ws = self;
+//    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
+//        NSLog(@"down video succ");
+//        ws.isUpVideo = NO;
+//        [ws layoutSubviews];
+//    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
+//        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
+//    }];
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
-        NSLog(@"down video succ");
-        ws.isUpVideo = NO;
-        [ws layoutSubviews];
-    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
+    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
+    UInt64 auth = QAV_AUTH_BITS_JOIN_ROOM | QAV_AUTH_BITS_RECV_AUDIO | QAV_AUTH_BITS_RECV_VIDEO | QAV_AUTH_BITS_RECV_SUB;
+    
+    [manager changeAuthority:auth authBuf:nil succ:^ {
+        TCILDebugLog(@"down to video: change auth succ");
+        [manager changeRole:kSxbRole_Guest succ:^ {
+            TCILDebugLog(@"down to video: change role succ");
+            cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
+            [manager enableCamera:pos enable:NO succ:^{
+                TCILDebugLog(@"down to video: disable camera succ");
+                [manager enableMic:NO succ:^{
+                    TCILDebugLog(@"down to video: disable mic succ");
+                    
+                    ws.isUpVideo = NO;
+                    [ws layoutSubviews];
+                    
+                } failed:^(NSString *module, int errId, NSString *errMsg) {
+                    TCILDebugLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                    
+                }];
+            } failed:^(NSString *module, int errId, NSString *errMsg) {
+                TCILDebugLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                
+            }];
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            TCILDebugLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+            
+        }];
+    } failed:^(NSString *module, int errId, NSString *errMsg) {
+        TCILDebugLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+        
     }];
 }
 
@@ -240,7 +273,7 @@
 {
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_GROUP;
-    msg.cmd = (ILVLiveIMCmd)ShowCustomCmd_Praise;
+    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Praise;
     msg.sendId = [[ILiveLoginManager getInstance] getLoginId];
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     

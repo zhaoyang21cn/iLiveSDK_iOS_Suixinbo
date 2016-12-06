@@ -137,6 +137,18 @@
     [self.view addSubview:loginWaitView];
     
     __weak LoginViewController *ws = self;
+//    [[ILiveLoginManager getInstance] iLiveLogin:_userNameTF.text sig:@"123" succ:^{
+//                NSLog(@"tillivesdkshow login succ");
+//        
+//                [loginWaitView removeFromSuperview];
+//        
+//                [ws enterMainUI];
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//                NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+//                NSLog(@"login fail.%@",errInfo);
+//                [loginWaitView removeFromSuperview];
+//                [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+//    }];
     [[ILiveLoginManager getInstance] tlsLogin:_userNameTF.text pwd:_passwordTF.text succ:^{
         NSLog(@"tillivesdkshow login succ");
         

@@ -79,14 +79,15 @@
     
     video.sendId = [[ILiveLoginManager getInstance] getLoginId];
     video.recvId = _identifier.text;
+    video.data = [_identifier.text dataUsingEncoding:NSUTF8StringEncoding];
     
     if (button.selected)
     {
-        video.cmd = ILVLIVE_IMCMD_INVITE;
+        video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
     }
     else
     {
-        video.cmd = (ILVLiveIMCmd)ShowCustomCmd_DownVideo;
+        video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
     }
     
     [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
@@ -95,5 +96,6 @@
         NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
     }];
 }
+
 
 @end
