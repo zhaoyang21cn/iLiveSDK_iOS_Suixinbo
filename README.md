@@ -10,23 +10,16 @@
 4、[AVSDK下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip)
 
 ------
-ILiveSDK(互动直播基础功能SDK)集成和使用
-
-请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md
+[ILiveSDK(互动直播基础功能SDK)集成和使用](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md)
 
 ------
-TILLiveSDK(直播)集成和使用
-
-请参照这里 https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md
+[TILLiveSDK(直播)集成和使用}(https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md)
 
 ------
 
-TILCallSDK(多人通话)集成和使用
+[TILCallSDK(多人通话)集成和使用](https://github.com/zhaoyang21cn/CallSDK_iOS_Demo/blob/master/TILCallSDK-README.md)
 
-请参照这里 https://github.com/zhaoyang21cn/CallSDK_iOS_Demo/blob/master/TILCallSDK-README.md
 
 ------
 
-错误码
-
-请参考这里 https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md
+[错误码](https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md)
