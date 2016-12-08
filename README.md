@@ -20,7 +20,7 @@ ILiveSDK在Xcode上开发。
 2新随心播 ：基于ILiveSDK接口重构的随心播   
 
 ##API文档
-[API文档(1.0.3)](https://zhaoyang21cn.github.io/ilivesdk_help/ios_help/)
+[API文档(1.0.2)](https://zhaoyang21cn.github.io/ilivesdk_help/ios_help/)
 
 ##错误码
 [错误码表](https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md)
