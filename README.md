@@ -13,7 +13,7 @@
 [ILiveSDK(互动直播基础功能SDK)集成和使用](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md)
 
 ------
-[TILLiveSDK(直播)集成和使用}(https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md)
+[TILLiveSDK(直播)集成和使用](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md)
 
 ------
 
