@@ -1,5 +1,18 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.1.0(2016-12-27)
+* ILiveRoomOption配置项开放
+* 支持同时显示pc的screen和camera两路视频
+* 增加切换房间接口
+* 修改以下接口（增加srcType参数，原对应旧接口将废弃）
+  1.addRenderAt:forIdentifier:srcType
+  2.removeRenderViewFor:srcType
+  3.bringRenderViewToFront:srcType
+  4.sendRenderViewToBack:srcType
+  5.switchRenderViewOf:srcType:withRender:anotherSrcType
+  6.getRenderView:srcType
+* 修复用户被踢重新登录返回1003错误码的问题
+
 ###### V1.0.4(2016-12-14)
 * 修复头文件引用问题
 
