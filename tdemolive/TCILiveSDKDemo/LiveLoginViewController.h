@@ -1,5 +1,5 @@
 //
-//  CallLoginViewController.h
+//  LiveLoginViewController.h
 //  TCILiveSDKDemo
 //
 //  Created by kennethmiao on 16/10/26.
@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CallLoginViewController : UIViewController
+@interface LiveLoginViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passTextField;
+@property (weak, nonatomic) IBOutlet UILabel *errLabel;
 - (IBAction)login:(id)sender;
 - (IBAction)registe:(id)sender;
-@property (weak, nonatomic) IBOutlet UILabel *errLabel;
 
 @end

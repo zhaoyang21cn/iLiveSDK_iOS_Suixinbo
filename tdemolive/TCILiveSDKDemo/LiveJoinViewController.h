@@ -11,7 +11,6 @@
 @interface LiveJoinViewController : UIViewController
 @property (nonatomic, assign) int roomId;
 @property (nonatomic, strong) NSString *host;
-@property (weak, nonatomic) IBOutlet UILabel *errLabel;
 @property (weak, nonatomic) IBOutlet UITextField *textTextField;
 @property (weak, nonatomic) IBOutlet UITextView *msgTextView;
 @property (weak, nonatomic) IBOutlet UIButton *upToVideoButton;

@@ -21,8 +21,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *errLabel;
 @property (weak, nonatomic) IBOutlet UITextField *textTextField;
 @property (weak, nonatomic) IBOutlet UITextView *msgTextView;
-@property (weak, nonatomic) IBOutlet UITextField *upVideoTextField;
-@property (weak, nonatomic) IBOutlet UITextField *downVideoTextField;
-@property (weak, nonatomic) IBOutlet UITextField *cancelVideoTextField;
-
+@property (weak, nonatomic) IBOutlet UITextField *interactTextField;
+@property (weak, nonatomic) IBOutlet UIButton *inviteToVideoButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelToVideoButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelInviteButton;
 @end
