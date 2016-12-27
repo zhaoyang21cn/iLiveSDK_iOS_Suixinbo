@@ -564,11 +564,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="downToVideoButton" destination="pQt-Ad-opQ" id="WGm-sY-hnG"/>
                         <outlet property="msgTextView" destination="SiW-Q5-ds0" id="Uq2-bt-7Jt"/>
-                        <outlet property="rejectToVideoButton" destination="Krh-ZT-lTp" id="Mkx-O3-0Ar"/>
                         <outlet property="textTextField" destination="GTD-fO-9L4" id="qKU-6u-V7W"/>
-                        <outlet property="upToVideoButton" destination="2ez-Zd-5vS" id="IeI-QL-Zpi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ce5-bL-G0X" userLabel="First Responder" sceneMemberID="firstResponder"/>

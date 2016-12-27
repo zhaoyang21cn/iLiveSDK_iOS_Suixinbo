@@ -22,7 +22,4 @@
 @property (weak, nonatomic) IBOutlet UITextField *textTextField;
 @property (weak, nonatomic) IBOutlet UITextView *msgTextView;
 @property (weak, nonatomic) IBOutlet UITextField *interactTextField;
-@property (weak, nonatomic) IBOutlet UIButton *inviteToVideoButton;
-@property (weak, nonatomic) IBOutlet UIButton *cancelToVideoButton;
-@property (weak, nonatomic) IBOutlet UIButton *cancelInviteButton;
 @end
