@@ -260,7 +260,7 @@
         }
         ILVLiveTextMessage *msg = _msgDatas[indexPath.row];
         
-        [cell configMsg:msg.sendId msg:msg.text];
+        [cell configMsg:msg.sendId ? msg.sendId : [[ILiveLoginManager getInstance] getLoginId] msg:msg.text];
         return cell;
     }
     else if (tableView == _memberListView)

@@ -327,7 +327,7 @@
             
             case AVIMCMD_Multi_Host_Invite:
             {
-                [self showAlert:@"收到视频邀请" message:msg.sendId okTitle:@"接收" cancelTitle:@"拒绝" ok:^(UIAlertAction * _Nonnull action) {
+                [self showAlert:@"收到视频邀请" message:msg.sendId ? msg.sendId : [[ILiveLoginManager getInstance] getLoginId] okTitle:@"接收" cancelTitle:@"拒绝" ok:^(UIAlertAction * _Nonnull action) {
                     [self upToVideo:nil];
                 } cancel:^(UIAlertAction * _Nonnull action) {
                     [self rejectToVideo:nil];
