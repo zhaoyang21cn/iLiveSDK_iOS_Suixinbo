@@ -158,9 +158,8 @@
 - (void)onClickSend
 {
     ILVLiveTextMessage *msg = [[ILVLiveTextMessage alloc] init];
-
+    
     msg.type = ILVLIVE_IMTYPE_GROUP;
-    msg.sendId = [[ILiveLoginManager getInstance] getLoginId];
     msg.text = _textField.text;
     
     __weak typeof(_liveUI) wLiveUI = _liveUI;

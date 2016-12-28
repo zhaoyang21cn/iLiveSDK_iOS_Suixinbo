@@ -66,7 +66,8 @@
         [reqIdWaitView removeFromSuperview];
         
         LiveAVRoomIDResponseData *data = (LiveAVRoomIDResponseData *)request.response.data;
-        [ws createRoom:data.avRoomId];
+        //[ws createRoom:data.avRoomId ];
+        [ws enterLive:data.avRoomId];
         
     } failHandler:^(BaseRequest *request) {
         
@@ -82,79 +83,50 @@
     [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
 }
 
-- (void)createRoom:(int)roomId
+- (void)enterLive:(int)roomId
 {
-    __weak PublishViewController *ws = self;
+    TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
+    item.avRoomId = roomId;
+    item.chatRoomId = [NSString stringWithFormat:@"%d",roomId];
     
-    ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
-    option.controlRole = kSxbRole_Host;
+    TCShowUser *user = [[TCShowUser alloc] init];
+    user.uid = [[ILiveLoginManager getInstance] getLoginId];
+    item.host = user;
     
-    LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
-    [self.view addSubview:createRoomWaitView];
-    
-    [[TILLiveManager getInstance] createRoom:roomId option:option succ:^{
-        
-        NSLog(@"createRoom succ");
-        [createRoomWaitView removeFromSuperview];
-        
-        [ws startLive:roomId];
-        
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        
-        [createRoomWaitView removeFromSuperview];
-        
-        NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"createRoom fail.%@",errinfo);
-        
-        [ws showAlert:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-    }];
-    
+    LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
+    [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
 }
 
-- (void)startLive:(int)roomId
-{
-    LoadView *uploadToServerWaitView = [LoadView loadViewWith:@"上传房间信息"];
-    [self.view addSubview:uploadToServerWaitView];
-    
-    __weak typeof(self) ws = self;
-    //上传直播信息到随心播业务后台
-    LiveStartRequest *req = [[LiveStartRequest alloc] initWithHandler:^(BaseRequest *request) {
-        
-        [uploadToServerWaitView removeFromSuperview];
-        NSLog(@"-----> 上传成功");
-        
-        [ws dismissViewControllerAnimated:NO completion:nil];
-        
-        TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
-        TCShowUser *user = [[TCShowUser alloc] init];
-        user.uid = [[ILiveLoginManager getInstance] getLoginId];
-        item.host = user;
-        
-        LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
-        [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
-        
-    } failHandler:^(BaseRequest *request) {
-        
-        [uploadToServerWaitView removeFromSuperview];
-        // 上传失败
-        NSLog(@"-----> 上传失败");
-        
-        NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
-        [ws showAlert:@"上传RoomInfo失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-    }];
-    
-    req.liveItem = [[TCShowLiveListItem alloc] init]; //(TCShowLiveListItem *)self.liveController.roomInfo;
-    req.liveItem.title = _liveTitle.text && _liveTitle.text.length > 0 ? _liveTitle.text : _liveTitle.placeholder;
-    req.liveItem.avRoomId = roomId;
-    req.liveItem.chatRoomId = [[ILiveRoomManager getInstance] getIMGroupId];
-    
-    TCShowUser *host = [[TCShowUser alloc] init];
-    host.uid = [[ILiveLoginManager getInstance] getLoginId];
-    host.username = host.uid;
-    req.liveItem.host = host;
-    
-    [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
-}
+//- (void)createRoom:(int)roomId
+//{
+//    __weak PublishViewController *ws = self;
+//    
+//    ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
+//    option.controlRole = kSxbRole_Host;
+//    
+//    LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
+//    [self.view addSubview:createRoomWaitView];
+//    
+//    [[TILLiveManager getInstance] createRoom:roomId option:option succ:^{
+//        
+//        NSLog(@"createRoom succ");
+//        [createRoomWaitView removeFromSuperview];
+//        
+//        [ws startLive:roomId];
+//        
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        
+//        [createRoomWaitView removeFromSuperview];
+//        
+//        NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+//        NSLog(@"createRoom fail.%@",errinfo);
+//        
+//        [ws showAlert:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+//    }];
+//    
+//}
+
+
 
 - (void)layout
 {

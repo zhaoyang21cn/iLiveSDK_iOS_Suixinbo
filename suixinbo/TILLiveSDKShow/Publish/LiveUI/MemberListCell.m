@@ -75,18 +75,18 @@
     button.selected = !button.selected;
     
     ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
-    video.type = ILVLIVE_IMTYPE_C2C;
     
-    video.sendId = [[ILiveLoginManager getInstance] getLoginId];
     video.recvId = _identifier.text;
     video.data = [_identifier.text dataUsingEncoding:NSUTF8StringEncoding];
     
     if (button.selected)
     {
+        video.type = ILVLIVE_IMTYPE_C2C;
         video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
     }
     else
     {
+        video.type = ILVLIVE_IMTYPE_GROUP;
         video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
     }
     

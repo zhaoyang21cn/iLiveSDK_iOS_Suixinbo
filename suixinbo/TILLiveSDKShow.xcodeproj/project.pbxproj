@@ -17,6 +17,20 @@
 		9B68A4CF1DD01AA30089786C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B68A4CE1DD01AA30089786C /* main.m */; };
 		9B68A4D21DD01AA30089786C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B68A4D11DD01AA30089786C /* AppDelegate.m */; };
 		9B68A4DD1DD01AA30089786C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B68A4DB1DD01AA30089786C /* LaunchScreen.storyboard */; };
+		9B77DF921E13674300C69BD9 /* QAVSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF831E13674300C69BD9 /* QAVSDK.framework */; };
+		9B77DF931E13674300C69BD9 /* readme in Resources */ = {isa = PBXBuildFile; fileRef = 9B77DF841E13674300C69BD9 /* readme */; };
+		9B77DF941E13674300C69BD9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 9B77DF851E13674300C69BD9 /* README.md */; };
+		9B77DF951E13674300C69BD9 /* Shaderf.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9B77DF861E13674300C69BD9 /* Shaderf.glsl */; };
+		9B77DF961E13674300C69BD9 /* Shaderv.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9B77DF871E13674300C69BD9 /* Shaderv.glsl */; };
+		9B77DF971E13674300C69BD9 /* xplatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF881E13674300C69BD9 /* xplatform.framework */; };
+		9B77DF981E13674400C69BD9 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF891E13674300C69BD9 /* ILiveSDK.framework */; };
+		9B77DF991E13674400C69BD9 /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF8B1E13674300C69BD9 /* IMCore.framework */; };
+		9B77DF9A1E13674400C69BD9 /* ImSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF8C1E13674300C69BD9 /* ImSDK.framework */; };
+		9B77DF9B1E13674400C69BD9 /* IMSDKBugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF8D1E13674300C69BD9 /* IMSDKBugly.framework */; };
+		9B77DF9C1E13674400C69BD9 /* QALSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF8E1E13674300C69BD9 /* QALSDK.framework */; };
+		9B77DF9D1E13674400C69BD9 /* readme in Resources */ = {isa = PBXBuildFile; fileRef = 9B77DF8F1E13674300C69BD9 /* readme */; };
+		9B77DF9E1E13674400C69BD9 /* TLSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF901E13674300C69BD9 /* TLSSDK.framework */; };
+		9B77DF9F1E13674400C69BD9 /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B77DF911E13674300C69BD9 /* TILLiveSDK.framework */; };
 		9BDA66BD1DD1F06C00E8638D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA66BC1DD1F06C00E8638D /* SettingViewController.m */; };
 		9BDA66D21DD1F68C00E8638D /* BaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA66C01DD1F68C00E8638D /* BaseRequest.m */; };
 		9BDA66D31DD1F68C00E8638D /* LiveAVRoomIDRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA66C31DD1F68C00E8638D /* LiveAVRoomIDRequest.m */; };
@@ -84,6 +98,20 @@
 		9B68A4D11DD01AA30089786C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9B68A4DC1DD01AA30089786C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B68A4DE1DD01AA30089786C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B77DF831E13674300C69BD9 /* QAVSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QAVSDK.framework; sourceTree = "<group>"; };
+		9B77DF841E13674300C69BD9 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
+		9B77DF851E13674300C69BD9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9B77DF861E13674300C69BD9 /* Shaderf.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderf.glsl; sourceTree = "<group>"; };
+		9B77DF871E13674300C69BD9 /* Shaderv.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderv.glsl; sourceTree = "<group>"; };
+		9B77DF881E13674300C69BD9 /* xplatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = xplatform.framework; sourceTree = "<group>"; };
+		9B77DF891E13674300C69BD9 /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
+		9B77DF8B1E13674300C69BD9 /* IMCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMCore.framework; sourceTree = "<group>"; };
+		9B77DF8C1E13674300C69BD9 /* ImSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ImSDK.framework; sourceTree = "<group>"; };
+		9B77DF8D1E13674300C69BD9 /* IMSDKBugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMSDKBugly.framework; sourceTree = "<group>"; };
+		9B77DF8E1E13674300C69BD9 /* QALSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QALSDK.framework; sourceTree = "<group>"; };
+		9B77DF8F1E13674300C69BD9 /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
+		9B77DF901E13674300C69BD9 /* TLSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TLSSDK.framework; sourceTree = "<group>"; };
+		9B77DF911E13674300C69BD9 /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
 		9BDA66BB1DD1F06C00E8638D /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		9BDA66BC1DD1F06C00E8638D /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		9BDA66BF1DD1F68C00E8638D /* BaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRequest.h; sourceTree = "<group>"; };
@@ -178,11 +206,15 @@
 				9BE14BBB1DD04404004B77E3 /* libprotobuf.tbd in Frameworks */,
 				9BE14BC11DD04404004B77E3 /* CoreGraphics.framework in Frameworks */,
 				9BE14BC71DD04404004B77E3 /* libstdc++.tbd in Frameworks */,
+				9B77DF981E13674400C69BD9 /* ILiveSDK.framework in Frameworks */,
 				9BE14BC41DD04404004B77E3 /* SystemConfiguration.framework in Frameworks */,
+				9B77DF921E13674300C69BD9 /* QAVSDK.framework in Frameworks */,
 				9BE14BC51DD04404004B77E3 /* VideoToolbox.framework in Frameworks */,
 				9BE14BC91DD04404004B77E3 /* AVFoundation.framework in Frameworks */,
 				9BE14BBC1DD04404004B77E3 /* libsqlite3.tbd in Frameworks */,
+				9B77DF9A1E13674400C69BD9 /* ImSDK.framework in Frameworks */,
 				9BE14BCB1DD04404004B77E3 /* libresolv.tbd in Frameworks */,
+				9B77DF991E13674400C69BD9 /* IMCore.framework in Frameworks */,
 				9BE14BCC1DD04404004B77E3 /* libbz2.tbd in Frameworks */,
 				9BE14BC31DD04404004B77E3 /* CoreTelephony.framework in Frameworks */,
 				9BE14BBE1DD04404004B77E3 /* CoreVideo.framework in Frameworks */,
@@ -191,6 +223,11 @@
 				9BE14BC21DD04404004B77E3 /* CoreMedia.framework in Frameworks */,
 				9BE14BBD1DD04404004B77E3 /* Foundation.framework in Frameworks */,
 				9BE14BC61DD04404004B77E3 /* libiconv.tbd in Frameworks */,
+				9B77DF9B1E13674400C69BD9 /* IMSDKBugly.framework in Frameworks */,
+				9B77DF9F1E13674400C69BD9 /* TILLiveSDK.framework in Frameworks */,
+				9B77DF971E13674300C69BD9 /* xplatform.framework in Frameworks */,
+				9B77DF9E1E13674400C69BD9 /* TLSSDK.framework in Frameworks */,
+				9B77DF9C1E13674400C69BD9 /* QALSDK.framework in Frameworks */,
 				9BE14BCD1DD04404004B77E3 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +295,32 @@
 				9BDA930E1DD05AAD0026EF87 /* TILLiveSDKShow-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9B77DF821E13674300C69BD9 /* AVSDK */ = {
+			isa = PBXGroup;
+			children = (
+				9B77DF831E13674300C69BD9 /* QAVSDK.framework */,
+				9B77DF841E13674300C69BD9 /* readme */,
+				9B77DF851E13674300C69BD9 /* README.md */,
+				9B77DF861E13674300C69BD9 /* Shaderf.glsl */,
+				9B77DF871E13674300C69BD9 /* Shaderv.glsl */,
+				9B77DF881E13674300C69BD9 /* xplatform.framework */,
+			);
+			path = AVSDK;
+			sourceTree = "<group>";
+		};
+		9B77DF8A1E13674300C69BD9 /* IMSDK */ = {
+			isa = PBXGroup;
+			children = (
+				9B77DF8B1E13674300C69BD9 /* IMCore.framework */,
+				9B77DF8C1E13674300C69BD9 /* ImSDK.framework */,
+				9B77DF8D1E13674300C69BD9 /* IMSDKBugly.framework */,
+				9B77DF8E1E13674300C69BD9 /* QALSDK.framework */,
+				9B77DF8F1E13674300C69BD9 /* readme */,
+				9B77DF901E13674300C69BD9 /* TLSSDK.framework */,
+			);
+			path = IMSDK;
 			sourceTree = "<group>";
 		};
 		9BDA66BE1DD1F4EE00E8638D /* WebService */ = {
@@ -420,6 +483,10 @@
 		9BE39BEC1DE402A0003F1E08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9B77DF821E13674300C69BD9 /* AVSDK */,
+				9B77DF891E13674300C69BD9 /* ILiveSDK.framework */,
+				9B77DF8A1E13674300C69BD9 /* IMSDK */,
+				9B77DF911E13674300C69BD9 /* TILLiveSDK.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -483,7 +550,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B77DF961E13674300C69BD9 /* Shaderv.glsl in Resources */,
+				9B77DF931E13674300C69BD9 /* readme in Resources */,
+				9B77DF951E13674300C69BD9 /* Shaderf.glsl in Resources */,
 				9B2FF7461DD0C957003CD319 /* default_cover@2x.jpg in Resources */,
+				9B77DF9D1E13674400C69BD9 /* readme in Resources */,
 				9B2FF7471DD0C957003CD319 /* default_head@2x.jpg in Resources */,
 				9B68A4DD1DD01AA30089786C /* LaunchScreen.storyboard in Resources */,
 				9B2FF6E41DD0B2F1003CD319 /* Assets.xcassets in Resources */,
@@ -514,6 +585,7 @@
 				9BDA67021DD2D0D200E8638D /* LiveUIBttomView.m in Sources */,
 				9BDA67191DD58DAF00E8638D /* SetBeautyView.m in Sources */,
 				9BDA67151DD4C06500E8638D /* LoadView.m in Sources */,
+				9B77DF941E13674300C69BD9 /* README.md in Sources */,
 				9B2FF6E71DD0B372003CD319 /* TabbarController.m in Sources */,
 				9BDA66D71DD1F68C00E8638D /* LiveListRequest.m in Sources */,
 				9BDA66EB1DD225A800E8638D /* UIView+CustomAutoLayout.m in Sources */,

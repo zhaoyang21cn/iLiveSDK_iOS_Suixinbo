@@ -133,37 +133,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TCShowLiveListItem *item = _datas[indexPath.row];
-    
-    ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
-    option.controlRole = kSxbRole_Guest;
-    
-    __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] joinRoom:item.avRoomId option:option succ:^{
-        NSLog(@"join room succ");
-        
-        [ws sendJoinRoomMsg];
-        
-        LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
-        [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
-        
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"join room fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
-    }];
-}
-
-- (void)sendJoinRoomMsg
-{
-    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
-    msg.type = ILVLIVE_IMTYPE_GROUP;
-    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
-    msg.sendId = [[ILiveLoginManager getInstance] getLoginId];
-    msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
-    
-    [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        
-    }];
+    LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
+    [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
 }
 
 @end

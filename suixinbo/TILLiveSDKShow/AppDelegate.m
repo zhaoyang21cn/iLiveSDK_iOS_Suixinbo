@@ -26,7 +26,7 @@
     @autoreleasepool
     {
         viewController.hidesBottomBarWhenPushed = YES;
-        [[self navigationViewController] pushViewController:viewController animated:YES];
+        [[self navigationViewController] pushViewController:viewController animated:NO];
     }
 }
 
