@@ -1,5 +1,8 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.1.1(2016-12-28)
+* 修复交换渲染位置失败的bug
+
 ###### V1.1.0(2016-12-27)
 * ILiveRoomOption配置项开放
 * 支持同时显示pc的screen和camera两路视频
