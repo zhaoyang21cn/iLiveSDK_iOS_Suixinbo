@@ -194,13 +194,9 @@
         case ILVLIVE_AVEVENT_SCREEN_ON:
         {
             for (NSString *user in users) {
-                if(![user isEqualToString:_host]){
-                    [manager addAVRenderView:[self getRenderFrame:_identifierArray.count] forIdentifier:user srcType:QAVVIDEO_SRC_TYPE_SCREEN];
-                    [_identifierArray addObject:user];
-                    [_srcTypeArray addObject:@(QAVVIDEO_SRC_TYPE_SCREEN)];
-                }
-                else{
-                }
+                [manager addAVRenderView:[self getRenderFrame:_identifierArray.count] forIdentifier:user srcType:QAVVIDEO_SRC_TYPE_SCREEN];
+                [_identifierArray addObject:user];
+                [_srcTypeArray addObject:@(QAVVIDEO_SRC_TYPE_SCREEN)];
             }
         }
             break;

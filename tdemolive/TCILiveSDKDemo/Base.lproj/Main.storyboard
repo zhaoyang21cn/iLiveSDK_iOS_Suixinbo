@@ -151,17 +151,11 @@
                                     <constraint firstAttribute="width" constant="83" id="A8z-Ut-ujQ"/>
                                 </constraints>
                                 <state key="normal" title="邀请上麦"/>
-                                <connections>
-                                    <action selector="inviteToVideo:" destination="DVh-LN-E0J" eventType="touchUpInside" id="hnU-Ae-Aed"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlZ-eu-BZL">
                                 <rect key="frame" x="146" y="67" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="取消邀请"/>
-                                <connections>
-                                    <action selector="cancelInvite:" destination="DVh-LN-E0J" eventType="touchUpInside" id="WYn-AD-ktR"/>
-                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="输入消息内容" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ic6-Al-6w0">
                                 <rect key="frame" x="16" y="105" width="252" height="30"/>
@@ -191,9 +185,6 @@
                                 <rect key="frame" x="276" y="67" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="取消上麦"/>
-                                <connections>
-                                    <action selector="cancelToVideo:" destination="DVh-LN-E0J" eventType="touchUpInside" id="yiM-uP-TAY"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="att-gi-PdK">
                                 <rect key="frame" x="276" y="105" width="83" height="30"/>
@@ -237,10 +228,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="cancelInviteButton" destination="RlZ-eu-BZL" id="0FP-CU-arD"/>
-                        <outlet property="cancelToVideoButton" destination="NKT-5M-50J" id="vXZ-UQ-yhK"/>
                         <outlet property="interactTextField" destination="gSp-yB-r1F" id="i7q-LB-zXA"/>
-                        <outlet property="inviteToVideoButton" destination="2mA-cg-UuY" id="EaE-Ex-C1Y"/>
                         <outlet property="msgTextView" destination="iA8-o5-myP" id="qOU-gM-74G"/>
                         <outlet property="textTextField" destination="ic6-Al-6w0" id="dT7-sq-AIK"/>
                     </connections>
@@ -480,7 +468,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ez-Zd-5vS">
-                                <rect key="frame" x="16" y="66" width="99" height="30"/>
+                                <rect key="frame" x="16" y="66" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="确认上麦"/>
                                 <connections>
@@ -488,7 +476,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Krh-ZT-lTp">
-                                <rect key="frame" x="138" y="66" width="99" height="30"/>
+                                <rect key="frame" x="146" y="66" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="拒绝上麦"/>
                                 <connections>
@@ -502,10 +490,10 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" clipsSubviews="YES" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="输入消息内容" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GTD-fO-9L4">
-                                <rect key="frame" x="16" y="105" width="236" height="30"/>
+                                <rect key="frame" x="16" y="105" width="252" height="30"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="236" id="SGS-pO-9Kn"/>
+                                    <constraint firstAttribute="width" constant="252" id="SGS-pO-9Kn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -513,16 +501,8 @@
                                     <outlet property="delegate" destination="Twx-vx-zgf" id="X4C-Y0-x2P"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="inB-Vj-ciB">
-                                <rect key="frame" x="260" y="28" width="99" height="30"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="退出直播"/>
-                                <connections>
-                                    <action selector="exitLive:" destination="Twx-vx-zgf" eventType="touchUpInside" id="Lao-FG-lKF"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pQt-Ad-opQ">
-                                <rect key="frame" x="260" y="66" width="99" height="30"/>
+                                <rect key="frame" x="276" y="66" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="取消上麦"/>
                                 <connections>
@@ -530,11 +510,19 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntG-4c-xgu">
-                                <rect key="frame" x="260" y="104" width="99" height="30"/>
+                                <rect key="frame" x="276" y="104" width="83" height="30"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="发送消息"/>
                                 <connections>
                                     <action selector="sendMsg:" destination="Twx-vx-zgf" eventType="touchUpInside" id="dxa-nL-lap"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="inB-Vj-ciB">
+                                <rect key="frame" x="276" y="28" width="83" height="30"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="退出直播"/>
+                                <connections>
+                                    <action selector="exitLive:" destination="Twx-vx-zgf" eventType="touchUpInside" id="Lao-FG-lKF"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -8,8 +8,13 @@
 
 #import "AppDelegate.h"
 
+//托管模式
 #define SDKAppID 1400013700
 #define AccountType 7285
+
+//pc
+//#define SDKAppID 1104062745
+//#define AccountType 107
 
 @interface AppDelegate ()
 

@@ -12,7 +12,6 @@
 		9B3ADFDD1DE700180099AACF /* Shaderf.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9B3ADFCF1DE700180099AACF /* Shaderf.glsl */; };
 		9B3ADFDE1DE700180099AACF /* Shaderv.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9B3ADFD01DE700180099AACF /* Shaderv.glsl */; };
 		9B3ADFDF1DE700180099AACF /* xplatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD11DE700180099AACF /* xplatform.framework */; };
-		9B3ADFE01DE700180099AACF /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD21DE700180099AACF /* ILiveSDK.framework */; };
 		9B3ADFE11DE700180099AACF /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD41DE700180099AACF /* IMCore.framework */; };
 		9B3ADFE21DE700180099AACF /* ImSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD51DE700180099AACF /* ImSDK.framework */; };
 		9B3ADFE31DE700180099AACF /* IMSDKBugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD61DE700180099AACF /* IMSDKBugly.framework */; };
@@ -25,6 +24,7 @@
 		CF18CDC11E12488500E291F6 /* LiveLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBA1E12488500E291F6 /* LiveLoginViewController.m */; };
 		CF18CDC21E12488500E291F6 /* LiveMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBC1E12488500E291F6 /* LiveMainViewController.m */; };
 		CF18CDC31E12488500E291F6 /* LiveRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBE1E12488500E291F6 /* LiveRegisterViewController.m */; };
+		CF7F25A71E1CDD26003C18EE /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF7F25A61E1CDD26003C18EE /* ILiveSDK.framework */; };
 		CFB121DD1DBF02C300AAE22B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DC1DBF02C300AAE22B /* main.m */; };
 		CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DF1DBF02C300AAE22B /* AppDelegate.m */; };
 		CFB121E61DBF02C300AAE22B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E41DBF02C300AAE22B /* Main.storyboard */; };
@@ -76,7 +76,6 @@
 		9B3ADFCF1DE700180099AACF /* Shaderf.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderf.glsl; sourceTree = "<group>"; };
 		9B3ADFD01DE700180099AACF /* Shaderv.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderv.glsl; sourceTree = "<group>"; };
 		9B3ADFD11DE700180099AACF /* xplatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = xplatform.framework; sourceTree = "<group>"; };
-		9B3ADFD21DE700180099AACF /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		9B3ADFD41DE700180099AACF /* IMCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMCore.framework; sourceTree = "<group>"; };
 		9B3ADFD51DE700180099AACF /* ImSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ImSDK.framework; sourceTree = "<group>"; };
 		9B3ADFD61DE700180099AACF /* IMSDKBugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMSDKBugly.framework; sourceTree = "<group>"; };
@@ -95,6 +94,7 @@
 		CF18CDBD1E12488500E291F6 /* LiveRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRegisterViewController.h; sourceTree = "<group>"; };
 		CF18CDBE1E12488500E291F6 /* LiveRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveRegisterViewController.m; sourceTree = "<group>"; };
 		CF4777161DCC404500CBAB67 /* ILiveSDKDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILiveSDKDemo.pch; sourceTree = "<group>"; };
+		CF7F25A61E1CDD26003C18EE /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCILiveSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFB121DC1DBF02C300AAE22B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CFB121DE1DBF02C300AAE22B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -140,7 +140,6 @@
 				CFB122511DBF4E0900AAE22B /* Foundation.framework in Frameworks */,
 				CFB1224F1DBF4E0400AAE22B /* CoreVideo.framework in Frameworks */,
 				CFB1224D1DBF4DFD00AAE22B /* libstdc++.6.tbd in Frameworks */,
-				9B3ADFE01DE700180099AACF /* ILiveSDK.framework in Frameworks */,
 				CFB1224B1DBF4DF600AAE22B /* libz.tbd in Frameworks */,
 				9B3ADFDB1DE700180099AACF /* QAVSDK.framework in Frameworks */,
 				CFB122491DBF4DEF00AAE22B /* CoreGraphics.framework in Frameworks */,
@@ -149,6 +148,7 @@
 				9B3ADFE21DE700180099AACF /* ImSDK.framework in Frameworks */,
 				CFB122431DBF4DD800AAE22B /* SystemConfiguration.framework in Frameworks */,
 				9B3ADFE11DE700180099AACF /* IMCore.framework in Frameworks */,
+				CF7F25A71E1CDD26003C18EE /* ILiveSDK.framework in Frameworks */,
 				CFB122411DBF4DC500AAE22B /* VideoToolbox.framework in Frameworks */,
 				CFB1223F1DBF4DBF00AAE22B /* libiconv.tbd in Frameworks */,
 				CFB1223D1DBF4DB700AAE22B /* libstdc++.tbd in Frameworks */,
@@ -283,9 +283,9 @@
 		CFB1221B1DBF4BE500AAE22B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF7F25A61E1CDD26003C18EE /* ILiveSDK.framework */,
 				9B3ADFE81DE700FB0099AACF /* TILLiveSDK.framework */,
 				9B3ADFCC1DE700180099AACF /* AVSDK */,
-				9B3ADFD21DE700180099AACF /* ILiveSDK.framework */,
 				9B3ADFD31DE700180099AACF /* IMSDK */,
 				CFB122541DBF4E2500AAE22B /* libprotobuf.tbd */,
 				CFB122521DBF4E1200AAE22B /* libsqlite3.tbd */,

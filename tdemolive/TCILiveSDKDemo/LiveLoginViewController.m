@@ -20,6 +20,14 @@
     NSString *name = self.nameTextField.text;
     NSString *pwd = self.passTextField.text;
     
+//    __weak typeof(self) ws = self;
+//    [[ILiveLoginManager getInstance] iLiveLogin:name sig:name succ:^{
+//        [ws setUserDefault];
+//        [ws performSegueWithIdentifier:@"toLiveUser" sender:nil];
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        ws.errLabel.text = [NSString stringWithFormat:@"moldleID=%@;errid=%d;errmsg=%@",module,errId,errMsg];
+//    }];
+    
     __weak typeof(self) ws = self;
     [[ILiveLoginManager getInstance] tlsLogin:name pwd:pwd succ:^{
         [ws setUserDefault];
