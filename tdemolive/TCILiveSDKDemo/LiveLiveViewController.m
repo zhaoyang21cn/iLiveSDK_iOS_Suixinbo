@@ -19,7 +19,7 @@
     [super viewDidLoad];
     _identifierArray = [[NSMutableArray alloc] init];
     _srcTypeArray = [[NSMutableArray alloc] init];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [self createLive];
 }
 
@@ -283,10 +283,42 @@
 
 - (void)selfDismiss
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     //为了看到关闭打印的信息，demo延迟1秒关闭
     __weak typeof(self) ws = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [ws dismissViewControllerAnimated:YES completion:nil];
     });
+}
+
+#pragma mark - 如果支持界面旋转
+- (void)statusBarOrientationChange:(NSNotification *)notification{
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    NSArray *views = [[TILLiveManager getInstance] getAllAVRenderViews];
+    for (UIView *view in views) {
+        CGFloat height = view.frame.size.height;
+        CGFloat width = view.frame.size.width;
+        CGFloat x = view.frame.origin.x;
+        CGFloat y = view.frame.origin.y;
+        
+        CGFloat temp = 0;
+        if (orientation == UIInterfaceOrientationLandscapeRight  || orientation ==UIInterfaceOrientationLandscapeLeft){
+            //横屏
+            if(width < height){
+                temp = height;
+                height = width;
+                width = temp;
+            }
+        }
+        if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown){
+            //竖屏
+            if(width > height){
+                temp = height;
+                height = width;
+                width = temp;
+            }
+        }
+        view.frame = CGRectMake(x, y, width, height);
+    }
 }
 @end

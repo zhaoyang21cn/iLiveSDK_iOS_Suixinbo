@@ -1,5 +1,9 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.2.0(2017-1-16)
+* 支持旋转模式可配，具体参考[旋转文档](https://github.com/zhaoyang21cn/suixinbo_doc/blob/master/doc2/rotate.md)
+* 修复pc屏幕分享画面模糊的问题
+
 ###### V1.1.2(2017-1-4)
 * 修复不能同时拉主播屏幕分享画面和摄像头画面的问题
 

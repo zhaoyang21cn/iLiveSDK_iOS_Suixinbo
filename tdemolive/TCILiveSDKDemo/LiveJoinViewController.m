@@ -21,8 +21,12 @@
     _downToVideoButton.enabled = NO;
     _upToVideoButton.enabled = NO;
     _rejectToVideoButton.enabled = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    
     [self joinLive];
 }
+
 
 #pragma mark - TILLiveSDK相关接口
 - (void)joinLive{
@@ -271,14 +275,6 @@
 
 
 
-//添加消息到屏幕
-- (void)addTextToView:(NSString *)newText{
-    NSString *text = self.msgTextView.text;
-    text = [text stringByAppendingString:@"\n"];
-    text = [text stringByAppendingString:newText];
-    self.msgTextView.text = text;
-}
-
 #pragma mark - 界面相关
 - (CGRect)getRenderFrame:(NSInteger)count{
     if(count == 3){
@@ -289,6 +285,14 @@
     CGFloat y = 20 + (count * (height + 10));
     CGFloat x = 20;
     return CGRectMake(x, y, width, height);
+}
+
+
+- (void)addTextToView:(NSString *)newText{
+    NSString *text = self.msgTextView.text;
+    text = [text stringByAppendingString:@"\n"];
+    text = [text stringByAppendingString:newText];
+    self.msgTextView.text = text;
 }
 
 - (void)updateRenderFrame{
@@ -308,10 +312,42 @@
 
 - (void)selfDismiss
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     //为了看到关闭打印的信息，demo延迟1秒关闭
     __weak typeof(self) ws = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [ws dismissViewControllerAnimated:YES completion:nil];
     });
+}
+
+#pragma mark - 如果支持界面旋转
+- (void)statusBarOrientationChange:(NSNotification *)notification{
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    NSArray *views = [[TILLiveManager getInstance] getAllAVRenderViews];
+    for (UIView *view in views) {
+        CGFloat height = view.frame.size.height;
+        CGFloat width = view.frame.size.width;
+        CGFloat x = view.frame.origin.x;
+        CGFloat y = view.frame.origin.y;
+        
+        CGFloat temp = 0;
+        if (orientation == UIInterfaceOrientationLandscapeRight  || orientation ==UIInterfaceOrientationLandscapeLeft){
+            //横屏
+            if(width < height){
+                temp = height;
+                height = width;
+                width = temp;
+            }
+        }
+        if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown){
+            //竖屏
+            if(width > height){
+                temp = height;
+                height = width;
+                width = temp;
+            }
+        }
+        view.frame = CGRectMake(x, y, width, height);
+    }
 }
 @end
