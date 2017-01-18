@@ -18,11 +18,16 @@
     UIButton    *_liveAudienceBtn;   //观看人数
     UIButton    *_livePraiseBtn;     //点赞人数
     
+    UILabel     *_roomId;//房间id
+    
     TCShowLiveListItem  *_liveItem;
 }
 
 @property (nonatomic, assign) BOOL isHost; //自己是不是主播
+@property (nonatomic, strong) UILabel     *timeLabel;
+@property (nonatomic, assign) NSInteger liveTime;
+@property (nonatomic, strong) NSTimer *liveTimer;
 
-- (instancetype)initWith:(TCShowLiveListItem *)item;
+- (instancetype)initWith:(TCShowLiveListItem *)item isHost:(BOOL)isHost;
 
 @end

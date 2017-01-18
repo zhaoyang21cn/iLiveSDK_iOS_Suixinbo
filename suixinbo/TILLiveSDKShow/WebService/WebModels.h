@@ -8,83 +8,40 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ImageSignItem : NSObject
+@interface ShowRoomInfo : NSObject
 
-@property (nonatomic, copy)   NSString     *imageSign;
-@property (nonatomic, assign) NSInteger     saveSignTime;
+@property (nonatomic, copy) NSString * title;
+@property (nonatomic, copy) NSString * type;
+@property (nonatomic, assign) NSInteger roomnum;
+@property (nonatomic, copy) NSString * groupid;
+@property (nonatomic, copy) NSString * cover;
+@property (nonatomic, copy) NSString * host;
+@property (nonatomic, assign) NSInteger appid;
+@property (nonatomic, assign) int thumbup;//点赞数
+@property (nonatomic, assign) int memsize;//观看人数
+@property (nonatomic, assign) NSInteger device;
+@property (nonatomic, assign) NSInteger videotype;
 
-- (BOOL)isVailed;
-@end
-
-
-//==================================================
-
-// 位置信息
-@interface LocationItem : NSObject
-
-@property (nonatomic, assign) double longitude;
-@property (nonatomic, assign) double latitude;
-@property (nonatomic, copy) NSString *address;
-
-- (BOOL)isVaild;
+- (NSDictionary *)toRoomDic;
 
 @end
 
-//==================================================
-// 用户基本信息
-@interface TCShowUser : NSObject
-
-@property (nonatomic, copy) NSString *avatar;
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, copy) NSString *uid;
-
-@property (nonatomic, assign) NSInteger avCtrlState;
-
-@property (nonatomic, assign) NSInteger avMultiUserState;       // 多人互动时IM配置
-
-// 互动时，用户画面显示的屏幕上的区域（opengl相关的位置）
-@property (nonatomic, assign) CGRect avInteractArea;
-
-// 互动时，因opengl放在最底层，之上是的自定义交互层，通常会完全盖住opengl
-// 用户要想与小画面进行交互的时候，必须在交互层上放一层透明的大小相同的控件，能过操作此控件来操作小窗口画面
-@property (nonatomic, weak) UIView *avInvisibleInteractView;
-
-- (BOOL)isVailed;
-
-
-@end
-
-//==================================================
-
-// TODO:添加自定义的命令类型
-//@interface TCShowLiveCustomAction : NSObject
+//@interface HostLBS : NSObject
 //
-//@property (nonatomic, assign)   NSInteger       userAction;
-//@property (nonatomic, copy)     NSString        *actionParam;
-//@property (nonatomic, strong)   id<IMUserAble>  user;
+//@property (nonatomic, assign) float latitude;
+//@property (nonatomic, assign) float longitude;
+//@property (nonatomic, copy) NSString *address;
 //
-//- (NSData *)actionData;
+//- (NSDictionary *)toLBSDic;
 //
 //@end
 
-
 @interface TCShowLiveListItem : NSObject
 
-@property (nonatomic, strong) TCShowUser *host;
-@property (nonatomic, strong) LocationItem *lbs;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *cover;
+@property (nonatomic, copy) NSString *uid;
+@property (nonatomic, strong) ShowRoomInfo *info;
 
-@property (nonatomic, assign) NSInteger createTime;         // 创建时间
-@property (nonatomic, assign) NSInteger timeSpan;           // 时长
-
-@property (nonatomic, assign) NSInteger liveAudience;
-
-@property (nonatomic, assign) NSInteger admireCount;        // 点赞统计
-@property (nonatomic, assign) NSInteger watchCount;         // 观看人次
-
-@property (nonatomic, copy) NSString *chatRoomId;           // 直播聊天室
-@property (nonatomic, assign) int avRoomId;                 // 直播房间号
+//@property (nonatomic, strong) HostLBS *lbs;
 
 + (instancetype)loadFromToLocal;
 
@@ -96,13 +53,28 @@
 
 @end
 
+@interface RecordVideoItem : NSObject
 
+@property (nonatomic, copy) NSString *uid;
+@property (nonatomic, copy) NSString *cover;
+@property (nonatomic, copy) NSString *videoId;
+@property (nonatomic, strong) NSMutableArray *playurl;
 
+@end
 
+@interface MemberListItem : NSObject
 
+@property (nonatomic, copy) NSString *identifier;
+@property (nonatomic, assign) int role;
 
+@end
 
+@interface LiveStreamListItem : NSObject
 
+@property (nonatomic, copy) NSString *uid;
+@property (nonatomic, copy) NSString *cover;
+@property (nonatomic, copy) NSString *address;//拼接地址
+@property (nonatomic, copy) NSString *address2;//拼接地址
+@property (nonatomic, copy) NSString *address3;//拼接地址
 
-
-
+@end

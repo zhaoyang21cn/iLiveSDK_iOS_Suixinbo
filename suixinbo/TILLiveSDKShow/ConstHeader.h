@@ -9,11 +9,14 @@
 #ifndef ConstHeader_h
 #define ConstHeader_h
 
-#define ShowAppId       @"1400019301"
-#define ShowAccountType @"8871"
+//#define ShowAppId       @"1400001692"
+//#define ShowAccountType @"884"
 
-//#define ShowAppId       @"1400019352"
-//#define ShowAccountType @"8970"
+//#define ShowAppId       @"1400019301"
+//#define ShowAccountType @"8871"
+
+#define ShowAppId       @"1400019352"
+#define ShowAccountType @"8970"
 
 /******************** color ******************************/
 // 取色值相关的方法
@@ -69,6 +72,7 @@ static const int kDefaultMargin = 8;
 
 /******************** block *******************************/
 typedef void (^ActionHandle)(UIAlertAction * _Nonnull action);
+typedef void (^EditAlertHandle)(NSString * _Nonnull editString);
 
 /******************** custom msg cmd **********************/
 typedef NS_ENUM(NSInteger, ShowCustomCmd)
@@ -112,14 +116,29 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
 
 /******************** notification **********************/
 #define kUserParise_Notification        @"kUserParise_Notification"
-#define kUserJoinRoom_Notification      @"kUserJoinRoom_Notification"
-#define kUserExitRoom_Notification      @"kUserExitRoom_Notification"
+//#define kUserJoinRoom_Notification      @"kUserJoinRoom_Notification"
+//#define kUserExitRoom_Notification      @"kUserExitRoom_Notification"
+#define kUserMemChange_Notification      @"kUserMemChange_Notification"
 #define kUserUpVideo_Notification       @"kUserUpVideo_Notification"
 #define kUserDownVideo_Notification     @"kUserDownVideo_Notification"
+#define kUserSwitchRoom_Notification    @"kUserSwitchRoom_Notification"
+#define kGroupDelete_Notification       @"kGroupDelete_Notification"
+#define kPureDelete_Notification        @"kPureDelete_Notification"
+#define kNoPureDelete_Notification      @"kNoPureDelete_Notification"
+#define kClickConnect_Notification      @"kClickConnect_Notification"
 
 /******************** role string **********************/
 #define kSxbRole_Host       @"LiveMaster"
 #define kSxbRole_Guest      @"Guest"
 #define kSxbRole_Interact   @"LiveGuest"
+
+/******************** local param **********************/
+#define kLoginParam         @"kLoginParam"
+#define kLoginIdentifier    @"kLoginIdentifier"
+#define kLoginPassward      @"kLoginPassward"
+#define kEnvParam           @"kEnvParam"
+
+
+
 
 #endif /* ConstHeader_h */

@@ -12,7 +12,7 @@
 
 - (NSString *)url
 {
-    return @"http://182.254.234.225/sxb/index.php?svc=cos&cmd=get_sign";
+    return @"https://sxb.qcloud.com/sxb/index.php?svc=cos&cmd=get_sign";
 }
 
 - (Class)responseDataClass

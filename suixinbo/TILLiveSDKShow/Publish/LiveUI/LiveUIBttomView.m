@@ -19,6 +19,15 @@
 
 @implementation LiveUIBttomView
 
+- (instancetype)initWith:(NSString *)role
+{
+    if (self = [self init])
+    {
+        self.mainWindowRole = role;
+    }
+    return self;
+}
+
 - (instancetype)init
 {
     if (self = [super init])
@@ -36,6 +45,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upVideoUpdateFuns) name:kUserUpVideo_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downVideoUpdateFuns) name:kUserDownVideo_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchRoomRefresh) name:kUserSwitchRoom_Notification object:nil];
 }
 //上麦之后更新界面
 - (void)upVideoUpdateFuns
@@ -47,6 +57,13 @@
 //下麦之后更新界面
 - (void)downVideoUpdateFuns
 {
+    _isUpVideo = NO;
+    [self setNeedsLayout];
+}
+
+- (void)switchRoomRefresh
+{
+//    _isHost = NO;
     _isUpVideo = NO;
     [self setNeedsLayout];
 }
@@ -85,23 +102,22 @@
     _micBtn = [[UIButton alloc] init];
     [_micBtn setImage:[UIImage imageNamed:@"mic"] forState:UIControlStateNormal];
     [_micBtn setImage:[UIImage imageNamed:@"mic_shut"] forState:UIControlStateSelected];
-    BOOL curMic = [[ILiveRoomManager getInstance] getCurMicState];
-    _micBtn.selected = !curMic;
     [_micBtn addTarget:self action:@selector(onMic:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_micBtn];
     [_btnArray addObject:_micBtn];
     
     _pureBtn = [[UIButton alloc] init];
     [_pureBtn setImage:[UIImage imageNamed:@"full_screen"] forState:UIControlStateNormal];
+    [_pureBtn setImage:[UIImage imageNamed:@"normal"] forState:UIControlStateSelected];
     [_pureBtn addTarget:self action:@selector(onPure:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_pureBtn];
     [_btnArray addObject:_pureBtn];
     
-    _noPureBtn = [[UIButton alloc] init];
-    [_noPureBtn setImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
-    [_noPureBtn addTarget:self action:@selector(onNonPure:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_noPureBtn];
-    [_btnArray addObject:_noPureBtn];
+//    _noPureBtn = [[UIButton alloc] init];
+//    [_noPureBtn setImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
+//    [_noPureBtn addTarget:self action:@selector(onNonPure:) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:_noPureBtn];
+//    [_btnArray addObject:_noPureBtn];
     
     _praiseBtn = [[UIButton alloc] init];
     [_praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
@@ -142,6 +158,25 @@
 //        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
 //    }];
     
+    if (_isHost)//如果是主播点击bottom中的下麦操作时，是下别人的麦
+    {
+        ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
+        
+        video.recvId = _mainWindowUserId;
+        video.data = [_mainWindowUserId dataUsingEncoding:NSUTF8StringEncoding];
+        
+        video.type = ILVLIVE_IMTYPE_GROUP;
+        video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
+        
+        
+        [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
+            NSLog(@"send succ");
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        }];
+        return;
+    }
+    
     __weak typeof(self) ws = self;
     
     ILiveRoomManager *manager = [ILiveRoomManager getInstance];
@@ -153,41 +188,82 @@
     msg.data = [[[ILiveLoginManager getInstance] getLoginId] dataUsingEncoding:NSUTF8StringEncoding];
     
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
+        
         [manager changeRole:kSxbRole_Guest succ:^ {
-            TCILDebugLog(@"down to video: change role succ");
+            NSLog(@"down to video: change role succ");
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
             [manager enableCamera:pos enable:NO succ:^{
-                TCILDebugLog(@"down to video: disable camera succ");
+                NSLog(@"down to video: disable camera succ");
                 [manager enableMic:NO succ:^{
-                    TCILDebugLog(@"down to video: disable mic succ");
+                    NSLog(@"down to video: disable mic succ");
+                    ws.mainWindowRole = kSxbRole_Host;
                     ws.isUpVideo = NO;
                     [ws layoutSubviews];
-                } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    TCILDebugLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
                     
+                } failed:^(NSString *module, int errId, NSString *errMsg) {
+                    NSLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
                 }];
+                
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                TCILDebugLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                NSLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
                 
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            TCILDebugLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+            NSLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
             
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        TCILDebugLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-        
+        NSLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
     }];
 }
 
 - (void)onFlash:(UIButton *)button
 {
+    cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
+    if (pos == CameraPosFront && !button.selected)
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"前置摄像头打开闪光灯会影响直播" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+        UIViewController *vc = [self viewController];
+        [vc presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    button.selected = !button.selected;
+    
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if ([device hasTorch])
+    {
+        [device lockForConfiguration:nil];
+        [device setTorchMode: button.selected ? AVCaptureTorchModeOn : AVCaptureTorchModeOff];
+        [device unlockForConfiguration];
+    }
+}
+
+- (UIViewController *)viewController
+{
+    UIResponder *next = self.nextResponder;
+    do
+    {
+        //判断响应者对象是否是视图控制器类型
+        if ([next isKindOfClass:[UIViewController class]])
+        {
+            return (UIViewController *)next;
+        }
+        next = next.nextResponder;
+    }while(next != nil);
+    return nil;
 }
 
 - (void)onCamera:(UIButton *)button
 {
     [[ILiveRoomManager getInstance] switchCamera:^{
         NSLog(@"switch camera succ");
+        
+        cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
+        if (pos == CameraPosFront && _flashBtn.selected == YES)
+        {
+            _flashBtn.selected = !_flashBtn.selected;
+        }
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSString *errInfo = [NSString stringWithFormat:@"switch camera fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
         NSLog(@"%@",errInfo);
@@ -267,6 +343,23 @@
 
 - (void)onPure:(UIButton *)button
 {
+    button.selected = !button.selected;
+    
+    if (button.selected)
+    {
+        [self hidddenButtons:@[_pureBtn] isHide:NO];
+        [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _praiseBtn] isHide:YES];
+        
+        [_pureBtn alignParentRightWithMargin:kDefaultMargin];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPureDelete_Notification object:nil];
+    }
+    else
+    {
+        [self setNeedsLayout];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNoPureDelete_Notification object:nil];
+    }
 }
 
 - (void)onNonPure:(UIButton *)button
@@ -275,13 +368,23 @@
 
 - (void)onPraise:(UIButton *)button
 {
+    if (_isHost)
+    {
+        return;
+    }
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_GROUP;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Praise;
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     
+    
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:nil];
+        NSMutableDictionary *pointDic = [NSMutableDictionary dictionary];
+        [pointDic setObject:[NSNumber numberWithFloat:button.center.x] forKey:@"parise_x"];
+        [pointDic setObject:[NSNumber numberWithFloat:button.center.y] forKey:@"parise_y"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:pointDic];
+        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         
     }];
@@ -295,39 +398,69 @@
     CGRect rect = self.bounds;
     rect = CGRectInset(rect, 0, (rect.size.height - 40)/2);
     
-    BOOL curMic = [[ILiveRoomManager getInstance] getCurMicState];
-    _micBtn.selected = !curMic;
-    
     NSMutableArray *funs = [NSMutableArray array];
-    if (_isHost)
+    if ([_mainWindowRole isEqualToString:kSxbRole_Host])//主窗口是主播
     {
-        [funs addObjectsFromArray:@[_cameraBtn, _beautyBtn, _whiteBtn, _micBtn]];
-        [self hidddenButtons:@[_sendMsgBtn, _praiseBtn, _downVideo] isHide:YES];
-        [self hidddenButtons:@[_cameraBtn, _beautyBtn, _whiteBtn, _micBtn] isHide:NO];
+        if (_isHost)//自己是主播(随心播中主播不能发送消息，业务测可自己定)
+        {
+            [funs addObjectsFromArray:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn]];
+            
+            [self hidddenButtons:@[_sendMsgBtn, _downVideo] isHide:YES];
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];
+        }
+        else if (_isUpVideo)
+        {
+            [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn]];
+            
+            [self hidddenButtons:@[_downVideo] isHide:YES];
+            [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];
+        }
+        else
+        {
+            [funs addObjectsFromArray:@[_sendMsgBtn, _pureBtn, _praiseBtn]];
+            
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo] isHide:YES];
+            [self hidddenButtons:@[_sendMsgBtn, _pureBtn, _praiseBtn] isHide:NO];
+        }
     }
-    else if (_isUpVideo)
+    else//主窗口是连麦用户
     {
-        [funs addObjectsFromArray:@[_sendMsgBtn, _praiseBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo]];
-        [self hidddenButtons:@[_sendMsgBtn, _praiseBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo] isHide:NO];
+        if (_isHost)
+        {
+            [funs addObjectsFromArray:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn]];
+            
+            [self hidddenButtons:@[_sendMsgBtn] isHide:YES];
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn] isHide:NO];
+        }
+        else if (_isUpVideo)//随心播中，连麦用户和普通观众不能下麦其他人的视频(业务测可自己定)
+        {
+            if ([_mainWindowUserId isEqualToString:[[ILiveLoginManager getInstance] getLoginId]])//如果主窗口就是登录用户的画面，则可以下麦
+            {
+                [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo,_pureBtn, _praiseBtn]];
+                
+                [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn] isHide:NO];
+            }
+            else
+            {
+                [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn]];
+                
+                [self hidddenButtons:@[_downVideo] isHide:YES];
+                [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];
+            }
+            
+        }
+        else
+        {
+            [funs addObjectsFromArray:@[_sendMsgBtn, _pureBtn, _praiseBtn]];
+            
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo] isHide:YES];
+            [self hidddenButtons:@[_sendMsgBtn, _pureBtn, _praiseBtn] isHide:NO];
+        }
     }
-    else
-    {
-        [funs addObjectsFromArray:@[_sendMsgBtn, _praiseBtn]];
-        [self hidddenButtons:@[_cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo] isHide:YES];
-        [self hidddenButtons:@[_sendMsgBtn, _praiseBtn] isHide:NO];
-    }
-    
     if (funs.count > 1)
     {
         [self alignSubviews:funs horizontallyWithPadding:0 margin:0 inRect:rect];
     }
-//    else if (funs.count == 1)
-//    {
-//        UIView *view = funs[0];
-//        [view sizeWith:CGSizeMake(40, 40)];
-//        [view alignParentRightWithMargin:15];
-//        [view layoutParentVerticalCenter];
-//    }
 }
 
 - (void)hidddenButtons:(NSArray *)buttons isHide:(BOOL)hide

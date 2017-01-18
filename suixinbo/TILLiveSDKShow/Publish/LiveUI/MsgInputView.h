@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "LiveUIViewController.h"
+@class LiveViewController;
 
 @interface MsgInputView : UIView<UITextFieldDelegate>
 
@@ -21,13 +21,13 @@
 @protected
     BOOL            _isInputViewActive;
     
-    LiveUIViewController *_liveUI;
+    LiveViewController *_liveUI;
 }
 
 @property (nonatomic, assign) NSInteger limitLength;    // 限制长度，> 0 时有效
 @property (nonatomic, copy) NSString *text;
 
-- (instancetype)initWith:(LiveUIViewController *)liveUI;
+- (instancetype)initWith:(LiveViewController *)liveUI;
 
 - (BOOL)isInputViewActive;
 

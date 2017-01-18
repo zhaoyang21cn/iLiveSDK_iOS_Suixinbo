@@ -95,6 +95,8 @@
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
     }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kClickConnect_Notification object:_identifier.text];
 }
 
 

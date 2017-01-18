@@ -8,9 +8,11 @@
 
 #import "MsgInputView.h"
 
+#import "LiveViewController+UI.h"
+
 @implementation MsgInputView
 
-- (instancetype)initWith:(LiveUIViewController *)liveUI
+- (instancetype)initWith:(LiveViewController *)liveUI
 {
     if (self = [super init])
     {
@@ -158,7 +160,7 @@
 - (void)onClickSend
 {
     ILVLiveTextMessage *msg = [[ILVLiveTextMessage alloc] init];
-    
+
     msg.type = ILVLIVE_IMTYPE_GROUP;
     msg.text = _textField.text;
     

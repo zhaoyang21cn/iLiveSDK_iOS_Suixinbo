@@ -132,22 +132,49 @@
     [self.view addSubview:regWaitView];
     
     __weak typeof(self) ws = self;
-    [[ILiveLoginManager getInstance] tlsRegister:_userNameTF.text pwd:_passwordTF.text succ:^{
-        NSLog(@"tillivesdkshow regist succ");
+    
+    //向业务后台注册
+    RegistRequest *registReq = [[RegistRequest alloc] initWithHandler:^(BaseRequest *request) {
         
         [regWaitView removeFromSuperview];
         
-        [ws showAlert:@"注册成功" message:nil okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [ws showAlert:@"注册成功" message:nil okTitle:@"确定" cancelTitle:nil ok:^(UIAlertAction * _Nonnull action) {
+            [ws.navigationController popViewControllerAnimated:YES];
+            [ws.delegate showRegistUserIdentifier:ws.userNameTF.text];
+            [ws.delegate showRegistUserPwd:ws.passwordTF.text];
+        } cancel:nil];
         
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
+    } failHandler:^(BaseRequest *request) {
         
         [regWaitView removeFromSuperview];
         
-        NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+        NSString *errinfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo];
         NSLog(@"regist fail.%@",errinfo);
         
         [ws showAlert:@"注册失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
     }];
+    registReq.identifier = _userNameTF.text;
+    registReq.pwd = _passwordTF.text;
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:registReq];
+    
+    
+//    [[ILiveLoginManager getInstance] tlsRegister:_userNameTF.text pwd:_passwordTF.text succ:^{
+//        NSLog(@"tillivesdkshow regist succ");
+//        
+//        [regWaitView removeFromSuperview];
+//        
+//        [ws showAlert:@"注册成功" message:nil okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+//        
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        
+//        [regWaitView removeFromSuperview];
+//        
+//        NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+//        NSLog(@"regist fail.%@",errinfo);
+//        
+//        [ws showAlert:@"注册失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+//    }];
 }
 
 

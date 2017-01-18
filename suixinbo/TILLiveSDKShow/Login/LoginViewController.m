@@ -14,7 +14,7 @@
 
 #import "AppDelegate.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <RegistViewControllerDelegate>
 
 @property (nonatomic, strong) UITextField *userNameTF;
 @property (nonatomic, strong) UITextField *passwordTF;
@@ -22,6 +22,24 @@
 @end
 
 @implementation LoginViewController
+
+//- (instancetype)init
+//{
+//    if (self = [super init])
+//    {
+//        [[ILiveSDK getInstance] setUserStatusListener:self];
+//    }
+//    return self;
+//}
+- (void)showRegistUserIdentifier:(NSString *)identifier
+{
+    _userNameTF.text = identifier;
+}
+
+- (void)showRegistUserPwd:(NSString *)passward
+{
+    _passwordTF.text = passward;
+}
 
 - (void)viewDidLoad
 {
@@ -35,6 +53,8 @@
     [self addTapBlankToHideKeyboardGesture];
     
     self.navigationItem.title = @"用户名登录";
+    
+    [self autoLogin];
     
     CGRect screenRect = [UIScreen mainScreen].bounds;
     CGFloat screenW = screenRect.size.width;
@@ -51,7 +71,7 @@
     _userNameTF.layer.borderColor = kColorGray.CGColor;
     _userNameTF.layer.cornerRadius = 5.0;
     _userNameTF.placeholder = @"用户名";
-    _userNameTF.text = @"sxb1";
+//    _userNameTF.text = @"wilder2";
     [self.view addSubview:_userNameTF];
     index++;
     
@@ -64,7 +84,7 @@
     _passwordTF.layer.borderColor = kColorGray.CGColor;
     _passwordTF.layer.cornerRadius = 5.0;
     _passwordTF.placeholder = @"密码";
-    _passwordTF.text = @"123123123";
+//    _passwordTF.text = @"123123123";
     [self.view addSubview:_passwordTF];
     index++;
     
@@ -119,6 +139,19 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+- (void)autoLogin
+{
+    NSDictionary *dic = [self getLocalLoginParam];
+    if (dic)
+    {
+        NSString *identifier = [dic objectForKey:kLoginIdentifier];
+        NSString *passward = [dic objectForKey:kLoginPassward];
+        if (identifier.length > 0 && passward.length > 0)
+        {
+            [self login:identifier passward:passward];
+        }
+    }
+}
 
 - (void)onLogin:(UIButton *)button
 {
@@ -133,41 +166,95 @@
         return;
     }
     
+    [self login:_userNameTF.text passward:_passwordTF.text];
+    
+
+//    [[ILiveLoginManager getInstance] tlsLogin:_userNameTF.text pwd:_passwordTF.text succ:^{
+//        NSLog(@"tillivesdkshow login succ");
+//        
+//        [loginWaitView removeFromSuperview];
+//        
+//        [ws enterMainUI];
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        //errId=6208:离线被踢，此时再次登录即可
+//        NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+//        NSLog(@"login fail.%@",errInfo);
+//        [loginWaitView removeFromSuperview];
+//        [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+//    }];
+}
+
+- (void)login:(NSString *)identifier passward:(NSString *)pwd
+{
     LoadView *loginWaitView = [LoadView loadViewWith:@"正在登录"];
     [self.view addSubview:loginWaitView];
     
-    __weak LoginViewController *ws = self;
-//    [[ILiveLoginManager getInstance] iLiveLogin:_userNameTF.text sig:@"123" succ:^{
-//                NSLog(@"tillivesdkshow login succ");
-//        
-//                [loginWaitView removeFromSuperview];
-//        
-//                [ws enterMainUI];
-//    } failed:^(NSString *module, int errId, NSString *errMsg) {
-//                NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-//                NSLog(@"login fail.%@",errInfo);
-//                [loginWaitView removeFromSuperview];
-//                [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-//    }];
-    [[ILiveLoginManager getInstance] tlsLogin:_userNameTF.text pwd:_passwordTF.text succ:^{
-        NSLog(@"tillivesdkshow login succ");
+    __weak typeof(self) ws = self;
+    
+    //请求sig
+    LoginRequest *sigReq = [[LoginRequest alloc] initWithHandler:^(BaseRequest *request) {
+        
+        LoginResponceData *responseData = (LoginResponceData *)request.response.data;
+        [AppDelegate sharedAppDelegate].token = responseData.token;
+        
+        [[ILiveLoginManager getInstance] iLiveLogin:identifier sig:responseData.userSig succ:^{
+            NSLog(@"tillivesdkshow login succ");
+            
+            [loginWaitView removeFromSuperview];
+            [ws saveLoginParamToLocal:identifier passward:pwd];
+            [ws enterMainUI];
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            
+            [loginWaitView removeFromSuperview];
+            
+            if (errId == 8050)//离线被踢,再次登录
+            {
+                [ws login:identifier passward:pwd];
+            }
+            else
+            {
+                NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+                NSLog(@"login fail.%@",errInfo);
+                [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+            }
+        }];
+        
+    } failHandler:^(BaseRequest *request) {
         
         [loginWaitView removeFromSuperview];
         
-        [ws enterMainUI];
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        //errId=6208:离线被踢，此时再次登录即可
-        NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+        NSString *errInfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode, request.response.errorInfo];
         NSLog(@"login fail.%@",errInfo);
-        [loginWaitView removeFromSuperview];
         [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        
     }];
+    sigReq.identifier = identifier;
+    sigReq.pwd = pwd;
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:sigReq];
+}
+
+- (void)saveLoginParamToLocal:(NSString *)identifier passward:(NSString *)pwd
+{
+    NSMutableDictionary *loginParam = [NSMutableDictionary dictionary];
+    [loginParam setObject:identifier forKey:kLoginIdentifier];
+    [loginParam setObject:pwd forKey:kLoginPassward];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:loginParam forKey:kLoginParam];
+}
+
+- (NSDictionary *)getLocalLoginParam
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [userDefaults objectForKey:kLoginParam];
+    return dic;
 }
 
 - (void)onRegist:(UIButton *)button
 {
     RegistViewController *registVC = [[RegistViewController alloc] init];
     [self.navigationController pushViewController:registVC animated:YES];
+    registVC.delegate = self;
 }
 
 - (void)enterMainUI

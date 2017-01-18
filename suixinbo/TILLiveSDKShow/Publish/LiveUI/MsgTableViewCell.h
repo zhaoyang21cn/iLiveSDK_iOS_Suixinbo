@@ -10,9 +10,13 @@
 
 @interface MsgTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *userIdLabel;
-@property (nonatomic, strong) UILabel *msgLable;
+@property (nonatomic, strong) UILabel *msgLabel;
 
+@property (nonatomic, strong) UILabel *tipsLabel;
+
+@property (nonatomic, assign) CGFloat height;
 - (void)configMsg:(NSString *)userId msg:(NSString *)text;
+
+- (void)configTips:(NSString *)tips;
 
 @end

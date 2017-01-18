@@ -8,11 +8,18 @@
 
 #import "LiveViewController.h"
 
-#define kHeartInterval 10 //心跳间隔
+#import "UIImage+TintColor.h"
+#import "UIColor+MLPFlatColors.h"
 
-@interface LiveViewController ()<ILVLiveIMListener,ILVLiveAVListener, LiveUIDelegate>
+#import "LiveViewController+UI.h"
+#import "LiveViewController+ImListener.h"
+#import "LiveViewController+AVListener.h"
 
-@property (nonatomic, assign) NSInteger count;
+#define kHeartInterval 5 //心跳间隔
+
+@interface LiveViewController ()
+
+//@property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSTimer *heartTimer;
 @end
 
@@ -26,7 +33,7 @@
         
         NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
         
-        _isHost = [loginId isEqualToString:item.host.uid];
+        _isHost = [loginId isEqualToString:item.uid];
     }
     return self;
 }
@@ -35,6 +42,18 @@
 {
     return YES;
 }
+
+//- (void)viewDidLayoutSubviews
+//{
+//    [super viewDidLayoutSubviews];
+//    for (UIView *view in self.view.subviews)
+//    {
+//        if ([view isKindOfClass:[ILiveRenderView class]])
+//        {
+//            view.frame = self.view.bounds;
+//        }
+//    }
+//}
 
 - (void)viewDidLoad
 {
@@ -49,20 +68,255 @@
     //创建房间
     if (_isHost)
     {
-        [self createRoom:_liveItem.avRoomId groupId:_liveItem.chatRoomId];
+        [self createRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
+        //上报房间信息
+        [self reportRoomInfo:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
     }
     else
     {
-        [self joinRoom:_liveItem.avRoomId groupId:_liveItem.chatRoomId];
+        UISwipeGestureRecognizer *downGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToNextRoom:)];
+        downGes.direction = UISwipeGestureRecognizerDirectionDown;
+        [self.view addGestureRecognizer:downGes];
+        
+        UISwipeGestureRecognizer *upGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToPreRoom:)];
+        upGes.direction = UISwipeGestureRecognizerDirectionUp;
+        [self.view addGestureRecognizer:upGes];
+        
+        [self joinRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
     }
-    
-    //上报server
-    [self reportRoomInfo:_liveItem.avRoomId];
     
     //发送心跳
     [self startLiveTimer];
     
     [self addSubviews];
+    
+    //进入房间，上报成员id
+    [self reportMemberId:_liveItem.info.roomnum operate:0];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchRoomRefresh:) name:kUserSwitchRoom_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGotupDelete:) name:kGroupDelete_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLikeHeartStartRect:) name:kUserParise_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLiveViewPure:) name:kPureDelete_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLiveViewNoPure:) name:kNoPureDelete_Notification object:nil];
+    
+    _msgDatas = [NSMutableArray array];
+    
+    //测试代码，无需关注
+//    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 100, 100, 50)];
+//    [button1 addTarget:self action:@selector(onTest1) forControlEvents:UIControlEventTouchUpInside];
+//    [button1 setTitle:@"isRotate_no" forState:UIControlStateNormal];
+//    [self.view addSubview:button1];
+//    
+//    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake(150, 100, 100, 50)];
+//    [button2 addTarget:self action:@selector(onTest2) forControlEvents:UIControlEventTouchUpInside];
+//    [button2 setTitle:@"isRotate_yes" forState:UIControlStateNormal];
+//    [self.view addSubview:button2];
+//    
+//    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake(0, 150, 100, 50)];
+//    [button3 addTarget:self action:@selector(onTest3) forControlEvents:UIControlEventTouchUpInside];
+//    [button3 setTitle:@"same_SCAL" forState:UIControlStateNormal];
+//    [self.view addSubview:button3];
+//    
+//    UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake(100, 150, 100, 50)];
+//    [button4 addTarget:self action:@selector(onTest4) forControlEvents:UIControlEventTouchUpInside];
+//    [button4 setTitle:@"same_BLAC" forState:UIControlStateNormal];
+//    [self.view addSubview:button4];
+//    
+//    UIButton *button5 = [[UIButton alloc] initWithFrame:CGRectMake(200, 150, 100, 50)];
+//    [button5 addTarget:self action:@selector(onTest5) forControlEvents:UIControlEventTouchUpInside];
+//    [button5 setTitle:@"same_STRE" forState:UIControlStateNormal];
+//    [self.view addSubview:button5];
+//    
+//    UIButton *button6 = [[UIButton alloc] initWithFrame:CGRectMake(0, 200, 100, 50)];
+//    [button6 addTarget:self action:@selector(onTest6) forControlEvents:UIControlEventTouchUpInside];
+//    [button6 setTitle:@"diff_SCAL" forState:UIControlStateNormal];
+//    [self.view addSubview:button6];
+//    
+//    UIButton *button7 = [[UIButton alloc] initWithFrame:CGRectMake(100, 200, 100, 50)];
+//    [button7 addTarget:self action:@selector(onTest7) forControlEvents:UIControlEventTouchUpInside];
+//    [button7 setTitle:@"diff_BLAC" forState:UIControlStateNormal];
+//    [self.view addSubview:button7];
+//    
+//    UIButton *button8 = [[UIButton alloc] initWithFrame:CGRectMake(200, 200, 100, 50)];
+//    [button8 addTarget:self action:@selector(onTest8) forControlEvents:UIControlEventTouchUpInside];
+//    [button8 setTitle:@"diff_STRE" forState:UIControlStateNormal];
+//    [self.view addSubview:button8];
+}
+
+- (void)onLiveViewPure:(NSNotification *)noti
+{
+    _msgTableView.hidden = YES;
+}
+- (void)onLiveViewNoPure:(NSNotification *)noti
+{
+    _msgTableView.hidden = NO;
+}
+//测试代码，无需关注
+//- (void)onTest1
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.isRotate = NO;
+//}
+//- (void)onTest2
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.isRotate = YES;
+//}
+//
+//- (void)onTest3
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.sameDirectionRenderMode = ILIVERENDERMODE_SCALETOFIT;
+//}
+//- (void)onTest4
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.sameDirectionRenderMode = ILIVERENDERMODE_BLACKTOFILL;
+//}
+//- (void)onTest5
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.sameDirectionRenderMode = ILIVERENDERMODE_STRETCHTOFILL;
+//}
+//- (void)onTest6
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.diffDirectionRenderMode = ILIVERENDERMODE_SCALETOFIT;
+//}
+//- (void)onTest7
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.diffDirectionRenderMode = ILIVERENDERMODE_BLACKTOFILL;
+//}
+//- (void)onTest8
+//{
+//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+//    renderView.diffDirectionRenderMode = ILIVERENDERMODE_STRETCHTOFILL;
+//}
+
+
+- (void)onSwitchToPreRoom:(UIGestureRecognizer *)ges
+{
+    if (ges.state == UIGestureRecognizerStateEnded)
+    {
+        [self switchRoom:YES];
+    }
+}
+
+- (void)onSwitchToNextRoom:(UIGestureRecognizer *)ges
+{
+    if (ges.state == UIGestureRecognizerStateEnded)
+    {
+        [self switchRoom:NO];
+    }
+}
+
+- (void)switchRoom:(BOOL)isPreRoom
+{
+    ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+    option.controlRole = kSxbRole_Guest;
+    
+    __weak typeof(self) ws = self;
+    
+    RoomListRequest *listReq = [[RoomListRequest alloc] initWithHandler:^(BaseRequest *request) {
+        RoomListRequest *wreq = (RoomListRequest *)request;
+        RoomListRspData *respData = (RoomListRspData *)wreq.response.data;
+        
+        if (respData.rooms.count <= 1)
+        {
+            [AppDelegate showAlert:self title:@"提示" message:@"没有更多房间" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+            return ;
+        }
+        
+        int curRoomIndex = -1;
+        int switchToIndex = -1;
+        for (int index = 0; index < respData.rooms.count; index++ )
+        {
+            TCShowLiveListItem *item = respData.rooms[index];
+            if (item.info.roomnum == ws.liveItem.info.roomnum)
+            {
+                curRoomIndex = index;
+            }
+        }
+        
+        if (isPreRoom)
+        {
+            if (curRoomIndex == -1)
+            {
+                switchToIndex = 0;
+                
+            }
+            else if (curRoomIndex > 0)
+            {
+                switchToIndex = curRoomIndex-1;
+            }
+            //如果当前房间是第一个，则切换到最后一个房间
+            else if (curRoomIndex == 0 && respData.rooms.count > 1)
+            {
+                switchToIndex = (int)respData.rooms.count-1;
+            }
+        }
+        else
+        {
+            if (curRoomIndex == -1)
+            {
+                switchToIndex = 0;
+            }
+            else if (curRoomIndex < respData.rooms.count - 1)
+            {
+                switchToIndex = curRoomIndex + 1;
+            }
+            //如果当前房间是最后一个，则切换到第一个房间
+            else if (curRoomIndex == respData.rooms.count-1 && respData.rooms.count > 1)
+            {
+                switchToIndex = 0;
+            }
+        }
+        
+        //回收上一个房间的资源
+        [ws reportMemberId:ws.liveItem.info.roomnum operate:1];//上一个房间退房
+        
+        //移除渲染画面
+        ws.count = 0;
+        TILLiveManager *manager = [TILLiveManager getInstance];
+        for (NSString *user in ws.upVideoMembers)
+        {
+            TCILDebugLog(@"tilliveshow----->%s, codeId = %@",__func__, user);
+            NSDictionary *userDic = [ws decodeUser:user];
+            NSArray *keys = [userDic allKeys];
+            NSString *identifier = keys[0];
+            
+            NSNumber *type = [userDic objectForKey:identifier];
+            [manager removeAVRenderView:identifier srcType:(avVideoSrcType)[type integerValue]];
+        }
+        [ws.upVideoMembers removeAllObjects];
+        
+        TCShowLiveListItem *item = respData.rooms[switchToIndex];
+        ws.liveItem = item;
+        ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+        option.controlRole = kSxbRole_Guest;
+        [[ILiveRoomManager getInstance] switchRoom:(int)item.info.roomnum option:option succ:^{
+            //更新当前房间
+            [ws reportMemberId:item.info.roomnum operate:0];//当前房间进房
+            [ws sendJoinRoomMsg];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kUserSwitchRoom_Notification object:item userInfo:nil];
+            
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            [ws onClose];
+        }];
+        
+    } failHandler:^(BaseRequest *request) {
+        NSLog(@"get room list fail");
+    }];
+    
+    listReq.token = [AppDelegate sharedAppDelegate].token;
+    listReq.type = @"live";
+    listReq.index = 0;
+    listReq.size = 20;
+    listReq.appid = [ShowAppId intValue];
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:listReq];
 }
 
 - (void)createRoom:(int)roomId groupId:(NSString *)groupid
@@ -71,23 +325,24 @@
     
     ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
     option.controlRole = kSxbRole_Host;
+    option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     
     LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
     [self.view addSubview:createRoomWaitView];
     
     [[TILLiveManager getInstance] createRoom:roomId option:option succ:^{
-        
-        NSLog(@"createRoom succ");
         [createRoomWaitView removeFromSuperview];
         
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
+        NSLog(@"createRoom succ");
+        //将房间参数保存到本地，如果异常退出，下次进入app时，可提示返回这次的房间
+        [ws.liveItem saveToLocal];
         
+    } failed:^(NSString *module, int errId, NSString *errMsg) {
         [createRoomWaitView removeFromSuperview];
         
         NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
         NSLog(@"createRoom fail.%@",errinfo);
-        
-        [ws showAlert:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AppDelegate showAlert:ws title:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
     }];
 }
 
@@ -111,7 +366,6 @@
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_GROUP;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_EnterLive;
-    //    msg.sendId = [[ILiveLoginManager getInstance] getLoginId];
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
@@ -121,61 +375,60 @@
     }];
 }
 
-- (void)reportRoomInfo:(int)roomId
-{
-    LoadView *uploadToServerWaitView = [LoadView loadViewWith:@"上传房间信息"];
-    [self.view addSubview:uploadToServerWaitView];
-    
-    __weak typeof(self) ws = self;
-    //上传直播信息到随心播业务后台
-    LiveStartRequest *req = [[LiveStartRequest alloc] initWithHandler:^(BaseRequest *request) {
-        
-        [uploadToServerWaitView removeFromSuperview];
-        NSLog(@"-----> 上传成功");
-        
-        [ws dismissViewControllerAnimated:NO completion:nil];
-        
-//        TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
-//        TCShowUser *user = [[TCShowUser alloc] init];
-//        user.uid = [[ILiveLoginManager getInstance] getLoginId];
-//        item.host = user;
-//        
-//        LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
-//        [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
-        
-    } failHandler:^(BaseRequest *request) {
-        
-        [uploadToServerWaitView removeFromSuperview];
-        // 上传失败
-        NSLog(@"-----> 上传失败");
-        
-        NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
-        [ws showAlert:@"上传RoomInfo失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-    }];
-    
-    req.liveItem = [[TCShowLiveListItem alloc] init]; //(TCShowLiveListItem *)self.liveController.roomInfo;
-    req.liveItem.title = _liveItem.title;
-    req.liveItem.avRoomId = roomId;
-    req.liveItem.chatRoomId = [[ILiveRoomManager getInstance] getIMGroupId];
-    
-    TCShowUser *host = [[TCShowUser alloc] init];
-    host.uid = [[ILiveLoginManager getInstance] getLoginId];
-    host.username = host.uid;
-    req.liveItem.host = host;
-    
-    [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
-}
-
 - (void)addSubviews
 {
-    _liveUI = [[LiveUIViewController alloc] initWith:_liveItem];
-    _liveUI.isHost = _isHost;
-    [self.view addSubview:_liveUI.view];
-    [_liveUI.view bringSubviewToFront:self.view];
+    _closeBtn = [[UIButton alloc] init];
+    [_closeBtn setImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
+    [_closeBtn addTarget:self action:@selector(onBtnClose:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_closeBtn];
     
-    [self addChildViewController:_liveUI];
+    _topView = [[LiveUITopView alloc] initWith:_liveItem isHost:_isHost];
+    [self.view addSubview:_topView];
     
-    _liveUI.delegate = self;
+    _parView = [[LiveUIParView alloc] init];
+    _parView.delegate = self;
+    _parView.isHost = _isHost;
+    [self.view addSubview:_parView];
+    
+    _bgAlphaView = [[UIView alloc] init];
+    _bgAlphaView.backgroundColor = [UIColor clearColor];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBlankToHide)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [_bgAlphaView addGestureRecognizer:tap];
+    [self.view addSubview:_bgAlphaView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTapBlankToHide) name:kClickConnect_Notification object:nil];//点击连麦时自动收起好友列表
+    
+    _memberListView = [[UITableView alloc] init];
+    _memberListView.delegate = self;
+    _memberListView.dataSource = self;
+    _memberListView.tableFooterView = [[UIView alloc] init];
+    _memberListView.separatorInset = UIEdgeInsetsZero;
+    [_bgAlphaView addSubview:_memberListView];
+    
+    _members = [NSMutableArray array];
+    _upVideoMembers = [NSMutableArray array];
+    
+    _msgTableView = [[UITableView alloc] init];
+    _msgTableView.backgroundColor = [UIColor clearColor];
+    _msgTableView.delegate = self;
+    _msgTableView.dataSource = self;
+    _msgTableView.separatorInset = UIEdgeInsetsZero;
+    _msgTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _msgTableView.showsVerticalScrollIndicator = NO;
+    [self.view addSubview:_msgTableView];
+    
+    _msgInputView = [[MsgInputView alloc] initWith:self];
+    _msgInputView.limitLength = 32;
+    _msgInputView.hidden = YES;
+    [self.view addSubview:_msgInputView];
+    
+    _bottomView = [[LiveUIBttomView alloc] initWith:kSxbRole_Host];
+    _bottomView.delegate = self;
+    _bottomView.isHost = _isHost;
+    [self.view addSubview:_bottomView];
 }
 
 - (void)initLive
@@ -184,294 +437,116 @@
     [manager setAVListener:self];
     [manager setIMListener:self];
     [manager setAVRootView:self.view];
-//    [manager addAVRenderView:self.view.bounds forIdentifier:_liveItem.uid srcType:QAVVIDEO_SRC_TYPE_CAMERA];
 }
 
-- (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
+- (void)reportRoomInfo:(int)roomId groupId:(NSString *)groupid
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    ReportRoomRequest *reportReq = [[ReportRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
+        NSLog(@"-----> 上传成功");
+        
+    } failHandler:^(BaseRequest *request) {
+        // 上传失败
+        NSLog(@"-----> 上传失败");
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
+            [AppDelegate showAlert:self title:@"上传RoomInfo失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        });
+    }];
     
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
-    if (cancelTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
-    }
+    reportReq.token = [AppDelegate sharedAppDelegate].token;
     
-    [self presentViewController:alert animated:YES completion:nil];
+    reportReq.room = [[ShowRoomInfo alloc] init];
+    reportReq.room.title = _liveItem.info.title;
+    reportReq.room.type = @"live";
+    reportReq.room.roomnum = roomId;
+    reportReq.room.groupid = [NSString stringWithFormat:@"%d",roomId];
+    reportReq.room.cover = _liveItem.info.cover.length > 0 ? _liveItem.info.cover : @"";
+    reportReq.room.appid = [ShowAppId intValue];
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:reportReq];
 }
 
-//上麦
-- (void)upToVideo:(id)sender
+- (void)reportMemberId:(NSInteger)roomnum operate:(NSInteger)operate
 {
-//    [[TILLiveManager getInstance] upToVideoMember:ILVLIVEAUTH_INTERACT role:kSxbRole_Interact succ:^{
-//        NSLog(@"up video succ");
-//        
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
-//    } failed:^(NSString *module, int errId, NSString *errMsg) {
-//        NSLog(@"up video  fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
-//    }];
-    
-    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
-    msg.type = ILVLIVE_IMTYPE_C2C;
-    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
-    msg.recvId = _liveItem.host.uid;
-    
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
+    ReportMemIdRequest *req = [[ReportMemIdRequest alloc] initWithHandler:^(BaseRequest *request) {
+        NSLog(@"report memeber id succ");
+        [ws onRefreshMemberList];
         
-        NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
-        
-        TILLiveManager *manager = [TILLiveManager getInstance];
-//        [manager addAVRenderView:[ws getRenderFrame] forKey:loginId];
-        [manager addAVRenderView:[ws getRenderFrame] forIdentifier:loginId srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-        
-        ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
-        
-            [roomManager changeRole:kSxbRole_Interact succ:^{
-                
-                NSLog(@"changeRole");
-                
-                [roomManager enableCamera:CameraPosFront enable:YES succ:^{
-                    
-                    NSLog(@"enable camera YES");
-                    
-                    [roomManager enableMic:YES succ:^{
-                        
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
-                        
-                    } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    NSLog(@"enable mic fail");
-                    }];
-                    
-                } failed:^(NSString *module, int errId, NSString *errMsg) {
-                NSLog(@"enable camera fail");
-                }];
-
-            } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"change role fail");
-            }];
-            
-        } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"fail");
+    } failHandler:^(BaseRequest *request) {
+        NSLog(@"report memeber id fail");
     }];
+    req.token = [AppDelegate sharedAppDelegate].token;
+    req.userId = [[ILiveLoginManager getInstance] getLoginId];
+    req.roomnum = roomnum;
+    req.role = _isHost ? 1 : 0;
+    req.operate = operate;
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
 }
 
-//下麦
-- (void)downToVideo:(id)sender
+- (NSDictionary *)decodeUser:(NSString *)identifier
 {
-//    [[TILLiveManager getInstance] downToVideoMember:ILVLIVEAUTH_GUEST role:kSxbRole_Guest succ:^{
-//        NSLog(@"down video succ");
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
-//    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-//        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
-//    }];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
-    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
+    NSString *user;
+    NSRange rangeCamera = [identifier rangeOfString:@"_camera"];
     
-    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
-    msg.type = ILVLIVE_IMTYPE_GROUP;
-    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
-    msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
+    int idLen = (int)identifier.length;
+    int typeLen = (int)rangeCamera.length;//_camera和_screen的长度一样
     
-    [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        [manager changeRole:kSxbRole_Guest succ:^ {
-            TCILDebugLog(@"down to video: change role succ");
-            cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
-            [manager enableCamera:pos enable:NO succ:^{
-                TCILDebugLog(@"down to video: disable camera succ");
-                [manager enableMic:NO succ:^{
-                    TCILDebugLog(@"down to video: disable mic succ");
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
-                } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    TCILDebugLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-                    
-                }];
-            } failed:^(NSString *module, int errId, NSString *errMsg) {
-                TCILDebugLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-                
-            }];
-        } failed:^(NSString *module, int errId, NSString *errMsg) {
-            TCILDebugLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-            
-        }];
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        TCILDebugLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-    }];
-}
-
-//拒绝上麦
-- (void)rejectToVideo:(id)sender
-{
-    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
-    msg.cmd = ILVLIVE_IMCMD_INTERACT_REJECT;
-    msg.recvId = _liveItem.host.uid;
-    msg.type = ILVLIVE_IMTYPE_C2C;
+    user = [identifier substringWithRange:NSMakeRange(0, idLen-typeLen)];
     
-    [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        NSLog(@"refuse video succ");
-    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-        NSLog(@"refuse video  fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
-    }];
-}
-
-- (void)onCustomMessage:(ILVLiveCustomMessage *)msg
-{
-    int cmd = msg.cmd;
-    if (msg.type == ILVLIVE_IMTYPE_C2C)
+    if (user)//camera
     {
-        switch (cmd)
+        NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_CAMERA];
+        [dic setObject:type forKey:user];
+    }
+    else//screen
+    {
+        NSRange rangeScreen = [identifier rangeOfString:@"_screen"];
+        user = [identifier substringWithRange:NSMakeRange(0, idLen-rangeScreen.length)];
+        if (user)
         {
-            
-            case AVIMCMD_Multi_Host_Invite:
-            {
-                [self showAlert:@"收到视频邀请" message:msg.sendId ? msg.sendId : [[ILiveLoginManager getInstance] getLoginId] okTitle:@"接收" cancelTitle:@"拒绝" ok:^(UIAlertAction * _Nonnull action) {
-                    [self upToVideo:nil];
-                } cancel:^(UIAlertAction * _Nonnull action) {
-                    [self rejectToVideo:nil];
-                }];
-            }
-                break;
-//            case AVIMCMD_Multi_Interact_Join:
-//                [[NSNotificationCenter defaultCenter] postNotificationName:kUserJoinRoom_Notification object:nil];
-//                break;
-            default:
-                break;
+            NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_SCREEN];
+            [dic setObject:type forKey:user];
         }
     }
-    else if (msg.type == ILVLIVE_IMTYPE_GROUP)
-    {
-        switch (cmd) {
-            case AVIMCMD_Praise:
-                [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:nil];
-                break;
-//            case ILVLIVE_IMCMD_LEAVE:
-//                [[NSNotificationCenter defaultCenter] postNotificationName:kUserExitRoom_Notification object:nil];
-//                break;
-            case AVIMCMD_Multi_CancelInteract:
-                if ([self isSendToSelf:msg])
-                {
-                    [self downToVideo:nil];
-                }
-                break;
-            case AVIMCMD_EnterLive:
-                [[NSNotificationCenter defaultCenter] postNotificationName:kUserJoinRoom_Notification object:nil];
-                break;
-            case AVIMCMD_ExitLive:
-                [[NSNotificationCenter defaultCenter] postNotificationName:kUserExitRoom_Notification object:nil];
-                break;
-            default:
-                break;
-        }
-    }
+    return dic;
 }
 
-- (BOOL)isSendToSelf:(ILVLiveCustomMessage *)msg
+- (NSString *)codeUser:(NSString *)identifier type:(avVideoSrcType)type
 {
-    NSString *recvId = [[NSString alloc] initWithData:msg.data encoding:NSUTF8StringEncoding];
-    NSString *selfId = [[ILiveLoginManager getInstance] getLoginId];
-    
-    return [recvId isEqualToString:selfId];
-}
-
-- (void)onTextMessage:(ILVLiveTextMessage *)msg
-{
-    if (!_liveUI)
+    NSString *key;
+    if (type == QAVVIDEO_SRC_TYPE_CAMERA)
     {
-        return;
+        key = [NSString stringWithFormat:@"%@_camera",identifier];
     }
-    [_liveUI onMessage:msg];
-}
-
-- (void)onUserUpdateInfo:(ILVLiveAVEvent)event users:(NSArray *)users
-{
-    TILLiveManager *manager = [TILLiveManager getInstance];
-    switch (event)
+    else if (type == QAVVIDEO_SRC_TYPE_SCREEN)
     {
-        case ILVLIVE_AVEVENT_CAMERA_ON:
-        {
-            for (NSString *user in users)
-            {
-                CGRect renderFrame;
-                if(![user isEqualToString:_liveItem.host.uid])
-                {
-                    renderFrame = [self getRenderFrame];
-                }
-                else
-                {
-                    renderFrame = self.view.bounds;
-                }
-                [manager addAVRenderView:renderFrame forIdentifier:user srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-                _count++;
-                
-                [_liveUI.upVideoMembers addObject:user];
-            }
-        }
-            break;
-        case ILVLIVE_AVEVENT_CAMERA_OFF:
-        {
-            for (NSString *user in users)
-            {
-                [manager removeAVRenderView:user srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-                _count--;
-                
-                NSUInteger index = [_liveUI.upVideoMembers indexOfObject:user];
-                if (index != NSNotFound)
-                {
-                    [_liveUI.upVideoMembers removeObjectAtIndex:index];
-                }
-            }
-        }
-            break;
-        case ILVLIVE_AVEVENT_SCREEN_ON:
-            for (NSString *user in users)
-            {
-                CGRect renderFrame;
-                if(![user isEqualToString:_liveItem.host.uid])
-                {
-                    renderFrame = [self getRenderFrame];
-                }
-                else
-                {
-                    renderFrame = self.view.bounds;
-                }
-                [manager addAVRenderView:renderFrame forIdentifier:user srcType:QAVVIDEO_SRC_TYPE_SCREEN];
-                _count++;
-                [_liveUI.upVideoMembers addObject:user];
-            }
-            break;
-        case ILVLIVE_AVEVENT_SCREEN_OFF:
-            for (NSString *user in users)
-            {
-                [manager removeAVRenderView:user srcType:QAVVIDEO_SRC_TYPE_SCREEN];
-                _count--;
-                
-                NSUInteger index = [_liveUI.upVideoMembers indexOfObject:user];
-                if (index != NSNotFound)
-                {
-                    [_liveUI.upVideoMembers removeObjectAtIndex:index];
-                }
-            }
-            break;
-        default:
-            break;
+        key = [NSString stringWithFormat:@"%@_screen",identifier];
     }
+    return key;
 }
 
 //获取渲染位置
 - (CGRect)getRenderFrame
 {
-    if(_count == 3)
+    if (_count == 0)
+    {
+        return self.view.bounds;
+    }
+    if(_count == 4)
     {
         return CGRectZero;
     }
     
+    NSInteger smallCount = _count-1;
     CGRect screenRect = [UIScreen mainScreen].bounds;
     CGFloat height = (self.view.frame.size.height - 200 - 3 * 10)/3;
     CGFloat width = height*3/4;//宽高比3:4
-    CGFloat y = _count * (height + 10);
+    CGFloat y = 100 + (smallCount * (height + 10));
     CGFloat x = screenRect.size.width - width - kDefaultMargin;
     return CGRectMake(x, y, width, height);
 }
@@ -481,34 +556,44 @@
     //停止心跳
     [self stopLiveTimer];
     
-    //退群消息
-    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
-    msg.cmd = (ILVLiveIMCmd)AVIMCMD_ExitLive;
-    msg.type = ILVLIVE_IMTYPE_GROUP;
-    msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
+    __weak typeof(self) ws = self;
+    
+    if (_isHost)
+    {
+        //通知业务服务器，退房
+        ExitRoomRequest *exitReq = [[ExitRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
+            NSLog(@"上报退出房间成功");
+        } failHandler:^(BaseRequest *request) {
+            NSLog(@"上报退出房间失败");
+        }];
+        
+        exitReq.token = [AppDelegate sharedAppDelegate].token;
+        exitReq.roomnum = _liveItem.info.roomnum;
+        exitReq.type = @"live";
+        
+        [[WebServiceEngine sharedEngine] asyncRequest:exitReq wait:NO];
+    }
+    else
+    {
+        [self reportMemberId:_liveItem.info.roomnum operate:1];
+    }
     
     TILLiveManager *manager = [TILLiveManager getInstance];
-    
-    [manager sendCustomMessage:msg succ:^{
-    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-        NSLog(@"exit room fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
-        
-    }];
-    
-    __weak typeof(self) ws = self;
     //退出房间
     [manager quitRoom:^{
-        BOOL ismain = [NSThread isMainThread];
-        NSLog(@"%d",ismain);
+        [ws.liveItem cleanLocalData];
+        
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [[AppDelegate sharedAppDelegate] popToRootViewController];
-        
     } failed:^(NSString *moudle, int errId, NSString *errMsg) {
         NSLog(@"exit room fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
-        [[AppDelegate sharedAppDelegate] popToRootViewController];
         
+        [ws.navigationController setNavigationBarHidden:NO animated:YES];
+        [[AppDelegate sharedAppDelegate] popToRootViewController];
     }];
 }
+
+#pragma mark - 心跳（房间保活）
 
 //开始发送心跳
 - (void)startLiveTimer
@@ -520,18 +605,73 @@
 //发送心跳
 - (void)onPostHeartBeat:(NSTimer *)timer
 {
-    LiveHostHeartBeatRequest *req = [[LiveHostHeartBeatRequest alloc] initWithHandler:nil failHandler:^(BaseRequest *request) {
-        // 上传心跳失败
+    HostHeartBeatRequest *heartReq = [[HostHeartBeatRequest alloc] initWithHandler:^(BaseRequest *request) {
+        
+        NSLog(@"---->heart beat succ");
+    } failHandler:^(BaseRequest *request) {
+        NSLog(@"---->heart beat fail");
     }];
-    req.liveItem = _liveItem;
-    [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
+    heartReq.token = [AppDelegate sharedAppDelegate].token;
+    heartReq.roomnum = _liveItem.info.roomnum;
+    heartReq.thumbup = _liveItem.info.thumbup;
+    //判断自己是什么角色
+    if (_isHost)
+    {
+        heartReq.role = 1;
+    }
+    else
+    {
+        BOOL isOpenCamear = [[ILiveRoomManager getInstance] getCurCameraState];
+        
+        if (isOpenCamear)//连麦用户
+        {
+            heartReq.role = 2;
+        }
+        else//普通观众
+        {
+            heartReq.role = 0;
+        }
+    }
+    [[WebServiceEngine sharedEngine] asyncRequest:heartReq wait:NO];
+    
+    //每次心跳刷新一下成员列表，在随心播中，只显示了成员数
+    [self onRefreshMemberList];
+}
+
+- (void)onRefreshMemberList
+{
+    __weak LiveViewController *ws = self;
+    
+    RoomMemListRequest *listReq = [[RoomMemListRequest alloc] initWithHandler:^(BaseRequest *request) {
+        RoomMemListRspData *listRspData = (RoomMemListRspData *)request.response.data;
+        [ws freshAudience:listRspData.idlist];
+        
+    } failHandler:^(BaseRequest *request) {
+        NSLog(@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo);
+    }];
+    listReq.token = [AppDelegate sharedAppDelegate].token;
+    listReq.roomnum = _liveItem.info.roomnum;
+    listReq.index = 0;
+    listReq.size = 20;
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:NO];
+}
+
+- (void)freshAudience:(NSArray *)memList
+{
+    _liveItem.info.memsize = (int)memList.count;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUserMemChange_Notification object:nil];
 }
 
 //停止发送心跳
 - (void)stopLiveTimer
 {
-    if(_heartTimer){
+    if(_heartTimer)
+    {
         [_heartTimer invalidate];
+        _heartTimer = nil;
     }
 }
 @end
+
+

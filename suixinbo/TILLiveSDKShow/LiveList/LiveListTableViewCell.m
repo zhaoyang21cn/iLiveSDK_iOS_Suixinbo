@@ -72,19 +72,23 @@
     {
         return;
     }
-    TCShowUser *host = item.host;
-//    [_liveCover sd_setImageWithURL:[NSURL URLWithString:[item liveCover]] placeholderImage:kDefaultCoverIcon];
-//    [_liveHost sd_setImageWithURL:[NSURL URLWithString:[host imUserIconUrl]] forState:UIControlStateNormal placeholderImage:kDefaultUserIcon];
     
     [_liveCover setImage:kDefaultCoverIcon];
     [_liveHost setImage:kDefaultUserIcon forState:UIControlStateNormal];
     if (item)
     {
-        _liveHostName.text = host.username;
-        _liveTitle.text = item.title;
-        [_liveAudience setTitle:[NSString stringWithFormat:@"%d", (int)item.watchCount] forState:UIControlStateNormal];
-        [_livePraise setTitle:[NSString stringWithFormat:@"%d", (int)item.admireCount] forState:UIControlStateNormal];
+        _liveHostName.text = item.uid;//host.username;
+        _liveTitle.text = item.info.title;//item.title;
+        [_liveAudience setTitle:[NSString stringWithFormat:@"%d",item.info.memsize] forState:UIControlStateNormal];//[NSString stringWithFormat:@"%d", (int)item.watchCount]
+        [_livePraise setTitle:[NSString stringWithFormat:@"%d",item.info.thumbup] forState:UIControlStateNormal];//[NSString stringWithFormat:@"%d", (int)item.admireCount]
         
+        //设置封面
+        if (item.info.cover && item.info.cover.length > 0)
+        {
+            NSURL *imageUrl = [NSURL URLWithString:item.info.cover];
+            NSData *imageData = [NSData dataWithContentsOfURL:imageUrl];
+            _liveCover.image = [UIImage imageWithData:imageData];
+        }
     }
     else
     {

@@ -25,8 +25,20 @@ UIAlertController *_alert;
     if (self = [super init])
     {
         [self addAVParamSubViews];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParPure:) name:kPureDelete_Notification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParNoPure:) name:kNoPureDelete_Notification object:nil];
     }
     return self;
+}
+
+- (void)onParPure:(NSNotification *)noti
+{
+    self.hidden = YES;
+}
+- (void)onParNoPure:(NSNotification *)noti
+{
+    self.hidden = NO;
 }
 - (void)addAVParamSubViews
 {
@@ -58,7 +70,14 @@ UIAlertController *_alert;
     [_pushStreamBtn setTitle:@"开始推流" forState:UIControlStateNormal];
     [_pushStreamBtn setTitle:@"关闭推流" forState:UIControlStateSelected];
     [_pushStreamBtn addTarget:self action:@selector(onPush:) forControlEvents:UIControlEventTouchUpInside];
-    _pushStreamBtn.titleLabel.font = kAppMiddleTextFont;
+    if (self.bounds.size.width <= 320)
+    {
+        _pushStreamBtn.titleLabel.font = kAppSmallTextFont;
+    }
+    else
+    {
+        _pushStreamBtn.titleLabel.font = kAppMiddleTextFont;
+    }
     [_pushStreamBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
     [_pushStreamBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
     
@@ -114,7 +133,7 @@ UIAlertController *_alert;
     }
     else
     {
-        [funs addObjectsFromArray:@[_parBtn,_speedBtn]];
+        [funs addObjectsFromArray:@[_parBtn,_pushStreamBtn,_recBtn,_speedBtn]];
     }
     
     NSInteger width = (rect.size.width - (funs.count + 1)*3) / funs.count;
@@ -323,32 +342,78 @@ UIAlertController *_alert;
     }
 }
 
+- (void)showEditAlert:(UIViewController *)rootVC title:(NSString *)title message:(NSString *)msg placeholder:(NSString *)holder okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(EditAlertHandle)succ cancel:(ActionHandle)fail
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = holder;
+    }];
+    
+    if (okTitle)
+    {
+        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            succ(alert.textFields.firstObject.text);
+        }]];
+    }
+    if (cancelTitle)
+    {
+        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
+    }
+    [rootVC presentViewController:alert animated:YES completion:nil];
+}
+
+- (UIViewController *)viewController
+{
+    UIResponder *next = self.nextResponder;
+    do
+    {
+        //判断响应者对象是否是视图控制器类型
+        if ([next isKindOfClass:[UIViewController class]])
+        {
+            return (UIViewController *)next;
+        }
+        next = next.nextResponder;
+    }while(next != nil);
+    return nil;
+}
+
 - (void)startRecord:(UIButton *)button type:(AVRecordType)recordType
 {
-    ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
-    option.fileName = @"新随心播录制文件";
-    NSString *tag = @"8921";
-    option.tags = @[tag];
-    option.classId = [tag intValue];
-    option.isTransCode = NO;
-    option.isScreenShot = NO;
-    option.isWaterMark = NO;
-    option.isScreenShot = NO;
-    option.avSdkType = AVSDK_TYPE_NORMAL;
-    option.recordType = recordType;
+    [self showEditAlert:[self viewController] title:@"输入录制文件名" message:nil placeholder:@"录制文件名" okTitle:@"确定" cancelTitle:@"取消" ok:^(NSString * _Nonnull editString) {
+        NSString *recName = editString && editString.length > 0 ? editString : @"sxb_默认录制文件名";
+       
+        ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
+        NSString *identifier = [[ILiveLoginManager getInstance] getLoginId];
+        option.fileName = [NSString stringWithFormat:@"sxb_%@_%@",identifier,recName];
+        NSString *tag = @"8921";
+        option.tags = @[tag];
+        option.classId = [tag intValue];
+        option.isTransCode = NO;
+        option.isScreenShot = NO;
+        option.isWaterMark = NO;
+        option.isScreenShot = NO;
+        option.avSdkType = AVSDK_TYPE_NORMAL;
+        option.recordType = recordType;
+        
+        __weak typeof(self) ws = self;
+        [[ILiveRoomManager getInstance] startRecordVideo:option succ:^{
+            [ws showAlert:@"已开始录制" message:nil okTitle:nil cancelTitle:@"确定" ok:nil cancel:nil];
+
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            button.selected = !button.selected;
+            
+            NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+            NSLog(@"%@",errinfo);
+            [ws showAlert:@"开始录制失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
+        }];
+    } cancel:nil];
     
-    __weak typeof(self) ws = self;
-    [[ILiveRoomManager getInstance] startRecordVideo:option succ:^{
-        
-        [ws showAlert:@"已开始录制" message:nil okTitle:nil cancelTitle:@"确定" ok:nil cancel:nil];
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        
-        button.selected = !button.selected;
-        
-        NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"%@",errinfo);
-        [ws showAlert:@"开始录制失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
-    }];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//    NSString *curTime = [dateFormatter stringFromDate:[NSDate date]];
+    
+
 }
 
 - (void)onTestSpeed:(UIButton *)button

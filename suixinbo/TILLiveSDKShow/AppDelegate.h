@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (nonatomic, copy) NSString *token;
+
 
 + (instancetype)sharedAppDelegate;
 
@@ -24,6 +26,9 @@
 - (NSArray *)popToViewController:(UIViewController *)viewController;
 
 - (NSArray *)popToRootViewController;
+
+
++ (UIAlertController *)showAlert:(UIViewController *)rootVC title:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail;
 
 @end
 

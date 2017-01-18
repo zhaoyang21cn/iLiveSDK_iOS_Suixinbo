@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PublishViewController : UIViewController
+@interface PublishViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) UIImageView   *liveCover;
 @property (nonatomic, strong) UITextField   *liveTitle;

@@ -27,6 +27,10 @@
     }
     return self;
 }
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
 
 - (void)viewDidLoad
 {
@@ -43,76 +47,140 @@
     _refreshCtl = [[UIRefreshControl alloc] init];
     _refreshCtl.attributedTitle = [[NSAttributedString alloc] initWithString:@"刷新列表" attributes:@{NSFontAttributeName:kAppMiddleTextFont}];
     _refreshCtl.tintColor = kColorRed;
-    
     [_refreshCtl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
-    
     self.refreshControl = _refreshCtl;
-    
     //自动拉取一次列表
-    [self requestList:nil];
+    //第一次进来会调用 scrollViewDidScroll，自动拉取一次
+    
+    _noLiveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height/2-25, self.view.bounds.size.width, 50)];
+    _noLiveLabel.text = @"暂时没有直播";
+    _noLiveLabel.hidden = YES;
+    _noLiveLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:_noLiveLabel];
+    
+    UIView *loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    UILabel *loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    loadMoreLabel.text = @"加载更多...";
+    loadMoreLabel.textAlignment = NSTextAlignmentCenter;
+    [loadMoreView addSubview:loadMoreLabel];
+    
+    self.tableView.tableFooterView = loadMoreView;
+    
+    self.tableView.tableFooterView.hidden = YES;
+
+    _isCanLoadMore = YES;
+    
+    TCShowLiveListItem *restoreItem = [TCShowLiveListItem loadFromToLocal];
+    if (restoreItem)
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"是否恢复上次直播" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            LiveViewController *liveVC = [[LiveViewController alloc] initWith:restoreItem];
+            [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
+            
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (void)onRefresh:(UIRefreshControl *)refreshCtl
 {
-    __weak typeof(self) ws = self;
-    
-    [ws requestList:^{
+    [self refresh:^{
         [refreshCtl endRefreshing];
     }];
 }
 
-- (void)requestList:(TCIVoidBlock)complete
+//录制视频上报，暂时没有用到
+//- (void)recordReport
+//{
+//    RecordReportRequest *recordReq = [[RecordReportRequest alloc] initWithHandler:^(BaseRequest *request) {
+//        
+//        NSLog(@"record report succ");
+//    } failHandler:^(BaseRequest *request) {
+//        NSLog(@"record report fail");
+//    }];
+//    recordReq.token = [AppDelegate sharedAppDelegate].token;
+//    recordReq.videoid = @"wilder";
+//    recordReq.type = 3;
+//    recordReq.playurl = @"heep://baidu.com";
+//    recordReq.cover = @"http://baidu.lalala";
+//    
+//    [[WebServiceEngine sharedEngine] asyncRequest:recordReq wait:NO];
+//}
+
+
+- (void)refresh:(TCIVoidBlock)complete
 {
     _pageItem.pageIndex = 0;
-    _pageItem.pageSize = 50;
+    [_datas removeAllObjects];
+    _isCanLoadMore = YES;
+    [self loadMore:complete];
+}
     
+- (void)loadMore:(TCIVoidBlock)complete
+{
     __weak typeof(self) ws = self;
     
-    LiveListRequest *req = [[LiveListRequest alloc] initWithHandler:^(BaseRequest *request) {
+    //向业务后台请求直播间列表
+    RoomListRequest *listReq = [[RoomListRequest alloc] initWithHandler:^(BaseRequest *request) {
         
-        LiveListRequest *wreq = (LiveListRequest *)request;
-        [ws onLoadMoreLiveRequestSucc:wreq];
+        RoomListRequest *wreq = (RoomListRequest *)request;
+        [ws loadListSucc:wreq];
         
         if (complete)
         {
             complete();
         }
     } failHandler:^(BaseRequest *request) {
+        
         NSLog(@"fail");
         if (complete)
         {
             complete();
         }
     }];
+    listReq.token = [AppDelegate sharedAppDelegate].token;
+    listReq.type = @"live";
+    listReq.index = _pageItem.pageIndex;
+    listReq.size = _pageItem.pageSize;
+    listReq.appid = [ShowAppId intValue];
     
-    req.pageItem = _pageItem;
-    [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
+    [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:YES];
 }
 
-- (void)onLoadMoreLiveRequestSucc:(LiveListRequest *)req
+- (void)loadListSucc:(RoomListRequest *)req
 {
-    [_datas removeAllObjects];
-    TCShowLiveList *resp = (TCShowLiveList *)req.response.data;
-    [_datas addObjectsFromArray:resp.recordList];
-//    self.canLoadMore = resp.recordList.count >= req.pageItem.pageSize;
-    _pageItem.pageIndex++;
+    RoomListRspData *respData = (RoomListRspData *)req.response.data;
+    [_datas addObjectsFromArray:respData.rooms];
+    _pageItem.pageIndex += respData.rooms.count;
+    _isCanLoadMore = respData.total > _pageItem.pageIndex;
     [self.tableView reloadData];
+    
+    if (_datas.count <= 0)
+    {
+        _noLiveLabel.hidden = NO;
+    }
+    else
+    {
+        _noLiveLabel.hidden = YES;
+    }
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return _datas.count;
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    LiveListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveListTableViewCell" forIndexPath:indexPath];
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     // Configure the cell...
     
     LiveListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveListTableViewCell"];
@@ -120,7 +188,10 @@
     {
         cell = [[LiveListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LiveListTableViewCell"];
     }
-    [cell configWith:_datas[indexPath.row]];
+    if (_datas.count > indexPath.row)
+    {
+        [cell configWith:_datas[indexPath.row]];
+    }
     return cell;
 }
 
@@ -135,6 +206,22 @@
     TCShowLiveListItem *item = _datas[indexPath.row];
     LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
     [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat currentOffsetY = scrollView.contentOffset.y;
+    /*self.refreshControl.isRefreshing == NO加这个条件是为了防止下面的情况发生：
+     每次进入UITableView，表格都会沉降一段距离，这个时候就会导致currentOffsetY + scrollView.frame.size.height   > scrollView.contentSize.height 被触发，从而触发loadMore方法，而不会触发refresh方法。
+     */
+    if ( currentOffsetY + scrollView.frame.size.height  > scrollView.contentSize.height && self.refreshControl.isRefreshing == NO && self.tableView.tableFooterView.hidden == YES && _isCanLoadMore)
+    {
+        self.tableView.tableFooterView.hidden = NO;
+        __weak typeof(self) ws = self;
+        [self loadMore:^{
+            ws.tableView.tableFooterView.hidden = YES;
+        }];
+    }
 }
 
 @end

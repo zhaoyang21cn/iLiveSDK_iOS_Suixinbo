@@ -9,15 +9,33 @@
 #ifndef RequestHeader_h
 #define RequestHeader_h
 
-#import "LiveListRequest.h"
+#import "RegistRequest.h"
 
-#import "LiveStartRequest.h"
+#import "LoginRequest.h"
 
-#import "LiveEndRequest.h"
+#import "LogoutRequest.h"
 
-#import "LiveHostHeartBeatRequest.h"
+#import "CreateRoomRequest.h"
 
-#import "LiveAVRoomIDRequest.h"
+#import "ReportRoomRequest.h"
+
+#import "HostHeartBeatRequest.h"
+
+#import "RoomListRequest.h"
+
+#import "ExitRoomRequest.h"
+
+#import "ReportMemIdRequest.h"
+
+#import "RecordListRequest.h"
+
+#import "RecordReportRequest.h"
+
+#import "RoomMemListRequest.h"
+
+#import "LiveStreamListRequest.h"
+
+#import "GetRoomPlayUrlRequest.h"
 
 #import "LiveImageSignRequest.h"
 

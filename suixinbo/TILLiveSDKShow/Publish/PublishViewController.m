@@ -10,6 +10,8 @@
 
 #import "LiveViewController.h"
 
+#import "UploadImageHelper.h"
+
 @interface PublishViewController ()
 
 @end
@@ -25,6 +27,11 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     _liveCover = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaul_publishcover"]];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClickPublishContent:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    _liveCover.userInteractionEnabled = YES;
+    [_liveCover addGestureRecognizer:tap];
     [self.view addSubview:_liveCover];
     
     _liveTitle = [[UITextField alloc] init];
@@ -40,93 +47,218 @@
     [self layout];
 }
 
-- (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
-    if (cancelTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
-    }
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (void)onPublish:(UIButton *)button
 {
+    AVAuthorizationStatus videoStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if(videoStatus == AVAuthorizationStatusRestricted || videoStatus == AVAuthorizationStatusDenied)
+    {
+        [AppDelegate showAlert:self title:nil message:@"您没有相机使用权限,请到 设置->隐私->相机 中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        return;
+    }
+    
+    AVAuthorizationStatus audioStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    if(audioStatus == AVAuthorizationStatusRestricted || audioStatus == AVAuthorizationStatusDenied)
+    {
+        [AppDelegate showAlert:self title:nil message:@"您没有麦克风使用权限,请到 设置->隐私->麦克风 中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        return;
+    }
+    
     LoadView *reqIdWaitView = [LoadView loadViewWith:@"正在请求房间ID"];
     [self.view addSubview:reqIdWaitView];
+    __block CreateRoomResponceData *roomData = nil;
+    __block NSString *imageUrl = nil;
     
-    __weak typeof(self) ws = self;
-    LiveAVRoomIDRequest *req = [[LiveAVRoomIDRequest alloc] initWithHandler:^(BaseRequest *request) {
-       
-        [reqIdWaitView removeFromSuperview];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         
-        LiveAVRoomIDResponseData *data = (LiveAVRoomIDResponseData *)request.response.data;
-        //[ws createRoom:data.avRoomId ];
-        [ws enterLive:data.avRoomId];
+        CreateRoomRequest *createRoomReq = [[CreateRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
+            roomData = (CreateRoomResponceData *)request.response.data;
+            dispatch_semaphore_signal(semaphore);
+            
+        } failHandler:^(BaseRequest *request) {
+            dispatch_semaphore_signal(semaphore);
+        }];
+        createRoomReq.token = [AppDelegate sharedAppDelegate].token;
+        createRoomReq.type = @"live";
+        [[WebServiceEngine sharedEngine] asyncRequest:createRoomReq];
         
-    } failHandler:^(BaseRequest *request) {
+        [[UploadImageHelper shareInstance] upload:_liveCover.image completion:^(NSString *imageSaveUrl) {
+            imageUrl = imageSaveUrl;
+            dispatch_semaphore_signal(semaphore);
+            
+        } failed:^(NSString *failTip) {
+            dispatch_semaphore_signal(semaphore);
+        }];
         
-        [reqIdWaitView removeFromSuperview];
+        dispatch_time_t timeoutTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC));
+        dispatch_semaphore_wait(semaphore, timeoutTime);
+        dispatch_semaphore_wait(semaphore, timeoutTime);
         
-        NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
-        
-        NSLog(@"request id fail. %@",errinfo);
-        
-        [ws showAlert:@"获取房间id失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-    }];
-    req.uid = [[ILiveLoginManager getInstance] getLoginId];
-    [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [reqIdWaitView removeFromSuperview];
+            [self enterLive:(int)roomData.roomnum groupId:roomData.groupid imageUrl:imageUrl];
+        });
+    });
 }
 
-- (void)enterLive:(int)roomId
+- (void)onClickPublishContent:(UITapGestureRecognizer *)tap
+{
+    if (tap.state == UIGestureRecognizerStateEnded)
+    {
+        __weak typeof(self) ws = self;
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [ws openCamera];
+        }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [ws openPhotoLibrary];
+            
+        }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (void)openCamera
+{
+    // 暂时弃用自定义相机
+    // 打开系统相机拍照
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied)
+    {
+        [AppDelegate showAlert:self title:nil message:@"您没有相机使用权限,请到设置->隐私中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        return;
+    }
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIImagePickerController *cameraIPC = [[UIImagePickerController alloc] init];
+        cameraIPC.delegate = self;
+        cameraIPC.allowsEditing = YES;
+        cameraIPC.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:cameraIPC animated:YES completion:nil];
+        return;
+    }
+}
+
+- (void)openPhotoLibrary
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:imagePicker animated:YES completion:nil];
+        return;
+    }
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    UIImage *cutImage = [self cutImage:image];
+    _liveCover.image = cutImage;
+//    [_lableCover removeFromSuperview];
+//    _lableCover = nil;
+    
+    //如果是相机拍照，则保存到相册
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+    {
+//        _currentImage = cutImage;
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - 图片剪裁
+
+- (CGSize)publishSize
+{
+    CGRect selfRect = self.view.frame;
+    return CGSizeMake(selfRect.size.width, (NSInteger)(selfRect.size.width * 0.618));
+}
+
+- (UIImage *)cutImage:(UIImage *)image
+{
+    CGSize pubSize = [self publishSize];
+    if (image)
+    {
+        CGSize imgSize = image.size;
+        CGFloat pubRation = pubSize.height / pubSize.width;
+        CGFloat imgRatio = imgSize.height / imgSize.width;
+        if (fabs(imgRatio -  pubRation) < 0.01)
+        {
+            // 直接上传
+            return image;
+        }
+        else
+        {
+            if (imgRatio > 1)
+            {
+                // 长图，截正中间部份
+                CGSize upSize = CGSizeMake(imgSize.width, (NSInteger)(imgSize.width * pubRation));
+                UIImage *upimg = [self cropImage:image inRect:CGRectMake(0, (image.size.height - upSize.height)/2, upSize.width, upSize.height)];
+                return upimg;
+            }
+            else
+            {
+                // 宽图，截正中间部份
+                CGSize upSize = CGSizeMake(imgSize.height, (NSInteger)(imgSize.height * pubRation));
+                UIImage *upimg = [self cropImage:image inRect:CGRectMake((image.size.width - upSize.width)/2, 0, upSize.width, upSize.height)];
+                return upimg;
+            }
+        }
+    }
+    
+    return image;
+}
+
+- (UIImage *)cropImage:(UIImage *)image inRect:(CGRect)rect
+{
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // translated rectangle for drawing sub image
+    CGRect drawRect = CGRectMake(-rect.origin.x, -rect.origin.y, image.size.width, image.size.height);
+    
+    // clip to the bounds of the image context
+    // not strictly necessary as it will get clipped anyway?
+    CGContextClipToRect(context, CGRectMake(0, 0, rect.size.width, rect.size.height));
+    
+    // draw image
+    [image drawInRect:drawRect];
+    
+    // grab image
+    UIImage* croppedImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return croppedImage;
+}
+
+- (void)enterLive:(int)roomId groupId:(NSString *)groupid imageUrl:(NSString *)coverUrl
 {
     TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
-    item.avRoomId = roomId;
-    item.chatRoomId = [NSString stringWithFormat:@"%d",roomId];
-    
-    TCShowUser *user = [[TCShowUser alloc] init];
-    user.uid = [[ILiveLoginManager getInstance] getLoginId];
-    item.host = user;
+    item.uid = [[ILiveLoginManager getInstance] getLoginId];
+    item.info = [[ShowRoomInfo alloc] init];
+    item.info.title = self.liveTitle.text && self.liveTitle.text.length > 0 ? self.liveTitle.text : self.liveTitle.placeholder;
+    item.info.type = @"live";
+    item.info.roomnum = roomId;
+    item.info.groupid = groupid;
+    item.info.cover = coverUrl ? coverUrl : @"";
+    item.info.appid = [ShowAppId intValue];
     
     LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
     [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
 }
-
-//- (void)createRoom:(int)roomId
-//{
-//    __weak PublishViewController *ws = self;
-//    
-//    ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
-//    option.controlRole = kSxbRole_Host;
-//    
-//    LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
-//    [self.view addSubview:createRoomWaitView];
-//    
-//    [[TILLiveManager getInstance] createRoom:roomId option:option succ:^{
-//        
-//        NSLog(@"createRoom succ");
-//        [createRoomWaitView removeFromSuperview];
-//        
-//        [ws startLive:roomId];
-//        
-//    } failed:^(NSString *module, int errId, NSString *errMsg) {
-//        
-//        [createRoomWaitView removeFromSuperview];
-//        
-//        NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-//        NSLog(@"createRoom fail.%@",errinfo);
-//        
-//        [ws showAlert:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-//    }];
-//    
-//}
-
-
 
 - (void)layout
 {
