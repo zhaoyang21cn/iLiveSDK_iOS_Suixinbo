@@ -1,5 +1,8 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.2.1(2017-1-19)
+* 修复直播间内多次退后台崩溃的问题
+
 ###### V1.2.0(2017-1-16)
 * 支持多View渲染
 * 支持旋转模式可配，具体参考[旋转文档](https://github.com/zhaoyang21cn/suixinbo_doc/blob/master/doc2/rotate.md)
