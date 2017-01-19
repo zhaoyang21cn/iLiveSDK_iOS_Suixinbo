@@ -380,9 +380,16 @@ UIAlertController *_alert;
 
 - (void)startRecord:(UIButton *)button type:(AVRecordType)recordType
 {
+    __weak typeof(self) ws = self;
     [self showEditAlert:[self viewController] title:@"输入录制文件名" message:nil placeholder:@"录制文件名" okTitle:@"确定" cancelTitle:@"取消" ok:^(NSString * _Nonnull editString) {
-        NSString *recName = editString && editString.length > 0 ? editString : @"sxb_默认录制文件名";
-       
+        
+        NSString *recName = editString && editString.length > 0 ? editString : @"sxb默认录制文件名";
+        
+        if (ws.delegate && [ws.delegate respondsToSelector:@selector(onRecReport:type:)])
+        {
+            [ws.delegate onRecReport:recName type:recordType];
+        }
+        
         ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
         NSString *identifier = [[ILiveLoginManager getInstance] getLoginId];
         option.fileName = [NSString stringWithFormat:@"sxb_%@_%@",identifier,recName];

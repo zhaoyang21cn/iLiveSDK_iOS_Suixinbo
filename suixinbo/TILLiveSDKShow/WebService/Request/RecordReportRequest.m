@@ -18,10 +18,11 @@
 - (NSDictionary *)packageParams
 {
     NSDictionary *dic = @{@"token" : _token,
-                          @"videoid" : _videoid,
-                          @"playurl" : _playurl,
+                          @"roomnum" : [NSNumber numberWithInteger:_roomnum],
+                          @"uid" : _uid,
+                          @"name" : _name,
                           @"type" : [NSNumber numberWithInteger:_type],
-                          @"cover" : _cover,
+                          @"cover":_cover,
                           };
     return dic;
 }

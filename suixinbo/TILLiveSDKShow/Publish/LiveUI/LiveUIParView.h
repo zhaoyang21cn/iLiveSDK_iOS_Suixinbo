@@ -12,6 +12,8 @@
 
 - (void)onInteract;
 
+- (void)onRecReport:(NSString *)name type:(AVRecordType)type;
+
 @end
 
 @interface LiveUIParView : UIView

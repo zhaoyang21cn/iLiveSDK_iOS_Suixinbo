@@ -41,6 +41,25 @@
     [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:NO];
 }
 
+- (void)onRecReport:(NSString *)name type:(AVRecordType)type;
+{
+    
+    RecordReportRequest *req = [[RecordReportRequest alloc] initWithHandler:^(BaseRequest *request) {
+        NSLog(@"rec report succ");
+        
+    } failHandler:^(BaseRequest *request) {
+        NSLog(@"rec report fail %ld,%@", (long)request.response.errorCode,request.response.errorInfo);
+    }];
+    req.token = [AppDelegate sharedAppDelegate].token;
+    req.roomnum = _liveItem.info.roomnum;
+    req.uid = [[ILiveLoginManager getInstance] getLoginId];
+    req.name = name;
+    req.type = (NSInteger)type;
+    req.cover = _liveItem.info.cover;
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:req];
+}
+
 - (void)popMemberList:(NSArray *)members
 {
     //群成员很大时，次处存在性能问题，可以单独维护房间成员，不用每次都获取。

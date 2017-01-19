@@ -11,8 +11,9 @@
 @interface RecordReportRequest : BaseRequest
 
 @property (nonatomic, copy) NSString *token;
-@property (nonatomic, copy) NSString *videoid;
-@property (nonatomic, copy) NSString *playurl;
+@property (nonatomic, assign) NSInteger roomnum;
+@property (nonatomic, copy) NSString *uid;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) NSInteger type;
 @property (nonatomic, copy) NSString *cover;
 
