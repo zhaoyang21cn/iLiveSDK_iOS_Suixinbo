@@ -161,13 +161,10 @@
     UIImage *image = info[UIImagePickerControllerEditedImage];
     UIImage *cutImage = [self cutImage:image];
     _liveCover.image = cutImage;
-//    [_lableCover removeFromSuperview];
-//    _lableCover = nil;
     
     //如果是相机拍照，则保存到相册
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
     {
-//        _currentImage = cutImage;
     }
     
     [picker dismissViewControllerAnimated:YES completion:nil];

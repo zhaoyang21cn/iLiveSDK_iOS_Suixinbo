@@ -33,5 +33,9 @@
 
 #import "CategoryHeader.h"
 
+#import "UserViewManager.h"
+
+#import "LiveCallView.h"
+
 
 #endif /* TILLiveSDKShow_Prefix_pch */

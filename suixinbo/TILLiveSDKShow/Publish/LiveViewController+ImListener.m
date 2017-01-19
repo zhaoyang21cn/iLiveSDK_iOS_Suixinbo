@@ -11,6 +11,8 @@
 
 @implementation LiveViewController (ImListener)
 
+static __weak UIAlertController *_promptAlert = nil;
+
 - (void)onTextMessage:(ILVLiveTextMessage *)msg
 {
     [self onMessage:msg];
@@ -23,11 +25,14 @@
     {
         switch (cmd)
         {
-                
             case AVIMCMD_Multi_Host_Invite:
             {
-                
-                [AppDelegate showAlert:self title:@"收到视频邀请" message:msg.sendId okTitle:@"接收" cancelTitle:@"拒绝"  ok:^(UIAlertAction * _Nonnull action) {
+                if (_promptAlert)
+                {
+                    [_promptAlert dismissViewControllerAnimated:NO completion:nil];
+                    _promptAlert = nil;
+                }
+                _promptAlert = [AppDelegate showAlert:self title:@"收到视频邀请" message:msg.sendId okTitle:@"接收" cancelTitle:@"拒绝"  ok:^(UIAlertAction * _Nonnull action) {
                     [self upToVideo:nil];
                 } cancel:^(UIAlertAction * _Nonnull action) {
                     [self rejectToVideo:nil];
@@ -35,11 +40,27 @@
             }
                 break;
             case AVIMCMD_Multi_Interact_Refuse:
-                
+            {
                 [AppDelegate showAlert:self title:@"拒绝视频邀请" message:[NSString stringWithFormat:@"%@拒绝了你的邀请",msg.sendId] okTitle:@"好吧" cancelTitle:nil  ok:^(UIAlertAction * _Nonnull action) {
+                    [[UserViewManager shareInstance] removePlaceholderView:msg.sendId];
+                } cancel:nil];
+            }
+                break;
+            case AVIMCMD_Multi_Host_CancelInvite:
+            {
+                if (_promptAlert)
+                {
+                    [_promptAlert dismissViewControllerAnimated:NO completion:nil];
+                    _promptAlert = nil;
+                }
+                _promptAlert = [AppDelegate showAlert:self title:@"已取消视频邀请" message:msg.sendId okTitle:@"确定" cancelTitle:nil ok:^(UIAlertAction * _Nonnull action) {
                     
                 } cancel:nil];
-
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [_promptAlert dismissViewControllerAnimated:YES completion:nil];
+                    _promptAlert = nil;
+                });
+            }
                 break;
             default:
                 break;
@@ -58,12 +79,10 @@
                 }
                 break;
             case AVIMCMD_EnterLive:
-//                [[NSNotificationCenter defaultCenter] postNotificationName:kUserJoinRoom_Notification object:nil];
                 [self onMessage:msg];
                 break;
             case AVIMCMD_ExitLive:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kGroupDelete_Notification object:nil];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:kUserExitRoom_Notification object:nil];
                 break;
             default:
                 break;
@@ -95,22 +114,13 @@
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
     msg.recvId = _liveItem.uid;
     
-    __weak typeof(self) ws = self;
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        
-        NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
-        
-        TILLiveManager *manager = [TILLiveManager getInstance];
-        [manager addAVRenderView:[ws getRenderFrame] forIdentifier:loginId srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-        
         ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
         
         [roomManager changeRole:kSxbRole_Interact succ:^{
-            
             NSLog(@"changeRole");
             
             [roomManager enableCamera:CameraPosFront enable:YES succ:^{
-                
                 NSLog(@"enable camera YES");
                 
                 [roomManager enableMic:YES succ:^{

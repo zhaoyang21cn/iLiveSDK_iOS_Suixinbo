@@ -18,7 +18,7 @@
 
 - (void)onInteract
 {
-    if (self.upVideoMembers.count >= 4)
+    if ([UserViewManager shareInstance].total >= 3)
     {
         [AppDelegate showAlert:self title:@"提示" message:@"连麦画面不能超过4路" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
         return;
@@ -49,10 +49,26 @@
     NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
     for (MemberListItem *item in members)
     {
-        if (![item.identifier isEqualToString:loginId])
+        BOOL isLoginId = [item.identifier isEqualToString:loginId];
+        BOOL isPlaceholder = [[UserViewManager shareInstance] isExistPlaceholder:item.identifier];
+        BOOL isRender = [[UserViewManager shareInstance] isExistRenderView:item.identifier];
+        
+        if (!isLoginId && !isPlaceholder && !isRender)
         {
             [_members addObject:item];
         }
+    }
+    
+    if (_members.count == 0)
+    {
+        UIAlertController *alert = [AppDelegate showAlert:self title:@"没有更多用户了" message:nil okTitle:nil cancelTitle:@"算了" ok:nil cancel:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (alert)
+            {
+                [alert dismissViewControllerAnimated:YES completion:nil];
+            }
+        });
+        return;
     }
     
     [_bgAlphaView setFrame:CGRectMake(0, -150, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -63,6 +79,7 @@
     
     [UIView animateWithDuration:0.5 animations:^{
         [_bgAlphaView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        [self.view bringSubviewToFront:_bgAlphaView];
     }];
 }
 
@@ -328,26 +345,11 @@
         }
         
         MemberListItem *item = [_members objectAtIndex:indexPath.row];
-        BOOL isConnect = [self isConnect:item.identifier];
-        [cell configId:item.identifier isConnect:isConnect];
+        [cell configId:item.identifier];
         
         return cell;
     }
     return nil;
-}
-
-- (BOOL)isConnect:(NSString *)identifier
-{
-    BOOL isConnect = NO;
-    for (NSString *userId in _upVideoMembers)
-    {
-        if ([userId isEqualToString:[self codeUser:identifier type:QAVVIDEO_SRC_TYPE_CAMERA]])
-        {
-            isConnect = YES;
-            break;
-        }
-    }
-    return isConnect;
 }
 
 - (void)onMessage:(ILVLiveMessage *)msg
@@ -373,4 +375,5 @@
         [_msgTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
+
 @end

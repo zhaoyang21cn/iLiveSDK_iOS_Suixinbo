@@ -15,6 +15,4 @@
 
 @interface LiveViewController (AVListener)<ILVLiveAVListener>
 
-@property (nonatomic, copy) NSString *mainWindowUser;
-
 @end

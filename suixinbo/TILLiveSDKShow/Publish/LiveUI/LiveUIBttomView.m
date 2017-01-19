@@ -63,7 +63,6 @@
 
 - (void)switchRoomRefresh
 {
-//    _isHost = NO;
     _isUpVideo = NO;
     [self setNeedsLayout];
 }
@@ -113,12 +112,6 @@
     [self addSubview:_pureBtn];
     [_btnArray addObject:_pureBtn];
     
-//    _noPureBtn = [[UIButton alloc] init];
-//    [_noPureBtn setImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
-//    [_noPureBtn addTarget:self action:@selector(onNonPure:) forControlEvents:UIControlEventTouchUpInside];
-//    [self addSubview:_noPureBtn];
-//    [_btnArray addObject:_noPureBtn];
-    
     _praiseBtn = [[UIButton alloc] init];
     [_praiseBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
     [_praiseBtn addTarget:self action:@selector(onPraise:) forControlEvents:UIControlEventTouchUpInside];
@@ -162,8 +155,8 @@
     {
         ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
         
-        video.recvId = _mainWindowUserId;
-        video.data = [_mainWindowUserId dataUsingEncoding:NSUTF8StringEncoding];
+        video.recvId = [UserViewManager shareInstance].mainUserId;//_mainWindowUserId;
+        video.data = [[UserViewManager shareInstance].mainUserId dataUsingEncoding:NSUTF8StringEncoding];
         
         video.type = ILVLIVE_IMTYPE_GROUP;
         video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
@@ -434,7 +427,7 @@
         }
         else if (_isUpVideo)//随心播中，连麦用户和普通观众不能下麦其他人的视频(业务测可自己定)
         {
-            if ([_mainWindowUserId isEqualToString:[[ILiveLoginManager getInstance] getLoginId]])//如果主窗口就是登录用户的画面，则可以下麦
+            if ([[UserViewManager shareInstance].mainUserId isEqualToString:[[ILiveLoginManager getInstance] getLoginId]])//如果主窗口就是登录用户的画面，则可以下麦
             {
                 [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo,_pureBtn, _praiseBtn]];
                 

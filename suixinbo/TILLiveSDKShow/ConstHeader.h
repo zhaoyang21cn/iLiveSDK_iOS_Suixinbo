@@ -126,6 +126,7 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
 #define kPureDelete_Notification        @"kPureDelete_Notification"
 #define kNoPureDelete_Notification      @"kNoPureDelete_Notification"
 #define kClickConnect_Notification      @"kClickConnect_Notification"
+#define kCancelConnect_Notification     @"kCancelConnect_Notification"
 
 /******************** role string **********************/
 #define kSxbRole_Host       @"LiveMaster"

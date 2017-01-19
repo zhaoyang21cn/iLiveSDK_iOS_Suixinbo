@@ -24,7 +24,6 @@
     UIButton    *_whiteBtn;          //美白
     UIButton    *_micBtn;            //mic
     UIButton    *_pureBtn;           //纯净模式
-//    UIButton    *_noPureBtn;         //非纯净模式
     UIButton    *_praiseBtn;         //点赞
     UIButton    *_sendMsgBtn;        //发送消息（只有观众端才有）
     UIButton    *_downVideo;         //下麦
@@ -32,7 +31,6 @@
 
 @property (nonatomic, assign) BOOL isHost; //自己是不是主播
 @property (nonatomic, copy) NSString *mainWindowRole;//主窗口角色，不同角色显示不同功能
-@property (nonatomic, copy) NSString *mainWindowUserId;//主窗口用户identifier(为经过编码)
 @property (nonatomic, assign) BOOL isUpVideo; //自己是不是上麦
 
 @property (nonatomic, weak) id<BottomViewDelegate> delegate;

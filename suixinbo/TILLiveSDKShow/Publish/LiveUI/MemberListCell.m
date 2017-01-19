@@ -37,7 +37,6 @@
     _connectBtn.layer.borderColor = kColorPurple.CGColor;
     _connectBtn.layer.borderWidth = 0.5;
     [_connectBtn setTitle:@"连麦" forState:UIControlStateNormal];
-    [_connectBtn setTitle:@"断开" forState:UIControlStateSelected];
     [_connectBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
     [_connectBtn addTarget:self action:@selector(onConnect:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_connectBtn];
@@ -57,38 +56,20 @@
     [_connectBtn alignParentRight];
 }
 
-- (void)configId:(NSString *)identifier isConnect:(BOOL)isConnect
+- (void)configId:(NSString *)identifier
 {
     _identifier.text = identifier;
-    if (isConnect)
-    {
-        _connectBtn.selected = YES;
-    }
-    else
-    {
-        _connectBtn.selected = NO;
-    }
 }
 
 - (void)onConnect:(UIButton *)button
 {
-    button.selected = !button.selected;
-    
     ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
     
     video.recvId = _identifier.text;
     video.data = [_identifier.text dataUsingEncoding:NSUTF8StringEncoding];
     
-    if (button.selected)
-    {
-        video.type = ILVLIVE_IMTYPE_C2C;
-        video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
-    }
-    else
-    {
-        video.type = ILVLIVE_IMTYPE_GROUP;
-        video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
-    }
+    video.type = ILVLIVE_IMTYPE_C2C;
+    video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
     
     [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
         NSLog(@"send succ");
@@ -98,6 +79,5 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kClickConnect_Notification object:_identifier.text];
 }
-
 
 @end

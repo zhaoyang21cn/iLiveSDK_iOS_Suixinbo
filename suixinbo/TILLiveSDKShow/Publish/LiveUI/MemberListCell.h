@@ -14,6 +14,6 @@
     UIButton    *_connectBtn;
 }
 
-- (void)configId:(NSString *)identifier isConnect:(BOOL)isConnect;
+- (void)configId:(NSString *)identifier;
 @end
 

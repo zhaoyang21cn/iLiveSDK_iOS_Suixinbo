@@ -28,8 +28,6 @@
 - (void)addNotification
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParisePlus) name:kUserParise_Notification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAudiencePlus) name:kUserJoinRoom_Notification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAudienceLess) name:kUserExitRoom_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFreshAudience) name:kUserMemChange_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchRoomRefresh:) name:kUserSwitchRoom_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTopPure:) name:kPureDelete_Notification object:nil];
@@ -76,6 +74,7 @@
     _timeLabel.textAlignment = NSTextAlignmentCenter;
     _timeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _timeLabel.text = _isHost ? @"00:00" : _liveItem.uid;
+    _timeLabel.textColor = kColorWhite;
     [self addSubview:_timeLabel];
     _liveTime = 0;
     
@@ -170,16 +169,6 @@
     {
         _liveItem.info.thumbup++;
         [_livePraiseBtn setTitle:[NSString stringWithFormat:@"%d",_liveItem.info.thumbup] forState:UIControlStateNormal];
-        
-//        NSString *info = [NSString stringWithFormat:@"%d",_liveItem.info.thumbup];
-//        UIFont *font = kAppMiddleTextFont;
-//        NSMutableAttributedString *thumbStr = [[NSMutableAttributedString alloc] initWithString:info];
-//        [thumbStr addAttribute:NSForegroundColorAttributeName value:kColorWhite range:NSMakeRange(0, info.length)];
-//        [thumbStr addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, info.length)];
-//        
-//        CGSize maxSize = CGSizeMake(100, _livePraiseBtn.titleLabel.frame.size.height);
-//        CGSize size = [thumbStr boundingRectWithSize:maxSize options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading) context:nil].size;
-//        [_livePraiseBtn.titleLabel setFrame:CGRectMake(_livePraiseBtn.frame.origin.x, _livePraiseBtn.frame.origin.y, size.width, size.height)];
     }
 }
 
@@ -190,16 +179,8 @@
     [_liveAudienceBtn setTitle:[NSString stringWithFormat:@"%d",curAudience] forState:UIControlStateNormal];
 }
 
-//- (void)onAudienceLess
-//{
-//    int curAudience = [_liveAudienceBtn.titleLabel.text intValue];
-//    curAudience--;
-//    [_liveAudienceBtn setTitle:[NSString stringWithFormat:@"%d",curAudience] forState:UIControlStateNormal];
-//}
-
 - (void)onFreshAudience
 {
-    NSLog(@"audience2----->%d", _liveItem.info.memsize);
     [_liveAudienceBtn setTitle:[NSString stringWithFormat:@"%d",_liveItem.info.memsize] forState:UIControlStateNormal];
 }
 @end

@@ -44,8 +44,5 @@
 
 - (instancetype)initWith:(TCShowLiveListItem *)item;
 - (void)onClose;
-- (CGRect)getRenderFrame;
-- (NSString *)codeUser:(NSString *)identifier type:(avVideoSrcType)type;
-- (NSDictionary *)decodeUser:(NSString *)identifier;
 
 @end

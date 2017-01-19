@@ -15,6 +15,8 @@
 #import "LiveViewController+ImListener.h"
 #import "LiveViewController+AVListener.h"
 
+#import "LiveCallView.h"
+
 #define kHeartInterval 5 //心跳间隔
 
 @interface LiveViewController ()
@@ -42,18 +44,6 @@
 {
     return YES;
 }
-
-//- (void)viewDidLayoutSubviews
-//{
-//    [super viewDidLayoutSubviews];
-//    for (UIView *view in self.view.subviews)
-//    {
-//        if ([view isKindOfClass:[ILiveRenderView class]])
-//        {
-//            view.frame = self.view.bounds;
-//        }
-//    }
-//}
 
 - (void)viewDidLoad
 {
@@ -102,6 +92,7 @@
     _msgDatas = [NSMutableArray array];
     
     //测试代码，无需关注
+    /*
 //    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 100, 100, 50)];
 //    [button1 addTarget:self action:@selector(onTest1) forControlEvents:UIControlEventTouchUpInside];
 //    [button1 setTitle:@"isRotate_no" forState:UIControlStateNormal];
@@ -141,6 +132,7 @@
 //    [button8 addTarget:self action:@selector(onTest8) forControlEvents:UIControlEventTouchUpInside];
 //    [button8 setTitle:@"diff_STRE" forState:UIControlStateNormal];
 //    [self.view addSubview:button8];
+     */
 }
 
 - (void)onLiveViewPure:(NSNotification *)noti
@@ -151,7 +143,9 @@
 {
     _msgTableView.hidden = NO;
 }
+
 //测试代码，无需关注
+/*
 //- (void)onTest1
 //{
 //    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
@@ -193,7 +187,7 @@
 //    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
 //    renderView.diffDirectionRenderMode = ILIVERENDERMODE_STRETCHTOFILL;
 //}
-
+*/
 
 - (void)onSwitchToPreRoom:(UIGestureRecognizer *)ges
 {
@@ -272,24 +266,9 @@
                 switchToIndex = 0;
             }
         }
-        
         //回收上一个房间的资源
         [ws reportMemberId:ws.liveItem.info.roomnum operate:1];//上一个房间退房
-        
-        //移除渲染画面
-        ws.count = 0;
-        TILLiveManager *manager = [TILLiveManager getInstance];
-        for (NSString *user in ws.upVideoMembers)
-        {
-            TCILDebugLog(@"tilliveshow----->%s, codeId = %@",__func__, user);
-            NSDictionary *userDic = [ws decodeUser:user];
-            NSArray *keys = [userDic allKeys];
-            NSString *identifier = keys[0];
-            
-            NSNumber *type = [userDic objectForKey:identifier];
-            [manager removeAVRenderView:identifier srcType:(avVideoSrcType)[type integerValue]];
-        }
-        [ws.upVideoMembers removeAllObjects];
+        [[UserViewManager shareInstance] releaseManager];//移除渲染画面
         
         TCShowLiveListItem *item = respData.rooms[switchToIndex];
         ws.liveItem = item;
@@ -399,7 +378,8 @@
     [_bgAlphaView addGestureRecognizer:tap];
     [self.view addSubview:_bgAlphaView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTapBlankToHide) name:kClickConnect_Notification object:nil];//点击连麦时自动收起好友列表
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoBegin:) name:kClickConnect_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoCancel:) name:kCancelConnect_Notification object:nil];
     
     _memberListView = [[UITableView alloc] init];
     _memberListView.delegate = self;
@@ -429,6 +409,23 @@
     _bottomView.delegate = self;
     _bottomView.isHost = _isHost;
     [self.view addSubview:_bottomView];
+}
+
+- (void)connectVideoBegin:(NSNotification *)noti
+{
+    [self onTapBlankToHide];//点击连麦时自动收起好友列表
+    
+    //增加连麦小视图
+    NSString *userid = (NSString *)noti.object;
+    LiveCallView *callView = [[UserViewManager shareInstance] addPlaceholderView:userid];
+    [self.view addSubview:callView];
+}
+
+- (void)connectVideoCancel:(NSNotification *)noti
+{
+    NSString *userId = (NSString *)noti.object;
+    [[UserViewManager shareInstance] removePlaceholderView:userId];
+    [[UserViewManager shareInstance] refreshViews];
 }
 
 - (void)initLive
@@ -486,71 +483,6 @@
     [[WebServiceEngine sharedEngine] asyncRequest:req wait:NO];
 }
 
-- (NSDictionary *)decodeUser:(NSString *)identifier
-{
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    
-    NSString *user;
-    NSRange rangeCamera = [identifier rangeOfString:@"_camera"];
-    
-    int idLen = (int)identifier.length;
-    int typeLen = (int)rangeCamera.length;//_camera和_screen的长度一样
-    
-    user = [identifier substringWithRange:NSMakeRange(0, idLen-typeLen)];
-    
-    if (user)//camera
-    {
-        NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_CAMERA];
-        [dic setObject:type forKey:user];
-    }
-    else//screen
-    {
-        NSRange rangeScreen = [identifier rangeOfString:@"_screen"];
-        user = [identifier substringWithRange:NSMakeRange(0, idLen-rangeScreen.length)];
-        if (user)
-        {
-            NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_SCREEN];
-            [dic setObject:type forKey:user];
-        }
-    }
-    return dic;
-}
-
-- (NSString *)codeUser:(NSString *)identifier type:(avVideoSrcType)type
-{
-    NSString *key;
-    if (type == QAVVIDEO_SRC_TYPE_CAMERA)
-    {
-        key = [NSString stringWithFormat:@"%@_camera",identifier];
-    }
-    else if (type == QAVVIDEO_SRC_TYPE_SCREEN)
-    {
-        key = [NSString stringWithFormat:@"%@_screen",identifier];
-    }
-    return key;
-}
-
-//获取渲染位置
-- (CGRect)getRenderFrame
-{
-    if (_count == 0)
-    {
-        return self.view.bounds;
-    }
-    if(_count == 4)
-    {
-        return CGRectZero;
-    }
-    
-    NSInteger smallCount = _count-1;
-    CGRect screenRect = [UIScreen mainScreen].bounds;
-    CGFloat height = (self.view.frame.size.height - 200 - 3 * 10)/3;
-    CGFloat width = height*3/4;//宽高比3:4
-    CGFloat y = 100 + (smallCount * (height + 10));
-    CGFloat x = screenRect.size.width - width - kDefaultMargin;
-    return CGRectMake(x, y, width, height);
-}
-
 - (void)onClose
 {
     //停止心跳
@@ -591,6 +523,8 @@
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [[AppDelegate sharedAppDelegate] popToRootViewController];
     }];
+    
+    [[UserViewManager shareInstance] releaseManager];
 }
 
 #pragma mark - 心跳（房间保活）
