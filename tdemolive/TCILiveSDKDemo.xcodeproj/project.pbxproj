@@ -23,6 +23,8 @@
 		CF18CDC11E12488500E291F6 /* LiveLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBA1E12488500E291F6 /* LiveLoginViewController.m */; };
 		CF18CDC21E12488500E291F6 /* LiveMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBC1E12488500E291F6 /* LiveMainViewController.m */; };
 		CF18CDC31E12488500E291F6 /* LiveRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBE1E12488500E291F6 /* LiveRegisterViewController.m */; };
+		CF201CA41E470C49004FE6E6 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF201CA21E470C49004FE6E6 /* ILiveSDK.framework */; };
+		CF201CA51E470C49004FE6E6 /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF201CA31E470C49004FE6E6 /* TILLiveSDK.framework */; };
 		CFB121DD1DBF02C300AAE22B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DC1DBF02C300AAE22B /* main.m */; };
 		CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DF1DBF02C300AAE22B /* AppDelegate.m */; };
 		CFB121E61DBF02C300AAE22B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E41DBF02C300AAE22B /* Main.storyboard */; };
@@ -90,6 +92,8 @@
 		CF18CDBC1E12488500E291F6 /* LiveMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveMainViewController.m; sourceTree = "<group>"; };
 		CF18CDBD1E12488500E291F6 /* LiveRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRegisterViewController.h; sourceTree = "<group>"; };
 		CF18CDBE1E12488500E291F6 /* LiveRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveRegisterViewController.m; sourceTree = "<group>"; };
+		CF201CA21E470C49004FE6E6 /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
+		CF201CA31E470C49004FE6E6 /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
 		CF4777161DCC404500CBAB67 /* ILiveSDKDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILiveSDKDemo.pch; sourceTree = "<group>"; };
 		CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCILiveSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFB121DC1DBF02C300AAE22B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -154,8 +158,10 @@
 				CFB122331DBF4D9200AAE22B /* libbz2.tbd in Frameworks */,
 				9B3ADFE31DE700180099AACF /* IMSDKBugly.framework in Frameworks */,
 				9B3ADFDF1DE700180099AACF /* xplatform.framework in Frameworks */,
+				CF201CA51E470C49004FE6E6 /* TILLiveSDK.framework in Frameworks */,
 				9B3ADFE61DE700180099AACF /* TLSSDK.framework in Frameworks */,
 				9B3ADFE41DE700180099AACF /* QALSDK.framework in Frameworks */,
+				CF201CA41E470C49004FE6E6 /* ILiveSDK.framework in Frameworks */,
 				CFB122311DBF4D8B00AAE22B /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,6 +283,8 @@
 		CFB1221B1DBF4BE500AAE22B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF201CA21E470C49004FE6E6 /* ILiveSDK.framework */,
+				CF201CA31E470C49004FE6E6 /* TILLiveSDK.framework */,
 				9B3ADFCC1DE700180099AACF /* AVSDK */,
 				9B3ADFD31DE700180099AACF /* IMSDK */,
 				CFB122541DBF4E2500AAE22B /* libprotobuf.tbd */,
