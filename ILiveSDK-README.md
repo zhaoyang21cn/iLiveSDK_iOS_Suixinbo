@@ -49,9 +49,9 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 ```
 [[ILiveSDK getInstance] initSdk:[kSdkAppId intValue] accountType:[kSdkAccountType intValue]];
 [[ILiveLoginManager getInstance] tlsLogin:@"userid" pwd:password succ:^{
-NSLog(@"-----> succ");
+  NSLog(@"-----> succ");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
+  NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
 }];
 ```
 
@@ -61,9 +61,9 @@ NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
 __weak LiveViewController *ws = self;
 ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
 [[ILiveRoomManager getInstance] createRoom:47589374 option:option succ:^{
-NSLog(@"-----> create room succ");
+  NSLog(@"-----> create room succ");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
+  NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
 }];
 ```
 
@@ -73,9 +73,9 @@ NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
 __weak LiveViewController *ws = self;
 ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
 [[ILiveRoomManager getInstance] joinRoom:47589374 option:option succ:^{
-NSLog(@"-----> join room succ");
+  NSLog(@"-----> join room succ");
 } failed:^(NSString *module, int errId, NSString *errMsg) {
-NSLog(@"-----> join room fail,%@ %d %@",module, errId, errMsg);
+  NSLog(@"-----> join room fail,%@ %d %@",module, errId, errMsg);
 }];
 ```
 
