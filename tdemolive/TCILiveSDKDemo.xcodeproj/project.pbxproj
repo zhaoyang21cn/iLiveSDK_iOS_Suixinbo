@@ -18,13 +18,11 @@
 		9B3ADFE41DE700180099AACF /* QALSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD71DE700180099AACF /* QALSDK.framework */; };
 		9B3ADFE51DE700180099AACF /* readme in Resources */ = {isa = PBXBuildFile; fileRef = 9B3ADFD81DE700180099AACF /* readme */; };
 		9B3ADFE61DE700180099AACF /* TLSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFD91DE700180099AACF /* TLSSDK.framework */; };
-		9B3ADFE91DE700FB0099AACF /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B3ADFE81DE700FB0099AACF /* TILLiveSDK.framework */; };
 		CF18CDBF1E12488500E291F6 /* LiveJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDB61E12488500E291F6 /* LiveJoinViewController.m */; };
 		CF18CDC01E12488500E291F6 /* LiveLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDB81E12488500E291F6 /* LiveLiveViewController.m */; };
 		CF18CDC11E12488500E291F6 /* LiveLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBA1E12488500E291F6 /* LiveLoginViewController.m */; };
 		CF18CDC21E12488500E291F6 /* LiveMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBC1E12488500E291F6 /* LiveMainViewController.m */; };
 		CF18CDC31E12488500E291F6 /* LiveRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF18CDBE1E12488500E291F6 /* LiveRegisterViewController.m */; };
-		CF7F25A71E1CDD26003C18EE /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF7F25A61E1CDD26003C18EE /* ILiveSDK.framework */; };
 		CFB121DD1DBF02C300AAE22B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DC1DBF02C300AAE22B /* main.m */; };
 		CFB121E01DBF02C300AAE22B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB121DF1DBF02C300AAE22B /* AppDelegate.m */; };
 		CFB121E61DBF02C300AAE22B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFB121E41DBF02C300AAE22B /* Main.storyboard */; };
@@ -82,7 +80,6 @@
 		9B3ADFD71DE700180099AACF /* QALSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QALSDK.framework; sourceTree = "<group>"; };
 		9B3ADFD81DE700180099AACF /* readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme; sourceTree = "<group>"; };
 		9B3ADFD91DE700180099AACF /* TLSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TLSSDK.framework; sourceTree = "<group>"; };
-		9B3ADFE81DE700FB0099AACF /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
 		CF18CDB51E12488500E291F6 /* LiveJoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveJoinViewController.h; sourceTree = "<group>"; };
 		CF18CDB61E12488500E291F6 /* LiveJoinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveJoinViewController.m; sourceTree = "<group>"; };
 		CF18CDB71E12488500E291F6 /* LiveLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveLiveViewController.h; sourceTree = "<group>"; };
@@ -94,7 +91,6 @@
 		CF18CDBD1E12488500E291F6 /* LiveRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveRegisterViewController.h; sourceTree = "<group>"; };
 		CF18CDBE1E12488500E291F6 /* LiveRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveRegisterViewController.m; sourceTree = "<group>"; };
 		CF4777161DCC404500CBAB67 /* ILiveSDKDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILiveSDKDemo.pch; sourceTree = "<group>"; };
-		CF7F25A61E1CDD26003C18EE /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		CFB121D81DBF02C300AAE22B /* TCILiveSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCILiveSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFB121DC1DBF02C300AAE22B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CFB121DE1DBF02C300AAE22B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -148,7 +144,6 @@
 				9B3ADFE21DE700180099AACF /* ImSDK.framework in Frameworks */,
 				CFB122431DBF4DD800AAE22B /* SystemConfiguration.framework in Frameworks */,
 				9B3ADFE11DE700180099AACF /* IMCore.framework in Frameworks */,
-				CF7F25A71E1CDD26003C18EE /* ILiveSDK.framework in Frameworks */,
 				CFB122411DBF4DC500AAE22B /* VideoToolbox.framework in Frameworks */,
 				CFB1223F1DBF4DBF00AAE22B /* libiconv.tbd in Frameworks */,
 				CFB1223D1DBF4DB700AAE22B /* libstdc++.tbd in Frameworks */,
@@ -158,7 +153,6 @@
 				CFB122351DBF4D9A00AAE22B /* libresolv.tbd in Frameworks */,
 				CFB122331DBF4D9200AAE22B /* libbz2.tbd in Frameworks */,
 				9B3ADFE31DE700180099AACF /* IMSDKBugly.framework in Frameworks */,
-				9B3ADFE91DE700FB0099AACF /* TILLiveSDK.framework in Frameworks */,
 				9B3ADFDF1DE700180099AACF /* xplatform.framework in Frameworks */,
 				9B3ADFE61DE700180099AACF /* TLSSDK.framework in Frameworks */,
 				9B3ADFE41DE700180099AACF /* QALSDK.framework in Frameworks */,
@@ -283,8 +277,6 @@
 		CFB1221B1DBF4BE500AAE22B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF7F25A61E1CDD26003C18EE /* ILiveSDK.framework */,
-				9B3ADFE81DE700FB0099AACF /* TILLiveSDK.framework */,
 				9B3ADFCC1DE700180099AACF /* AVSDK */,
 				9B3ADFD31DE700180099AACF /* IMSDK */,
 				CFB122541DBF4E2500AAE22B /* libprotobuf.tbd */,
@@ -605,7 +597,10 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/TCILiveSDKDemo/ILiveSDKDemo.pch";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../TCILiveSDK_AV1.8.4/ILiveSDK/ILiveSDK/**",
+					"$(SRCROOT)/../../../TCILiveSDK_AV1.8.4/TILLiveSDK/TILLiveSDK/**",
+				);
 				INFOPLIST_FILE = TCILiveSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -632,7 +627,10 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/TCILiveSDKDemo/ILiveSDKDemo.pch";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../TCILiveSDK_AV1.8.4/ILiveSDK/ILiveSDK/**",
+					"$(SRCROOT)/../../../TCILiveSDK_AV1.8.4/TILLiveSDK/TILLiveSDK/**",
+				);
 				INFOPLIST_FILE = TCILiveSDKDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

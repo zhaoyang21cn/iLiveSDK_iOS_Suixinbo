@@ -16,6 +16,6 @@
 #import <QALSDK/QalSDKProxy.h>
 #import <TLSSDK/TLSHelper.h>
 #import <IMSDKBugly/IMSDKBugly.h>
-#import <ILiveSDK/ILiveCoreHeader.h>
-#import <TILLiveSDK/TILLiveSDK.h>
+#import "ILiveCoreHeader.h"
+#import "TILLiveSDK.h"
 #endif /* ILiveSDKDemo_pch */

@@ -1,0 +1,32 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "0AEFD089E776E68E4BCD75E7E1D3FED2ADDCCFA4",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "8417ab44-c799-11e4-acac-0d5433960dbe++5606" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0AEFD089E776E68E4BCD75E7E1D3FED2ADDCCFA4" : 9223372036854775807,
+    "8417ab44-c799-11e4-acac-0d5433960dbe++5606" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3FAB1EC8-F62A-4263-B055-0C82F4F8ED45",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0AEFD089E776E68E4BCD75E7E1D3FED2ADDCCFA4" : "ILiveSDK_iOS_Demos\/",
+    "8417ab44-c799-11e4-acac-0d5433960dbe++5606" : "..\/TCILiveSDK_AV1.8.4"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TCILiveSDKDemo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "tdemolive\/TCILiveSDKDemo.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/zhaoyang21cn\/ILiveSDK_iOS_Demos.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0AEFD089E776E68E4BCD75E7E1D3FED2ADDCCFA4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/tc-svn.tencent.com\/bpf\/bpf_OpenSDK_rep",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8417ab44-c799-11e4-acac-0d5433960dbe++5606"
+    }
+  ]
+}

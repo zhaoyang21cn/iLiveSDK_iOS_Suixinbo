@@ -31,11 +31,12 @@
 #pragma mark - TILLiveSDK相关接口
 - (void)joinLive{
     ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+    option.controlRole = @"guest";
     TILLiveManager *manager = [TILLiveManager getInstance];
     [manager setAVListener:self];
     [manager setIMListener:self];
     [manager setAVRootView:self.view];
-    [manager addAVRenderView:self.view.bounds forKey:self.host];
+    [manager addAVRenderView:self.view.bounds forIdentifier:self.host srcType:QAVVIDEO_SRC_TYPE_CAMERA];
     
     __weak typeof(self) ws = self;
     [manager joinRoom:self.roomId option:option succ:^{
@@ -80,7 +81,11 @@
     
     //上麦
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] upToVideoMember:@"user" succ:^{
+    [[TILLiveManager getInstance] upToVideoMember:@"interact" succ:^{
+//        int ret = [[[ILiveSDK getInstance] getAVContext].audioCtrl changeAudioCategory:QAV_AUDIO_CATEGORY_HQ];
+//        NSLog(@"dddddd:ret:%ld",(long)ret);
+        NSString *tips = [[[ILiveSDK getInstance] getAVContext].audioCtrl getQualityTips];
+        NSLog(@"audio tips:%@",tips);
         [ws addTextToView:@"上麦成功"];
 
         ws.downToVideoButton.enabled = YES;
@@ -101,7 +106,7 @@
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:nil failed:nil];
     
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] downToVideoMember:@"user" succ:^{
+    [[TILLiveManager getInstance] downToVideoMember:@"guest" succ:^{
         [ws addTextToView:@"下麦成功"];
         
         ws.downToVideoButton.enabled = NO;

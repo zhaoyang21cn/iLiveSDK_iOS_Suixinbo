@@ -26,6 +26,8 @@
 #pragma mark - TILLiveSDK相关接口
 - (void)createLive{
     ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
+    option.controlRole = @"host";
+    
     TILLiveManager *manager = [TILLiveManager getInstance];
     [manager setAVListener:self];
     [manager setIMListener:self];
