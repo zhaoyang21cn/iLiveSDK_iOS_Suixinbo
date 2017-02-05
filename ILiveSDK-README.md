@@ -49,9 +49,9 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 ```
 [[ILiveSDK getInstance] initSdk:[kSdkAppId intValue] accountType:[kSdkAccountType intValue]];
 [[ILiveLoginManager getInstance] tlsLogin:@"userid" pwd:password succ:^{
-    NSLog(@"-----> succ");
+NSLog(@"-----> succ");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
+NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
 }];
 ```
 
@@ -61,9 +61,9 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 __weak LiveViewController *ws = self;
 ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
 [[ILiveRoomManager getInstance] createRoom:47589374 option:option succ:^{
-    NSLog(@"-----> create room succ");
+NSLog(@"-----> create room succ");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-    NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
+NSLog(@"-----> create room fail,%@ %d %@",moudle, errId, errMsg);
 }];
 ```
 
@@ -73,17 +73,18 @@ ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
 __weak LiveViewController *ws = self;
 ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
 [[ILiveRoomManager getInstance] joinRoom:47589374 option:option succ:^{
-    NSLog(@"-----> join room succ");
+NSLog(@"-----> join room succ");
 } failed:^(NSString *module, int errId, NSString *errMsg) {
-    NSLog(@"-----> join room fail,%@ %d %@",module, errId, errMsg);
+NSLog(@"-----> join room fail,%@ %d %@",module, errId, errMsg);
 }];
 ```
 
 ## 8、添加渲染视图
-注：添加渲染视图必须在创建房间成功回调之后，addRenderAt:forKey接口，如果是主播端，那直接传主播的登录id，如果是观众端，就传如画面所属成员的id(主播id)，也就是说，这里保证key一定是画面所属成员的id。
+
 ```
-ILiveGLBaseView *baseView = [[ILiveRoomManager getInstance] createGLViewIn:ws.view];
-[baseView addRenderAt:ws.view.bounds forKey:@"userid"];
+ILiveFrameDispatcher *frameDispatcher = [[ILiveRoomManager getInstance] getFrameDispatcher];
+ILiveRenderView *renderView = [frameDispatcher addRenderAt:self.view.bounds forIdentifier:@"userId" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+[self.view addSubview:renderView];
 ```
 以上步骤如果都执行成功，那么在测试机上可以看到视屏画面了。
 ## 9、[API文档](https://zhaoyang21cn.github.io/ilivesdk_help/ios_help/)
