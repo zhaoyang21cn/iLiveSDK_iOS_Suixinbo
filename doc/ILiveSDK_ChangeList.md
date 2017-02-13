@@ -3,6 +3,7 @@
 ###### V1.2.2(2017-2-13)
 * 更新avsdk1.8.5
 * 修复iLiveSDK停止录制时crash，以及开始推流和停止推流时crash问题
+* 增加iLiveSDK独立日志打印模块，日志路径为../Library/Caches/ilivesdk_xxxxxxxx.log(xxxxxxxx是日期，比如ilivesdk_20170213.log)
 
 ###### V1.2.1(2017-1-19)
 * 修复直播间内多次退后台崩溃的问题
