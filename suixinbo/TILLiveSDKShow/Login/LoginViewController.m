@@ -12,7 +12,6 @@
 
 #import "TabbarController.h"
 
-#import "AppDelegate.h"
 
 @interface LoginViewController () <RegistViewControllerDelegate>
 
@@ -258,8 +257,18 @@
 }
 
 - (void)enterMainUI
-{   
+{
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    NSNumber *has = [[NSUserDefaults standardUserDefaults] objectForKey:@"HasReadUserProtocol"];
+    if (!has || !has.boolValue)
+    {
+        UserProtocolViewController *vc = [[UserProtocolViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        appDelegate.window.rootViewController = nav;
+        return;
+    }
+//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     TabbarController *tabController = [[TabbarController alloc] init];
     appDelegate.window.rootViewController = tabController;

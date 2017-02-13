@@ -7,6 +7,7 @@
 //
 
 #import "LiveUIParView.h"
+#import <ILiveSDK/ILiveQualityData.h>
 
 @interface LiveUIParView () <TIMAVMeasureSpeederDelegate>
 {
@@ -169,11 +170,34 @@ UIAlertController *_alert;
         
         if (context.videoCtrl && context.audioCtrl && context.room)
         {
+//            NSString *videoParam = [context.videoCtrl getQualityTips];
+//            NSString *audioParam = [context.audioCtrl getQualityTips];
+//            NSString *commonParam = [context.room getQualityTips];
+//            NSString *paramText = [NSString stringWithFormat:@"Video:\n%@Audio:\n%@Common:\n%@", videoParam, audioParam, commonParam];
+            ILiveQualityData *qualityData = [[ILiveRoomManager getInstance] getQualityData];
+            NSMutableString *paramString = [NSMutableString string];
+            
+            CGFloat sendLossRate = (CGFloat)qualityData.sendLossRate / (CGFloat)100;
+            CGFloat recvLossRate = (CGFloat)qualityData.recvLossRate / (CGFloat)100;
+            
+            NSString *per = @"%";
+            [paramString appendString:[NSString stringWithFormat:@"SendLossRate: %.2f%@   RecvLossRate: %.2f%@\n",sendLossRate,per,recvLossRate,per]];
+            
+            CGFloat appCpuRate = (CGFloat)qualityData.appCPURate / (CGFloat)100;
+            CGFloat sysCpuRate = (CGFloat)qualityData.sysCPURate / (CGFloat)100;
+            [paramString appendString:[NSString stringWithFormat:@"AppCPURate:   %.2f%@   SysCPURate:   %.2f%@\n",appCpuRate,per,sysCpuRate,per]];
+            
+            [paramString appendString:[NSString stringWithFormat:@"Send:   %ldkbps   Recv:   %ldkbps\n",(long)qualityData.sendRate,(long)qualityData.recvRate]];
+            
+            
             NSString *videoParam = [context.videoCtrl getQualityTips];
-            NSString *audioParam = [context.audioCtrl getQualityTips];
-            NSString *commonParam = [context.room getQualityTips];
-            NSString *paramText = [NSString stringWithFormat:@"Video:\n%@Audio:\n%@Common:\n%@", videoParam, audioParam, commonParam];
-            _paramTextView.text = paramText;
+            NSArray *array = [videoParam componentsSeparatedByString:@"\n"]; //从字符A中分隔成2个元素的数组
+            if (array.count > 3)
+            {
+                NSString *resolution = [array objectAtIndex:2];
+                [paramString appendString:[NSString stringWithFormat:@"%@\n",resolution]];
+            }
+            _paramTextView.text = paramString;
         }
     }
     else

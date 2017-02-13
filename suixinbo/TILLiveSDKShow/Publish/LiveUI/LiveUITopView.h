@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ReportView.h"
+
+@protocol LiveUITopDelegate <NSObject>
+
+- (void)onClickIcon;
+
+@end
+
 @interface LiveUITopView : UIView
 {
     //top view
@@ -20,6 +28,8 @@
     
     UILabel     *_roomId;//房间id
     
+    ReportView  *_reportView;
+    
     TCShowLiveListItem  *_liveItem;
 }
 
@@ -27,6 +37,7 @@
 @property (nonatomic, strong) UILabel     *timeLabel;
 @property (nonatomic, assign) NSInteger liveTime;
 @property (nonatomic, strong) NSTimer *liveTimer;
+@property (nonatomic, weak) id<LiveUITopDelegate> delegate;
 
 - (instancetype)initWith:(TCShowLiveListItem *)item isHost:(BOOL)isHost;
 

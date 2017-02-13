@@ -56,6 +56,7 @@
 @interface RecordVideoItem : NSObject
 
 @property (nonatomic, copy) NSString *uid;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *cover;
 @property (nonatomic, copy) NSString *videoId;
 @property (nonatomic, strong) NSMutableArray *playurl;

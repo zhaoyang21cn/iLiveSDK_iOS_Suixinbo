@@ -35,7 +35,7 @@
     [self.view addSubview:_liveCover];
     
     _liveTitle = [[UITextField alloc] init];
-    _liveTitle.placeholder = @"新随心播";
+    _liveTitle.placeholder = @"直播标题";
     [self.view addSubview:_liveTitle];
     
     _publishBtn = [[UIButton alloc] init];
@@ -63,6 +63,14 @@
         return;
     }
     
+#if kIsAppstoreVersion
+    if (!(_liveTitle.text && _liveTitle.text.length > 0))
+    {
+        [AppDelegate showAlert:self title:nil message:@"请输入直播标题" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        return;
+    }
+#else
+#endif
     LoadView *reqIdWaitView = [LoadView loadViewWith:@"正在请求房间ID"];
     [self.view addSubview:reqIdWaitView];
     __block CreateRoomResponceData *roomData = nil;
@@ -105,6 +113,8 @@
 {
     if (tap.state == UIGestureRecognizerStateEnded)
     {
+        [_liveTitle resignFirstResponder];
+        
         __weak typeof(self) ws = self;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -115,7 +125,7 @@
             [ws openPhotoLibrary];
             
         }]];
-        
+         
         [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];
     }

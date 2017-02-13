@@ -12,6 +12,8 @@
 {
     RequestPageParamItem    *_pageItem;
     NSMutableArray *_data;
+    BOOL _isCanLoadMore;
+    UIRefreshControl        *_refreshCtl;
 }
 
 @property (nonatomic, strong) NSMutableArray *data;

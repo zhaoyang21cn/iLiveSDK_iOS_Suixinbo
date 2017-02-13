@@ -11,7 +11,7 @@
 @interface RecordListRequest : BaseRequest
 
 @property (nonatomic, copy) NSString *token;
-@property (nonatomic, assign) NSInteger type;
+@property (nonatomic, assign) NSInteger type;//值为0，则返回自动录制完成后回调生成的记录，值为1，则以频道模式，通过http请求，以"sxb_"前缀搜索上报的视频记录
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSInteger size;
 

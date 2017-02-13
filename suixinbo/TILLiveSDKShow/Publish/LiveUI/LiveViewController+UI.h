@@ -8,10 +8,11 @@
 
 #import "LiveViewController.h"
 
-@interface LiveViewController (UI)<InviteInteractDelegate,BottomViewDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface LiveViewController (UI)<LiveUITopDelegate,InviteInteractDelegate,BottomViewDelegate,UITableViewDelegate,UITableViewDataSource>
 
 - (void)onBtnClose:(UIButton *)button;
 - (void)onTapBlankToHide;
+- (void)onTapReportViewBlankToHide;
 
 - (void)onGotupDelete:(NSNotification *)noti;
 - (void)switchRoomRefresh:(NSNotification *)noti;

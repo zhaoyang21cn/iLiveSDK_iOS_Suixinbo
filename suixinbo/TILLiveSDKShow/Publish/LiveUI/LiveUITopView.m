@@ -60,6 +60,12 @@
     _avatarView.layer.masksToBounds = YES;
     [self addSubview:_avatarView];
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarClick:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    _avatarView.userInteractionEnabled = YES;
+    [_avatarView addGestureRecognizer:tap];
+    
     _netStatusBtn = [[UIButton alloc] init];
     [_netStatusBtn setBackgroundImage:[UIImage imageNamed:@"net3"] forState:UIControlStateNormal];
     [self addSubview:_netStatusBtn];
@@ -105,6 +111,19 @@
     _roomId.text = [NSString stringWithFormat:@"%ld",(long)_liveItem.info.roomnum];
     _roomId.textColor = kColorWhite;
     [self addSubview:_roomId];
+}
+
+- (void)onAvatarClick:(UIButton *)button
+{
+    if (_isHost)
+    {
+        return;
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onClickIcon)])
+    {
+        [self.delegate onClickIcon];
+    }
 }
 
 - (void)onLiveTimer

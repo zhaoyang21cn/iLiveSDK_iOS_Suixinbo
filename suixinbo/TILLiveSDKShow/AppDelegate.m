@@ -6,8 +6,6 @@
 //  Copyright © 2016年 Tencent. All rights reserved.
 //
 
-#import "AppDelegate.h"
-
 #import "LoginViewController.h"
 
 #import "LiveViewController.h"

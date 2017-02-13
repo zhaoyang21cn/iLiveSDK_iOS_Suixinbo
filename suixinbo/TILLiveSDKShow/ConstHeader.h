@@ -139,6 +139,9 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
 #define kLoginPassward      @"kLoginPassward"
 #define kEnvParam           @"kEnvParam"
 
+/******************** appstore **********************/
+#define kIsAppstoreVersion 0
+
 
 
 

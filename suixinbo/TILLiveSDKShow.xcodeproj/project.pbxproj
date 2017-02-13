@@ -22,6 +22,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		9B0DE7FF1E48A94F00198EE8 /* ReportView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0DE7FE1E48A94F00198EE8 /* ReportView.m */; };
+		9B0DE8051E48A95D00198EE8 /* UserProtocol.html in Resources */ = {isa = PBXBuildFile; fileRef = 9B0DE8011E48A95D00198EE8 /* UserProtocol.html */; };
+		9B0DE8061E48A95D00198EE8 /* UserProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B0DE8031E48A95D00198EE8 /* UserProtocolViewController.m */; };
+		9B0DE8071E48A95D00198EE8 /* UserProtocolViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B0DE8041E48A95D00198EE8 /* UserProtocolViewController.xib */; };
 		9B2704211E3081CE00F78985 /* LiveCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2704201E3081CE00F78985 /* LiveCallView.m */; };
 		9B2704241E3081D900F78985 /* UserViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2704221E3081D900F78985 /* UserViewManager.m */; };
 		9B2ACFD21E236A1900F5D3F7 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2ACFD11E236A1900F5D3F7 /* ILiveSDK.framework */; };
@@ -124,6 +128,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9B0DE7FD1E48A94F00198EE8 /* ReportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportView.h; sourceTree = "<group>"; };
+		9B0DE7FE1E48A94F00198EE8 /* ReportView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportView.m; sourceTree = "<group>"; };
+		9B0DE8011E48A95D00198EE8 /* UserProtocol.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = UserProtocol.html; sourceTree = "<group>"; };
+		9B0DE8021E48A95D00198EE8 /* UserProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProtocolViewController.h; sourceTree = "<group>"; };
+		9B0DE8031E48A95D00198EE8 /* UserProtocolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProtocolViewController.m; sourceTree = "<group>"; };
+		9B0DE8041E48A95D00198EE8 /* UserProtocolViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProtocolViewController.xib; sourceTree = "<group>"; };
 		9B27041F1E3081CE00F78985 /* LiveCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveCallView.h; sourceTree = "<group>"; };
 		9B2704201E3081CE00F78985 /* LiveCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveCallView.m; sourceTree = "<group>"; };
 		9B2704221E3081D900F78985 /* UserViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewManager.m; sourceTree = "<group>"; };
@@ -316,6 +326,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B0DE8001E48A95D00198EE8 /* UP */ = {
+			isa = PBXGroup;
+			children = (
+				9B0DE8011E48A95D00198EE8 /* UserProtocol.html */,
+				9B0DE8021E48A95D00198EE8 /* UserProtocolViewController.h */,
+				9B0DE8031E48A95D00198EE8 /* UserProtocolViewController.m */,
+				9B0DE8041E48A95D00198EE8 /* UserProtocolViewController.xib */,
+			);
+			name = UP;
+			path = TILLiveSDKShow/UP;
+			sourceTree = SOURCE_ROOT;
+		};
 		9B2ACFF41E24803000F5D3F7 /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -528,6 +550,8 @@
 		9BDA66F21DD2B76100E8638D /* LiveUI */ = {
 			isa = PBXGroup;
 			children = (
+				9B0DE7FD1E48A94F00198EE8 /* ReportView.h */,
+				9B0DE7FE1E48A94F00198EE8 /* ReportView.m */,
 				9B27041F1E3081CE00F78985 /* LiveCallView.h */,
 				9B2704201E3081CE00F78985 /* LiveCallView.m */,
 				9BB8235F1E20C30A00DD4076 /* Category */,
@@ -564,6 +588,7 @@
 		9BDA930F1DD05B860026EF87 /* Publish */ = {
 			isa = PBXGroup;
 			children = (
+				9B0DE8001E48A95D00198EE8 /* UP */,
 				9B2704221E3081D900F78985 /* UserViewManager.m */,
 				9B2704231E3081D900F78985 /* UserViewManager.h */,
 				9B2ACFF41E24803000F5D3F7 /* UploadImage */,
@@ -671,7 +696,7 @@
 				TargetAttributes = {
 					9B68A4C91DD01AA30089786C = {
 						CreatedOnToolsVersion = 8.0;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					9B9131831E0D3EDD00B784C6 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -704,8 +729,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B2FF7461DD0C957003CD319 /* default_cover@2x.jpg in Resources */,
+				9B0DE8071E48A95D00198EE8 /* UserProtocolViewController.xib in Resources */,
 				9B6B61591E0A57DB00B8D2D1 /* Shaderv.glsl in Resources */,
 				9B2FF7471DD0C957003CD319 /* default_head@2x.jpg in Resources */,
+				9B0DE8051E48A95D00198EE8 /* UserProtocol.html in Resources */,
 				9B9131881E0D3F3D00B784C6 /* DailyBuild-Info.plist in Resources */,
 				9B68A4DD1DD01AA30089786C /* LaunchScreen.storyboard in Resources */,
 				9B6B61581E0A57DB00B8D2D1 /* Shaderf.glsl in Resources */,
@@ -755,6 +782,7 @@
 				9BDA66F11DD2AE0800E8638D /* LiveViewController.m in Sources */,
 				9BDA66DC1DD1F6A000E8638D /* WebModels.m in Sources */,
 				9BDA66EE1DD22C2600E8638D /* PublishViewController.m in Sources */,
+				9B0DE8061E48A95D00198EE8 /* UserProtocolViewController.m in Sources */,
 				9B861D891E0BB1AB00117EDC /* RecordListRequest.m in Sources */,
 				9BDA67021DD2D0D200E8638D /* LiveUIBttomView.m in Sources */,
 				9B861D871E0BB1AB00117EDC /* LoginRequest.m in Sources */,
@@ -767,6 +795,7 @@
 				9B861D8D1E0BB1AB00117EDC /* ReportRoomRequest.m in Sources */,
 				9B6B61571E0A57DB00B8D2D1 /* README.md in Sources */,
 				9B2704211E3081CE00F78985 /* LiveCallView.m in Sources */,
+				9B0DE7FF1E48A94F00198EE8 /* ReportView.m in Sources */,
 				9BB8236B1E20C31900DD4076 /* LiveViewController+AVListener.m in Sources */,
 				9B861D8F1E0BB1AB00117EDC /* RoomMemListRequest.m in Sources */,
 				9B861D8E1E0BB1AB00117EDC /* RoomListRequest.m in Sources */,
@@ -905,6 +934,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -934,6 +964,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1026,8 +1057,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = HKB8WPFBR9;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1049,8 +1080,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.TCShow.dailybuild;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "32d8f732-d114-494a-adda-1c2bdeec6d7e";
-				PROVISIONING_PROFILE_SPECIFIER = "RDM.*";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = DailyBuild;
 		};

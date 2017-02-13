@@ -97,8 +97,12 @@
     NSDictionary *recDic = @{kSettingTitle:@"录制列表", kSettingMethod:@"onRecordList"};
     [_dataArray addObject:recDic];
     
+#if kIsAppstoreVersion
+    
+#else
     NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
     [_dataArray addObject:testEnvDic];
+#endif
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

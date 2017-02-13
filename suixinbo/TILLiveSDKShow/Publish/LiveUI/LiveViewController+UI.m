@@ -41,6 +41,16 @@
     [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:NO];
 }
 
+- (void)onClickIcon
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        _reportView.hidden = NO;
+        [_reportView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        [self.view bringSubviewToFront:_reportView];
+        
+    }];
+}
+
 - (void)onRecReport:(NSString *)name type:(AVRecordType)type;
 {
     
@@ -266,6 +276,18 @@
         _bgAlphaView.hidden = YES;
     }];
 }
+
+- (void)onTapReportViewBlankToHide
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        [_reportView setFrame:CGRectMake(0, -50, self.view.bounds.size.width, self.view.bounds.size.height)];
+    
+    } completion:^(BOOL finished) {
+        
+        _reportView.hidden = YES;
+    }];
+}
+
 - (void)onBtnClose:(UIButton *)button
 {
     __weak typeof(self) ws = self;

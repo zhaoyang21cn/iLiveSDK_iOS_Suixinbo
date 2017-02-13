@@ -8,8 +8,6 @@
 
 #import "LoadView.h"
 
-#import "AppDelegate.h"
-
 @interface LoadView ()
 {
     UIActivityIndicatorView *_activity;

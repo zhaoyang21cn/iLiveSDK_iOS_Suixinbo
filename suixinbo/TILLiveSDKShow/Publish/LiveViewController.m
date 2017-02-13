@@ -362,6 +362,7 @@
     [self.view addSubview:_closeBtn];
     
     _topView = [[LiveUITopView alloc] initWith:_liveItem isHost:_isHost];
+    _topView.delegate = self;
     [self.view addSubview:_topView];
     
     _parView = [[LiveUIParView alloc] init];
@@ -377,6 +378,17 @@
     tap.numberOfTouchesRequired = 1;
     [_bgAlphaView addGestureRecognizer:tap];
     [self.view addSubview:_bgAlphaView];
+    
+    _reportView = [[ReportView alloc] initWithFrame:CGRectMake(0, -30, self.view.bounds.size.width, self.view.bounds.size.height)];
+    _reportView.backgroundColor = [UIColor clearColor];
+    _reportView.identifier.text = _liveItem.uid;
+    _reportView.hidden = YES;
+    
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapReportViewBlankToHide)];
+    tap1.numberOfTapsRequired = 1;
+    tap1.numberOfTouchesRequired = 1;
+    [_reportView addGestureRecognizer:tap1];
+    [self.view addSubview:_reportView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoBegin:) name:kClickConnect_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoCancel:) name:kCancelConnect_Notification object:nil];

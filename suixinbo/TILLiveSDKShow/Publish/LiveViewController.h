@@ -33,6 +33,8 @@
     
     NSMutableArray      *_upVideoMembers;   //连麦列表
     
+    ReportView          *_reportView;       //举报视图
+    
     BOOL _isHost; //自己是不是主播
     TCShowLiveListItem *_liveItem;
     NSInteger _count;
