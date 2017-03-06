@@ -1,5 +1,10 @@
 ## IOS_TILLiveSDK_ChangeList
 
+###### V1.0.5(2017-3-6)
+* ILVLiveMessage类增加属性TIMUserProfile
+* ILVLiveCustomMessage增加属性TIMUserProfile
+* 增加TILLiveRoomOption类继承于ILiveRoomOption，可自定义custom消息封装格式。
+
 ###### V1.0.4(2017-1-16)
 * 增加以下接口:
   * removeAllAVRenderViews
