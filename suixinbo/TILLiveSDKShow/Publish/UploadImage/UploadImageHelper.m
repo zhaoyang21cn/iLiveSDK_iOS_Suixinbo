@@ -8,12 +8,11 @@
 
 #import "UploadImageHelper.h"
 
-#import "TXYBase.h"
-#import "TXYUploadManager.h"
+#import "COSClient.h"
 
 @interface UploadImageHelper ()
 {
-    TXYUploadManager   *_uploadManager;
+    COSClient *_cosClient;
 }
 
 @end
@@ -36,7 +35,7 @@ static UploadImageHelper *_shareInstance = nil;
 {
     if (self = [super init])
     {
-        _uploadManager = [[TXYUploadManager alloc] initWithCloudType:TXYCloudTypeForFile persistenceId:nil appId:@"10022853"];
+        _cosClient = [[COSClient alloc] initWithAppId:@"1251659802" withRegion:@"tj"];
     }
     return self;
 }
@@ -77,34 +76,34 @@ static UploadImageHelper *_shareInstance = nil;
             if (succ)
             {
                 // 存文件成功
-                //1.构造TXYPhotoUploadTask上传任务,
-                NSString *dire = [NSString stringWithFormat:@"/%@_%@", [[ILiveLoginManager getInstance] getLoginId], photoName];
-                TXYFileUploadTask *task = [[TXYFileUploadTask alloc] initWithPath:pathSave sign:respData.sign bucket:@"sxbbucket" customAttribute:@".png" uploadDirectory:dire msgContext:nil];
-                
-                
-                [_uploadManager upload:task complete:^(TXYTaskRsp *resp, NSDictionary *context) {
-                    TXYFileUploadTaskRsp *taskResp = (TXYFileUploadTaskRsp *)resp;
-                    
-                    if (taskResp >= 0 && taskResp.fileURL.length)
-                    {
+                //1.构造上传任务,
+                COSObjectPutTask *task = [COSObjectPutTask new];
+                task.filePath = pathSave;
+                task.fileName = photoName;
+                task.bucket = @"sxbbucket";
+                task.attrs = @".png";
+                task.directory = @"/";
+                task.insertOnly = YES;
+                task.sign = respData.sign;
+                _cosClient.completionHandler = ^(COSTaskRsp *resp, NSDictionary *context){
+                    if (resp.retCode == 0) {
+                        //sucess
                         if (completion)
                         {
-                            completion(taskResp.fileURL);
+                            COSObjectUploadTaskRsp *uploadResp = (COSObjectUploadTaskRsp*)resp;
+                            completion(uploadResp.sourceURL);
                         }
-                    }
-                    else
-                    {
+                    }else{
                         if (failure)
                         {
                             failure(@"上传图片失败");
                         }
                     }
-                    
-                } progress:^(int64_t totalSize, int64_t sendSize, NSDictionary *context) {
-                    NSLog(@"%@", context);
-                } stateChange:^(TXYUploadTaskState state, NSDictionary *context) {
-                    NSLog(@"%@", context);
-                }];
+                };
+                _cosClient.progressHandler = ^(int64_t bytesWritten,int64_t totalBytesWritten,int64_t totalBytesExpectedToWrite){
+                    NSLog(@"Image upload %lld / %lld", totalBytesWritten, totalBytesExpectedToWrite);
+                };
+                [_cosClient putObject:task];
             }
             else
             {

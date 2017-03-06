@@ -86,6 +86,37 @@
     
 //    [self test];
     
+    //注册ShareSDK
+    [ShareSDK registerApp:@"1ba4e87f44fec"
+     
+          activePlatforms:@[
+                            @(SSDKPlatformTypeWechat)]
+                 onImport:^(SSDKPlatformType platformType)
+     {
+         switch (platformType)
+         {
+             case SSDKPlatformTypeWechat:
+                 [ShareSDKConnector connectWeChat:[WXApi class]];
+                 break;
+             default:
+                 break;
+         }
+     }
+          onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo)
+     {
+         
+         switch (platformType)
+         {
+             case SSDKPlatformTypeWechat:
+                 [appInfo SSDKSetupWeChatByAppId:@"wx588cac36c5d302f2"
+                                       appSecret:@"f1c9fed7bd2745050bc05991d4b812e1"];
+                 break;
+             default:
+                 break;
+         }
+     }];
+    
+    
     NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
     [[TIMManager sharedInstance] setEnv:[evn intValue]];
     
@@ -170,7 +201,7 @@
         
         [self.window makeKeyAndVisible];
         
-//        ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+//        TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
 //        option.controlRole = @"Guest";
 //        [[ILiveRoomManager getInstance] joinRoom:0 option:option succ:^{
 //            

@@ -23,6 +23,20 @@
 #import <TILLiveSDK/TILLiveSDK.h>
 //#import "TILLiveSDK.h"
 
+//引入ShareSDK相关头文件
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+
+//腾讯开放平台SDK头文件（对应QQ和QQ空间）
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+
+//微信开放平台SDK头文件
+#import "WXApi.h"
+
+//新浪微博SDK头文件
+#import "WeiboSDK.h"
+
 #import "ConstHeader.h"
 
 #import "CustomUIHeader.h"
@@ -38,6 +52,7 @@
 #import "LiveCallView.h"
 
 #import "UserProtocolViewController.h"
+
 
 
 #endif /* TILLiveSDKShow_Prefix_pch */

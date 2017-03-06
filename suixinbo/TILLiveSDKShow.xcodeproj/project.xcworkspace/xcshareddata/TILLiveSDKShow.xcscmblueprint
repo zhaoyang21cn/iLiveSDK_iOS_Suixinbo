@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8417ab44-c799-11e4-acac-0d5433960dbe++8814",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "8417ab44-c799-11e4-acac-0d5433960dbe++8814" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8417ab44-c799-11e4-acac-0d5433960dbe++8814" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "13400E12-88F6-41DC-BB62-11D7E4A69660",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8417ab44-c799-11e4-acac-0d5433960dbe++8814" : "ILiveSDK_Main\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TILLiveSDKShow",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "RDM\/TILLiveSDKShow\/TILLiveSDKShow.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/tc-svn.tencent.com\/bpf\/bpf_OpenSDK_rep",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8417ab44-c799-11e4-acac-0d5433960dbe++8814"
+    }
+  ]
+}

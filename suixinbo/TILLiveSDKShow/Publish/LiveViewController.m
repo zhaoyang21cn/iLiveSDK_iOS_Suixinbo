@@ -207,7 +207,7 @@
 
 - (void)switchRoom:(BOOL)isPreRoom
 {
-    ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+    TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
     option.controlRole = kSxbRole_Guest;
     
     __weak typeof(self) ws = self;
@@ -272,7 +272,7 @@
         
         TCShowLiveListItem *item = respData.rooms[switchToIndex];
         ws.liveItem = item;
-        ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+        TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
         option.controlRole = kSxbRole_Guest;
         [[ILiveRoomManager getInstance] switchRoom:(int)item.info.roomnum option:option succ:^{
             //更新当前房间
@@ -302,7 +302,7 @@
 {
     __weak typeof(self) ws = self;
     
-    ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
+    TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
     option.controlRole = kSxbRole_Host;
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     
@@ -327,7 +327,7 @@
 
 - (void)joinRoom:(int)roomId groupId:(NSString *)groupid
 {
-    ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
+    TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
     option.controlRole = kSxbRole_Guest;
 
     __weak typeof(self) ws = self;
@@ -368,6 +368,9 @@
     _parView = [[LiveUIParView alloc] init];
     _parView.delegate = self;
     _parView.isHost = _isHost;
+    //传递当前直播房间信息，用于社交分享
+    _parView.coverUrl = _liveItem.info.cover;
+    _parView.roomTitle = _liveItem.info.title;
     [self.view addSubview:_parView];
     
     _bgAlphaView = [[UIView alloc] init];

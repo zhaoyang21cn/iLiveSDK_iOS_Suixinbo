@@ -28,6 +28,9 @@
 }
 
 @property (nonatomic, assign) BOOL isHost;
+@property (nonatomic, copy) NSString *roomTitle;//用于记录当前直播房间标题
+@property (nonatomic, copy) NSString *coverUrl;//用于记录当前直播封面的URL
+
 @property (nonatomic, weak) id<InviteInteractDelegate> delegate;
 
 @end

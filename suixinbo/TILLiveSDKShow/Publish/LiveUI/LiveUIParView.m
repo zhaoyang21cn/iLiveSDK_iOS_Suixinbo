@@ -9,6 +9,8 @@
 #import "LiveUIParView.h"
 #import <ILiveSDK/ILiveQualityData.h>
 
+#import <ShareSDKUI/ShareSDK+SSUI.h>//用于实现社交分享
+
 @interface LiveUIParView () <TIMAVMeasureSpeederDelegate>
 {
     UInt64  _channelId;
@@ -216,16 +218,24 @@ UIAlertController *_alert;
     
     if (button.selected)
     {
+//        AV_RECORD_FILE_TYPE_HLS         = 0x1,
+//        AV_RECORD_FILE_TYPE_FLV         = 0x2,
+//        AV_RECORD_FILE_TYPE_HLS_FLV     = 0x3,
+//        AV_RECORD_FILE_TYPE_MP4         = 0x4,
+//        AV_RECORD_FILE_TYPE_HLS_MP4     = 0x5,
+//        AV_RECORD_FILE_TYPE_FLV_MP4     = 0x6,
+//        AV_RECORD_FILE_TYPE_HLS_FLV_MP4 = 0x7,
+//        
         __weak typeof(self) ws = self;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"HLS推流" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 
-            [ws pushStream:button type:AV_ENCODE_HLS];
+            [ws pushStream:button encodeType:AV_ENCODE_HLS recordType:AV_RECORD_FILE_TYPE_MP4];
         }]];
         
         [alert addAction:[UIAlertAction actionWithTitle:@"RTMP推流" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
-            [ws pushStream:button type:AV_ENCODE_RTMP];
+            [ws pushStream:button encodeType:AV_ENCODE_RTMP recordType:AV_RECORD_FILE_TYPE_MP4];
         }]];
         
         [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -240,7 +250,7 @@ UIAlertController *_alert;
     }
 }
 
-- (void)pushStream:(UIButton *)button type:(AVEncodeType)type
+- (void)pushStream:(UIButton *)button encodeType:(AVEncodeType)encodeType recordType:(AVRecordFileType)recordType
 {
     ILivePushOption *option = [[ILivePushOption alloc] init];
     
@@ -250,8 +260,8 @@ UIAlertController *_alert;
     
     option.channelInfo = info;
     
-    option.encodeType = type;
-    option.sdkType = AVSDK_TYPE_NORMAL;
+    option.encodeType = encodeType;
+    option.recrodFileType = recordType;
     
     __weak typeof(self) ws = self;
     [[ILiveRoomManager getInstance] startPushStream:option succ:^(id selfPtr) {
@@ -267,16 +277,61 @@ UIAlertController *_alert;
             url = resp.urls[0];
         }
         NSString *msg = url ? url.playUrl : nil;
-        [ws showAlert:@"推流成功" message:msg okTitle:@"复制到剪贴板" cancelTitle:@"取消" ok:^(UIAlertAction * _Nonnull action) {
-            
-            if (msg)
-            {
-                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-                [pasteboard setString:msg];
-            }
-            
-        } cancel:nil];
-        
+        //分享链接到社交平台
+        NSArray* imageArray = @[ws.coverUrl];
+        if (imageArray) {
+            NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+            [shareParams SSDKSetupShareParamsByText:@"走过路过，不要错过~快来观看直播吧！"
+                                             images:imageArray
+                                                url:[NSURL URLWithString:msg]
+                                              title:ws.roomTitle
+                                               type:SSDKContentTypeAuto];
+            //有的平台要客户端分享需要加此方法，例如微博
+            [shareParams SSDKEnableUseClientShare];
+            //2、分享（可以弹出我们的分享菜单和编辑界面）
+            [ShareSDK showShareActionSheet:nil //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
+                                     items:nil
+                               shareParams:shareParams
+                       onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+                           switch (state) {
+                               case SSDKResponseStateSuccess:
+                               {
+                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                                       message:nil
+                                                                                      delegate:nil
+                                                                             cancelButtonTitle:@"确定"
+                                                                             otherButtonTitles:nil];
+                                   [alertView show];
+                                   break;
+                               }
+                               case SSDKResponseStateFail:
+                               {
+                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                                   message:[NSString stringWithFormat:@"%@",error]
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"OK"
+                                                                         otherButtonTitles:nil, nil];
+                                   [alert show];
+                                   break;
+                               }
+                               case SSDKResponseStateCancel:
+                               {
+                                   [ws showAlert:@"推流成功" message:msg okTitle:@"复制到剪贴板" cancelTitle:@"取消" ok:^(UIAlertAction * _Nonnull action) {
+                                   
+                                       if (msg)
+                                       {
+                                           UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                                           [pasteboard setString:msg];
+                                       }
+                                   } cancel:nil];
+                                   break;
+                               }
+                               default:
+                                   break;
+                           }
+                       }  
+             ];
+        }
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         
         button.selected = !button.selected;
@@ -417,14 +472,6 @@ UIAlertController *_alert;
         ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
         NSString *identifier = [[ILiveLoginManager getInstance] getLoginId];
         option.fileName = [NSString stringWithFormat:@"sxb_%@_%@",identifier,recName];
-        NSString *tag = @"8921";
-        option.tags = @[tag];
-        option.classId = [tag intValue];
-        option.isTransCode = NO;
-        option.isScreenShot = NO;
-        option.isWaterMark = NO;
-        option.isScreenShot = NO;
-        option.avSdkType = AVSDK_TYPE_NORMAL;
         option.recordType = recordType;
         
         __weak typeof(self) ws = self;
@@ -438,7 +485,9 @@ UIAlertController *_alert;
             NSLog(@"%@",errinfo);
             [ws showAlert:@"开始录制失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
         }];
-    } cancel:nil];
+    } cancel:^(UIAlertAction * _Nonnull action) {
+        button.selected = !button.selected;
+    }];
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 //    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
