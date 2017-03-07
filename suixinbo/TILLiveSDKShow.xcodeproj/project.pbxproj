@@ -1121,11 +1121,6 @@
 					"$(PROJECT_DIR)/Frameworks/AVSDK",
 					"$(PROJECT_DIR)/Frameworks/IMSDK",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/Optional",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformConnector",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/QQSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/Required",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/Optional",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformConnector",
@@ -1141,9 +1136,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/WeChatSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/UploadImage/COS_SDK",
+					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/UploadImage/COS_SDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
@@ -1165,11 +1158,6 @@
 					"$(PROJECT_DIR)/Frameworks/AVSDK",
 					"$(PROJECT_DIR)/Frameworks/IMSDK",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/Optional",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformConnector",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/QQSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/Required",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/Optional",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformConnector",
@@ -1185,9 +1173,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/WeChatSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/UploadImage/COS_SDK",
+					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/UploadImage/COS_SDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
@@ -1272,11 +1258,6 @@
 					"$(PROJECT_DIR)/Frameworks/AVSDK",
 					"$(PROJECT_DIR)/Frameworks/IMSDK",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/Optional",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformConnector",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/QQSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/Required",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/Optional",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformConnector",
@@ -1292,9 +1273,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/WeChatSDK",
-					"$(SRCROOT)/TILLiveSDKShow/Publish/UploadImage/COS_SDK",
+					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/UploadImage/COS_SDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/Publish/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
