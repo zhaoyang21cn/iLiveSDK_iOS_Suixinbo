@@ -7,7 +7,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 >* [视频聊天类]
      类似微信视频通话功能呢,支持多人同时上麦(最多4路)。[具体参考TILCallSDK](https://github.com/zhaoyang21cn/CallSDK_iOS_Demo)
 
-##SDK下载
+## SDK下载
 1、[ILiveSDK_1.3.1下载地址](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.3.1.zip)
 
 2、[TILLiveSDK_1.0.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK_1.0.5.zip)
@@ -16,7 +16,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 4、[AVSDK_1.8.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.8.5.zip)
 
-##ILiveSDK导入
+## ILiveSDK导入
 [ILiveSDK导入参考](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md),查看[版本更新说明](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
 
@@ -25,15 +25,18 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 1简单直播 ：直播主线流程示例  <br />
 2新随心播 ：基于ILiveSDK接口重构的随心播   
 
-##API文档
+## API文档
 [API文档(1.0.2)](https://zhaoyang21cn.github.io/ilivesdk_help/ios_help/)
 
-##错误码
+## 错误码
 [错误码表](https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md)
 
-##已知问题
+## 已知问题
 
-##关键路径LOG
+## 关键路径LOG
 [关键路径LOG 请遇到问题先自行对比](https://github.com/zhaoyang21cn/suixinbo_doc/blob/master/doc2/log.md)
 
+## 联系我们
+技术支持QQ群：594923937 207177891
 
+技术需求反馈：https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/issues 
