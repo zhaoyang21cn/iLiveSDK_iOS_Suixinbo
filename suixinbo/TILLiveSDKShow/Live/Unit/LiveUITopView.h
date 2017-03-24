@@ -27,12 +27,11 @@
     UIButton    *_livePraiseBtn;     //点赞人数
     
     UILabel     *_roomId;//房间id
-    
     ReportView  *_reportView;
-    
     TCShowLiveListItem  *_liveItem;
 }
 
+@property (nonatomic, strong) UIImageView *avatarView;
 @property (nonatomic, assign) BOOL isHost; //自己是不是主播
 @property (nonatomic, strong) UILabel     *timeLabel;
 @property (nonatomic, assign) NSInteger liveTime;

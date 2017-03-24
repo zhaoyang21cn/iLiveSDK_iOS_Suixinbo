@@ -15,8 +15,6 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
     {
         [self addOwnViews];
-//        [self configWith:_liveItem];
-//        self.contentView.backgroundColor = RGBOF(0XEFEFF4);
         self.contentView.backgroundColor = kColorWhite;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -50,7 +48,6 @@
     _liveHostName.font = kAppSmallTextFont;
     [_liveHostView addSubview:_liveHostName];
     
-    
     _liveAudience = [[UIButton alloc] init];
     [_liveAudience setImage:[UIImage imageNamed:@"visitors_red"] forState:UIControlStateNormal];
     _liveAudience.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -72,16 +69,14 @@
     {
         return;
     }
-    
     [_liveCover setImage:kDefaultCoverIcon];
-    [_liveHost setImage:kDefaultUserIcon forState:UIControlStateNormal];
+    [_liveHost setBackgroundImage:kDefaultUserIcon forState:UIControlStateNormal];
     if (item)
     {
         _liveHostName.text = item.uid;//host.username;
         _liveTitle.text = item.info.title;//item.title;
         [_liveAudience setTitle:[NSString stringWithFormat:@"%d",item.info.memsize] forState:UIControlStateNormal];//[NSString stringWithFormat:@"%d", (int)item.watchCount]
         [_livePraise setTitle:[NSString stringWithFormat:@"%d",item.info.thumbup] forState:UIControlStateNormal];//[NSString stringWithFormat:@"%d", (int)item.admireCount]
-        
         //设置封面
         if (item.info.cover && item.info.cover.length > 0)
         {
@@ -89,6 +84,24 @@
             NSData *imageData = [NSData dataWithContentsOfURL:imageUrl];
             _liveCover.image = [UIImage imageWithData:imageData];
         }
+        __weak typeof(self)ws = self;
+        //设置主播头像
+        [[TIMFriendshipManager sharedInstance] GetUsersProfile:@[item.uid] succ:^(NSArray *friends) {
+            if (friends.count <= 0)
+            {
+                return ;
+            }
+            TIMUserProfile *profile = friends[0];
+            if (profile.faceURL && profile.faceURL.length > 0)
+            {
+                NSURL *avatarUrl = [NSURL URLWithString:profile.faceURL];
+                NSData *avatarData = [NSData dataWithContentsOfURL:avatarUrl];
+                UIImage *image = [UIImage imageWithData:avatarData];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [ws.liveHost setBackgroundImage:image forState:UIControlStateNormal];
+                });
+            }
+        } fail:nil];
     }
     else
     {
@@ -108,7 +121,6 @@
 - (void)relayoutFrameOfSubViews
 {
     CGRect rect = self.contentView.bounds;
-    
     CGRect coverRect = rect;
     coverRect.size.height = (NSInteger)(rect.size.width * 0.618);
     _liveCover.frame = coverRect;

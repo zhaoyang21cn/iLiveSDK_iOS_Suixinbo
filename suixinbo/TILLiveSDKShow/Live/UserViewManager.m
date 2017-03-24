@@ -107,6 +107,11 @@
         return YES;
     }
     
+    //判断和主视图是不是相同（如果不判断，在这种情况下会有问题：主播A创建成功后，观众B进入房间，主播与观众连麦成功后，主播杀掉进程，重新启动后进入直播页，再次向观众B可以发起连麦邀请。原因在于主播杀进程重启后，远程视频先到达本地，这样远程视频就是大窗口，不会加入_renderViews中，只判断_renderViews显然无法判断是否存在）
+    if ([_mainUserId isEqualToString:userId] )
+    {
+        return YES;
+    }
     return NO;
 }
 
@@ -137,7 +142,13 @@
     {
         return nil;
     }
-
+    
+    //判断渲染视图是否已经添加(如果不判断，在这种情况下观众端有问题(小画面会被遮挡住)：主播A创建成功后，观众B进入房间，主播与观众连麦成功后，主播杀掉进程，重新启动后进入直播页，再次向观众B可以发起连麦邀请，并且看不到小画面)
+    ILiveRenderView *temp = [[TILLiveManager getInstance] getAVRenderView:userId srcType:type];
+    if (temp)
+    {
+        return temp;
+    }
     ILiveRenderView *renderView;
     if (!_mainRenderView)//第一个画面当作主界面
     {

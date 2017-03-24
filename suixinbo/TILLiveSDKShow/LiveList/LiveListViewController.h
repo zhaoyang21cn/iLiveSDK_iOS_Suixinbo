@@ -11,13 +11,9 @@
 @interface LiveListViewController : UITableViewController
 {
     RequestPageParamItem    *_pageItem;
-    
     NSMutableArray          *_datas;
-    
     UIRefreshControl        *_refreshCtl;
-    
     BOOL _isCanLoadMore;
-    
     UILabel *_noLiveLabel;
 }
 

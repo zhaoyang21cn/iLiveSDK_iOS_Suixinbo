@@ -73,7 +73,6 @@
         [self setFrame:CGRectMake(0, -50, self.bounds.size.width, self.bounds.size.height)];
         
     } completion:^(BOOL finished) {
-        
         self.hidden = YES;
     }];
 }

@@ -29,5 +29,6 @@
     __weak TCShowLiveListItem *_liveItem;
 }
 
+@property (nonatomic,strong) UIButton *liveHost;
 - (void)configWith:(TCShowLiveListItem *)item;
 @end

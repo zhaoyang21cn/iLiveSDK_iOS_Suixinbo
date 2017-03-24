@@ -7,13 +7,10 @@
 //
 
 #import "PublishViewController.h"
-
 #import "LiveViewController.h"
-
 #import "UploadImageHelper.h"
 
 @interface PublishViewController ()
-
 @end
 
 @implementation PublishViewController
@@ -55,14 +52,12 @@
         [AppDelegate showAlert:self title:nil message:@"您没有相机使用权限,请到 设置->隐私->相机 中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
         return;
     }
-    
     AVAuthorizationStatus audioStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     if(audioStatus == AVAuthorizationStatusRestricted || audioStatus == AVAuthorizationStatusDenied)
     {
         [AppDelegate showAlert:self title:nil message:@"您没有麦克风使用权限,请到 设置->隐私->麦克风 中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
         return;
     }
-    
 #if kIsAppstoreVersion
     if (!(_liveTitle.text && _liveTitle.text.length > 0))
     {
@@ -97,7 +92,6 @@
         } failed:^(NSString *failTip) {
             dispatch_semaphore_signal(semaphore);
         }];
-        
         dispatch_time_t timeoutTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC));
         dispatch_semaphore_wait(semaphore, timeoutTime);
         dispatch_semaphore_wait(semaphore, timeoutTime);
@@ -114,18 +108,14 @@
     if (tap.state == UIGestureRecognizerStateEnded)
     {
         [_liveTitle resignFirstResponder];
-        
         __weak typeof(self) ws = self;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [ws openCamera];
         }]];
-        
         [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [ws openPhotoLibrary];
-            
         }]];
-         
         [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];
     }
@@ -133,7 +123,6 @@
 
 - (void)openCamera
 {
-    // 暂时弃用自定义相机
     // 打开系统相机拍照
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if(authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied)
@@ -141,7 +130,6 @@
         [AppDelegate showAlert:self title:nil message:@"您没有相机使用权限,请到设置->隐私中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
         return;
     }
-    
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
         UIImagePickerController *cameraIPC = [[UIImagePickerController alloc] init];
@@ -176,7 +164,6 @@
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
     {
     }
-    
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -224,7 +211,6 @@
             }
         }
     }
-    
     return image;
 }
 

@@ -22,14 +22,6 @@
 
 @implementation LoginViewController
 
-//- (instancetype)init
-//{
-//    if (self = [super init])
-//    {
-//        [[ILiveSDK getInstance] setUserStatusListener:self];
-//    }
-//    return self;
-//}
 - (void)showRegistUserIdentifier:(NSString *)identifier
 {
     _userNameTF.text = identifier;
@@ -48,18 +40,14 @@
     self.view.backgroundColor = kColorLightGray;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.title = @"登录";
-    
-    [self addTapBlankToHideKeyboardGesture];
-    
     self.navigationItem.title = @"用户名登录";
     
+    [self addTapBlankToHideKeyboardGesture];
     [self autoLogin];
     
     CGRect screenRect = [UIScreen mainScreen].bounds;
     CGFloat screenW = screenRect.size.width;
-    
     CGFloat tfHeight = 44;
-    
     int index = 0;
     
     _userNameTF = [[UITextField alloc] initWithFrame:CGRectMake(kDefaultMargin*2, kDefaultMargin*(index+2) + tfHeight*index, screenW-(kDefaultMargin*4), tfHeight)];
@@ -105,8 +93,6 @@
     [registBtn addTarget:self action:@selector(onRegist:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registBtn];
     index++;
-    
-    
 }
 
 - (void)addTapBlankToHideKeyboardGesture;
@@ -126,7 +112,6 @@
 - (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    
     if (okTitle)
     {
         [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
@@ -167,7 +152,7 @@
     
     [self login:_userNameTF.text passward:_passwordTF.text];
     
-
+//托管模式登录
 //    [[ILiveLoginManager getInstance] tlsLogin:_userNameTF.text pwd:_passwordTF.text succ:^{
 //        NSLog(@"tillivesdkshow login succ");
 //        
@@ -189,23 +174,18 @@
     [self.view addSubview:loginWaitView];
     
     __weak typeof(self) ws = self;
-    
     //请求sig
     LoginRequest *sigReq = [[LoginRequest alloc] initWithHandler:^(BaseRequest *request) {
-        
         LoginResponceData *responseData = (LoginResponceData *)request.response.data;
         [AppDelegate sharedAppDelegate].token = responseData.token;
-        
         [[ILiveLoginManager getInstance] iLiveLogin:identifier sig:responseData.userSig succ:^{
             NSLog(@"tillivesdkshow login succ");
-            
             [loginWaitView removeFromSuperview];
             [ws saveLoginParamToLocal:identifier passward:pwd];
             [ws enterMainUI];
+            
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            
             [loginWaitView removeFromSuperview];
-            
             if (errId == 8050)//离线被踢,再次登录
             {
                 [ws login:identifier passward:pwd];
@@ -217,19 +197,14 @@
                 [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
             }
         }];
-        
     } failHandler:^(BaseRequest *request) {
-        
         [loginWaitView removeFromSuperview];
-        
         NSString *errInfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode, request.response.errorInfo];
         NSLog(@"login fail.%@",errInfo);
         [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-        
     }];
     sigReq.identifier = identifier;
     sigReq.pwd = pwd;
-    
     [[WebServiceEngine sharedEngine] asyncRequest:sigReq];
 }
 
@@ -259,7 +234,6 @@
 - (void)enterMainUI
 {
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
     NSNumber *has = [[NSUserDefaults standardUserDefaults] objectForKey:@"HasReadUserProtocol"];
     if (!has || !has.boolValue)
     {
@@ -268,8 +242,6 @@
         appDelegate.window.rootViewController = nav;
         return;
     }
-//    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
     TabbarController *tabController = [[TabbarController alloc] init];
     appDelegate.window.rootViewController = tabController;
 }

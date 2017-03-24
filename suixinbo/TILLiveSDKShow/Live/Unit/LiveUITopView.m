@@ -38,6 +38,7 @@
 {
     self.hidden = YES;
 }
+
 - (void)onTopNoPure:(NSNotification *)noti
 {
     self.hidden = NO;
@@ -56,6 +57,25 @@
 {
     //top view
     _avatarView = [[UIImageView alloc] initWithImage:kDefaultUserIcon];
+    //下载主播头像
+    __weak typeof(self)ws = self;
+    //设置主播头像
+    [[TIMFriendshipManager sharedInstance] GetUsersProfile:@[_liveItem.uid] succ:^(NSArray *friends) {
+        if (friends.count <= 0)
+        {
+            return ;
+        }
+        TIMUserProfile *profile = friends[0];
+        if (profile.faceURL && profile.faceURL.length > 0)
+        {
+            NSURL *avatarUrl = [NSURL URLWithString:profile.faceURL];
+            NSData *avatarData = [NSData dataWithContentsOfURL:avatarUrl];
+            UIImage *image = [UIImage imageWithData:avatarData];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [ws.avatarView setImage:image];
+            });
+        }
+    } fail:nil];
     _avatarView.layer.cornerRadius = 22;
     _avatarView.layer.masksToBounds = YES;
     [self addSubview:_avatarView];
@@ -82,6 +102,7 @@
     _timeLabel.text = _isHost ? @"00:00" : _liveItem.uid;
     _timeLabel.textColor = kColorWhite;
     [self addSubview:_timeLabel];
+    
     _liveTime = 0;
     
     if (_isHost)
@@ -119,7 +140,6 @@
     {
         return;
     }
-    
     if (self.delegate && [self.delegate respondsToSelector:@selector(onClickIcon)])
     {
         [self.delegate onClickIcon];

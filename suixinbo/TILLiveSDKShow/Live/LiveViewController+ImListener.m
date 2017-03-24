@@ -54,7 +54,6 @@ static __weak UIAlertController *_promptAlert = nil;
                     _promptAlert = nil;
                 }
                 _promptAlert = [AppDelegate showAlert:self title:@"已取消视频邀请" message:msg.sendId okTitle:@"确定" cancelTitle:nil ok:^(UIAlertAction * _Nonnull action) {
-                    
                 } cancel:nil];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [_promptAlert dismissViewControllerAnimated:YES completion:nil];
@@ -116,28 +115,22 @@ static __weak UIAlertController *_promptAlert = nil;
     
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
-        
         [roomManager changeRole:kSxbRole_Interact succ:^{
             NSLog(@"changeRole");
-            
             [roomManager enableCamera:CameraPosFront enable:YES succ:^{
                 NSLog(@"enable camera YES");
-                
                 [roomManager enableMic:YES succ:^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
                     
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
                     NSLog(@"enable mic fail");
                 }];
-                
             } failed:^(NSString *module, int errId, NSString *errMsg) {
                 NSLog(@"enable camera fail");
             }];
-            
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             NSLog(@"change role fail");
         }];
-        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSLog(@"fail");
     }];
@@ -153,13 +146,11 @@ static __weak UIAlertController *_promptAlert = nil;
     //        NSLog(@"down video fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
     //    }];
     
-    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
-    
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_GROUP;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
-    
+    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         [manager changeRole:kSxbRole_Guest succ:^ {
             TCILDebugLog(@"down to video: change role succ");
@@ -171,15 +162,12 @@ static __weak UIAlertController *_promptAlert = nil;
                     [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
                     TCILDebugLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-                    
                 }];
             } failed:^(NSString *module, int errId, NSString *errMsg) {
                 TCILDebugLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-                
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             TCILDebugLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-            
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         TCILDebugLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
@@ -193,7 +181,6 @@ static __weak UIAlertController *_promptAlert = nil;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Refuse;
     msg.recvId = _liveItem.uid;
     msg.type = ILVLIVE_IMTYPE_C2C;
-    
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         NSLog(@"refuse video succ");
     } failed:^(NSString *moudle, int errId, NSString *errMsg) {

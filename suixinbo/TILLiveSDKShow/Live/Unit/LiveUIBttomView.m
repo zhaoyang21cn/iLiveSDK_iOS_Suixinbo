@@ -47,6 +47,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downVideoUpdateFuns) name:kUserDownVideo_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchRoomRefresh) name:kUserSwitchRoom_Notification object:nil];
 }
+
 //上麦之后更新界面
 - (void)upVideoUpdateFuns
 {
@@ -54,6 +55,7 @@
     
     [self setNeedsLayout];
 }
+
 //下麦之后更新界面
 - (void)downVideoUpdateFuns
 {
@@ -154,14 +156,10 @@
     if (_isHost)//如果是主播点击bottom中的下麦操作时，是下别人的麦
     {
         ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
-        
         video.recvId = [UserViewManager shareInstance].mainUserId;//_mainWindowUserId;
         video.data = [[UserViewManager shareInstance].mainUserId dataUsingEncoding:NSUTF8StringEncoding];
-        
         video.type = ILVLIVE_IMTYPE_GROUP;
         video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
-        
-        
         [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
             NSLog(@"send succ");
         } failed:^(NSString *module, int errId, NSString *errMsg) {
@@ -169,19 +167,15 @@
         }];
         return;
     }
-    
     __weak typeof(self) ws = self;
-    
-    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
-    
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_GROUP;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     msg.data = [[[ILiveLoginManager getInstance] getLoginId] dataUsingEncoding:NSUTF8StringEncoding];
     
+    ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        
         [manager changeRole:kSxbRole_Guest succ:^ {
             NSLog(@"down to video: change role succ");
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
@@ -196,14 +190,11 @@
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
                     NSLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
                 }];
-                
             } failed:^(NSString *module, int errId, NSString *errMsg) {
                 NSLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-                
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             NSLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
-            
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
@@ -274,21 +265,24 @@
     beautyView.changeCompletion = ^(CGFloat value){
         [ws onBeautyChanged:value];
     };
-    
     [beautyView setBeauty:_lastBeautyValue];
 }
 
 - (void)onBeautyChanged:(CGFloat)value
 {
     _lastBeautyValue = value;
-    
     NSInteger be = (NSInteger)((value + 0.05) * 10);
-    
-    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-    if (context && context.videoCtrl)
+    //TILFilterSDK美颜效果
+    if (self.delegate && [self.delegate respondsToSelector:@selector(setTilBeauty:)])
     {
-        [context.videoCtrl inputBeautyParam:be];
+        [self.delegate setTilBeauty:be];
     }
+//QAVSDK美颜效果
+//    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+//    if (context && context.videoCtrl)
+//    {
+//        [context.videoCtrl inputBeautyParam:be];
+//    }
 }
 
 - (void)onWhite:(UIButton *)button
@@ -312,20 +306,23 @@
     _lastWhiteValue = value;
     
     NSInteger be = (NSInteger)((value + 0.05) * 10);
-    
-    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-    if (context && context.videoCtrl)
+    //TILFilterSDK美白效果
+    if (self.delegate && [self.delegate respondsToSelector:@selector(setTilBeauty:)])
     {
-        [context.videoCtrl inputWhiteningParam:be];
+        [self.delegate setTilWhite:be];
     }
+    //QAVSDK美白效果
+//    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+//    if (context && context.videoCtrl)
+//    {
+//        [context.videoCtrl inputWhiteningParam:be];
+//    }
 }
 
 - (void)onMic:(UIButton *)button
 {
     button.selected = !button.selected;
-    
     BOOL curMic = [[ILiveRoomManager getInstance] getCurMicState];
-    
     [[ILiveRoomManager getInstance] enableMic:!curMic succ:^{
         NSLog(@"enable succ");
     } failed:^(NSString *module, int errId, NSString *errMsg) {
@@ -337,20 +334,16 @@
 - (void)onPure:(UIButton *)button
 {
     button.selected = !button.selected;
-    
     if (button.selected)
     {
         [self hidddenButtons:@[_pureBtn] isHide:NO];
         [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _praiseBtn] isHide:YES];
-        
         [_pureBtn alignParentRightWithMargin:kDefaultMargin];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:kPureDelete_Notification object:nil];
     }
     else
     {
         [self setNeedsLayout];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:kNoPureDelete_Notification object:nil];
     }
 }
@@ -370,12 +363,10 @@
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Praise;
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     
-    
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         NSMutableDictionary *pointDic = [NSMutableDictionary dictionary];
         [pointDic setObject:[NSNumber numberWithFloat:button.center.x] forKey:@"parise_x"];
         [pointDic setObject:[NSNumber numberWithFloat:button.center.y] forKey:@"parise_y"];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:pointDic];
         
     } failed:^(NSString *module, int errId, NSString *errMsg) {

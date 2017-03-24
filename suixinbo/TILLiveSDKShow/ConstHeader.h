@@ -62,8 +62,8 @@ alpha:a]
 #define kAppSmallTextFont       [UIFont systemFontOfSize:13]
 
 /******************** icon ********************************/
-#define kDefaultUserIcon            [UIImage imageNamed:@"default_head@2x.jpg"]
-#define kDefaultCoverIcon           [UIImage imageNamed:@"default_cover@2x.jpg"]
+#define kDefaultUserIcon            [UIImage imageNamed:@"default_head"]
+#define kDefaultCoverIcon           [UIImage imageNamed:@"default_cover"]
 
 /******************** default *****************************/
 static const int kDefaultCellHeight = 44;
@@ -127,6 +127,7 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
 #define kNoPureDelete_Notification      @"kNoPureDelete_Notification"
 #define kClickConnect_Notification      @"kClickConnect_Notification"
 #define kCancelConnect_Notification     @"kCancelConnect_Notification"
+#define kEnterBackGround_Notification   @"kEnterBackGround_Notification"
 
 /******************** role string **********************/
 #define kSxbRole_Host       @"LiveMaster"
@@ -138,11 +139,10 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
 #define kLoginIdentifier    @"kLoginIdentifier"
 #define kLoginPassward      @"kLoginPassward"
 #define kEnvParam           @"kEnvParam"
+#define kLogLevel           @"kLogLevel"
 
 /******************** appstore **********************/
 #define kIsAppstoreVersion 0
-
-
 
 
 #endif /* ConstHeader_h */

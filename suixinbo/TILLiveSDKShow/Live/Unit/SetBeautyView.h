@@ -20,11 +20,8 @@ typedef void (^SetBeautyChanged)(CGFloat beauty);
 
 @property (nonatomic, readonly) UISlider *slider;
 @property (nonatomic, assign) BOOL isWhiteMode;
-
-
 @property (nonatomic, copy) SetBeautyChanged changeCompletion;
 
 - (void)setBeauty:(CGFloat)beauty;
-
 - (void)relayoutFrameOfSubViews;
 @end

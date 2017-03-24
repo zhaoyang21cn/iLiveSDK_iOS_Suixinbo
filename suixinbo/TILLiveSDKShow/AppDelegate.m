@@ -7,11 +7,9 @@
 //
 
 #import "LoginViewController.h"
-
 #import "LiveViewController.h"
 
-@interface AppDelegate ()<TIMConnListener>
-
+@interface AppDelegate ()
 @end
 
 @implementation AppDelegate
@@ -24,14 +22,13 @@
 + (UIAlertController *)showAlert:(UIViewController *)rootVC title:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
     if (cancelTitle)
     {
         [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
+    }
+    if (okTitle)
+    {
+        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
     }
     [rootVC presentViewController:alert animated:YES completion:nil];
     return alert;
@@ -87,12 +84,7 @@
 //    [self test];
     
     //注册ShareSDK
-    [ShareSDK registerApp:@"1ba4e87f44fec"
-     
-          activePlatforms:@[
-                            @(SSDKPlatformTypeWechat)]
-                 onImport:^(SSDKPlatformType platformType)
-     {
+    [ShareSDK registerApp:@"1ba4e87f44fec" activePlatforms:@[@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType){
          switch (platformType)
          {
              case SSDKPlatformTypeWechat:
@@ -101,29 +93,27 @@
              default:
                  break;
          }
-     }
-          onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo)
-     {
-         
+     }onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo){
          switch (platformType)
          {
              case SSDKPlatformTypeWechat:
-                 [appInfo SSDKSetupWeChatByAppId:@"wx588cac36c5d302f2"
-                                       appSecret:@"f1c9fed7bd2745050bc05991d4b812e1"];
+                 [appInfo SSDKSetupWeChatByAppId:@"wx588cac36c5d302f2" appSecret:@"f1c9fed7bd2745050bc05991d4b812e1"];
                  break;
              default:
                  break;
          }
      }];
     
+    TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
     
     NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
-    [[TIMManager sharedInstance] setEnv:[evn intValue]];
+    [manager setEnv:[evn intValue]];
+    
+    NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];
+    [manager initLogSettings:YES logPath:[manager getLogPath]];
+    [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
     
     [[ILiveSDK getInstance] initSdk:[ShowAppId intValue] accountType:[ShowAccountType intValue]];
-    
-    TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
-    [manager setConnListener:self];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
@@ -137,81 +127,44 @@
     return YES;
 }
 
-
-#pragma mark connect delegate
-
-- (void)onConnSucc
-{
-}
-
-- (void)onConnFailed:(int)code err:(NSString*)err
-{
-}
-
-- (void)onDisconnect:(int)code err:(NSString*)err
-{
-    UIAlertController *alert = [AppDelegate showAlert:self.window.rootViewController title:nil message:@"失去网络连接" okTitle:nil cancelTitle:nil ok:nil cancel:nil];
-
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(dismissAlert:) userInfo:alert repeats:NO];
-}
-
-- (void)onConnecting
-{
-}
-
-- (void)dismissAlert:(NSTimer *)timer
-{
-    UIAlertController *alert = [timer userInfo];
-    [alert dismissViewControllerAnimated:YES completion:nil];
-    alert = nil;
-}
-
-- (void)test
-{
-    NSString *uid = @"wilderdev2";
-    int roomid = 90001;
-    NSString *sig = @"eJx1jl9PwjAUR9-3KZq*YmTdcHYmPrSzI-6dMonIS7OsBW6AWUuFbcbvLllI3Iv39Zz8zv32EEL49SE-L8ry46ty0jVGY3SFMKUjfPaHjQElCydDqzpMRv7xSBQHPUvXBqyWxcJp21nBRRwctZ4CSlcOFnASDrBR2iq978-s1Fp2wf9LO1h28FFMk1vxMp8qfk9tOnFDM2hD0taHcJCYd75qtM7ZhuzXGeMTFjEQzDSzu3FVz6NVK7I4CZ5LcJ-52zatMn6zHMPTcBYDN75I2XUv6WCrTw-R0CeX1I*w9*P9AoPxWIY_";
-    [[ILiveSDK getInstance] initSdk:[ShowAppId intValue] accountType:[ShowAccountType intValue]];
-    [[ILiveLoginManager getInstance] iLiveLogin:uid sig:sig succ:^{
-        
-        TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
-        item.uid = @"wilderdev1";
-        ShowRoomInfo *info = [[ShowRoomInfo alloc] init];
-        info.title = @"title";
-        info.type = @"live";
-        info.roomnum = roomid;
-        info.groupid = [NSString stringWithFormat:@"%d",roomid];
-        info.cover = @"";
-        info.host = @"wilderdev1";
-        info.appid = [ShowAppId intValue];
-        info.thumbup = 0;
-        info.memsize = 0;
-        info.device = 1;
-        info.videotype = 1;
-        
-        item.info = info;
-        
-        LiveViewController *vc = [[LiveViewController alloc] initWith:item];
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        
-        self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        
-        self.window.rootViewController = nav;
-        
-        [self.window makeKeyAndVisible];
-        
-//        TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
-//        option.controlRole = @"Guest";
-//        [[ILiveRoomManager getInstance] joinRoom:0 option:option succ:^{
-//            
-//        } failed:^(NSString *module, int errId, NSString *errMsg) {
-//            
-//        }];
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        
-    }];
-}
+//- (void)test
+//{
+//    NSString *uid = @"wilderdev2";
+//    int roomid = 90001;
+//    NSString *sig = @"eJx1jl9PwjAUR9-3KZq*YmTdcHYmPrSzI-6dMonIS7OsBW6AWUuFbcbvLllI3Iv39Zz8zv32EEL49SE-L8ry46ty0jVGY3SFMKUjfPaHjQElCydDqzpMRv7xSBQHPUvXBqyWxcJp21nBRRwctZ4CSlcOFnASDrBR2iq978-s1Fp2wf9LO1h28FFMk1vxMp8qfk9tOnFDM2hD0taHcJCYd75qtM7ZhuzXGeMTFjEQzDSzu3FVz6NVK7I4CZ5LcJ-52zatMn6zHMPTcBYDN75I2XUv6WCrTw-R0CeX1I*w9*P9AoPxWIY_";
+//    [[ILiveSDK getInstance] initSdk:[ShowAppId intValue] accountType:[ShowAccountType intValue]];
+//    [[ILiveLoginManager getInstance] iLiveLogin:uid sig:sig succ:^{
+//        
+//        TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
+//        item.uid = @"wilderdev1";
+//        ShowRoomInfo *info = [[ShowRoomInfo alloc] init];
+//        info.title = @"title";
+//        info.type = @"live";
+//        info.roomnum = roomid;
+//        info.groupid = [NSString stringWithFormat:@"%d",roomid];
+//        info.cover = @"";
+//        info.host = @"wilderdev1";
+//        info.appid = [ShowAppId intValue];
+//        info.thumbup = 0;
+//        info.memsize = 0;
+//        info.device = 1;
+//        info.videotype = 1;
+//        
+//        item.info = info;
+//        
+//        LiveViewController *vc = [[LiveViewController alloc] initWith:item];
+//        
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//        
+//        self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//        
+//        self.window.rootViewController = nav;
+//        
+//        [self.window makeKeyAndVisible];
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        
+//    }];
+//}
 - (void)configAppearance
 {
     [[UINavigationBar appearance] setBarTintColor:kColorRed];
@@ -230,6 +183,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    //如果在房间中，持续发送心跳包
+    [[NSNotificationCenter defaultCenter] postNotificationName:kEnterBackGround_Notification object:nil];
 }
 
 

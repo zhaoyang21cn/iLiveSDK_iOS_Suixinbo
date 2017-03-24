@@ -22,8 +22,8 @@
     LiveUIParView       *_parView;
     LiveUIBttomView     *_bottomView;
     
+    //直播界面消息模块
     MsgInputView        *_msgInputView;
-    
     UITableView         *_msgTableView;     //消息列表视图
     NSMutableArray      *_msgDatas;         //消息列表数据
     
@@ -43,6 +43,8 @@
 @property (nonatomic, strong) TCShowLiveListItem  *liveItem;
 @property (nonatomic, strong) NSMutableArray *upVideoMembers;
 @property (nonatomic, assign) NSInteger count;
+
+@property (nonatomic, strong) TILFilter *tilFilter;
 
 - (instancetype)initWith:(TCShowLiveListItem *)item;
 - (void)onClose;

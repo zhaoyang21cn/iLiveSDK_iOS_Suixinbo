@@ -17,11 +17,21 @@
 #import <QALSDK/QalSDKProxy.h>
 #import <TLSSDK/TLSHelper.h>
 #import <IMSDKBugly/IMSDKBugly.h>
-#import <ILiveSDK/ILiveCoreHeader.h>
-//#import "ILiveCoreHeader.h"
 
-#import <TILLiveSDK/TILLiveSDK.h>
+
+//#import "ILiveCoreHeader.h"
+//#import "ILiveQualityData.h"
+//#import "ILiveSpeedTestManager.h"
 //#import "TILLiveSDK.h"
+
+#import <ILiveSDK/ILiveCoreHeader.h>
+#import <ILiveSDK/ILiveQualityData.h>
+#import <ILiveSDK/ILiveSpeedTestManager.h>
+#import <TILLiveSDK/TILLiveSDK.h>
+
+//美颜滤镜sdk
+#import <TILFilterSDK/TILFilter.h>
+//#import "TILFilter.h"
 
 //引入ShareSDK相关头文件
 #import <ShareSDK/ShareSDK.h>

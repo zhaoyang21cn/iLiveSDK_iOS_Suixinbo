@@ -10,4 +10,7 @@
 
 @interface SettingViewController : UIViewController<TIMUserStatusListener>
 
+@property (nonatomic, strong) NSString *nickName;
+@property (nonatomic, strong) UIImage *avatar;
+
 @end

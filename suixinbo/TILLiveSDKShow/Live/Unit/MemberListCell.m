@@ -64,19 +64,15 @@
 - (void)onConnect:(UIButton *)button
 {
     ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
-    
     video.recvId = _identifier.text;
     video.data = [_identifier.text dataUsingEncoding:NSUTF8StringEncoding];
-    
     video.type = ILVLIVE_IMTYPE_C2C;
     video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
-    
     [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
         NSLog(@"send succ");
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
     }];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:kClickConnect_Notification object:_identifier.text];
 }
 

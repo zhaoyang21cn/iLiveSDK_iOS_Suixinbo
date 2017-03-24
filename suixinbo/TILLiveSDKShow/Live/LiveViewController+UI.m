@@ -24,20 +24,17 @@
         return;
     }
     __weak typeof(self) ws = self;
-    
     RoomMemListRequest *listReq = [[RoomMemListRequest alloc] initWithHandler:^(BaseRequest *request) {
-        
         RoomMemListRspData *listRspData = (RoomMemListRspData *)request.response.data;
         [ws popMemberList:listRspData.idlist];
-    } failHandler:^(BaseRequest *request) {
         
+    } failHandler:^(BaseRequest *request) {
         NSLog(@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo);
     }];
     listReq.token = [AppDelegate sharedAppDelegate].token;
     listReq.roomnum = _liveItem.info.roomnum;
     listReq.index = 0;
     listReq.size = 20;
-    
     [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:NO];
 }
 
@@ -47,13 +44,11 @@
         _reportView.hidden = NO;
         [_reportView setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
         [self.view bringSubviewToFront:_reportView];
-        
     }];
 }
 
-- (void)onRecReport:(NSString *)name type:(AVRecordType)type;
+- (void)onRecReport:(NSString *)name type:(AVRecordType)type
 {
-    
     RecordReportRequest *req = [[RecordReportRequest alloc] initWithHandler:^(BaseRequest *request) {
         NSLog(@"rec report succ");
         
@@ -66,7 +61,6 @@
     req.name = name;
     req.type = (NSInteger)type;
     req.cover = _liveItem.info.cover;
-    
     [[WebServiceEngine sharedEngine] asyncRequest:req];
 }
 
@@ -81,7 +75,6 @@
         BOOL isLoginId = [item.identifier isEqualToString:loginId];
         BOOL isPlaceholder = [[UserViewManager shareInstance] isExistPlaceholder:item.identifier];
         BOOL isRender = [[UserViewManager shareInstance] isExistRenderView:item.identifier];
-        
         if (!isLoginId && !isPlaceholder && !isRender)
         {
             [_members addObject:item];
@@ -99,7 +92,6 @@
         });
         return;
     }
-    
     [_bgAlphaView setFrame:CGRectMake(0, -150, self.view.bounds.size.width, self.view.bounds.size.height)];
     _bgAlphaView.hidden = NO;
     
@@ -149,7 +141,6 @@
 - (void)onGotupDelete:(NSNotification *)noti
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"主播已经离开房间,是否退出?" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self exitRoom];
     }]];
@@ -159,9 +150,7 @@
 - (void)showLikeHeartStartRect:(NSNotification *)noti
 {
     NSDictionary *pointDic = (NSDictionary *)noti.object;
-    
     CGFloat aniX, aniY;
-    
     if (pointDic)
     {
         CGFloat pariseX = [[pointDic objectForKey:@"parise_x"] floatValue];
@@ -177,7 +166,6 @@
         aniX = self.view.bounds.size.width - 50;
         aniY = self.view.bounds.size.height - 70;
     }
-    
     if (aniX+30 > self.view.bounds.size.width)
     {
         aniX = self.view.bounds.size.width - 40;
@@ -187,7 +175,6 @@
     imageView.image = [[UIImage imageNamed:@"img_like"] imageWithTintColor:[UIColor randomFlatDarkColor]];
     [self.view addSubview:imageView];
     imageView.alpha = 0;
-    
     
     [imageView.layer addAnimation:[self hearAnimationFrom:frame] forKey:nil];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -261,6 +248,16 @@
     [_msgInputView becomeFirstResponder];
 }
 
+- (void)setTilBeauty:(float)beauty
+{
+    [self.tilFilter setBeauty:beauty];
+}
+
+- (void)setTilWhite:(float)white
+{
+    [self.tilFilter setWhite:white];
+}
+
 - (void)exitRoom
 {
     [self onClose];
@@ -271,8 +268,8 @@
     [UIView animateWithDuration:0.5 animations:^{
         [_bgAlphaView setFrame:CGRectMake(0, -150, self.view.bounds.size.width, self.view.bounds.size.height)];
         [_memberListView setFrame:CGRectMake(0, -150, self.view.bounds.size.width, 150)];
-    } completion:^(BOOL finished) {
         
+    } completion:^(BOOL finished) {
         _bgAlphaView.hidden = YES;
     }];
 }
@@ -283,7 +280,6 @@
         [_reportView setFrame:CGRectMake(0, -50, self.view.bounds.size.width, self.view.bounds.size.height)];
     
     } completion:^(BOOL finished) {
-        
         _reportView.hidden = YES;
     }];
 }
@@ -355,7 +351,6 @@
     if (tableView == _msgTableView)
     {
         MsgTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveTextMessageCell"];
-        
         if (cell == nil)
         {
             cell = [[MsgTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LiveTextMessageCell"];
@@ -373,21 +368,17 @@
             [cell configTips:string];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         return cell;
     }
     else if (tableView == _memberListView)
     {
         MemberListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveRoomMemberListCell"];
-        
         if (cell == nil)
         {
             cell = [[MemberListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LiveRoomMemberListCell"];
         }
-        
         MemberListItem *item = [_members objectAtIndex:indexPath.row];
         [cell configId:item.identifier];
-        
         return cell;
     }
     return nil;
@@ -396,7 +387,6 @@
 - (void)onMessage:(ILVLiveMessage *)msg
 {
     [_msgDatas addObject:msg];
-    
     if (_msgDatas.count >= 500)
     {
         NSRange range = NSMakeRange(400, 100);//只保留最新的100条消息
@@ -404,12 +394,10 @@
         [_msgDatas removeAllObjects];
         [_msgDatas addObjectsFromArray:temp];
     }
-    
     [_msgTableView beginUpdates];
     NSIndexPath *index = [NSIndexPath indexPathForRow:_msgDatas.count-1 inSection:0];
     [_msgTableView insertRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationBottom];
     [_msgTableView endUpdates];
-    
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_msgDatas.count - 1 inSection:0];
     if (indexPath.row < [_msgTableView numberOfRowsInSection:0])
     {

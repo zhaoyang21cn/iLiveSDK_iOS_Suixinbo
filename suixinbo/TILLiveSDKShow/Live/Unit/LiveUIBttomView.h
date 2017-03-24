@@ -12,6 +12,9 @@
 
 - (void)popMsgInputView;
 
+- (void)setTilBeauty:(float)beauty;
+- (void)setTilWhite:(float)white;
+
 @end
 
 @interface LiveUIBttomView : UIView
@@ -30,8 +33,8 @@
 }
 
 @property (nonatomic, assign) BOOL isHost; //自己是不是主播
-@property (nonatomic, copy) NSString *mainWindowRole;//主窗口角色，不同角色显示不同功能
 @property (nonatomic, assign) BOOL isUpVideo; //自己是不是上麦
+@property (nonatomic, copy) NSString *mainWindowRole;//主窗口角色，不同角色显示不同功能
 
 @property (nonatomic, weak) id<BottomViewDelegate> delegate;
 

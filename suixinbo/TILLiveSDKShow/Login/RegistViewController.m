@@ -31,11 +31,8 @@
     
     CGRect screenRect = [UIScreen mainScreen].bounds;
     CGFloat screenW = screenRect.size.width;
-    
     CGFloat tfHeight = 44;
-    
     int index = 0;
-    
     _userNameTF = [[UITextField alloc] initWithFrame:CGRectMake(kDefaultMargin*2, kDefaultMargin*(index+2) + tfHeight*index, screenW-(kDefaultMargin*4), tfHeight)];
     _userNameTF.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kDefaultMargin, kDefaultMargin)];
     _userNameTF.leftViewMode = UITextFieldViewModeAlways;
@@ -98,7 +95,6 @@
 - (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    
     if (okTitle)
     {
         [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
@@ -132,33 +128,25 @@
     [self.view addSubview:regWaitView];
     
     __weak typeof(self) ws = self;
-    
     //向业务后台注册
     RegistRequest *registReq = [[RegistRequest alloc] initWithHandler:^(BaseRequest *request) {
-        
         [regWaitView removeFromSuperview];
-        
         [ws showAlert:@"注册成功" message:nil okTitle:@"确定" cancelTitle:nil ok:^(UIAlertAction * _Nonnull action) {
             [ws.navigationController popViewControllerAnimated:YES];
             [ws.delegate showRegistUserIdentifier:ws.userNameTF.text];
             [ws.delegate showRegistUserPwd:ws.passwordTF.text];
         } cancel:nil];
-        
     } failHandler:^(BaseRequest *request) {
-        
         [regWaitView removeFromSuperview];
-        
         NSString *errinfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo];
         NSLog(@"regist fail.%@",errinfo);
-        
         [ws showAlert:@"注册失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
     }];
     registReq.identifier = _userNameTF.text;
     registReq.pwd = _passwordTF.text;
-    
     [[WebServiceEngine sharedEngine] asyncRequest:registReq];
     
-    
+//托管模式注册
 //    [[ILiveLoginManager getInstance] tlsRegister:_userNameTF.text pwd:_passwordTF.text succ:^{
 //        NSLog(@"tillivesdkshow regist succ");
 //        

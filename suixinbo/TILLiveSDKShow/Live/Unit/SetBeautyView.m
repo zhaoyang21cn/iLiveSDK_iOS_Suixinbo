@@ -34,14 +34,13 @@
         _tip.textColor = [UIColor whiteColor];
         [self addSubview:_tip];
     }
-    
     return self;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     _tipBg.frame = self.bounds;
     _tip.frame = CGRectMake(0, 2, self.bounds.size.width, self.bounds.size.height - 10);
     
@@ -94,9 +93,6 @@
     [self addSubview:_sliderBack];
     
     _slider = [[UISlider alloc] init];
-    [_sliderBack addSubview:_slider];
-    
-    
     UIImage *img = [UIImage imageNamed:@"beauty_slider"];
     [_slider setThumbImage:img forState:UIControlStateNormal];
     [_slider setThumbImage:img forState:UIControlStateSelected];
@@ -107,7 +103,6 @@
     _tipView = [[TCShowBeautyTipView alloc] init];
     [_sliderBack addSubview:_tipView];
     _tipView.frame = CGRectMake(0, 0, 75, 27);
-    
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     tap.numberOfTapsRequired = 1;

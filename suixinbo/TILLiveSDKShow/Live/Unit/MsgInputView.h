@@ -15,12 +15,10 @@
 {
 @protected
     UITextField     *_textField;
-    
     UIButton        *_confirmButton;
     
 @protected
     BOOL            _isInputViewActive;
-    
     LiveViewController *_liveUI;
 }
 

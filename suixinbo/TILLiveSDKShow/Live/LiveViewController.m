@@ -1,4 +1,4 @@
-//
+ //
 //  LiveViewController.m
 //  TILLiveSDKShow
 //
@@ -19,9 +19,8 @@
 
 #define kHeartInterval 5 //心跳间隔
 
-@interface LiveViewController ()
+@interface LiveViewController ()<QAVLocalVideoDelegate, QAVRemoteVideoDelegate,ILiveRoomDisconnectListener>
 
-//@property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSTimer *heartTimer;
 @end
 
@@ -32,9 +31,7 @@
     if (self = [super init])
     {
         _liveItem = item;
-        
         NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
-        
         _isHost = [loginId isEqualToString:item.uid];
     }
     return self;
@@ -88,51 +85,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLikeHeartStartRect:) name:kUserParise_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLiveViewPure:) name:kPureDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLiveViewNoPure:) name:kNoPureDelete_Notification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startLiveTimer) name:kEnterBackGround_Notification object:nil];
     _msgDatas = [NSMutableArray array];
     
-    //测试代码，无需关注
-    /*
-//    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(0, 100, 100, 50)];
-//    [button1 addTarget:self action:@selector(onTest1) forControlEvents:UIControlEventTouchUpInside];
-//    [button1 setTitle:@"isRotate_no" forState:UIControlStateNormal];
-//    [self.view addSubview:button1];
-//    
-//    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake(150, 100, 100, 50)];
-//    [button2 addTarget:self action:@selector(onTest2) forControlEvents:UIControlEventTouchUpInside];
-//    [button2 setTitle:@"isRotate_yes" forState:UIControlStateNormal];
-//    [self.view addSubview:button2];
-//    
-//    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake(0, 150, 100, 50)];
-//    [button3 addTarget:self action:@selector(onTest3) forControlEvents:UIControlEventTouchUpInside];
-//    [button3 setTitle:@"same_SCAL" forState:UIControlStateNormal];
-//    [self.view addSubview:button3];
-//    
-//    UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake(100, 150, 100, 50)];
-//    [button4 addTarget:self action:@selector(onTest4) forControlEvents:UIControlEventTouchUpInside];
-//    [button4 setTitle:@"same_BLAC" forState:UIControlStateNormal];
-//    [self.view addSubview:button4];
-//    
-//    UIButton *button5 = [[UIButton alloc] initWithFrame:CGRectMake(200, 150, 100, 50)];
-//    [button5 addTarget:self action:@selector(onTest5) forControlEvents:UIControlEventTouchUpInside];
-//    [button5 setTitle:@"same_STRE" forState:UIControlStateNormal];
-//    [self.view addSubview:button5];
-//    
-//    UIButton *button6 = [[UIButton alloc] initWithFrame:CGRectMake(0, 200, 100, 50)];
-//    [button6 addTarget:self action:@selector(onTest6) forControlEvents:UIControlEventTouchUpInside];
-//    [button6 setTitle:@"diff_SCAL" forState:UIControlStateNormal];
-//    [self.view addSubview:button6];
-//    
-//    UIButton *button7 = [[UIButton alloc] initWithFrame:CGRectMake(100, 200, 100, 50)];
-//    [button7 addTarget:self action:@selector(onTest7) forControlEvents:UIControlEventTouchUpInside];
-//    [button7 setTitle:@"diff_BLAC" forState:UIControlStateNormal];
-//    [self.view addSubview:button7];
-//    
-//    UIButton *button8 = [[UIButton alloc] initWithFrame:CGRectMake(200, 200, 100, 50)];
-//    [button8 addTarget:self action:@selector(onTest8) forControlEvents:UIControlEventTouchUpInside];
-//    [button8 setTitle:@"diff_STRE" forState:UIControlStateNormal];
-//    [self.view addSubview:button8];
-     */
+    _tilFilter = [[TILFilter alloc] init];
+    
+    [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
 }
 
 - (void)onLiveViewPure:(NSNotification *)noti
@@ -143,51 +101,6 @@
 {
     _msgTableView.hidden = NO;
 }
-
-//测试代码，无需关注
-/*
-//- (void)onTest1
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.isRotate = NO;
-//}
-//- (void)onTest2
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.isRotate = YES;
-//}
-//
-//- (void)onTest3
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.sameDirectionRenderMode = ILIVERENDERMODE_SCALETOFIT;
-//}
-//- (void)onTest4
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.sameDirectionRenderMode = ILIVERENDERMODE_BLACKTOFILL;
-//}
-//- (void)onTest5
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.sameDirectionRenderMode = ILIVERENDERMODE_STRETCHTOFILL;
-//}
-//- (void)onTest6
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.diffDirectionRenderMode = ILIVERENDERMODE_SCALETOFIT;
-//}
-//- (void)onTest7
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.diffDirectionRenderMode = ILIVERENDERMODE_BLACKTOFILL;
-//}
-//- (void)onTest8
-//{
-//    ILiveRenderView *renderView = [[[ILiveRoomManager getInstance] frameDispatcher] getRenderView:@"wilder2" srcType:QAVVIDEO_SRC_TYPE_CAMERA];
-//    renderView.diffDirectionRenderMode = ILIVERENDERMODE_STRETCHTOFILL;
-//}
-*/
 
 - (void)onSwitchToPreRoom:(UIGestureRecognizer *)ges
 {
@@ -305,9 +218,12 @@
     TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
     option.controlRole = kSxbRole_Host;
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
+    option.roomDisconnectListener = self;
     
     LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
     [self.view addSubview:createRoomWaitView];
+    
+    [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];
     
     [[TILLiveManager getInstance] createRoom:roomId option:option succ:^{
         [createRoomWaitView removeFromSuperview];
@@ -540,6 +456,15 @@
     }];
     
     [[UserViewManager shareInstance] releaseManager];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kClickConnect_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kCancelConnect_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kUserSwitchRoom_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kGroupDelete_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kUserParise_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kPureDelete_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNoPureDelete_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kEnterBackGround_Notification object:nil];
 }
 
 #pragma mark - 心跳（房间保活）
@@ -620,6 +545,48 @@
         [_heartTimer invalidate];
         _heartTimer = nil;
     }
+}
+
+- (void)OnLocalVideoPreview:(QAVVideoFrame *)frameData
+{
+    //仅仅是为了打log
+    NSString *key = frameData.identifier;
+    if (key.length == 0)
+    {
+        key = [[ILiveLoginManager getInstance] getLoginId];
+    }
+    QAVFrameDesc *desc = [[QAVFrameDesc alloc] init];
+    desc.width = frameData.frameDesc.width;
+    desc.height = frameData.frameDesc.height;
+    [_parView.resolutionDic setObject:desc forKey:key];
+}
+
+- (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frameData
+{
+    [_tilFilter processData:frameData.data type:TILDataType_NV12 size:frameData.dataSize width:frameData.frameDesc.width height:frameData.frameDesc.height];
+}
+
+- (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret
+{
+}
+
+- (void)OnVideoPreview:(QAVVideoFrame *)frameData
+{
+    //仅仅是为了打log
+    NSString *key = frameData.identifier;
+    QAVFrameDesc *desc = [[QAVFrameDesc alloc] init];
+    desc.width = frameData.frameDesc.width;
+    desc.height = frameData.frameDesc.height;
+    [_parView.resolutionDic setObject:desc forKey:key];
+}
+
+- (BOOL)onRoomDisconnect:(int)reason
+{
+    __weak typeof(self) ws = self;
+    [AppDelegate showAlert:self title:@"房间失去连接" message:[@(reason) stringValue] okTitle:@"退出" cancelTitle:nil ok:^(UIAlertAction * _Nonnull action) {
+        [ws onClose];
+    } cancel:nil];
+    return YES;
 }
 @end
 

@@ -7,13 +7,10 @@
 //
 
 #import "LiveListViewController.h"
-
 #import "LiveListTableViewCell.h"
-
 #import "LiveViewController.h"
 
 @interface LiveListViewController ()
-
 @end
 
 @implementation LiveListViewController
@@ -27,6 +24,7 @@
     }
     return self;
 }
+
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
@@ -38,11 +36,20 @@
     
     self.view.backgroundColor = kColorLightGray;
     self.navigationItem.title = @"最新直播";
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    UIView *loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    UILabel *loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    loadMoreLabel.text = @"加载更多...";
+    loadMoreLabel.textAlignment = NSTextAlignmentCenter;
+    [loadMoreView addSubview:loadMoreLabel];
+    self.tableView.tableFooterView = loadMoreView;
+    self.tableView.tableFooterView.hidden = YES;
+    
+    _isCanLoadMore = YES;
     
     _refreshCtl = [[UIRefreshControl alloc] init];
     _refreshCtl.attributedTitle = [[NSAttributedString alloc] initWithString:@"刷新列表" attributes:@{NSFontAttributeName:kAppMiddleTextFont}];
@@ -58,23 +65,23 @@
     _noLiveLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_noLiveLabel];
     
-    UIView *loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
-    UILabel *loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
-    loadMoreLabel.text = @"加载更多...";
-    loadMoreLabel.textAlignment = NSTextAlignmentCenter;
-    [loadMoreView addSubview:loadMoreLabel];
-    
-    self.tableView.tableFooterView = loadMoreView;
-    
-    self.tableView.tableFooterView.hidden = YES;
-
-    _isCanLoadMore = YES;
-    
     TCShowLiveListItem *restoreItem = [TCShowLiveListItem loadFromToLocal];
     if (restoreItem)
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"是否恢复上次直播" preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            //如果不恢复上次的直播间，则发送一个群消息，通知所有在群中的观众，主播已经退出房间了
+            [[ILiveRoomManager getInstance] bindIMGroupId:restoreItem.info.groupid];
+            ILVLiveCustomMessage *customMsg = [[ILVLiveCustomMessage alloc] init];
+            customMsg.type = ILVLIVE_IMTYPE_GROUP;
+            customMsg.recvId = restoreItem.info.groupid;
+            customMsg.cmd = (ILVLiveIMCmd)AVIMCMD_ExitLive;
+            [[TILLiveManager getInstance] sendCustomMessage:customMsg succ:^{
+                NSLog(@"succ");
+            } failed:^(NSString *module, int errId, NSString *errMsg) {
+                NSLog(@"");
+            }];
+        }]];
         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             LiveViewController *liveVC = [[LiveViewController alloc] initWith:restoreItem];
             [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
@@ -86,29 +93,12 @@
 
 - (void)onRefresh:(UIRefreshControl *)refreshCtl
 {
+    __weak typeof(self) ws = self;
     [self refresh:^{
         [refreshCtl endRefreshing];
+        ws.tableView.tableFooterView.hidden = YES;
     }];
 }
-
-//录制视频上报，暂时没有用到
-//- (void)recordReport
-//{
-//    RecordReportRequest *recordReq = [[RecordReportRequest alloc] initWithHandler:^(BaseRequest *request) {
-//        
-//        NSLog(@"record report succ");
-//    } failHandler:^(BaseRequest *request) {
-//        NSLog(@"record report fail");
-//    }];
-//    recordReq.token = [AppDelegate sharedAppDelegate].token;
-//    recordReq.videoid = @"wilder";
-//    recordReq.type = 3;
-//    recordReq.playurl = @"heep://baidu.com";
-//    recordReq.cover = @"http://baidu.lalala";
-//    
-//    [[WebServiceEngine sharedEngine] asyncRequest:recordReq wait:NO];
-//}
-
 
 - (void)refresh:(TCIVoidBlock)complete
 {
@@ -121,19 +111,15 @@
 - (void)loadMore:(TCIVoidBlock)complete
 {
     __weak typeof(self) ws = self;
-    
     //向业务后台请求直播间列表
     RoomListRequest *listReq = [[RoomListRequest alloc] initWithHandler:^(BaseRequest *request) {
-        
         RoomListRequest *wreq = (RoomListRequest *)request;
         [ws loadListSucc:wreq];
-        
         if (complete)
         {
             complete();
         }
     } failHandler:^(BaseRequest *request) {
-        
         NSLog(@"fail");
         if (complete)
         {
@@ -145,7 +131,6 @@
     listReq.index = _pageItem.pageIndex;
     listReq.size = _pageItem.pageSize;
     listReq.appid = [ShowAppId intValue];
-    
     [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:YES];
 }
 
@@ -156,7 +141,7 @@
     _pageItem.pageIndex += respData.rooms.count;
     _isCanLoadMore = respData.total > _pageItem.pageIndex;
     [self.tableView reloadData];
-    
+    self.tableView.tableFooterView.hidden = YES;
     if (_datas.count <= 0)
     {
         _noLiveLabel.hidden = NO;

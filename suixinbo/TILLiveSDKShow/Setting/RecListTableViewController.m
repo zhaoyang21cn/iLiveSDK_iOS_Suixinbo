@@ -11,7 +11,6 @@
 #import <AVKit/AVPlayerViewController.h>
 
 @interface RecListTableViewController ()
-
 @end
 
 @implementation RecListTableViewController
@@ -22,11 +21,18 @@
     
     self.view.backgroundColor = kColorLightGray;
     self.navigationItem.title = @"录制列表";
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    
+    self.tableView.tableFooterView.hidden = YES;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    UIView *loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    UILabel *loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    loadMoreLabel.text = @"加载更多...";
+    loadMoreLabel.textAlignment = NSTextAlignmentCenter;
+    [loadMoreView addSubview:loadMoreLabel];
+    self.tableView.tableFooterView = loadMoreView;
     
     _refreshCtl = [[UIRefreshControl alloc] init];
     _refreshCtl.attributedTitle = [[NSAttributedString alloc] initWithString:@"刷新列表" attributes:@{NSFontAttributeName:kAppMiddleTextFont}];
@@ -34,23 +40,9 @@
     [_refreshCtl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = _refreshCtl;
     
-    UIView *loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
-    UILabel *loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
-    loadMoreLabel.text = @"加载更多...";
-    loadMoreLabel.textAlignment = NSTextAlignmentCenter;
-    [loadMoreView addSubview:loadMoreLabel];
-    
-    self.tableView.tableFooterView = loadMoreView;
-    
-    self.tableView.tableFooterView.hidden = YES;
-    
     _isCanLoadMore = YES;
-
     _pageItem = [[RequestPageParamItem alloc] init];
-    
     _data = [NSMutableArray array];
-    
-//    [self loadMore:nil];
 }
 
 - (void)onRefresh:(UIRefreshControl *)refreshCtl
@@ -76,27 +68,20 @@
     __weak RequestPageParamItem *wpi = _pageItem;
     RecordListRequest *recListReq = [[RecordListRequest alloc] initWithHandler:^(BaseRequest *request) {
         RecordListResponese *recordRsp = (RecordListResponese *)request.response;
-
         [ws.data addObjectsFromArray:recordRsp.videos];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [ws.tableView reloadData];
         });
-        
-        wpi.pageIndex++;// += recordRsp.videos.count;
+        wpi.pageIndex++;
         NSLog(@"--->%ld",(long)recordRsp.total);
-        
         if (ws.data.count >= recordRsp.total)
         {
             _isCanLoadMore = NO;
         }
-        
-//        complete ? complete() : nil;
         if (complete)
         {
             complete();
         }
-        
     } failHandler:^(BaseRequest *request) {
         NSLog(@"fail");
     }];
@@ -104,7 +89,6 @@
     recListReq.type = 1;
     recListReq.index = _pageItem.pageIndex;
     recListReq.size = _pageItem.pageSize;
-    
     [[WebServiceEngine sharedEngine] asyncRequest:recListReq wait:NO];
 }
 
@@ -124,34 +108,27 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return _data.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     RecordVideoItem *item = _data[section];
     return item.playurl.count;
 }
 
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *identifier = @"RecordListCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
     RecordVideoItem *item = _data[indexPath.section];
     NSString *url = item.playurl[indexPath.row];
     NSArray *array = [item.name componentsSeparatedByString:@"_"];
@@ -159,7 +136,6 @@
     if (array.count > 1)
     {
         NSString *identifier = array[1];
-        
         NSAttributedString *attriId = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n",identifier] attributes:@{NSFontAttributeName:kAppSmallTextFont}];
         [showInfo appendAttributedString:attriId];
     }
@@ -182,7 +158,6 @@
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.clipsToBounds = YES;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-
     return cell;
 }
 

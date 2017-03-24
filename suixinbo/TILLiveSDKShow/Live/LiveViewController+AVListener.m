@@ -93,7 +93,6 @@
 - (void)relayoutBottom
 {
     NSString *role = [self getMainWindowRole];
-    
     _bottomView.mainWindowRole = role;
     [_bottomView setNeedsLayout];
 }

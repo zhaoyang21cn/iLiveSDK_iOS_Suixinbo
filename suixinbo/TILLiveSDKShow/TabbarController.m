@@ -9,17 +9,15 @@
 #import "TabbarController.h"
 
 #import "LiveListViewController.h"
-
 #import "SettingViewController.h"
-
 #import "PublishViewController.h"
 
 #import "UIImage+Common.h"
+
 @interface TabbarController ()
 {
     UIButton *_liveButton;
 }
-
 @end
 
 @implementation TabbarController
@@ -82,7 +80,6 @@
 - (void)onLiveButtonClicked
 {
     PublishViewController *publishVC = [[PublishViewController alloc] init];
-    
     [[AppDelegate sharedAppDelegate] pushViewController:publishVC];
 }
 
