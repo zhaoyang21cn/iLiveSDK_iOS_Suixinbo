@@ -8,13 +8,18 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
      类似微信视频通话功能呢,支持多人同时上麦(最多4路)。[具体参考TILCallSDK](https://github.com/zhaoyang21cn/CallSDK_iOS_Demo)
 
 ## SDK下载
-1、[ILiveSDK_1.3.2下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.3.2.zip)
+1、[ILiveSDK_1.3.2下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.3.3.zip)
 
 2、[TILLiveSDK_1.0.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK_1.0.5.zip)
 
-3、[IMSDK_2.5.1下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.1.zip)
+3、[TILFilterSDK下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
-4、[AVSDK_1.8.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.8.5.zip)
+4、[IMSDK_2.5.1下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.1.zip)
+
+5、[AVSDK_1.8.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.8.5.zip)
+
+
+
 
 ## ILiveSDK导入
 [ILiveSDK导入参考](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md),查看[版本更新说明](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
