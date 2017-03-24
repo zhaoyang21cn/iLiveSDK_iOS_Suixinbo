@@ -1,5 +1,13 @@
 ## iOS_ILiveSDK_ChangeList
 
+
+###### V1.3.3(2017－3-24)
+* 1、增加日志上报功能
+* 2、增加腾讯云图API生成鉴权签名串接口
+* 3、修复创建（进入）房间前添加renderview无效的问题
+* 4、完善ilivesdk log
+* 5、增加独立美颜包，优化美颜和滤镜效果。[具体参考这里](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILFilterSDK-README.md)
+
 ###### V1.3.2(2017－3-8)
 * 1、修复 打开扬声器接口失灵的问题
 * 2、暴露 画面帧回调接口（预处理画面时需要用到）
