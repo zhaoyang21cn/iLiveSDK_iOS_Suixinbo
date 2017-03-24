@@ -12,11 +12,9 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 2、[TILLiveSDK_1.0.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK_1.0.5.zip)
 
-3、[TILFilterSDK下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
+3、[IMSDK_2.5.1下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.1.zip)
 
-4、[IMSDK_2.5.1下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.1.zip)
-
-5、[AVSDK_1.8.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.8.5.zip)
+4、[AVSDK_1.8.5下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.8.5.zip)
 
 
 
