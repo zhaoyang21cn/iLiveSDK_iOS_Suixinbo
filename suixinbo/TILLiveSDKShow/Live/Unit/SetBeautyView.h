@@ -8,20 +8,36 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^SetBeautyChanged)(CGFloat beauty);
+typedef void (^SetBeautyChanged)(BeautyViewType type, CGFloat beauty);
 
-@interface SetBeautyView : UIView
-{
-@protected
-    UIView   *_clearBg;
-    UIView   *_sliderBack;
-    UISlider *_slider;
-}
+@interface TCShowBeautyTipView : UIView
 
-@property (nonatomic, readonly) UISlider *slider;
-@property (nonatomic, assign) BOOL isWhiteMode;
-@property (nonatomic, copy) SetBeautyChanged changeCompletion;
+@property (nonatomic, strong) UILabel     *tip;
+@property (nonatomic, strong) UIImageView *tipBg;
+@property (nonatomic, assign) BeautyViewType beautyType;
 
 - (void)setBeauty:(CGFloat)beauty;
-- (void)relayoutFrameOfSubViews;
+@end
+
+
+@interface SetBeautyView : UIView
+//背景
+@property (nonatomic, strong) UIView *clearBg;      //用来做点击消失事件
+@property (nonatomic, strong) UIView *sliderBack;
+
+//美颜
+@property (nonatomic, strong) UILabel *beautyLabel;
+@property (nonatomic, readonly) UISlider *beautySlider;
+@property (nonatomic, strong)  TCShowBeautyTipView *beautyTipView;
+//美白
+@property (nonatomic, strong) UILabel *whiteLabel;
+@property (nonatomic, readonly) UISlider *whiteSlider;
+@property (nonatomic, strong)  TCShowBeautyTipView *whiteTipView;
+
+//回调函数
+@property (nonatomic, copy) SetBeautyChanged changeCompletion;
+
+- (void)setBeautyValue:(CGFloat)beauty;
+- (void)setWhiteValue:(CGFloat)white;
+
 @end

@@ -46,6 +46,7 @@ blue:((float)(v & 0x0000FF))/255.0 \
 alpha:a]
 
 #define kColorWhite      [UIColor whiteColor]
+#define kColorYellow     [UIColor yellowColor]
 #define kColorGray       RGBOF(0xF0E0F0)
 #define kColorBlue       RGBOF(0x718CED)
 #define kColorRed        RGBOF(0xF4515E)
@@ -114,6 +115,11 @@ typedef NS_ENUM(NSInteger, ShowCustomCmd)
     AVIMCMD_Multi_Host_ControlMic,              // 主动控制互动观众Mic, 主播向互动观众发送,互动观众接收时, 根据本地MIC状态,来控制摄像头开关（即控制对方视频是否上行音频），C2C消息 ： 2059
 };
 
+typedef NS_ENUM(NSInteger, BeautyViewType)
+{
+    BeautyViewType_Beauty = 0,
+    BeautyViewType_White,
+};
 /******************** notification **********************/
 #define kUserParise_Notification        @"kUserParise_Notification"
 //#define kUserJoinRoom_Notification      @"kUserJoinRoom_Notification"

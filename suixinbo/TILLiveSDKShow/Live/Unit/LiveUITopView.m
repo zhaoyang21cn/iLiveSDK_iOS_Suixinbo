@@ -36,12 +36,23 @@
 
 - (void)onTopPure:(NSNotification *)noti
 {
-    self.hidden = YES;
+    CGRect selfFrame = self.frame;
+    _restoreRect = selfFrame;
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect moveToRect = CGRectMake(selfFrame.origin.x, -(selfFrame.origin.y+selfFrame.size.height), selfFrame.size.width, selfFrame.size.height);
+        [self setFrame:moveToRect];
+    } completion:^(BOOL finished) {
+        self.hidden = YES;
+    }];
 }
 
 - (void)onTopNoPure:(NSNotification *)noti
 {
     self.hidden = NO;
+    [UIView animateWithDuration:0.5 animations:^{
+        [self setFrame:_restoreRect];
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (void)switchRoomRefresh:(NSNotification *)noti

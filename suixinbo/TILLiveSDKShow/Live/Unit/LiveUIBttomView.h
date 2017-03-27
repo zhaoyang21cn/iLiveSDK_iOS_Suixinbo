@@ -23,8 +23,7 @@
     NSMutableArray *_btnArray; //将底部功能按钮全部放在数组中，方便布局
     UIButton    *_flashBtn;          //闪关灯
     UIButton    *_cameraBtn;         //相机切换
-    UIButton    *_beautyBtn;         //美颜
-    UIButton    *_whiteBtn;          //美白
+    UIButton    *_beautyBtn;         //美颜／美白
     UIButton    *_micBtn;            //mic
     UIButton    *_pureBtn;           //纯净模式
     UIButton    *_praiseBtn;         //点赞

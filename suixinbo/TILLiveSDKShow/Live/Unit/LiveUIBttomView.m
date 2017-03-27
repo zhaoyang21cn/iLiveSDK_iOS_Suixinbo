@@ -93,12 +93,12 @@
     [self addSubview:_beautyBtn];
     [_btnArray addObject:_beautyBtn];
     
-    _whiteBtn = [[UIButton alloc] init];
-    [_whiteBtn setImage:[UIImage imageNamed:@"white"] forState:UIControlStateNormal];
-    [_whiteBtn setImage:[UIImage imageNamed:@"white_hover"] forState:UIControlStateHighlighted];
-    [_whiteBtn addTarget:self action:@selector(onWhite:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_whiteBtn];
-    [_btnArray addObject:_whiteBtn];
+//    _whiteBtn = [[UIButton alloc] init];
+//    [_whiteBtn setImage:[UIImage imageNamed:@"white"] forState:UIControlStateNormal];
+//    [_whiteBtn setImage:[UIImage imageNamed:@"white_hover"] forState:UIControlStateHighlighted];
+//    [_whiteBtn addTarget:self action:@selector(onWhite:) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:_whiteBtn];
+//    [_btnArray addObject:_whiteBtn];
     
     _micBtn = [[UIButton alloc] init];
     [_micBtn setImage:[UIImage imageNamed:@"mic"] forState:UIControlStateNormal];
@@ -256,16 +256,30 @@
 
 - (void)onBeauty:(UIButton *)button
 {
-    SetBeautyView *beautyView = [[SetBeautyView alloc] init];
+    CGRect rect = self.superview.bounds;
+    SetBeautyView *beautyView = [[SetBeautyView alloc] initWithFrame:CGRectMake(0, 170, rect.size.width, rect.size.height)];
     [self.superview addSubview:beautyView];
-    [beautyView setFrame:self.superview.bounds];
-    [beautyView relayoutFrameOfSubViews];
+    [UIView animateWithDuration:0.5 animations:^{
+        [beautyView setFrame:rect];
+    } completion:^(BOOL finished) {
+    }];
+//    [beautyView setFrame:self.superview.bounds];
+//    [beautyView relayoutFrameOfSubViews];
     
     __weak LiveUIBttomView *ws = self;
-    beautyView.changeCompletion = ^(CGFloat value){
-        [ws onBeautyChanged:value];
+    beautyView.changeCompletion = ^(BeautyViewType type, CGFloat value){
+        if (type == BeautyViewType_Beauty)
+        {
+            [ws onBeautyChanged:value];
+        }
+        if (type == BeautyViewType_White)
+        {
+            [ws onWhiteChanged:value];
+        }
     };
-    [beautyView setBeauty:_lastBeautyValue];
+//    [beautyView setBeauty:_lastBeautyValue];
+    [beautyView setBeautyValue:_lastBeautyValue];
+    [beautyView setWhiteValue:_lastWhiteValue];
 }
 
 - (void)onBeautyChanged:(CGFloat)value
@@ -285,21 +299,21 @@
 //    }
 }
 
-- (void)onWhite:(UIButton *)button
-{
-    SetBeautyView *whiteView = [[SetBeautyView alloc] init];
-    [self.superview addSubview:whiteView];
-    
-    __weak LiveUIBttomView *ws = self;
-    whiteView.changeCompletion = ^(CGFloat value){
-        [ws onWhiteChanged:value];
-    };
-    [whiteView setFrame:self.superview.bounds];
-    [whiteView relayoutFrameOfSubViews];
-    
-    whiteView.isWhiteMode = YES;
-    [whiteView setBeauty:_lastWhiteValue];
-}
+//- (void)onWhite:(UIButton *)button
+//{
+//    SetBeautyView *whiteView = [[SetBeautyView alloc] init];
+//    [self.superview addSubview:whiteView];
+//    
+//    __weak LiveUIBttomView *ws = self;
+//    whiteView.changeCompletion = ^(BeautyViewType type, CGFloat value){
+//        [ws onWhiteChanged:value];
+//    };
+//    [whiteView setFrame:self.superview.bounds];
+//    [whiteView relayoutFrameOfSubViews];
+//    
+//    whiteView.isWhiteMode = YES;
+//    [whiteView setBeauty:_lastWhiteValue];
+//}
 
 - (void)onWhiteChanged:(CGFloat)value
 {
@@ -337,7 +351,7 @@
     if (button.selected)
     {
         [self hidddenButtons:@[_pureBtn] isHide:NO];
-        [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _praiseBtn] isHide:YES];
+        [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo, _praiseBtn] isHide:YES];//_whiteBtn
         [_pureBtn alignParentRightWithMargin:kDefaultMargin];
         [[NSNotificationCenter defaultCenter] postNotificationName:kPureDelete_Notification object:nil];
     }
@@ -387,23 +401,23 @@
     {
         if (_isHost)//自己是主播(随心播中主播不能发送消息，业务测可自己定)
         {
-            [funs addObjectsFromArray:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn]];
+            [funs addObjectsFromArray:@[_flashBtn, _cameraBtn, _beautyBtn, _micBtn, _pureBtn]];//_whiteBtn,_praiseBtn
             
             [self hidddenButtons:@[_sendMsgBtn, _downVideo] isHide:YES];
-            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];//_whiteBtn
         }
         else if (_isUpVideo)
         {
-            [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn]];
+            [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _pureBtn, _praiseBtn]];//_whiteBtn
             
             [self hidddenButtons:@[_downVideo] isHide:YES];
-            [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];
+            [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];//_whiteBtn
         }
         else
         {
             [funs addObjectsFromArray:@[_sendMsgBtn, _pureBtn, _praiseBtn]];
             
-            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo] isHide:YES];
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo] isHide:YES];//_whiteBtn
             [self hidddenButtons:@[_sendMsgBtn, _pureBtn, _praiseBtn] isHide:NO];
         }
     }
@@ -411,25 +425,25 @@
     {
         if (_isHost)
         {
-            [funs addObjectsFromArray:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn]];
+            [funs addObjectsFromArray:@[_flashBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo, _pureBtn]];//_whiteBtn _praiseBtn
             
             [self hidddenButtons:@[_sendMsgBtn] isHide:YES];
-            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn] isHide:NO];
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn] isHide:NO];//_whiteBtn
         }
         else if (_isUpVideo)//随心播中，连麦用户和普通观众不能下麦其他人的视频(业务测可自己定)
         {
             if ([[UserViewManager shareInstance].mainUserId isEqualToString:[[ILiveLoginManager getInstance] getLoginId]])//如果主窗口就是登录用户的画面，则可以下麦
             {
-                [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo,_pureBtn, _praiseBtn]];
+                [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo,_pureBtn, _praiseBtn]];//_whiteBtn
                 
-                [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn] isHide:NO];
+                [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo, _pureBtn, _praiseBtn] isHide:NO];//_whiteBtn
             }
             else
             {
-                [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn]];
+                [funs addObjectsFromArray:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _pureBtn, _praiseBtn]];//_whiteBtn
                 
                 [self hidddenButtons:@[_downVideo] isHide:YES];
-                [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];
+                [self hidddenButtons:@[_flashBtn, _sendMsgBtn, _cameraBtn, _beautyBtn, _micBtn, _pureBtn, _praiseBtn] isHide:NO];//_whiteBtn
             }
             
         }
@@ -437,7 +451,7 @@
         {
             [funs addObjectsFromArray:@[_sendMsgBtn, _pureBtn, _praiseBtn]];
             
-            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _whiteBtn, _micBtn, _downVideo] isHide:YES];
+            [self hidddenButtons:@[_flashBtn, _cameraBtn, _beautyBtn, _micBtn, _downVideo] isHide:YES];//_whiteBtn
             [self hidddenButtons:@[_sendMsgBtn, _pureBtn, _praiseBtn] isHide:NO];
         }
     }

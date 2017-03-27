@@ -7,16 +7,7 @@
 //
 
 #import "SetBeautyView.h"
-@interface TCShowBeautyTipView : UIView
-{
-    UIImageView *_tipBg;
-    UILabel     *_tip;
-}
-@property (nonatomic, assign) BOOL isWhiteMode;
-- (void)setBeauty:(CGFloat)beauty;
-
-@end
-
+#import "UIView+CustomAutoLayout.h"
 
 @implementation TCShowBeautyTipView
 
@@ -48,11 +39,11 @@
 
 - (void)setBeauty:(CGFloat)beauty
 {
-    if (!_isWhiteMode)
+    if (_beautyType == BeautyViewType_Beauty)
     {
         _tip.text = [NSString stringWithFormat:@"美颜度 %d％", (int)(100 * beauty)];
     }
-    else
+    if (_beautyType == BeautyViewType_White)
     {
         _tip.text = [NSString stringWithFormat:@"美白度 %d％", (int)(100 * beauty)];
     }
@@ -60,21 +51,14 @@
 @end
 
 
-
-@interface SetBeautyView ()
-{
-    TCShowBeautyTipView *_tipView;
-}
-
-@end
-
 @implementation SetBeautyView
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    if (self = [super init])
+    if (self = [super initWithFrame:frame])
     {
         [self addOwnViews];
+        [self layoutViews];
     }
     return self;
 }
@@ -88,21 +72,41 @@
     [self addSubview:_clearBg];
     
     _sliderBack = [[UIView alloc] init];
-    _sliderBack.backgroundColor = kColorWhite;
+    _sliderBack.backgroundColor = [kColorWhite colorWithAlphaComponent:0.3];
     _sliderBack.clipsToBounds = NO;
     [self addSubview:_sliderBack];
     
-    _slider = [[UISlider alloc] init];
-    UIImage *img = [UIImage imageNamed:@"beauty_slider"];
-    [_slider setThumbImage:img forState:UIControlStateNormal];
-    [_slider setThumbImage:img forState:UIControlStateSelected];
-    [_slider setThumbImage:img forState:UIControlStateHighlighted];
-    [_slider addTarget:self action:@selector(onBeautyChanged:) forControlEvents:UIControlEventValueChanged];
-    [_sliderBack addSubview:_slider];
+    _beautyLabel = [[UILabel alloc] init];
+    _beautyLabel.text = @"美颜";
+    [_sliderBack addSubview:_beautyLabel];
     
-    _tipView = [[TCShowBeautyTipView alloc] init];
-    [_sliderBack addSubview:_tipView];
-    _tipView.frame = CGRectMake(0, 0, 75, 27);
+    UIImage *img = [UIImage imageNamed:@"beauty_slider"];
+    _beautySlider = [[UISlider alloc] init];
+    [_beautySlider setThumbImage:img forState:UIControlStateNormal];
+//    [_beautySlider setThumbImage:img forState:UIControlStateSelected];
+//    [_beautySlider setThumbImage:img forState:UIControlStateHighlighted];
+    [_beautySlider addTarget:self action:@selector(onBeautyChanged:) forControlEvents:UIControlEventValueChanged];
+    [_sliderBack addSubview:_beautySlider];
+    
+    _whiteLabel = [[UILabel alloc] init];
+    _whiteLabel.text = @"美白";
+    [_sliderBack addSubview:_whiteLabel];
+    
+    _whiteSlider = [[UISlider alloc] init];
+    [_whiteSlider setThumbImage:img forState:UIControlStateNormal];
+//    [_whiteSlider setThumbImage:img forState:UIControlStateSelected];
+//    [_whiteSlider setThumbImage:img forState:UIControlStateHighlighted];
+    [_whiteSlider addTarget:self action:@selector(onWhiteChanged:) forControlEvents:UIControlEventValueChanged];
+    [_sliderBack addSubview:_whiteSlider];
+    
+    _beautyTipView = [[TCShowBeautyTipView alloc] init];
+    _beautyTipView.beautyType = BeautyViewType_Beauty;
+    [_sliderBack addSubview:_beautyTipView];
+    
+    _whiteTipView = [[TCShowBeautyTipView alloc] init];
+    _whiteTipView.beautyType = BeautyViewType_White;
+    [_sliderBack addSubview:_whiteTipView];
+//    _tipView.frame = CGRectMake(0, 0, 75, 27);
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     tap.numberOfTapsRequired = 1;
@@ -110,45 +114,74 @@
     [_clearBg addGestureRecognizer:tap];
 }
 
-- (void)layoutSubviews
+- (void)layoutViews
 {
-    [super layoutSubviews];
-    [self moveTip];
-}
-
-- (void)relayoutFrameOfSubViews
-{
-    CGRect rect = self.bounds;
+    CGRect selfRect = self.bounds;
     
-    _clearBg.frame = rect;
+    _clearBg.frame = selfRect;
     
-    [_sliderBack sizeWith:CGSizeMake(rect.size.width, 60)];
+    [_sliderBack sizeWith:CGSizeMake(selfRect.size.width, 170)];
     [_sliderBack alignParentBottom];
     
-    rect = _sliderBack.bounds;
-    _slider.frame = CGRectInset(rect, 30, 20);
+    CGFloat height = 45;//(_sliderBack.frame.size.height - kDefaultMargin*3)/2;
+    CGFloat bottomMargin = kDefaultMargin*6;
+    
+    [_whiteLabel sizeWith:CGSizeMake((selfRect.size.width-kDefaultMargin*3) * 2/10, height)];
+    [_whiteLabel alignParentBottomWithMargin:bottomMargin];
+    [_whiteLabel alignParentLeftWithMargin:kDefaultMargin];
+    
+    [_whiteSlider sizeWith:CGSizeMake((selfRect.size.width-kDefaultMargin*3) * 8/10, height)];
+    [_whiteSlider alignParentBottomWithMargin:bottomMargin];
+    [_whiteSlider layoutToRightOf:_whiteLabel margin:kDefaultMargin];
+    
+    [_whiteTipView sizeWith:CGSizeMake(75, 27)];
+    [_whiteTipView layoutBelow:_whiteSlider margin:kDefaultMargin];
+    
+    [_beautyLabel sizeWith:CGSizeMake((selfRect.size.width-kDefaultMargin*3) * 2/10, height)];
+    [_beautyLabel layoutAbove:_whiteLabel margin:kDefaultMargin*3];
+    [_beautyLabel alignHorizontalCenterOf:_whiteLabel];
+    
+    [_beautySlider sizeWith:CGSizeMake((selfRect.size.width-kDefaultMargin*3) * 8/10, height)];
+    [_beautySlider layoutAbove:_whiteSlider margin:kDefaultMargin*3];
+    [_beautySlider alignHorizontalCenterOf:_whiteSlider];
+    
+    [_beautyTipView sizeWith:CGSizeMake(70, 27)];
+    [_beautyTipView layoutBelow:_beautySlider margin:kDefaultMargin];
 }
 
 - (void)onBeautyChanged:(id)sender
 {
-    [self moveTip];
+    [self moveTip:_beautySlider tipView:_beautyTipView];
     if (_changeCompletion)
     {
-        _changeCompletion(_slider.value);
+        _changeCompletion(BeautyViewType_Beauty, _beautySlider.value);
     }
 }
 
-- (void)moveTip
+- (void)onWhiteChanged:(id)sender
 {
-    CGRect tipFrame = _tipView.frame;
-    CGRect rect = _slider.frame;
-    tipFrame.origin.y = rect.origin.y - tipFrame.size.height;
-    CGFloat value = _slider.value;
-    tipFrame.origin.x = rect.origin.x + value * rect.size.width - tipFrame.size.width/2;
-    _tipView.frame = tipFrame;
-    [_tipView setBeauty:_slider.value];
+    [self moveTip:_whiteSlider tipView:_whiteTipView];
+    if (_changeCompletion)
+    {
+        _changeCompletion(BeautyViewType_White, _whiteSlider.value);
+    }
 }
 
+- (void)moveTip:(UISlider *)silder tipView:(TCShowBeautyTipView *)tipView
+{
+    CGRect selfRect = [self bounds];
+    CGRect tipFrame = tipView.frame;
+    CGRect rect = silder.frame;
+    tipFrame.origin.y = rect.origin.y - tipFrame.size.height;
+    CGFloat value = silder.value;
+    tipFrame.origin.x = rect.origin.x + value * rect.size.width - tipFrame.size.width/2;
+    if (tipFrame.origin.x + tipFrame.size.width > selfRect.size.width)
+    {
+        tipFrame.origin.x = selfRect.size.width-tipFrame.size.width;
+    }
+    tipView.frame = tipFrame;
+    [tipView setBeauty:silder.value];
+}
 
 - (void)onTap:(UITapGestureRecognizer *)sender
 {
@@ -158,20 +191,27 @@
     }
 }
 
-- (void)setIsWhiteMode:(BOOL)isWhiteMode
-{
-    _isWhiteMode = isWhiteMode;
-    _tipView.isWhiteMode = isWhiteMode;
-}
-
 - (void)close
 {
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.7 animations:^{
+        CGRect selfRect = self.frame;
+        selfRect.origin.y += selfRect.size.height;
+        [self setFrame:selfRect];
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
-- (void)setBeauty:(CGFloat)beauty
+- (void)setBeautyValue:(CGFloat)beauty
 {
-    _slider.value = beauty;
-    [self moveTip];
+    _beautySlider.value = beauty;
+    [self moveTip:_beautySlider tipView:_beautyTipView];
 }
+
+- (void)setWhiteValue:(CGFloat)white
+{
+    _whiteSlider.value = white;
+    [self moveTip:_whiteSlider tipView:_whiteTipView];
+}
+
 @end

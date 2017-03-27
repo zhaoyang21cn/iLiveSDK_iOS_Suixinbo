@@ -2,13 +2,15 @@
   "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8417ab44-c799-11e4-acac-0d5433960dbe++8814",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
     "8417ab44-c799-11e4-acac-0d5433960dbe++8814" : {
-
+      "DVTSourceControlWorkingCopyRepositoryBranchesLocationKey" : "show_proj\/branches",
+      "DVTSourceControlWorkingCopyRepositoryTagsLocationKey" : "show_proj\/tags",
+      "DVTSourceControlWorkingCopyRepositoryPrimaryBranchLocationKey" : "show_proj\/trunk"
     }
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "8417ab44-c799-11e4-acac-0d5433960dbe++8814" : 9223372036854775807
   },
-  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "76980575-BD7A-47A1-9A7E-6F7EC3413E00",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "106538E3-7AA6-45E4-9432-9CAB18D28B12",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "8417ab44-c799-11e4-acac-0d5433960dbe++8814" : "ILiveSDK_Main\/"
   },

@@ -95,11 +95,29 @@
 
 - (void)onLiveViewPure:(NSNotification *)noti
 {
-    _msgTableView.hidden = YES;
+    CGRect msgFrame = _msgTableView.frame;
+    CGRect closeFrame = _closeBtn.frame;
+    _closeBtnRestoreRect = closeFrame;
+    _msgRestoreRect = msgFrame;
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect moveToRect = CGRectMake(-(msgFrame.origin.x+ msgFrame.size.width), msgFrame.origin.y, msgFrame.size.width, msgFrame.size.height);
+        [_msgTableView setFrame:moveToRect];
+        CGRect moveClosetToRect = CGRectMake(closeFrame.origin.x, -(closeFrame.origin.y+closeFrame.size.height), closeFrame.size.width, closeFrame.size.height);
+        [_closeBtn setFrame:moveClosetToRect];
+    } completion:^(BOOL finished) {
+        _msgTableView.hidden = YES;
+        _closeBtn.hidden = YES;
+    }];
 }
 - (void)onLiveViewNoPure:(NSNotification *)noti
 {
     _msgTableView.hidden = NO;
+    _closeBtn.hidden = NO;
+    [UIView animateWithDuration:0.5 animations:^{
+        [_msgTableView setFrame:_msgRestoreRect];
+        [_closeBtn setFrame:_closeBtnRestoreRect];
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (void)onSwitchToPreRoom:(UIGestureRecognizer *)ges
@@ -231,6 +249,7 @@
         NSLog(@"createRoom succ");
         //将房间参数保存到本地，如果异常退出，下次进入app时，可提示返回这次的房间
         [ws.liveItem saveToLocal];
+        [ws setSelfInfo];
         
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         [createRoomWaitView removeFromSuperview];
@@ -238,6 +257,17 @@
         NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
         NSLog(@"createRoom fail.%@",errinfo);
         [AppDelegate showAlert:ws title:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+    }];
+}
+
+- (void)setSelfInfo
+{
+    __weak typeof(self) ws = self;
+    [[TIMFriendshipManager sharedInstance] GetSelfProfile:^(TIMUserProfile *profile) {
+        ws.selfProfile = profile;
+    } fail:^(int code, NSString *msg) {
+        NSLog(@"GetSelfProfile fail");
+        ws.selfProfile = nil;
     }];
 }
 
@@ -250,6 +280,7 @@
     [[TILLiveManager getInstance] joinRoom:roomId option:option succ:^{
         NSLog(@"join room succ");
         [ws sendJoinRoomMsg];
+        [ws setSelfInfo];
 
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSLog(@"join room fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);

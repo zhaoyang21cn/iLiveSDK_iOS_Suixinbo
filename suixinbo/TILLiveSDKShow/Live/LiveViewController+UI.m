@@ -127,8 +127,8 @@
     [_msgInputView relayoutFrameOfSubViews];
     [_msgInputView layoutAbove:_bottomView margin:kDefaultMargin];
     
-    [_msgTableView sizeWith:CGSizeMake(screenW * 2/3, 180)];
-    [_msgTableView layoutAbove:_msgInputView margin:kDefaultMargin];
+    [_msgTableView sizeWith:CGSizeMake(screenW * 4/5, 150)];
+    [_msgTableView layoutAbove:_bottomView margin:kDefaultMargin];
 }
 
 - (void)switchRoomRefresh:(NSNotification *)noti
@@ -364,8 +364,7 @@
         if ([msg isKindOfClass:[ILVLiveCustomMessage class]])
         {
             ILVLiveCustomMessage *customMsg = (ILVLiveCustomMessage *)msg;
-            NSString *string = [NSString stringWithFormat:@"%@ 进入房间了",customMsg.sendId];
-            [cell configTips:string];
+            [cell configTips:customMsg.sendId];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;

@@ -37,6 +37,7 @@
 @property (nonatomic, assign) NSInteger liveTime;
 @property (nonatomic, strong) NSTimer *liveTimer;
 @property (nonatomic, weak) id<LiveUITopDelegate> delegate;
+@property (nonatomic, assign) CGRect restoreRect;
 
 - (instancetype)initWith:(TCShowLiveListItem *)item isHost:(BOOL)isHost;
 

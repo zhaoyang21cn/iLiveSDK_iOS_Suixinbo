@@ -35,4 +35,6 @@
 @property (nonatomic, strong) NSMutableDictionary *resolutionDic;//纯粹是为了打印log需要
 @property (nonatomic, weak) id<InviteInteractDelegate> delegate;
 
+@property (nonatomic, assign) CGRect restoreRect;
+
 @end

@@ -15,6 +15,6 @@
 @property (nonatomic, assign) CGFloat height;
 
 - (void)configMsg:(NSString *)userId msg:(NSString *)text;
-- (void)configTips:(NSString *)tips;
+- (void)configTips:(NSString *)user;
 
 @end
