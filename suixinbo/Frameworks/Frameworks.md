@@ -10,6 +10,7 @@
 
 #### 1、下载随心播目录应如下所示，否则请重新下载：
 文件目录：
+
 ![](http://mc.qcloudimg.com/static/img/b72bdf41f9b840adf696926f30bcdca8/image.jpg)
 
 工程目录：
