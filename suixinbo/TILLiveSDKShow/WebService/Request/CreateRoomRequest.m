@@ -12,9 +12,9 @@
 
 - (NSString *)url
 {
-    return @"https://sxb.qcloud.com/sxb/index.php?svc=live&cmd=create";
-
-
+//    return @"https://sxb.qcloud.com/sxb/index.php?svc=live&cmd=create";
+    NSString *host = [self hostUrl];
+    return [NSString stringWithFormat:@"%@svc=live&cmd=create",host];
 }
 
 - (NSDictionary *)packageParams

@@ -14,7 +14,9 @@
 
 - (NSString *)url
 {
-    return @"https://sxb.qcloud.com/sxb/index.php?svc=account&cmd=regist";
+//    return @"https://sxb.qcloud.com/sxb/index.php?svc=account&cmd=regist";
+    NSString *host = [self hostUrl];
+    return [NSString stringWithFormat:@"%@svc=account&cmd=regist",host];
 }
 
 - (NSDictionary *)packageParams

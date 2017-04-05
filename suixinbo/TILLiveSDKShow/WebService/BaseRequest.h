@@ -45,6 +45,7 @@ typedef void (^RequestCompletionHandler)(BaseRequest *request);
 
 - (instancetype)initWithHandler:(RequestCompletionHandler)succHandler failHandler:(RequestCompletionHandler)fail;
 
+- (NSString *)hostUrl;
 - (NSString *)url;
 
 - (NSDictionary *)packageParams;

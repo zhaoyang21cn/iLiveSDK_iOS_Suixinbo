@@ -12,7 +12,9 @@
 
 - (NSString *)url
 {
-    return @"https://sxb.qcloud.com/sxb/index.php?svc=live&cmd=heartbeat";
+//    return @"https://sxb.qcloud.com/sxb/index.php?svc=live&cmd=heartbeat";
+    NSString *host = [self hostUrl];
+    return [NSString stringWithFormat:@"%@svc=live&cmd=heartbeat",host];
 }
 
 - (NSDictionary *)packageParams

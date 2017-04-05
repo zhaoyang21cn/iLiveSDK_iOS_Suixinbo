@@ -12,7 +12,9 @@
 
 - (NSString *)url
 {
-    return @"https://sxb.qcloud.com/sxb/index.php?svc=account&cmd=logout";
+//    return @"https://sxb.qcloud.com/sxb/index.php?svc=account&cmd=logout";
+    NSString *host = [self hostUrl];
+    return [NSString stringWithFormat:@"%@svc=account&cmd=logout",host];
 }
 
 - (NSDictionary *)packageParams

@@ -15,8 +15,11 @@
 //#define ShowAppId       @"1400019301"
 //#define ShowAccountType @"8871"
 
-#define ShowAppId       @"1400019352"
-#define ShowAccountType @"8970"
+//#define ShowAppId       @"1400019352"
+//#define ShowAccountType @"8970"
+
+#define ShowAppId       @"1400027849"
+#define ShowAccountType @"11656"
 
 /******************** color ******************************/
 // 取色值相关的方法

@@ -12,7 +12,9 @@
 
 - (NSString *)url
 {
-    return @"https://sxb.qcloud.com/sxb/index.php?svc=cos&cmd=get_sign";
+//    return @"https://sxb.qcloud.com/sxb/index.php?svc=cos&cmd=get_sign";
+    NSString *host = [self hostUrl];
+    return [NSString stringWithFormat:@"%@svc=cos&cmd=get_sign",host];
 }
 
 - (Class)responseDataClass
