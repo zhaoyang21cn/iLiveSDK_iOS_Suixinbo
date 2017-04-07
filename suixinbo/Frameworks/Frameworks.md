@@ -39,4 +39,3 @@ IMSDK文件夹目录：
 
 ![](http://mc.qcloudimg.com/static/img/c82deb489b4a390a9e315b80a9140a46/image.png)
 
-#### 4、随心播只能在真机上运行，因为随心播中含有COS等第三方SDK，不支持模拟器
