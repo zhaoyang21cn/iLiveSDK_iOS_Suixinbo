@@ -38,6 +38,8 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 [美颜滤镜](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILFilterSDK-README.md)
 
+[大咖模式](https://github.com/zhaoyang21cn/suixinbo_doc/blob/master/%E5%A4%A7%E5%92%96%E6%A8%A1%E5%BC%8F.md)
+
 ## 已知问题
 
 ## 关键路径LOG
