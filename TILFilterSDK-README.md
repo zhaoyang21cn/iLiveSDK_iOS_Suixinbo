@@ -25,7 +25,7 @@ IOS需要升级到ILiveSDK1.3.2
 - (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frame
 {
     TILDataType type = TILDataType_NV12;
-    switch (frameData.frameDesc.color_format)
+    switch (frame.frameDesc.color_format)
     {
         case AVCOLOR_FORMAT_I420:
             type = TILDataType_I420;
@@ -36,7 +36,7 @@ IOS需要升级到ILiveSDK1.3.2
         default:
             break;
     }
-    [self.tilFilter processData:frameData.data inType:type outType:type size:frameData.dataSize width:frameData.frameDesc.width height:frameData.frameDesc.height];
+    [self.tilFilter processData:frame.data inType:type outType:type size:frame.dataSize width:frame.frameDesc.width height:frame.frameDesc.height];
 }
 ```
 
