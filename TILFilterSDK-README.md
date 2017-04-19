@@ -2,7 +2,7 @@
 
 # TILFilterSDK使用文档
 
-[美颜滤镜SDK下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK_1.0.1.zip)
+[美颜滤镜SDK下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.framework_1.0.4.zip)
 
 TILFilterSDK是为ILiveSDK量身定做的视频帧预处理插件，目前提供美颜美白功能及其他常用滤镜功能。集成步骤如下：
 
@@ -24,7 +24,19 @@ IOS需要升级到ILiveSDK1.3.2
 ```
 - (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frame
 {
-    [self.tilFilter processData:frame.data type:TILDataType_NV12 size:frame.dataSize width:frame.frameDesc.width height:frame.frameDesc.height];
+    TILDataType type = TILDataType_NV12;
+    switch (frameData.frameDesc.color_format)
+    {
+        case AVCOLOR_FORMAT_I420:
+            type = TILDataType_I420;
+            break;
+        case AVCOLOR_FORMAT_NV12:
+            type = TILDataType_NV12;
+            break;
+        default:
+            break;
+    }
+    [self.tilFilter processData:frameData.data inType:type outType:type size:frameData.dataSize width:frameData.frameDesc.width height:frameData.frameDesc.height];
 }
 ```
 
