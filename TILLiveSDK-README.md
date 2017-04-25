@@ -1,5 +1,5 @@
 
-简介：TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、进入直播、邀请上麦、文本互动等功能，旨在为用户提供一套快速集成音视频能力的直播业务解决方案。顺利集成只需要一天就能打造属于自己的直播APP。
+简介：TILLiveSDK基于ILiveSDK封装了直播的基础业务，包括创建直播、进入直播、邀请上麦、文本互动等功能，旨在为用户提供一套快速集成音视频能力的直播业务解决方案。顺利集成只需要一天就能打造属于自己的直播APP。[查看版本更新](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/TILLiveSDK_ChangeList.md)
 
 ![](http://mc.qcloudimg.com/static/img/ad9de8957129351ffe24b54c44520490/image.png)
 
