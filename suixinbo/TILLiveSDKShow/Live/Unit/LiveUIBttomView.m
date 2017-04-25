@@ -139,6 +139,7 @@
     item.curRole = _curRole;
     item.moreFunViewRect = CGRectMake(rect.origin.x, rect.size.height, rect.size.width, rect.size.height);
     item.bottomView = self;
+    item.tilFilter = _tilFilter;
     [moreFunView configMoreFun:item];
     [self.superview addSubview:moreFunView];
     [UIView animateWithDuration:0.3 animations:^{

@@ -48,6 +48,10 @@
     // Do any additional setup after loading the view.
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
+    _msgDatas = [NSMutableArray array];
+    _tilFilter = [[TILFilter alloc] init];
+    [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
+    
     //初始化直播
     [self initLive];
     //创建房间
@@ -63,10 +67,6 @@
     
     //开始网络环境timer
 //    [self startEnvTimer];
-    
-    _msgDatas = [NSMutableArray array];
-    _tilFilter = [[TILFilter alloc] init];
-    [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
 }
 
 - (void)enterRoom
@@ -423,6 +423,7 @@
     _bottomView = [[LiveUIBttomView alloc] initWith:kSxbRole_Host];
     _bottomView.delegate = self;
     _bottomView.isHost = _isHost;
+    _bottomView.tilFilter = _tilFilter;
     [self.view addSubview:_bottomView];
     
 //    _envInfoView = [[EnvInfoView alloc] init];

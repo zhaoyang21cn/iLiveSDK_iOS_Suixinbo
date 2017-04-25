@@ -50,4 +50,6 @@
 @property (nonatomic, assign) CGRect moreFunViewRect;
 @property (nonatomic, strong) UIView *bottomView;
 
+@property (nonatomic, strong) TILFilter *tilFilter;
+
 @end

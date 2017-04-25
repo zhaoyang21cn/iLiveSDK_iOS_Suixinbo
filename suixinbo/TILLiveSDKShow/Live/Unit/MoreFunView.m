@@ -149,6 +149,26 @@
 
 - (void)onFilter
 {
+    NSString *beautyScheme = [[NSUserDefaults standardUserDefaults] objectForKey:kBeautyScheme];
+    if (!(beautyScheme && beautyScheme.length > 0))
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:kILiveBeauty forKey:kBeautyScheme];
+        beautyScheme = kILiveBeauty;
+    }
+    if ([beautyScheme isEqualToString:kILiveBeauty])
+    {
+        //TILFilterSDK滤镜
+        [self ilivesdkFilter];
+    }
+    if ([beautyScheme isEqualToString:kQAVSDKBeauty])
+    {
+        //QAVSDK滤镜
+        [self qavsdkFilter];
+    }
+}
+
+- (void)qavsdkFilter
+{
     __weak typeof(self) ws = self;
     NSString *path = [[NSBundle bundleForClass:[self class]].resourcePath stringByAppendingPathComponent:@"FilterRes.bundle"];
     QAVVideoEffectCtrl *effectCtrl = [QAVVideoEffectCtrl shareContext];
@@ -201,6 +221,42 @@
     [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
         [effectCtrl setFilter:nil];
         [ws dismissSelf];
+    }];
+}
+
+- (void)ilivesdkFilter
+{
+    __weak typeof(self) ws = self;
+    AlertActionHandle beautyBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_Beauty];
+    };
+    AlertActionHandle fennenBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_FenNen];
+    };
+    AlertActionHandle huaijiuBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_HuaiJiu];
+    };
+    AlertActionHandle landiaoBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_LanDiao];
+    };
+    AlertActionHandle langmanBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_LangMan];
+    };
+    AlertActionHandle qingliangBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_QingLiang];
+    };
+    AlertActionHandle qingxinBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_QingXin];
+    };
+    AlertActionHandle rixiBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_RiXi];
+    };
+    AlertActionHandle weimeiBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilter:TILFilterType_WeiMei];
+    };
+    NSDictionary *funs = @{@"美颜美白":beautyBlock, @"粉嫩":fennenBlock, @"怀旧":huaijiuBlock,@"蓝调":landiaoBlock, @"浪漫":langmanBlock, @"清凉":qingliangBlock, @"清新":qingxinBlock, @"日系":rixiBlock, @"唯美":weimeiBlock};
+    [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
+        [ws.item.tilFilter setFilter:TILFilterType_None];
     }];
 }
 

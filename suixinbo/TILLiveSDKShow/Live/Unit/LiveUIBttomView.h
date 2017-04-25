@@ -39,6 +39,8 @@
 @property (nonatomic, copy) NSString *mainWindowRole;//主窗口角色，不同角色显示不同功能
 @property (nonatomic, copy) NSString *curRole;//当前角色字符串
 
+@property (nonatomic, strong) TILFilter *tilFilter;
+
 @property (nonatomic, weak) id<BottomViewDelegate> delegate;
 
 - (instancetype)initWith:(NSString *)role;
