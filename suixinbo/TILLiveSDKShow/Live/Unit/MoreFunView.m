@@ -229,34 +229,44 @@
     __weak typeof(self) ws = self;
     AlertActionHandle beautyBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_Beauty];
+        [ws dismissSelf];
     };
     AlertActionHandle fennenBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_FenNen];
+        [ws dismissSelf];
     };
     AlertActionHandle huaijiuBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_HuaiJiu];
+        [ws dismissSelf];
     };
     AlertActionHandle landiaoBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_LanDiao];
+        [ws dismissSelf];
     };
     AlertActionHandle langmanBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_LangMan];
+        [ws dismissSelf];
     };
     AlertActionHandle qingliangBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_QingLiang];
+        [ws dismissSelf];
     };
     AlertActionHandle qingxinBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_QingXin];
+        [ws dismissSelf];
     };
     AlertActionHandle rixiBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_RiXi];
+        [ws dismissSelf];
     };
     AlertActionHandle weimeiBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilter:TILFilterType_WeiMei];
+        [ws dismissSelf];
     };
     NSDictionary *funs = @{@"美颜美白":beautyBlock, @"粉嫩":fennenBlock, @"怀旧":huaijiuBlock,@"蓝调":landiaoBlock, @"浪漫":langmanBlock, @"清凉":qingliangBlock, @"清新":qingxinBlock, @"日系":rixiBlock, @"唯美":weimeiBlock};
     [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
         [ws.item.tilFilter setFilter:TILFilterType_None];
+        [ws dismissSelf];
     }];
 }
 
