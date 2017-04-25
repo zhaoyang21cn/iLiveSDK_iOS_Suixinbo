@@ -1,5 +1,9 @@
 ## IOS_TILLiveSDK_ChangeList
 
+###### V1.1.0(2017-3-6)
+* 增加跨房连麦接口
+* 增加发送在线消息接口
+
 ###### V1.0.5(2017-3-6)
 * ILVLiveMessage类增加属性TIMUserProfile
 * ILVLiveCustomMessage增加属性TIMUserProfile
