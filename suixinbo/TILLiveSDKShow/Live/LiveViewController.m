@@ -14,10 +14,9 @@
 #import "LiveViewController+UI.h"
 #import "LiveViewController+ImListener.h"
 #import "LiveViewController+AVListener.h"
+#import "LiveViewController+Audio.h"
 
 #import "LiveCallView.h"
-
-#define kHeartInterval 5 //心跳间隔
 
 @interface LiveViewController ()<QAVLocalVideoDelegate, QAVRemoteVideoDelegate,ILiveRoomDisconnectListener>
 
@@ -26,13 +25,14 @@
 
 @implementation LiveViewController
 
-- (instancetype)initWith:(TCShowLiveListItem *)item
+- (instancetype)initWith:(TCShowLiveListItem *)item roomOptionType:(RoomOptionType)type
 {
     if (self = [super init])
     {
         _liveItem = item;
         NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
         _isHost = [loginId isEqualToString:item.uid];
+        _roomOptionType = type;
     }
     return self;
 }
@@ -46,20 +46,41 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     //初始化直播
     [self initLive];
-    
     //创建房间
-    if (_isHost)
+    [self enterRoom];
+    //发送心跳
+    [self startLiveTimer];
+    //添加界面视图
+    [self addSubviews];
+    //进入房间，上报成员id
+    [self reportMemberId:_liveItem.info.roomnum operate:0];
+    //添加监听
+    [self addObserver];
+    
+    //开始网络环境timer
+//    [self startEnvTimer];
+    
+    _msgDatas = [NSMutableArray array];
+    _tilFilter = [[TILFilter alloc] init];
+    [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
+}
+
+- (void)enterRoom
+{
+    switch (_roomOptionType)
+    {
+        case RoomOptionType_CrateRoom:
     {
         [self createRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
         //上报房间信息
         [self reportRoomInfo:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
     }
-    else
+            break;
+        case RoomOptionType_JoinRoom:
     {
         UISwipeGestureRecognizer *downGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToNextRoom:)];
         downGes.direction = UISwipeGestureRecognizerDirectionDown;
@@ -71,27 +92,43 @@
         
         [self joinRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
     }
+            break;
+        default:
+            break;
+    }
+}
     
-    //发送心跳
-    [self startLiveTimer];
-    
-    [self addSubviews];
-    
-    //进入房间，上报成员id
-    [self reportMemberId:_liveItem.info.roomnum operate:0];
-    
+- (void)addObserver
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchRoomRefresh:) name:kUserSwitchRoom_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGotupDelete:) name:kGroupDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showLikeHeartStartRect:) name:kUserParise_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLiveViewPure:) name:kPureDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLiveViewNoPure:) name:kNoPureDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startLiveTimer) name:kEnterBackGround_Notification object:nil];
-    _msgDatas = [NSMutableArray array];
-    
-    _tilFilter = [[TILFilter alloc] init];
-    
-    [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
 }
+    
+//- (void)startEnvTimer
+//{
+//    _envInfoTimer = [NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer){
+//        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+//        if (context.videoCtrl && context.audioCtrl && context.room)
+//        {
+//            ILiveQualityData *qualityData = [[ILiveRoomManager getInstance] getQualityData];
+//            //if host, Send Recv
+//            NSInteger lossRate = qualityData.recvRate;
+//            if (_isHost)
+//            {
+//                lossRate = qualityData.sendLossRate;
+//            }
+//            EnvInfoItem *item = [[EnvInfoItem alloc] init];
+//            item.cpuRate = qualityData.appCPURate;
+//            item.lossRate = qualityData.sendLossRate;
+//            [_envInfoView configWith:item];
+//        }
+//    }];
+//    [[NSRunLoop currentRunLoop] addTimer:_envInfoTimer forMode:NSDefaultRunLoopMode];
+//}
 
 - (void)onLiveViewPure:(NSNotification *)noti
 {
@@ -149,7 +186,7 @@
         
         if (respData.rooms.count <= 1)
         {
-            [AppDelegate showAlert:self title:@"提示" message:@"没有更多房间" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+            [AlertHelp tipWith:@"没有更多房间了" wait:1];
             return ;
         }
         
@@ -237,19 +274,31 @@
     option.controlRole = kSxbRole_Host;
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     option.roomDisconnectListener = self;
+    option.imOption.imSupport = YES;
     
     LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
     [self.view addSubview:createRoomWaitView];
     
     [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];
     
-    [[TILLiveManager getInstance] createRoom:roomId option:option succ:^{
+    NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
+    if ([loginId isEqualToString:@"guest"])
+    {
+        _liveItem.info.roomnum = 12345;
+    }
+    else if ([loginId isEqualToString:@"green"])
+    {
+        _liveItem.info.roomnum = 12344;
+    }
+    [[TILLiveManager getInstance] createRoom:(int)_liveItem.info.roomnum option:option succ:^{
         [createRoomWaitView removeFromSuperview];
         
         NSLog(@"createRoom succ");
         //将房间参数保存到本地，如果异常退出，下次进入app时，可提示返回这次的房间
         [ws.liveItem saveToLocal];
         [ws setSelfInfo];
+        
+        [ws initAudio];
         
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         [createRoomWaitView removeFromSuperview];
@@ -283,7 +332,10 @@
         [ws setSelfInfo];
 
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"join room fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        NSString *errLog = [NSString stringWithFormat:@"join room fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+        [AppDelegate showAlert:self title:@"加入房间失败" message:errLog okTitle:nil cancelTitle:@"退出" ok:nil cancel:^(UIAlertAction * _Nonnull action) {
+            [ws dismissViewControllerAnimated:YES completion:nil];
+        }];
     }];
 }
 
@@ -314,10 +366,10 @@
     
     _parView = [[LiveUIParView alloc] init];
     _parView.delegate = self;
-    _parView.isHost = _isHost;
-    //传递当前直播房间信息，用于社交分享
-    _parView.coverUrl = _liveItem.info.cover;
-    _parView.roomTitle = _liveItem.info.title;
+    LiveUIParViewConfig *config = [[LiveUIParViewConfig alloc] init];
+    config.isHost = _isHost;
+    config.item = _liveItem;
+    [_parView configWith:config];
     [self.view addSubview:_parView];
     
     _bgAlphaView = [[UIView alloc] init];
@@ -342,6 +394,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoBegin:) name:kClickConnect_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoCancel:) name:kCancelConnect_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downVideo:) name:kClickDownVideo_Notification object:nil];
     
     _memberListView = [[UITableView alloc] init];
     _memberListView.delegate = self;
@@ -371,6 +424,10 @@
     _bottomView.delegate = self;
     _bottomView.isHost = _isHost;
     [self.view addSubview:_bottomView];
+    
+//    _envInfoView = [[EnvInfoView alloc] init];
+//    _envInfoView.backgroundColor = [kColorBlack colorWithAlphaComponent:0.2];
+//    [self.view addSubview:_envInfoView];
 }
 
 - (void)connectVideoBegin:(NSNotification *)noti
@@ -388,6 +445,11 @@
     NSString *userId = (NSString *)noti.object;
     [[UserViewManager shareInstance] removePlaceholderView:userId];
     [[UserViewManager shareInstance] refreshViews];
+}
+
+- (void)downVideo:(NSNotification *)noti
+{
+    [self onTapBlankToHide];//点击下麦时自动收起好友列表
 }
 
 - (void)initLive
@@ -479,12 +541,13 @@
         
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [[AppDelegate sharedAppDelegate] popToRootViewController];
-    } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-        NSLog(@"exit room fail.module=%@,errid=%d,errmsg=%@",moudle,errId,errMsg);
+    } failed:^(NSString *module, int errId, NSString *errMsg) {
+        NSLog(@"exit room fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
         
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [[AppDelegate sharedAppDelegate] popToRootViewController];
     }];
+    
     
     [[UserViewManager shareInstance] releaseManager];
     
@@ -496,6 +559,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kPureDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kNoPureDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kEnterBackGround_Notification object:nil];
+    
+//    //停止网络环境心跳
+//    [_envInfoTimer invalidate];
+//    _envInfoTimer = nil;
 }
 
 #pragma mark - 心跳（房间保活）
@@ -594,7 +661,19 @@
 
 - (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frameData
 {
-    [_tilFilter processData:frameData.data type:TILDataType_NV12 size:frameData.dataSize width:frameData.frameDesc.width height:frameData.frameDesc.height];
+    TILDataType type = TILDataType_NV12;
+    switch (frameData.frameDesc.color_format)
+    {
+        case AVCOLOR_FORMAT_I420:
+            type = TILDataType_I420;
+            break;
+        case AVCOLOR_FORMAT_NV12:
+            type = TILDataType_NV12;
+            break;
+        default:
+            break;
+    }
+    [_tilFilter processData:frameData.data inType:type outType:type size:frameData.dataSize width:frameData.frameDesc.width height:frameData.frameDesc.height];
 }
 
 - (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret

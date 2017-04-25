@@ -103,21 +103,48 @@
     });
 }
 
+- (void)reportRoomInfo:(int)roomId groupId:(NSString *)groupid imageUrl:(NSString *)imageUrl
+{
+    ReportRoomRequest *reportReq = [[ReportRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
+        NSLog(@"-----> 上传成功");
+        
+    } failHandler:^(BaseRequest *request) {
+        // 上传失败
+        NSLog(@"-----> 上传失败");
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
+            [AppDelegate showAlert:self title:@"上传RoomInfo失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        });
+    }];
+    
+    reportReq.token = [AppDelegate sharedAppDelegate].token;
+    
+    reportReq.room = [[ShowRoomInfo alloc] init];
+    reportReq.room.title = _liveTitle.text.length > 0 ? _liveTitle.text : _liveTitle.placeholder;
+    reportReq.room.type = @"live";
+    reportReq.room.roomnum = roomId;
+    reportReq.room.groupid = [NSString stringWithFormat:@"%d",roomId];
+    reportReq.room.cover = imageUrl.length > 0 ? imageUrl : @"";
+    reportReq.room.appid = [ShowAppId intValue];
+    
+    [[WebServiceEngine sharedEngine] asyncRequest:reportReq];
+}
+
 - (void)onClickPublishContent:(UITapGestureRecognizer *)tap
 {
     if (tap.state == UIGestureRecognizerStateEnded)
     {
         [_liveTitle resignFirstResponder];
         __weak typeof(self) ws = self;
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AlertActionHandle cameraBlock = ^(UIAlertAction * _Nonnull action){
             [ws openCamera];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        };
+        AlertActionHandle photoBlock = ^(UIAlertAction * _Nonnull action){
             [ws openPhotoLibrary];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
+        };
+        NSDictionary *funs = @{@"拍照":cameraBlock, @"相册":photoBlock};
+        [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
     }
 }
 
@@ -249,7 +276,7 @@
     item.info.cover = coverUrl ? coverUrl : @"";
     item.info.appid = [ShowAppId intValue];
     
-    LiveViewController *liveVC = [[LiveViewController alloc] initWith:item];
+    LiveViewController *liveVC = [[LiveViewController alloc] initWith:item roomOptionType:RoomOptionType_CrateRoom];
     [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
 }
 

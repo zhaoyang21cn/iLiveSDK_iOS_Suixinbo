@@ -92,35 +92,21 @@
     [_checkPasswordTF resignFirstResponder];
 }
 
-- (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
-    if (cancelTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
-    }
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (void)onRegist:(UIButton *)button
 {
     if (!_userNameTF || _userNameTF.text.length < 1)
     {
-        [self showAlert:@"提示" message:@"用户名无效" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"提示" message:@"用户名无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     if (!_passwordTF || _passwordTF.text.length < 1)
     {
-        [self showAlert:@"提示" message:@"密码无效" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"提示" message:@"密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     if (!_checkPasswordTF || _checkPasswordTF.text.length < 1 || ![_passwordTF.text isEqualToString:_checkPasswordTF.text])
     {
-        [self showAlert:@"提示" message:@"重设密码无效" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"提示" message:@"重设密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
 
@@ -131,16 +117,17 @@
     //向业务后台注册
     RegistRequest *registReq = [[RegistRequest alloc] initWithHandler:^(BaseRequest *request) {
         [regWaitView removeFromSuperview];
-        [ws showAlert:@"注册成功" message:nil okTitle:@"确定" cancelTitle:nil ok:^(UIAlertAction * _Nonnull action) {
+        AlertActionHandle okBlock = ^(UIAlertAction * _Nonnull action){
             [ws.navigationController popViewControllerAnimated:YES];
             [ws.delegate showRegistUserIdentifier:ws.userNameTF.text];
             [ws.delegate showRegistUserPwd:ws.passwordTF.text];
-        } cancel:nil];
+        };
+        [AlertHelp alertWith:@"注册成功" message:nil funBtns:@{@"确定":okBlock} cancelBtn:nil alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     } failHandler:^(BaseRequest *request) {
         [regWaitView removeFromSuperview];
         NSString *errinfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo];
         NSLog(@"regist fail.%@",errinfo);
-        [ws showAlert:@"注册失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"注册失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
     registReq.identifier = _userNameTF.text;
     registReq.pwd = _passwordTF.text;

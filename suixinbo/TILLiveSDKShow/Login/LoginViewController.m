@@ -58,6 +58,7 @@
     _userNameTF.layer.borderColor = kColorGray.CGColor;
     _userNameTF.layer.cornerRadius = 5.0;
     _userNameTF.placeholder = @"用户名";
+    _userNameTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
 //    _userNameTF.text = @"wilder2";
     [self.view addSubview:_userNameTF];
     index++;
@@ -70,6 +71,7 @@
     _passwordTF.layer.borderWidth = 0.5;
     _passwordTF.layer.borderColor = kColorGray.CGColor;
     _passwordTF.layer.cornerRadius = 5.0;
+    _passwordTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _passwordTF.placeholder = @"密码";
 //    _passwordTF.text = @"123123123";
     [self.view addSubview:_passwordTF];
@@ -109,20 +111,6 @@
     [_passwordTF resignFirstResponder];
 }
 
-- (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
-    if (cancelTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
-    }
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (void)autoLogin
 {
     NSDictionary *dic = [self getLocalLoginParam];
@@ -141,12 +129,12 @@
 {
     if (!_userNameTF || _userNameTF.text.length < 1)
     {
-        [self showAlert:@"提示" message:@"用户名无效" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"提示" message:@"用户名无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     if (!_passwordTF || _passwordTF.text.length < 1)
     {
-        [self showAlert:@"提示" message:@"密码无效" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"提示" message:@"密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     
@@ -194,14 +182,14 @@
             {
                 NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
                 NSLog(@"login fail.%@",errInfo);
-                [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+                [AlertHelp alertWith:@"登录失败" message:errInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
             }
         }];
     } failHandler:^(BaseRequest *request) {
         [loginWaitView removeFromSuperview];
         NSString *errInfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode, request.response.errorInfo];
         NSLog(@"login fail.%@",errInfo);
-        [ws showAlert:@"登录失败" message:errInfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"登录失败" message:errInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
     sigReq.identifier = identifier;
     sigReq.pwd = pwd;

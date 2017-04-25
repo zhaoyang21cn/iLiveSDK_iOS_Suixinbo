@@ -51,7 +51,7 @@
  * @brief 文件上传任务初始化函数
  * @param filePath 文件路径，必填
  * @param attrs 文件属性，选填
- * @param uploadDirectory 上传文件到哪个目录
+ * @param directory 上传文件到哪个目录
  * @param insert 上传动作是插入还是覆盖
  * @return COSFileUploadTask实例
  */
@@ -77,7 +77,7 @@
  * @brief 文件上传任务初始化函数
  * @param filePath 文件路径，必填
  * @param attrs 文件属性，选填
- * @param uploadDirectory 上传文件到哪个目录
+ * @param directory 上传文件到哪个目录
  * @param insert 上传动作是插入还是覆盖
  * @return COSFileUploadTask实例
  */
@@ -100,7 +100,7 @@
  * @brief 文件上传任务初始化函数
  * @param filePath 文件路径，必填
  * @param attrs 文件属性，选填
- * @param uploadDirectory 上传文件到哪个目录
+ * @param directory 上传文件到哪个目录
  * @param insert 上传动作是插入还是覆盖
  * @return COSFileUploadTask实例
  */
@@ -137,9 +137,8 @@
  *  初始化方法
  *  如果文件的url是自定义的，那么查询必须使用fileId+bucket+fileType
  *
- *  @param fileId   文件ID
+ *  @param fileName   文件ID
  *  @param bucket   文件所在的空间
- *  @param fileType 文件的类型
  */
 - (instancetype)initWithFile:(NSString *)fileName
                       bucket:(NSString *)bucket
@@ -235,7 +234,7 @@ typedef NS_ENUM(NSInteger, COSForbidType)
 /**
  *  初始化方法
  *
- *  @param dirName      目录路径（相对于bucket的路径）
+ *  @param dir      目录路径（相对于bucket的路径）
  *  @param bucket       文件所在的空间
  *  @param sign         签名
  *  @param attrs        用户自定义的属性
@@ -304,7 +303,7 @@ typedef NS_ENUM(NSInteger, COSForbidType)
  *  @param path         目录路径（相对于bucket的路径）
  *  @param bucket       文件所在的空间
  *  @param sign         签名
- *  @param objectType   类型
+ *  @param attrs   类型
  */
 - (instancetype) initWithDir:(NSString*)path
                       bucket:(NSString*)bucket
@@ -324,7 +323,6 @@ typedef NS_ENUM(NSInteger, COSForbidType)
  *  @param path         目录路径（相对于bucket的路径）
  *  @param bucket       文件所在的空间
  *  @param sign         签名
- *  @param objectType   类型
  */
 - (instancetype) initWithDir:(NSString*)path
                        bucket:(NSString*)bucket
@@ -373,7 +371,6 @@ typedef NS_ENUM(NSInteger, COSForbidType)
  *  @param path         目录路径（相对于bucket的路径）
  *  @param bucket       文件所在的空间
  *  @param sign         签名
- *  @param objectType   类型
  */
 - (instancetype) initWithDir:(NSString*)path
                        bucket:(NSString*)bucket

@@ -13,6 +13,7 @@
 #import "LiveUIParView.h"
 #import "LiveUIBttomView.h"
 #import "MsgInputView.h"
+#import "EnvInfoView.h"
 
 @interface LiveViewController : UIViewController
 {
@@ -37,7 +38,11 @@
     
     ReportView          *_reportView;       //举报视图
     
+//    EnvInfoView         *_envInfoView;      //网络环境视图
+//    NSTimer             *_envInfoTimer;     //网络环境timer
+    
     BOOL _isHost; //自己是不是主播
+    RoomOptionType _roomOptionType;
     TCShowLiveListItem *_liveItem;
     NSInteger _count;
 }
@@ -49,7 +54,7 @@
 
 @property (nonatomic, strong) TILFilter *tilFilter;
 
-- (instancetype)initWith:(TCShowLiveListItem *)item;
+- (instancetype)initWith:(TCShowLiveListItem *)item roomOptionType:(RoomOptionType)type;
 - (void)onClose;
 
 @end

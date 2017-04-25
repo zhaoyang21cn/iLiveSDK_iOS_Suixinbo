@@ -12,8 +12,9 @@
 {
     UILabel     *_identifier;
     UIButton    *_connectBtn;
+    MemberListItem *_item;
 }
 
-- (void)configId:(NSString *)identifier;
+- (void)configId:(MemberListItem *)item;
 @end
 

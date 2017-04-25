@@ -56,13 +56,37 @@
     [_connectBtn alignParentRight];
 }
 
-- (void)configId:(NSString *)identifier
+- (void)configId:(MemberListItem *)item
 {
-    _identifier.text = identifier;
+    _item = item;
+    _identifier.text = item.identifier;
+    if (item.isUpVideo)
+    {
+        [_connectBtn setTitle:@"下麦" forState:UIControlStateNormal];
+        [_connectBtn setTitleColor:kColorWhite forState:UIControlStateNormal];
+        [_connectBtn setBackgroundColor:kColorRed];
+        _connectBtn.layer.borderColor = kColorGray.CGColor;
+    }
+    else
+    {
+        [_connectBtn setTitle:@"连麦" forState:UIControlStateNormal];
+        [_connectBtn setTitleColor:kColorWhite forState:UIControlStateNormal];
+        [_connectBtn setBackgroundColor:kColorGreen];
+    }
 }
 
 - (void)onConnect:(UIButton *)button
 {
+    if (_item.isUpVideo)
+    {
+        [self downVideo];
+        return;
+    }
+    if ([UserViewManager shareInstance].total >= 3)
+    {
+        [AlertHelp alertWith:@"提示" message:@"连麦画面不能超过4路,可以先取消一路连麦" cancelBtn:@"好吧" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        return;
+    }
     ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
     video.recvId = _identifier.text;
     video.data = [_identifier.text dataUsingEncoding:NSUTF8StringEncoding];
@@ -74,6 +98,21 @@
         NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
     }];
     [[NSNotificationCenter defaultCenter] postNotificationName:kClickConnect_Notification object:_identifier.text];
+}
+
+- (void)downVideo
+{
+    ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
+    video.recvId = _identifier.text;
+    video.data = [_identifier.text dataUsingEncoding:NSUTF8StringEncoding];
+    video.type = ILVLIVE_IMTYPE_GROUP;
+    video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
+    [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
+        NSLog(@"send succ");
+    } failed:^(NSString *module, int errId, NSString *errMsg) {
+        NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kClickDownVideo_Notification object:_identifier.text];
 }
 
 @end

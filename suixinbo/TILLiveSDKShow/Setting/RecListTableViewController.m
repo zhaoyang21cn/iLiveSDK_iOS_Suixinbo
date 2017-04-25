@@ -43,6 +43,8 @@
     _isCanLoadMore = YES;
     _pageItem = [[RequestPageParamItem alloc] init];
     _data = [NSMutableArray array];
+    
+    [self loadMore:nil];
 }
 
 - (void)onRefresh:(UIRefreshControl *)refreshCtl
@@ -77,6 +79,7 @@
         if (ws.data.count >= recordRsp.total)
         {
             _isCanLoadMore = NO;
+            ws.tableView.tableFooterView.hidden = YES;
         }
         if (complete)
         {

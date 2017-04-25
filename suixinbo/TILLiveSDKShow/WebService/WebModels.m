@@ -172,6 +172,14 @@
 
 @implementation MemberListItem
 
+- (instancetype)init
+{
+    if ([super init])
+    {
+        _isUpVideo = NO;
+    }
+    return self;
+}
 - (void)setIdPropertyValue:(id)idkeyValue
 {
     // for the subclass to do

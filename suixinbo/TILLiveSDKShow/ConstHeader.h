@@ -123,6 +123,12 @@ typedef NS_ENUM(NSInteger, BeautyViewType)
     BeautyViewType_Beauty = 0,
     BeautyViewType_White,
 };
+
+typedef NS_ENUM(NSInteger, RoomOptionType)
+{
+    RoomOptionType_CrateRoom = 0,
+    RoomOptionType_JoinRoom,
+};
 /******************** notification **********************/
 #define kUserParise_Notification        @"kUserParise_Notification"
 //#define kUserJoinRoom_Notification      @"kUserJoinRoom_Notification"
@@ -136,10 +142,16 @@ typedef NS_ENUM(NSInteger, BeautyViewType)
 #define kNoPureDelete_Notification      @"kNoPureDelete_Notification"
 #define kClickConnect_Notification      @"kClickConnect_Notification"
 #define kCancelConnect_Notification     @"kCancelConnect_Notification"
+#define kClickDownVideo_Notification      @"kClickDownVideo_Notification"
 #define kEnterBackGround_Notification   @"kEnterBackGround_Notification"
+#define kLinkRoomBtn_Notification       @"kLinkRoomBtn_Notification"
 
 /******************** role string **********************/
 #define kSxbRole_Host       @"LiveMaster"
+#define kSxbRole_HostHD         @"HD"
+#define kSxbRole_HostSD         @"SD"
+#define kSxbRole_HostLD         @"LD"
+
 #define kSxbRole_Guest      @"Guest"
 #define kSxbRole_Interact   @"LiveGuest"
 
@@ -149,9 +161,13 @@ typedef NS_ENUM(NSInteger, BeautyViewType)
 #define kLoginPassward      @"kLoginPassward"
 #define kEnvParam           @"kEnvParam"
 #define kLogLevel           @"kLogLevel"
+#define kBeautyScheme       @"kBeautyScheme"
+#define kILiveBeauty        @"ILiveSDK美颜包"
+#define kQAVSDKBeauty       @"QAVSDK美颜包"
 
 /******************** appstore **********************/
 #define kIsAppstoreVersion 0
 
+#define kHeartInterval 5 //心跳间隔
 
 #endif /* ConstHeader_h */

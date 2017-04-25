@@ -16,6 +16,11 @@
 
 @end
 
+@interface LiveUIParViewConfig : NSObject
+@property (nonatomic, strong) TCShowLiveListItem *item;
+@property (nonatomic, assign) BOOL isHost;
+@end
+
 @interface LiveUIParView : UIView
 {
     UIButton    *_interactBtn;       //互动连线
@@ -24,17 +29,23 @@
     UIButton    *_recBtn;            //录制
     UIButton    *_speedBtn;          //测速
     
+    UIButton    *_linkRoomBtn;       //串门
+    UIButton    *_unlinkRoomBtn;     //取消串门
+    
     UITextView  *_paramTextView;     //参数展示
 }
 
-@property (nonatomic, assign) BOOL isHost;
-@property (nonatomic, copy) NSString *roomTitle;//用于记录当前直播房间标题
-@property (nonatomic, copy) NSString *coverUrl;//用于记录当前直播封面的URL
+@property (nonatomic, strong) LiveUIParViewConfig *config;
+@property (nonatomic, weak) id<InviteInteractDelegate> delegate;
+
 @property (nonatomic, copy) NSTimer *logTimer;
 @property (nonatomic,strong) UITextView *paramTextView;
 @property (nonatomic, strong) NSMutableDictionary *resolutionDic;//纯粹是为了打印log需要
-@property (nonatomic, weak) id<InviteInteractDelegate> delegate;
+
+@property (nonatomic, strong) NSMutableArray *funs;
 
 @property (nonatomic, assign) CGRect restoreRect;
+
+- (void)configWith:(LiveUIParViewConfig *)config;
 
 @end

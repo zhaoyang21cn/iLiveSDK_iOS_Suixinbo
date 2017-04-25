@@ -48,27 +48,11 @@
 - (void)onReport:(UIButton *)button
 {
     __weak typeof(self) ws = self;
-    UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:@"举报原因" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:@"垃圾营销" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    AlertActionHandle reportBlock = ^(UIAlertAction * _Nonnull action){
         [ws showReportSucc];
-    }]];
-    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:@"不实信息" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [ws showReportSucc];
-    }]];
-    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:@"有害信息" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [ws showReportSucc];
-    }]];
-    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:@"违法信息" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [ws showReportSucc];
-    }]];
-    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:@"淫秽信息" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [ws showReportSucc];
-    }]];
-    [reportReasonAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [ws showReportSucc];
-    }]];
-    [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:reportReasonAlert animated:YES completion:nil];
-    
+    };
+    NSDictionary *funs = @{@"垃圾营销":reportBlock,@"不实信息":reportBlock,@"有害信息":reportBlock,@"违法信息":reportBlock,@"淫秽信息":reportBlock};
+    [AlertHelp alertWith:@"举报原因" message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
     [UIView animateWithDuration:0.5 animations:^{
         [self setFrame:CGRectMake(0, -50, self.bounds.size.width, self.bounds.size.height)];
         
@@ -79,6 +63,7 @@
 
 - (void)showReportSucc
 {
+    //tips todo 
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"举报成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
     [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
     

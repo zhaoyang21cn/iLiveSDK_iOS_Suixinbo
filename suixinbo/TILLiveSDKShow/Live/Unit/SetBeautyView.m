@@ -187,19 +187,14 @@
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
-        [self close];
+        [UIView animateWithDuration:0.7 animations:^{
+            CGRect selfRect = self.frame;
+            selfRect.origin.y += selfRect.size.height;
+            [self setFrame:selfRect];
+        } completion:^(BOOL finished) {
+            [self removeFromSuperview];
+        }];
     }
-}
-
-- (void)close
-{
-    [UIView animateWithDuration:0.7 animations:^{
-        CGRect selfRect = self.frame;
-        selfRect.origin.y += selfRect.size.height;
-        [self setFrame:selfRect];
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
-    }];
 }
 
 - (void)setBeautyValue:(CGFloat)beauty

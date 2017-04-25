@@ -7,7 +7,9 @@
 //
 
 #import "UploadImageHelper.h"
+
 #import "COSClient.h"
+
 
 @interface UploadImageHelper ()
 {

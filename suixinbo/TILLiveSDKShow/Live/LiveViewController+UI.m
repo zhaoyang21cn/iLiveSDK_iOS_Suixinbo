@@ -18,11 +18,11 @@
 
 - (void)onInteract
 {
-    if ([UserViewManager shareInstance].total >= 3)
-    {
-        [AppDelegate showAlert:self title:@"提示" message:@"连麦画面不能超过4路" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-        return;
-    }
+//    if ([UserViewManager shareInstance].total >= 3)
+//    {
+//        [AppDelegate showAlert:self title:@"提示" message:@"连麦画面不能超过4路" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+//        return;
+//    }
     __weak typeof(self) ws = self;
     RoomMemListRequest *listReq = [[RoomMemListRequest alloc] initWithHandler:^(BaseRequest *request) {
         RoomMemListRspData *listRspData = (RoomMemListRspData *)request.response.data;
@@ -30,6 +30,8 @@
         
     } failHandler:^(BaseRequest *request) {
         NSLog(@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo);
+        NSString *logInfo = [NSString stringWithFormat:@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo];
+        [AlertHelp alertWith:@"获取成员列表失败" message:logInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
     listReq.token = [AppDelegate sharedAppDelegate].token;
     listReq.roomnum = _liveItem.info.roomnum;
@@ -75,8 +77,13 @@
         BOOL isLoginId = [item.identifier isEqualToString:loginId];
         BOOL isPlaceholder = [[UserViewManager shareInstance] isExistPlaceholder:item.identifier];
         BOOL isRender = [[UserViewManager shareInstance] isExistRenderView:item.identifier];
-        if (!isLoginId && !isPlaceholder && !isRender)
+        
+        if (!isLoginId && !isPlaceholder)
         {
+            if (isRender)
+        {
+                item.isUpVideo = YES;
+            }
             [_members addObject:item];
         }
     }
@@ -109,7 +116,7 @@
     CGRect screenRect = self.view.bounds;
     CGFloat screenW = screenRect.size.width;
     
-    [_topView sizeWith:CGSizeMake(screenW * 2/5, 50)];
+    [_topView sizeWith:CGSizeMake(screenW * 17/20, 50)];
     [_topView alignParentTopWithMargin:kDefaultMargin];
     [_topView alignParentLeftWithMargin:kDefaultMargin];
     
@@ -117,8 +124,12 @@
     [_closeBtn alignParentRight];
     [_closeBtn alignVerticalCenterOf:_topView];
     
-    [_parView sizeWith:CGSizeMake(screenW, 44)];
+    [_parView sizeWith:CGSizeMake(screenW, 56)];
     [_parView layoutBelow:_topView margin:kDefaultMargin];
+    
+//    [_envInfoView sizeWith:CGSizeMake(125, 30)];
+//    [_envInfoView layoutBelow:_parView];
+//    [_envInfoView alignParentLeft];
     
     [_bottomView sizeWith:CGSizeMake(screenW, 30)];
     [_bottomView alignParentBottomWithMargin:kDefaultMargin];
@@ -140,11 +151,9 @@
 
 - (void)onGotupDelete:(NSNotification *)noti
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"主播已经离开房间,是否退出?" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [AlertHelp alertWith:@"提示" message:@"主播已经离开房间,是否退出?" cancelBtn:@"退出" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
         [self exitRoom];
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    }];
 }
 
 - (void)showLikeHeartStartRect:(NSNotification *)noti
@@ -287,9 +296,7 @@
 - (void)onBtnClose:(UIButton *)button
 {
     __weak typeof(self) ws = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"确认退出直播吗" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    AlertActionHandle okBlock = ^(UIAlertAction * _Nonnull action) {
         if (_isHost)//主播退群时，发送退群消息
         {
             ILVLiveCustomMessage *customMsg = [[ILVLiveCustomMessage alloc] init];
@@ -302,14 +309,15 @@
                 
             } failed:^(NSString *module, int errId, NSString *errMsg) {
                 NSLog(@"fail");
+                [ws onClose];
             }];
         }
         else
         {
             [ws onClose];
         }
-    }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    };
+    [AlertHelp alertWith:@"提示" message:@"确认退出直播吗" funBtns:@{@"确定":okBlock} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -377,7 +385,7 @@
             cell = [[MemberListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LiveRoomMemberListCell"];
         }
         MemberListItem *item = [_members objectAtIndex:indexPath.row];
-        [cell configId:item.identifier];
+        [cell configId:item];
         return cell;
     }
     return nil;

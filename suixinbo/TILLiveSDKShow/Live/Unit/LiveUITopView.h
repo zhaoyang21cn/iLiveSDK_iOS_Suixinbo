@@ -18,6 +18,7 @@
 
 @interface LiveUITopView : UIView
 {
+    UIView      *_bgView;//透明背景
     //top view
     UIImageView *_avatarView;        //主播头像
     UIButton    *_netStatusBtn;      //网络质量

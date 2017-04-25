@@ -10,5 +10,6 @@
 #define CustomUIHeader_h
 
 #import "LoadView.h"
+#import "AlertHelp.h"
 
 #endif /* CustomUIHeader_h */

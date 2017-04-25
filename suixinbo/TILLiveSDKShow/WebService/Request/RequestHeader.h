@@ -39,4 +39,6 @@
 
 #import "LiveImageSignRequest.h"
 
+#import "LinkRoomSigRequest.h"
+
 #endif /* RequestHeader_h */

@@ -110,6 +110,11 @@
     [manager setEnv:[evn intValue]];
     
     NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];
+    if (!logLevel)//默认debug等级
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
+        logLevel = @(TIM_LOG_DEBUG);
+    }
     [manager initLogSettings:YES logPath:[manager getLogPath]];
     [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
     

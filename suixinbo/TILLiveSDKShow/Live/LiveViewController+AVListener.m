@@ -32,6 +32,12 @@
         case ILVLIVE_AVEVENT_SCREEN_OFF:
             [self offVideoType:QAVVIDEO_SRC_TYPE_SCREEN users:users];
             break;
+        case ILVLIVE_AVEVENT_MEDIA_ON:
+            [self onVideoType:QAVVIDEO_SRC_TYPE_MEDIA users:users];
+            break;
+        case ILVLIVE_AVEVENT_MEDIA_OFF:
+            [self offVideoType:QAVVIDEO_SRC_TYPE_MEDIA users:users];
+            break;
         default:
             break;
     }

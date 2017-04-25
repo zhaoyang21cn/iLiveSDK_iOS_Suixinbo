@@ -17,8 +17,8 @@
     {
         _isHost = isHost;
         _liveItem = item;
-        self.backgroundColor = [kColorBlack colorWithAlphaComponent:0.5];
-        self.layer.cornerRadius = 25;
+        self.backgroundColor = [UIColor clearColor];//[kColorBlack colorWithAlphaComponent:0.5];
+//        self.layer.cornerRadius = 25;
         [self addTopSubViews];
         [self addNotification];
     }
@@ -66,6 +66,10 @@
 
 - (void)addTopSubViews
 {
+    _bgView = [[UIView alloc] init];
+    _bgView.backgroundColor = [kColorBlack colorWithAlphaComponent:0.5];
+    _bgView.layer.cornerRadius = 25;
+    [self addSubview:_bgView];
     //top view
     _avatarView = [[UIImageView alloc] initWithImage:kDefaultUserIcon];
     //下载主播头像
@@ -89,7 +93,7 @@
     } fail:nil];
     _avatarView.layer.cornerRadius = 22;
     _avatarView.layer.masksToBounds = YES;
-    [self addSubview:_avatarView];
+    [_bgView addSubview:_avatarView];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarClick:)];
     tap.numberOfTapsRequired = 1;
@@ -99,12 +103,12 @@
     
     _netStatusBtn = [[UIButton alloc] init];
     [_netStatusBtn setBackgroundImage:[UIImage imageNamed:@"net3"] forState:UIControlStateNormal];
-    [self addSubview:_netStatusBtn];
+    [_bgView addSubview:_netStatusBtn];
     
     _liveStatusBtn = [[UIButton alloc] init];
     _liveStatusBtn.layer.cornerRadius = 5;
     _liveStatusBtn.backgroundColor = kColorGreen;
-    [self addSubview:_liveStatusBtn];
+    [_bgView addSubview:_liveStatusBtn];
     
     _timeLabel = [[UILabel alloc] init];
     _timeLabel.adjustsFontSizeToFitWidth = YES;
@@ -112,7 +116,7 @@
     _timeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _timeLabel.text = _isHost ? @"00:00" : _liveItem.uid;
     _timeLabel.textColor = kColorWhite;
-    [self addSubview:_timeLabel];
+    [_bgView addSubview:_timeLabel];
     
     _liveTime = 0;
     
@@ -129,7 +133,7 @@
     _liveAudienceBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
     _liveAudienceBtn.titleLabel.font = kAppSmallTextFont;
     [_liveAudienceBtn setTitleColor:kColorWhite forState:UIControlStateNormal];
-    [self addSubview:_liveAudienceBtn];
+    [_bgView addSubview:_liveAudienceBtn];
     
     _livePraiseBtn = [[UIButton alloc] init];
     [_livePraiseBtn setTitle:[NSString stringWithFormat:@"%d",_liveItem.info.thumbup] forState:UIControlStateNormal];//[NSString stringWithFormat:@"%ld",(long)_liveItem.watchCount]
@@ -137,12 +141,13 @@
     _livePraiseBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
     _livePraiseBtn.titleLabel.font = kAppSmallTextFont;
     [_livePraiseBtn setTitleColor:kColorWhite forState:UIControlStateNormal];
-    [self addSubview:_livePraiseBtn];
+    [_bgView addSubview:_livePraiseBtn];
     
     _roomId = [[UILabel alloc] init];
     _roomId.text = [NSString stringWithFormat:@"%ld",(long)_liveItem.info.roomnum];
     _roomId.textColor = kColorWhite;
     [self addSubview:_roomId];
+    
 }
 
 - (void)onAvatarClick:(UIButton *)button
@@ -180,6 +185,11 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    CGFloat screenW = self.bounds.size.width;
+    CGFloat selfH = self.bounds.size.height;
+    [_bgView sizeWith:CGSizeMake(screenW/2, selfH)];
+    [_bgView layoutParentVerticalCenter];
+    [_bgView alignParentLeft];
     
     [_avatarView sizeWith:CGSizeMake(44, 44)];
     [_avatarView layoutParentVerticalCenter];
@@ -191,7 +201,7 @@
     
     [_liveStatusBtn sizeWith:CGSizeMake(22, 10)];
     [_liveStatusBtn layoutToRightOf:_avatarView margin:5];
-    [_liveStatusBtn alignParentBottomWithMargin:kDefaultMargin];
+    [_liveStatusBtn alignParentBottomWithMargin:kDefaultMargin/2];
     
     [_timeLabel sizeWith:CGSizeMake(15, 15)];
     [_timeLabel alignTop:_avatarView];
@@ -208,9 +218,13 @@
         [_livePraiseBtn layoutToRightOf:_liveAudienceBtn];
     }
     
-    [_roomId sizeWith:CGSizeMake(150, 30)];
-    [_roomId layoutToRightOf:_timeLabel margin:20];
+    [_roomId sizeWith:CGSizeMake(screenW*3/16, 30)];
+    [_roomId layoutToRightOf:_bgView margin:kDefaultMargin];
     [_roomId layoutParentVerticalCenter];
+    
+//    [_hostRoleBtn sizeWith:CGSizeMake(screenW*5/16-5, 20)];
+//    [_hostRoleBtn layoutToRightOf:_roomId];
+//    [_hostRoleBtn layoutParentVerticalCenter];
 }
 
 - (void)onParisePlus

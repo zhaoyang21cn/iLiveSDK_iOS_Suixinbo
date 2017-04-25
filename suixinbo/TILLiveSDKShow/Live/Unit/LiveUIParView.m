@@ -7,8 +7,10 @@
 //
 
 #import "LiveUIParView.h"
+#import "LinkRoomList.h"
 
 #import <ShareSDKUI/ShareSDK+SSUI.h>//用于实现社交分享
+
 
 @interface LiveUIParView () <ILiveSpeedTestDelegate>
 {
@@ -20,17 +22,14 @@ UIAlertController *_alert;
 
 @implementation LiveUIParView
 
-- (instancetype)init
+- (void)configWith:(LiveUIParViewConfig *)config
 {
-    if (self = [super init])
-    {
-        [self addAVParamSubViews];
-        _resolutionDic = [NSMutableDictionary dictionary];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParPure:) name:kPureDelete_Notification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParNoPure:) name:kNoPureDelete_Notification object:nil];
-        [ILiveSpeedTestManager shareInstance].delegate = self;
-    }
-    return self;
+    _config = config;
+    [self addAVParamSubViews];
+    _resolutionDic = [NSMutableDictionary dictionary];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParPure:) name:kPureDelete_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParNoPure:) name:kNoPureDelete_Notification object:nil];
+    [ILiveSpeedTestManager shareInstance].delegate = self;
 }
 
 - (void)onParPure:(NSNotification *)noti
@@ -56,18 +55,24 @@ UIAlertController *_alert;
 
 - (void)addAVParamSubViews
 {
+    _funs = [NSMutableArray array];
     //AV Param View
-    _interactBtn = [[UIButton alloc] init];
-    [_interactBtn setImage:[UIImage imageNamed:@"interactive"] forState:UIControlStateNormal];
-    [_interactBtn addTarget:self action:@selector(onInteract:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_interactBtn];
+    if (_config.isHost)
+    {
+        _interactBtn = [[UIButton alloc] init];
+        [_interactBtn setImage:[UIImage imageNamed:@"interactive"] forState:UIControlStateNormal];
+        [_interactBtn addTarget:self action:@selector(onInteract:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_interactBtn];
+        [_funs addObject:_interactBtn];
+    }
     
     UIImage *nor = [UIImage imageWithColor:[RGB(220, 220, 220) colorWithAlphaComponent:0.5]];
     UIImage *hig = [UIImage imageWithColor:[RGB(110, 110, 110) colorWithAlphaComponent:0.5]];
     
     _parBtn = [[UIButton alloc] init];
-    [_parBtn setTitle:@"PAR" forState:UIControlStateNormal];
-    _parBtn.titleLabel.font = kAppMiddleTextFont;
+    [_parBtn setTitle:@"房间信息" forState:UIControlStateNormal];
+    _parBtn.titleLabel.font = kAppSmallTextFont;
+    _parBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
     [_parBtn addTarget:self action:@selector(onPar:) forControlEvents:UIControlEventTouchUpInside];
     [_parBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
     [_parBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
@@ -76,50 +81,78 @@ UIAlertController *_alert;
     _parBtn.layer.cornerRadius = 4;
     _parBtn.layer.masksToBounds = YES;
     [self addSubview:_parBtn];
+    [_funs addObject:_parBtn];
     
-    _pushStreamBtn = [[UIButton alloc] init];
-    [_pushStreamBtn setTitle:@"开始推流" forState:UIControlStateNormal];
-    [_pushStreamBtn setTitle:@"关闭推流" forState:UIControlStateSelected];
-    [_pushStreamBtn addTarget:self action:@selector(onPush:) forControlEvents:UIControlEventTouchUpInside];
-    if (self.bounds.size.width <= 320)
+    UIImage *image = [UIImage imageWithColor:[kColorBlue colorWithAlphaComponent:0.5]];
+    
+    if (_config.isHost)
     {
+        _pushStreamBtn = [[UIButton alloc] init];
+        [_pushStreamBtn setTitle:@"开始推流" forState:UIControlStateNormal];
+        [_pushStreamBtn setTitle:@"关闭推流" forState:UIControlStateSelected];
+        [_pushStreamBtn addTarget:self action:@selector(onPush:) forControlEvents:UIControlEventTouchUpInside];
         _pushStreamBtn.titleLabel.font = kAppSmallTextFont;
+        [_pushStreamBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+        [_pushStreamBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
+        [_pushStreamBtn setBackgroundImage:nor forState:UIControlStateNormal];
+        [_pushStreamBtn setBackgroundImage:hig forState:UIControlStateSelected];
+        _pushStreamBtn.layer.cornerRadius = 4;
+        _pushStreamBtn.layer.masksToBounds = YES;
+        [self addSubview:_pushStreamBtn];
+        [_funs addObject:_pushStreamBtn];
+        
+        _recBtn = [[UIButton alloc] init];
+        [_recBtn setTitle:@"REC" forState:UIControlStateNormal];
+        [_recBtn addTarget:self action:@selector(onRecord:) forControlEvents:UIControlEventTouchUpInside];
+        _recBtn.titleLabel.font = kAppSmallTextFont;
+        [_recBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+        [_recBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
+        [_recBtn setBackgroundImage:nor forState:UIControlStateNormal];
+        [_recBtn setBackgroundImage:image forState:UIControlStateSelected];
+        _recBtn.layer.cornerRadius = 4;
+        _recBtn.layer.masksToBounds = YES;
+        [self addSubview:_recBtn];
+        [_funs addObject:_recBtn];
     }
-    else
-    {
-        _pushStreamBtn.titleLabel.font = kAppMiddleTextFont;
-    }
-    [_pushStreamBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
-    [_pushStreamBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
-    [_pushStreamBtn setBackgroundImage:nor forState:UIControlStateNormal];
-    [_pushStreamBtn setBackgroundImage:hig forState:UIControlStateSelected];
-    _pushStreamBtn.layer.cornerRadius = 4;
-    _pushStreamBtn.layer.masksToBounds = YES;
-    [self addSubview:_pushStreamBtn];
-    
-    UIImage *recHig = [UIImage imageWithColor:[kColorBlue colorWithAlphaComponent:0.5]];
-    _recBtn = [[UIButton alloc] init];
-    [_recBtn setTitle:@"REC" forState:UIControlStateNormal];
-    [_recBtn addTarget:self action:@selector(onRecord:) forControlEvents:UIControlEventTouchUpInside];
-    _recBtn.titleLabel.font = kAppMiddleTextFont;
-    [_recBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
-    [_recBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
-    [_recBtn setBackgroundImage:nor forState:UIControlStateNormal];
-    [_recBtn setBackgroundImage:recHig forState:UIControlStateSelected];
-    _recBtn.layer.cornerRadius = 4;
-    _recBtn.layer.masksToBounds = YES;
-    [self addSubview:_recBtn];
     
     _speedBtn = [[UIButton alloc] init];
     [_speedBtn setTitle:@"测速" forState:UIControlStateNormal];
     [_speedBtn addTarget:self action:@selector(onTestSpeed:) forControlEvents:UIControlEventTouchUpInside];
-    _speedBtn.titleLabel.font = kAppMiddleTextFont;
+    _speedBtn.titleLabel.font = kAppSmallTextFont;
     [_speedBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
     [_speedBtn setBackgroundImage:nor forState:UIControlStateNormal];
-    [_speedBtn setBackgroundImage:recHig forState:UIControlStateSelected];
+    [_speedBtn setBackgroundImage:image forState:UIControlStateSelected];
     _speedBtn.layer.cornerRadius = 4;
     _speedBtn.layer.masksToBounds = YES;
     [self addSubview:_speedBtn];
+    [_funs addObject:_speedBtn];
+    
+    if (_config.isHost)
+    {
+        _linkRoomBtn = [[UIButton alloc] init];
+        [_linkRoomBtn setTitle:@"串 门" forState:UIControlStateNormal];
+        [_linkRoomBtn addTarget:self action:@selector(onLinkRoomAction) forControlEvents:UIControlEventTouchUpInside];
+        _linkRoomBtn.titleLabel.font = kAppSmallTextFont;
+        [_linkRoomBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+        [_linkRoomBtn setBackgroundImage:nor forState:UIControlStateNormal];
+        [_linkRoomBtn setBackgroundImage:image forState:UIControlStateSelected];
+        _linkRoomBtn.layer.cornerRadius = 4;
+        _linkRoomBtn.layer.masksToBounds = YES;
+        [self addSubview:_linkRoomBtn];
+        [_funs addObject:_linkRoomBtn];
+        
+        _unlinkRoomBtn = [[UIButton alloc] init];
+        [_unlinkRoomBtn setTitle:@"取消串门" forState:UIControlStateNormal];
+        [_unlinkRoomBtn addTarget:self action:@selector(onUnLinkRoomAction) forControlEvents:UIControlEventTouchUpInside];
+        _unlinkRoomBtn.titleLabel.font = kAppSmallTextFont;
+        [_unlinkRoomBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+        [_unlinkRoomBtn setBackgroundImage:nor forState:UIControlStateNormal];
+        [_unlinkRoomBtn setBackgroundImage:image forState:UIControlStateSelected];
+        _unlinkRoomBtn.layer.cornerRadius = 4;
+        _unlinkRoomBtn.layer.masksToBounds = YES;
+        [self addSubview:_unlinkRoomBtn];
+        [_funs addObject:_unlinkRoomBtn];
+    }
 }
 
 - (void)layoutSubviews
@@ -127,21 +160,19 @@ UIAlertController *_alert;
     [super layoutSubviews];
     
     CGRect rect = self.bounds;
-    NSMutableArray *funs = [NSMutableArray array];
-    if (_isHost)
-    {
-        [funs addObjectsFromArray:@[_interactBtn,_parBtn,_pushStreamBtn,_recBtn,_speedBtn]];
-    }
-    else
-    {
-        [funs addObjectsFromArray:@[_parBtn,_pushStreamBtn,_recBtn,_speedBtn]];
-    }
-    NSInteger width = (rect.size.width - (funs.count + 1)*3) / funs.count;
+    int maxColumn = 5;
+    NSInteger width = (rect.size.width - (maxColumn + 1)*3) / maxColumn;
     if (width > 80)
     {
         width = 80;
     }
-    [self gridViews:funs inColumn:funs.count size:CGSizeMake(width, 24) margin:CGSizeMake(3, 3) inRect:rect];
+    CGFloat marginX = 3;
+    if (_funs.count < 5)//按钮较少时，靠右对齐
+    {
+        int magin = ((5 - (int)_funs.count) + 1)*3 + (5 - (int)_funs.count)*(int)width;
+        rect.origin.x += magin;
+    }
+    [self gridViews:_funs inColumn:5 size:CGSizeMake(width, 24) margin:CGSizeMake(marginX, kDefaultMargin) inRect:rect];
 }
 
 - (void)onInteract:(UIButton *)button
@@ -161,69 +192,11 @@ UIAlertController *_alert;
         ws.paramTextView = [[UITextView alloc] init];
         CGRect selfRect = self.frame;
         ws.paramTextView.editable = NO;
-        [ws.paramTextView setFrame:CGRectMake(0, selfRect.origin.y+selfRect.size.height+kDefaultMargin, selfRect.size.width, 350)];
+        ws.paramTextView.font = kAppLargeTextFont;
         ws.paramTextView.backgroundColor = [kColorLightGray colorWithAlphaComponent:0.5];
+        [ws.paramTextView setFrame:CGRectMake(0, selfRect.origin.y+selfRect.size.height+kDefaultMargin, selfRect.size.width, 350)];
         [self.superview addSubview:ws.paramTextView];
-
-        _logTimer = [NSTimer timerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
-            
-            QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-            if (context.videoCtrl && context.audioCtrl && context.room)
-            {
-                ILiveQualityData *qualityData = [[ILiveRoomManager getInstance] getQualityData];
-                NSMutableString *paramString = [NSMutableString string];
-                //FPS
-                [paramString appendString:[NSString stringWithFormat:@"FPS:%ld.\n",qualityData.interactiveSceneFPS/10]];
-                //Send Recv
-                [paramString appendString:[NSString stringWithFormat:@"Send: %ldkbps, Recv: %ldkbps.\n",qualityData.sendRate,(long)qualityData.recvRate]];
-                //sendLossRate recvLossRate
-                CGFloat sendLossRate = (CGFloat)qualityData.sendLossRate / (CGFloat)100;
-                CGFloat recvLossRate = (CGFloat)qualityData.recvLossRate / (CGFloat)100;
-                NSString *per = @"%";
-                [paramString appendString:[NSString stringWithFormat:@"SendLossRate: %.2f%@,   RecvLossRate: %.2f%@.\n",sendLossRate,per,recvLossRate,per]];
-                
-                //appcpu syscpu
-                CGFloat appCpuRate = (CGFloat)qualityData.appCPURate / (CGFloat)100;
-                CGFloat sysCpuRate = (CGFloat)qualityData.sysCPURate / (CGFloat)100;
-                [paramString appendString:[NSString stringWithFormat:@"AppCPURate:   %.2f%@,   SysCPURate:   %.2f%@.\n",appCpuRate,per,sysCpuRate,per]];
-                
-                //分别角色的分辨率
-                NSArray *keys = [_resolutionDic allKeys];
-                for (NSString *key in keys)
-                {
-                    QAVFrameDesc *desc = _resolutionDic[key];
-                    [paramString appendString:[NSString stringWithFormat:@"%@---> %d * %d\n",key,desc.width,desc.height]];
-                }
-                //avsdk版本号
-                NSString *avSDKVer = [NSString stringWithFormat:@"AVSDK版本号: %@\n",[QAVContext getVersion]];
-                [paramString appendString:avSDKVer];
-                //房间号
-                int roomid = [[ILiveRoomManager getInstance] getRoomId];
-                [paramString appendString:[NSString stringWithFormat:@"房间号:%d\n",roomid]];
-                //角色
-                NSString *roleStr = _isHost ? @"主播" : @"非主播";
-                [paramString appendString:[NSString stringWithFormat:@"角色:%@\n",roleStr]];
-                
-                //采集信息
-                NSString *videoParam = [context.videoCtrl getQualityTips];
-                NSArray *array = [videoParam componentsSeparatedByString:@"\n"]; //从字符A中分隔成2个元素的数组
-                if (array.count > 3)
-                {
-                    NSString *resolution = [array objectAtIndex:2];
-                    [paramString appendString:[NSString stringWithFormat:@"%@\n",resolution]];
-                }
-                //麦克风
-                NSString *isOpen = [[ILiveRoomManager getInstance] getCurMicState] ? @"ON" : @"OFF";
-                [paramString appendString:[NSString stringWithFormat:@"麦克风: %@\n",isOpen]];
-                //扬声器
-                NSString *isOpenSpeaker = [[ILiveRoomManager getInstance] getCurSpeakerState] ? @"ON" : @"OFF";
-                [paramString appendString:[NSString stringWithFormat:@"扬声器: %@\n",isOpenSpeaker]];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    ws.paramTextView.text = paramString;
-                });
-            }
-        }];
+        _logTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(onLogTimer) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:_logTimer forMode:NSDefaultRunLoopMode];
     }
     else
@@ -238,23 +211,83 @@ UIAlertController *_alert;
     button.selected = !button.selected;
 }
 
+- (void)onLogTimer
+{
+    __weak typeof(self) ws = self;
+    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+    if (context.videoCtrl && context.audioCtrl && context.room)
+    {
+        ILiveQualityData *qualityData = [[ILiveRoomManager getInstance] getQualityData];
+        NSMutableString *paramString = [NSMutableString string];
+        //FPS
+        [paramString appendString:[NSString stringWithFormat:@"FPS:%ld.\n",qualityData.interactiveSceneFPS/10]];
+        //Send Recv
+        [paramString appendString:[NSString stringWithFormat:@"Send: %ldkbps, Recv: %ldkbps.\n",qualityData.sendRate,(long)qualityData.recvRate]];
+        //sendLossRate recvLossRate
+        CGFloat sendLossRate = (CGFloat)qualityData.sendLossRate / (CGFloat)100;
+        CGFloat recvLossRate = (CGFloat)qualityData.recvLossRate / (CGFloat)100;
+        NSString *per = @"%";
+        [paramString appendString:[NSString stringWithFormat:@"SendLossRate: %.2f%@,   RecvLossRate: %.2f%@.\n",sendLossRate,per,recvLossRate,per]];
+        
+        //appcpu syscpu
+        CGFloat appCpuRate = (CGFloat)qualityData.appCPURate / (CGFloat)100;
+        CGFloat sysCpuRate = (CGFloat)qualityData.sysCPURate / (CGFloat)100;
+        [paramString appendString:[NSString stringWithFormat:@"AppCPURate:   %.2f%@,   SysCPURate:   %.2f%@.\n",appCpuRate,per,sysCpuRate,per]];
+        
+        //分别角色的分辨率
+        NSArray *keys = [_resolutionDic allKeys];
+        for (NSString *key in keys)
+        {
+            QAVFrameDesc *desc = _resolutionDic[key];
+            [paramString appendString:[NSString stringWithFormat:@"%@---> %d * %d\n",key,desc.width,desc.height]];
+        }
+        //avsdk版本号
+        NSString *avSDKVer = [NSString stringWithFormat:@"AVSDK版本号: %@\n",[QAVContext getVersion]];
+        [paramString appendString:avSDKVer];
+        //房间号
+        int roomid = [[ILiveRoomManager getInstance] getRoomId];
+        [paramString appendString:[NSString stringWithFormat:@"房间号:%d\n",roomid]];
+        //角色
+        NSString *roleStr = _config.isHost ? @"主播" : @"非主播";
+        [paramString appendString:[NSString stringWithFormat:@"角色:%@\n",roleStr]];
+        
+        //采集信息
+        NSString *videoParam = [context.videoCtrl getQualityTips];
+        NSArray *array = [videoParam componentsSeparatedByString:@"\n"]; //从字符A中分隔成2个元素的数组
+        if (array.count > 3)
+        {
+            NSString *resolution = [array objectAtIndex:2];
+            [paramString appendString:[NSString stringWithFormat:@"%@\n",resolution]];
+        }
+        //麦克风
+        NSString *isOpen = [[ILiveRoomManager getInstance] getCurMicState] ? @"ON" : @"OFF";
+        [paramString appendString:[NSString stringWithFormat:@"麦克风: %@\n",isOpen]];
+        //扬声器
+        NSString *isOpenSpeaker = [[ILiveRoomManager getInstance] getCurSpeakerState] ? @"ON" : @"OFF";
+        [paramString appendString:[NSString stringWithFormat:@"扬声器: %@\n",isOpenSpeaker]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            ws.paramTextView.text = paramString;
+        });
+    }
+}
+
 - (void)onPush:(UIButton *)button
 {
     button.selected = !button.selected;
     if (button.selected)
     {
         __weak typeof(self) ws = self;
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"HLS推流" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AlertActionHandle hlsBlock = ^(UIAlertAction * _Nonnull action){
             [ws pushStream:button encodeType:AV_ENCODE_HLS recordType:AV_RECORD_FILE_TYPE_MP4];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"RTMP推流" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        };
+        AlertActionHandle rtmpBlock = ^(UIAlertAction * _Nonnull action){
             [ws pushStream:button encodeType:AV_ENCODE_RTMP recordType:AV_RECORD_FILE_TYPE_MP4];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        };
+        NSDictionary *funs = @{@"HLS推流":hlsBlock, @"RTMP推流":rtmpBlock};
+        [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:^(UIAlertAction * _Nonnull action) {
             button.selected = !button.selected;
-        }]];
-        [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
+        }];
     }
     else
     {
@@ -284,38 +317,36 @@ UIAlertController *_alert;
             url = resp.urls[0];
         }
         NSString *msg = url ? url.playUrl : @"url为nil";
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        if (encodeType != AV_ENCODE_RTMP)
-        {
-            [alert addAction:[UIAlertAction actionWithTitle:@"分享" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [ws shareLive:msg];
-            }]];
-        }
-        [alert addAction:[UIAlertAction actionWithTitle:@"复制" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        AlertActionHandle copyBlock = ^(UIAlertAction * _Nonnull action) {
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             [pasteboard setString:msg];
-        }]];
-        [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
-        
+        };
+        AlertActionHandle copyShareBlock = ^(UIAlertAction * _Nonnull action){
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            [pasteboard setString:msg];
+            [ws shareLive:msg];
+        };
+        NSDictionary *funs = @{@"复制":copyBlock, @"复制并分享":copyShareBlock};
+        [AlertHelp alertWith:nil message:msg funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         button.selected = !button.selected;
         NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
         NSLog(@"%@",errinfo);
-        [ws showAlert:@"推流失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"推流失败" message:errinfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
 }
 
 - (void)shareLive:(NSString *)url
 {
     //分享链接到社交平台
-    NSArray* imageArray = @[_coverUrl];
+    NSArray* imageArray = @[_config.item.info.cover];
     if (!imageArray)
     {
         return;
     }
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    [shareParams SSDKSetupShareParamsByText:@"走过路过，不要错过~快来观看直播吧！" images:imageArray url:[NSURL URLWithString:url] title:_roomTitle type:SSDKContentTypeAuto];
+    [shareParams SSDKSetupShareParamsByText:@"走过路过，不要错过~快来观看直播吧！" images:imageArray url:[NSURL URLWithString:url] title:_config.item.info.title type:SSDKContentTypeAuto];
     //有的平台要客户端分享需要加此方法，例如微博
     [shareParams SSDKEnableUseClientShare];
     //可以弹出分享菜单和编辑界面
@@ -324,12 +355,12 @@ UIAlertController *_alert;
         {
             case SSDKResponseStateSuccess:
             {
-                [self showAlert:@"分享成功" message:nil okTitle:@"确定" cancelTitle:@"取消" ok:nil cancel:nil];
+                [AlertHelp alertWith:@"分享成功" message:nil cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
                 break;
             }
             case SSDKResponseStateFail:
             {
-                [self showAlert:@"分享失败" message:[NSString stringWithFormat:@"%@",error] okTitle:@"确定" cancelTitle:@"取消" ok:nil cancel:nil];
+                [AlertHelp alertWith:@"分享失败" message:[NSString stringWithFormat:@"%@",error] cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
                 break;
             }
             case SSDKResponseStateCancel:
@@ -347,27 +378,13 @@ UIAlertController *_alert;
     __weak typeof(self) ws = self;
     [[ILiveRoomManager getInstance] stopPushStreams:@[@(_channelId)] succ:^{
         [ws setChannelId:0];//重置channelid
-        [ws showAlert:@"已停止推流" message:nil okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"已停止推流" message:nil cancelBtn:@"好的" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
         NSLog(@"%@",errinfo);
-        [ws showAlert:@"停止推流失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"停止推流失败" message:errinfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
-}
-
-- (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    if (cancelTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
-    }
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
-    [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)setChannelId:(UInt64)channelId
@@ -378,34 +395,30 @@ UIAlertController *_alert;
 - (void)onRecord:(UIButton *)button
 {
     button.selected = !button.selected;
-    __weak typeof(self) ws = self;
     if (button.selected)
     {
         __weak typeof(self) ws = self;
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"视频录制" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
+        AlertActionHandle videoRecordBlock = ^(UIAlertAction * _Nonnull action){
             [ws startRecord:button type:AV_RECORD_TYPE_VIDEO];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"纯音频录制" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
+        };
+        AlertActionHandle audioRecordBlock = ^(UIAlertAction * _Nonnull action){
             [ws startRecord:button type:AV_RECORD_TYPE_AUDIO];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        };
+        NSDictionary *funs = @{@"视频录制":videoRecordBlock,@"纯音频录制":audioRecordBlock};
+        [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:^(UIAlertAction * _Nonnull action) {
             button.selected = !button.selected;
-        }]];
-        [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
+        }];
     }
     else
     {
         [[ILiveRoomManager getInstance] stopRecordVideo:^(id selfPtr) {
-            [ws showAlert:@"已停止录制" message:nil okTitle:nil cancelTitle:@"确定" ok:nil cancel:nil];
+            [AlertHelp alertWith:@"已停止录制" message:nil cancelBtn:@"好的" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
             
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             button.selected = !button.selected;
             NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
             NSLog(@"%@",errinfo);
-            [ws showAlert:@"停止录制失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
+            [AlertHelp alertWith:@"停止录制失败" message:errinfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     }
 }
@@ -429,25 +442,82 @@ UIAlertController *_alert;
     [rootVC presentViewController:alert animated:YES completion:nil];
 }
 
-- (UIViewController *)viewController
+- (void)removeSelfAndLinked:(NSMutableArray *)array
 {
-    UIResponder *next = self.nextResponder;
-    do
+    NSArray *linkedUsers = [[TILLiveManager getInstance] getCurrentLinkedUserArray];
+    NSMutableArray *willRemoveItems = [NSMutableArray array];
+    for (TCShowLiveListItem *item in array)
     {
-        //判断响应者对象是否是视图控制器类型
-        if ([next isKindOfClass:[UIViewController class]])
+        if ([item.uid isEqualToString:[[ILiveLoginManager getInstance] getLoginId]])
         {
-            return (UIViewController *)next;
+            //            [array removeObject:item];
+            [willRemoveItems addObject:item];
         }
-        next = next.nextResponder;
-    }while(next != nil);
-    return nil;
+        else
+        {
+            NSUInteger index = [linkedUsers indexOfObject:item.uid];
+            if (index != NSNotFound)
+            {
+                //                [array removeObject:item];
+                [willRemoveItems addObject:item];
+            }
+        }
+    }
+    [array removeObjectsInArray:willRemoveItems];
+}
+
+- (void)onLinkRoomAction
+{
+    //向业务后台请求直播间列表
+    __weak typeof(self) ws = self;
+    RoomListRequest *listReq = [[RoomListRequest alloc] initWithHandler:^(BaseRequest *request) {
+        RoomListRequest *wreq = (RoomListRequest *)request;
+        RoomListRspData *respData = (RoomListRspData *)wreq.response.data;
+        [ws removeSelfAndLinked:respData.rooms];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            LinkRoomList *roomList = [[LinkRoomList alloc] init];
+            RoomListConfig *config = [[RoomListConfig alloc] init];
+            CGRect rect = [UIScreen mainScreen].bounds;
+            config.frame = CGRectMake(rect.origin.x, rect.origin.y-rect.size.height, rect.size.width, rect.size.height);
+            config.liveList = respData.rooms;
+            [roomList configRoomList:config];
+            [ws.superview addSubview:roomList];
+            [UIView animateWithDuration:0.5 animations:^{
+                [roomList setFrame:rect];
+            } completion:^(BOOL finished) {
+                roomList.roomListconfig.frame = rect;
+            }];
+        });
+    } failHandler:^(BaseRequest *request) {
+        NSString *logInfo = [NSString stringWithFormat:@"code=%ld,mesg=%@",(long)request.response.errorCode,request.response.errorInfo];
+        [AlertHelp alertWith:@"获取主播列表失败" message:logInfo cancelBtn:@"算了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+    }];
+    listReq.token = [AppDelegate sharedAppDelegate].token;
+    listReq.type = @"live";
+    RequestPageParamItem *pageItem = [[RequestPageParamItem alloc] init];
+    listReq.index = pageItem.pageIndex;
+    listReq.size = pageItem.pageSize;
+    listReq.appid = [ShowAppId intValue];
+    [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:YES];
+}
+
+- (void)onUnLinkRoomAction
+{
+    AlertActionHandle okBlock = ^(UIAlertAction *_Nonnull action){
+        [[TILLiveManager getInstance] unLinkRoom:^{
+            [AlertHelp tipWith:@"已结束跨房连麦" wait:1];
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            NSString *errInfo = [NSString stringWithFormat:@"module=%@,code=%d,msg=%@",module,errId,errMsg];
+            [AlertHelp alertWith:@"结束跨房连麦失败" message:errInfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        }];
+    };
+    [AlertHelp alertWith:@"结束跨房连麦" message:@"确定结束所有跨房连麦吗？" funBtns:@{@"确定":okBlock} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
 - (void)startRecord:(UIButton *)button type:(AVRecordType)recordType
 {
     __weak typeof(self) ws = self;
-    [self showEditAlert:[self viewController] title:@"输入录制文件名" message:nil placeholder:@"录制文件名" okTitle:@"确定" cancelTitle:@"取消" ok:^(NSString * _Nonnull editString) {
+    [self showEditAlert:[AlertHelp topViewController] title:@"输入录制文件名" message:nil placeholder:@"录制文件名" okTitle:@"确定" cancelTitle:@"取消" ok:^(NSString * _Nonnull editString) {
         NSString *recName = editString && editString.length > 0 ? editString : @"sxb默认录制文件名";
         if (ws.delegate && [ws.delegate respondsToSelector:@selector(onRecReport:type:)])
         {
@@ -457,15 +527,14 @@ UIAlertController *_alert;
         NSString *identifier = [[ILiveLoginManager getInstance] getLoginId];
         option.fileName = [NSString stringWithFormat:@"sxb_%@_%@",identifier,recName];
         option.recordType = recordType;
-        __weak typeof(self) ws = self;
         [[ILiveRoomManager getInstance] startRecordVideo:option succ:^{
-            [ws showAlert:@"已开始录制" message:nil okTitle:nil cancelTitle:@"确定" ok:nil cancel:nil];
+            [AlertHelp alertWith:@"已开始录制" message:nil cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             button.selected = !button.selected;
             NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
             NSLog(@"%@",errinfo);
-            [ws showAlert:@"开始录制失败" message:errinfo okTitle:@"确认" cancelTitle:nil ok:nil cancel:nil];
+            [AlertHelp alertWith:@"开始录制失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     } cancel:^(UIAlertAction * _Nonnull action) {
         button.selected = !button.selected;
@@ -474,13 +543,12 @@ UIAlertController *_alert;
 
 - (void)onTestSpeed:(UIButton *)button
 {
-    __weak typeof(self) ws = self;
     SpeedTestRequestParam *param = [[SpeedTestRequestParam alloc] init];
     [[ILiveSpeedTestManager shareInstance] requestSpeedTest:param succ:^{
         
     } fail:^(NSString *module, int errId, NSString *errMsg) {
         NSString *string = [NSString stringWithFormat:@"module=%@,code=%d,msg=%@",module,errId,errMsg];
-        [ws showAlert:@"请求测速失败" message:string okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"请求测速失败" message:string cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
 }
 
@@ -489,14 +557,13 @@ UIAlertController *_alert;
 //开始测速成功
 - (void)onILiveSpeedTestStartSucc
 {
-    __weak typeof(self) ws = self;
     _alert = [UIAlertController alertControllerWithTitle:@"正在测速" message:@"0/0" preferredStyle:UIAlertControllerStyleAlert];
     [_alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [[ILiveSpeedTestManager shareInstance] cancelSpeedTest:^{
             
         } fail:^(int code, NSString *msg) {
             NSString *string = [NSString stringWithFormat:@"code=%d,msg=%@",code,msg];
-            [ws showAlert:@"取消测速失败" message:string okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+            [AlertHelp alertWith:@"取消测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     }]];
     [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:_alert animated:YES completion:nil];
@@ -506,7 +573,7 @@ UIAlertController *_alert;
 - (void)onILiveSpeedTestStartFail:(int)code errMsg:(NSString *)errMsg
 {
     NSString *string = [NSString stringWithFormat:@"code=%d,msg=%@",code,errMsg];
-    [self showAlert:@"开始测速失败" message:string okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+    [AlertHelp alertWith:@"开始测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
 //测速进度回调
@@ -523,7 +590,7 @@ UIAlertController *_alert;
 {
     if (code == 0)
     {
-        [_alert dismissViewControllerAnimated:YES completion:nil];
+//        [_alert dismissViewControllerAnimated:YES completion:nil];
         
         NSMutableString *text = [NSMutableString string];
         //测试信息
@@ -554,16 +621,17 @@ UIAlertController *_alert;
             //上行、下行丢包率，平均延时
             [text appendFormat:@"upLoss:%d,dwLoss:%d,延时:%dms.\n",item.upLoss,item.dwLoss,item.avgRtt];
         }
-        [self showAlert:@"测速结果" message:text okTitle:@"复制" cancelTitle:@"关闭" ok:^(UIAlertAction * _Nonnull action) {
+        AlertActionHandle copyBlock = ^(UIAlertAction * _Nonnull action){
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             [pasteboard setString:text];
-        } cancel:nil];
+        };
+        [AlertHelp alertWith:@"测速结果" message:text funBtns:@{@"复制":copyBlock} cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }
     else
     {
         //测速失败
         NSString *str = [NSString stringWithFormat:@"%d,%@",code,msg];
-        [self showAlert:@"测速失败" message:str okTitle:nil cancelTitle:@"关闭" ok:nil cancel:nil];
+        [AlertHelp alertWith:@"测速失败" message:str cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }
 }
 
@@ -595,4 +663,7 @@ UIAlertController *_alert;
     
     return mutableString;
 }
+@end
+
+@implementation LiveUIParViewConfig
 @end

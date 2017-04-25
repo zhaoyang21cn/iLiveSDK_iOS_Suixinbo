@@ -21,10 +21,6 @@
 typedef void (^COSUploadCompletionHandler)(COSTaskRsp *resp, NSDictionary *context);
 
 /*!
- * @brief 文件上传进度回调
- * @param totalSize 文件总大小
- * @param sendSize 已发送文件大小
- * @param context 文件上传的上下文，包括taskId,filePath等信息
  */
 typedef void (^COSUploadProgressHandler)(int64_t bytesWritten,
                                          int64_t totalBytesWritten,
@@ -82,91 +78,93 @@ typedef void (^COSCommandCompletionHandler)(COSTaskRsp *resp);
 
 -(NSMutableDictionary *)listResumeTask;
 
-/*!
- @abstract 初始化COSClient init方法
- @param appid：在cos业务申请的业务id
- @param region：在cos业务使用的服务器位置上海：sh 广州：gz
- @result COSClient的对象
+/**
+ 初始化COSClient init方法
+
+ @param appId appId在cos业务申请的业务id
+ @param region 在cos业务使用的服务器位置上海：sh 广州：gz
+ @return cosclient
  */
 - (instancetype)initWithAppId:(NSString*)appId  withRegion:(NSString *)region;
 
 
 /*!
  @abstract 文件上传方法
- @param COSObjectPutTask：文件上传任务
+ @param task 文件上传任务
  */
+
 - (BOOL)putObject:(COSObjectPutTask *)task;
 
 
 /*!
  @abstract 文件分片断点续传上传
- @param COSObjectMultipartResumePutTask 文件续传的任务
+ @param task 文件续传的任务
  */
 - (BOOL)ObjectResumePutMultipart:(COSObjectMultipartResumePutTask *)task;
 
 /*!
  @abstract 文件下载函数
- @param COSObjectGetTask 文件下载任务
+ @param command 文件下载任务
  */
 - (BOOL)getObject:(COSObjectGetTask *)command;
 
 /*!
  @abstract 文件删除载函数
- @param COSObjectDeleteCommand 文件删除命令
+ @param command 文件删除命令
  */
 - (BOOL)deleteObject:(COSObjectDeleteCommand *)command;
 
 /*!
  @abstract 文件查询函数
- @param COSObjectMetaCommand 文件信息查询
+ @param command 文件信息查询
  */
 - (BOOL)getObjectMetaData:(COSObjectMetaCommand *)command;
 
 /*!
  @abstract 文件更新函数
- @param COSObjectUpdateCommand 文件更新命令
+ @param command 文件更新命令
  */
 - (BOOL)updateObject:(COSObjectUpdateCommand *)command;
 
 /*!
  @abstract 创建目录
- @param COSCreateDirCommand 创建目录命令
+ @param command 创建目录命令
  */
 - (BOOL)createDir:(COSCreateDirCommand *)command;
 
 /*!
  @abstract 目录文件列表
- @param COSListDirCommand 查看目录列表命令
+ @param command 查看目录列表命令
  */
 - (BOOL)listDir:(COSListDirCommand *)command;
 
 /*!
  @abstract  目录更新
- @param COSUpdateDirCommand 更新目录信息命令
+ @param command 更新目录信息命令
  */
 -(BOOL)updateDir:(COSUpdateDirCommand *)command;
 
 /*!
  @abstract  删除目录
- @param COSDeleteDirCommand 删除目录的命令
+ @param command 删除目录的命令
  */
 - (BOOL)removeDir:(COSDeleteDirCommand *)command;
 
 /*!
  @abstract   获取目录信息
- @param COSDirmMetaCommand 查看目录信息的命令
+ @param command 查看目录信息的命令
  */
 - (BOOL)getDirMetaData:(COSDirmMetaCommand *)command;
 
 /*!
  @abstract   获取Bucke信息
- @param COSBucketMetaCommand 获取bucket的信息的命令
+ @param command 获取bucket的信息的命令
  */
 - (BOOL)headBucket:(COSBucketMetaCommand *)command;
 
 /*!
  @abstract   获取Bucke信息
- @param COSBucketAclCommand 获取bucket的权限的命令
+ @param command 获取bucket的权限的命令
  */
 - (BOOL)getBucketAcl:(COSBucketAclCommand *)command;
 

@@ -365,6 +365,10 @@
     {
         key = [NSString stringWithFormat:@"%@_screen",identifier];
     }
+    else if (type == QAVVIDEO_SRC_TYPE_MEDIA)
+    {
+        key = [NSString stringWithFormat:@"%@_Media",identifier];
+    }
     return key;
 }
 

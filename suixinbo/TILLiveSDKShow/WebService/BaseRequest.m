@@ -133,7 +133,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
 //                        [[HUDHelper sharedInstance] tipMessage:@"返回数据格式有误" delay:2 completion:^{
-                        NSLog(@"返回数据格式有误");
+                        TCILDebugLog(@"返回数据格式有误--> %@",respJsonObject);
                             // 说明返回内容有问题
                             if (_failHandler)
                             {
@@ -156,7 +156,7 @@
                     else
                     {
 //                        [[HUDHelper sharedInstance] tipMessage:[_response message] delay:2 completion:^{
-                        NSLog(@"%@", [_response message]);
+                        TCILDebugLog(@"返回的数据有业务错误--> %@",[_response message]);
                             // 返回的数据有业务错误
                             if (_failHandler)
                             {
@@ -175,7 +175,7 @@
     }
     else
     {
-        NSLog(@"[%@]返回数据为空", [self class]);
+        TCILDebugLog(@"返回数据为空--> %@",[self class]);
         dispatch_async(dispatch_get_main_queue(), ^{
             // 说明返回内容有问题
             if (_failHandler)

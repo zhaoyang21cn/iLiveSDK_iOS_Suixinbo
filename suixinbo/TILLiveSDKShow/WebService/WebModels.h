@@ -68,6 +68,9 @@
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic, assign) int role;
 
+//业务逻辑需要
+@property (nonatomic, assign) BOOL isUpVideo;
+
 @end
 
 @interface LiveStreamListItem : NSObject

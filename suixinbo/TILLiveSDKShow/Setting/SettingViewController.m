@@ -12,6 +12,8 @@
 #import "ProfileTableViewCell.h"
 #import "UploadImageHelper.h"
 
+#import "LiveViewController.h"
+
 #define kSettingTitle @"title"
 #define kSettingMethod @"method"
 
@@ -87,7 +89,7 @@
 
 - (void)onSetTestEnv:(id)param
 {
-    [AppDelegate showAlert:self title:nil message:@"设置之后需要下次启动才生效" okTitle:@"设置" cancelTitle:@"取消" ok:^(UIAlertAction * _Nonnull action) {
+    AlertActionHandle setBlock = ^(UIAlertAction * _Nonnull action){
         NSIndexPath *path = (NSIndexPath *)param;
         UITableViewCell *cell =  [_tableView cellForRowAtIndexPath:path];
         if (cell.accessoryType == UITableViewCellAccessoryDisclosureIndicator)
@@ -102,7 +104,8 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:0] forKey:kEnvParam];
         }
-    } cancel:nil];
+    };
+    [AlertHelp alertWith:nil message:@"设置之后需要下次启动才生效" funBtns:@{@"设置":setBlock} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
 - (void)setupData
@@ -121,6 +124,9 @@
 #endif
     NSDictionary *recDic = @{kSettingTitle:@"录制列表", kSettingMethod:@"onRecordList"};
     [_dataArray addObject:recDic];
+    
+    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme"};
+    [_dataArray addObject:beautyDic];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -235,15 +241,14 @@
     if (ges.state == UIGestureRecognizerStateEnded)
     {
         __weak typeof(self) ws = self;
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AlertActionHandle cameraBlock = ^(UIAlertAction * _Nonnull action){
             [ws openCamera];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        };
+        AlertActionHandle photoBlock = ^(UIAlertAction * _Nonnull action){
             [ws openPhotoLibrary];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
+        };
+        NSDictionary *funs = @{@"拍照":cameraBlock, @"相册":photoBlock};
+        [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
     }
 }
 
@@ -334,6 +339,37 @@
     [self presentViewController:version animated:YES completion:nil];
 }
 
+- (void)onSetBeautyScheme
+{
+    //iliveSDK美颜包
+    AlertActionHandle iliveBeauty = ^(UIAlertAction *_Nonnull action){
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        [user setValue:kILiveBeauty forKey:kBeautyScheme];
+    };
+    //qavsdk美颜包
+    AlertActionHandle avsdkBeauty = ^(UIAlertAction *_Nonnull action){
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        [user setValue:kQAVSDKBeauty forKey:kBeautyScheme];
+    };
+    UIAlertController *alert = [AlertHelp alertWith:@"选择美颜方案" message:nil funBtns:@{kILiveBeauty:iliveBeauty, kQAVSDKBeauty:avsdkBeauty} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+    //选中当前方案,默认ILiveSDK美颜包
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *beautyScheme = [user objectForKey:kBeautyScheme];
+    if (!(beautyScheme && beautyScheme.length > 0))
+    {
+        [user setValue:kILiveBeauty forKey:kBeautyScheme];
+        beautyScheme = kILiveBeauty;
+    }
+    NSArray *alertActions = alert.actions;
+    for (UIAlertAction *action in alertActions)
+    {
+        if ([action.title isEqualToString:beautyScheme])
+        {
+            [action setValue:[UIColor grayColor] forKey:@"titleTextColor"];
+        }
+    }
+}
+
 - (void)onLogLevel
 {
     __weak typeof(self) ws = self;
@@ -409,13 +445,13 @@
             [logoutWaitView removeFromSuperview];
             NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%ld,errmsg=%@",module,(long)request.response.errorCode,request.response.errorInfo];
             NSLog(@"regist fail.%@",errinfo);
-            [ws showAlert:@"退出失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+            [AlertHelp alertWith:@"退出失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     } failHandler:^(BaseRequest *request) {
         NSString *errinfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo];
         NSLog(@"regist fail.%@",errinfo);
         [logoutWaitView removeFromSuperview];
-        [ws showAlert:@"退出失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        [AlertHelp alertWith:@"退出失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
     logoutReq.token = [AppDelegate sharedAppDelegate].token;
     [[WebServiceEngine sharedEngine] asyncRequest:logoutReq];
@@ -427,38 +463,47 @@
     [userDefaults removeObjectForKey:kLoginParam];
 }
 
-- (void)showAlert:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    if (okTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
-    }
-    if (cancelTitle)
-    {
-        [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
-    }
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
 - (void)onForceOffline
 {
     __weak typeof(self) ws = self;
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"被踢下线" message:@"你的帐号在其它设备登录" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [AlertHelp alertWith:@"被踢下线" message:@"你的帐号在其它设备登录" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
+        __block UIViewController *topVC = [AlertHelp topViewController];
+        if ([topVC isKindOfClass:[LiveViewController class]])
+        {
+            [(LiveViewController *)topVC onClose];
+        }
+        else if ([topVC isKindOfClass:[UIAlertController class]])
+        {
+            [topVC dismissViewControllerAnimated:YES completion:^{
+                topVC = [AlertHelp topViewController];
+                if ([topVC isKindOfClass:[LiveViewController class]])
+                {
+                    [(LiveViewController *)topVC onClose];
+                }
+            }];
+        }
+        
         [ws deleteLoginParamFromLocal];
         LoginViewController *loginVC = [[LoginViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
         [AppDelegate sharedAppDelegate].window.rootViewController = nav;
         [[AppDelegate sharedAppDelegate].window makeKeyAndVisible];
-    }]];
-    [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
+    }];
 }
 - (void)onReConnFailed:(int)code err:(NSString*)err
 {}
 
 - (void)onUserSigExpired
-{}
+{
+    __weak typeof(self) ws = self;
+    [AlertHelp alertWith:@"Sig过期" message:@"Sig过期，请重新登录" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
+        [ws deleteLoginParamFromLocal];
+        LoginViewController *loginVC = [[LoginViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        [AppDelegate sharedAppDelegate].window.rootViewController = nav;
+        [[AppDelegate sharedAppDelegate].window makeKeyAndVisible];
+    }];
+}
 
 
 @end
