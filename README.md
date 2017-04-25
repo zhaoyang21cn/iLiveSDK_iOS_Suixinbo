@@ -14,7 +14,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 3、[IMSDK_2.5.1下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.1.zip)
 
-4、[AVSDK_1.9.0_Beat下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK1.9.0_Beat.zip)
+4、[AVSDK_1.9.0.35_Beat下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.0.35_Beat.zip)
 
 
 
