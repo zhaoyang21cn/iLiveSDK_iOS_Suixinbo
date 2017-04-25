@@ -42,6 +42,8 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 [跨房连麦](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/%E8%B7%A8%E6%88%BF%E8%BF%9E%E9%BA%A6.md)
 
+[滤镜，挂件，变声等](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/%E7%89%B9%E8%89%B2%E5%8A%9F%E8%83%BD.md)
+
 ## 已知问题
 
 ## 关键路径LOG
