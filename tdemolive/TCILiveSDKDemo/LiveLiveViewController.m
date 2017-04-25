@@ -25,9 +25,8 @@
 
 #pragma mark - TILLiveSDK相关接口
 - (void)createLive{
-    ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption];
-    option.controlRole = @"host";
-    
+    TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
+    option.controlRole = @"hostTest";
     TILLiveManager *manager = [TILLiveManager getInstance];
     [manager setAVListener:self];
     [manager setIMListener:self];
@@ -148,6 +147,10 @@
     }];
 }
 
+- (IBAction)switchCamera:(id)sender {
+    [[ILiveRoomManager getInstance] switchCamera:nil failed:nil];
+}
+
 #pragma mark - 事件回调
 - (void)onUserUpdateInfo:(ILVLiveAVEvent)event users:(NSArray *)users{
     TILLiveManager *manager = [TILLiveManager getInstance];
@@ -201,6 +204,33 @@
                 if(![user isEqualToString:_host]){
                     NSInteger index = [_identifierArray indexOfObject:user];
                     [manager removeAVRenderView:user srcType:QAVVIDEO_SRC_TYPE_SCREEN];
+                    [_identifierArray removeObjectAtIndex:index];
+                    [_srcTypeArray removeObjectAtIndex:index];
+                }
+                else{
+                }
+                [self updateRenderFrame];
+            }
+        }
+        case ILVLIVE_AVEVENT_MEDIA_ON:
+        {
+            for (NSString *user in users) {
+                if(![user isEqualToString:_host]){
+                    [manager addAVRenderView:[self getRenderFrame:_identifierArray.count] forIdentifier:user srcType:QAVVIDEO_SRC_TYPE_MEDIA];
+                    [_identifierArray addObject:user];
+                    [_srcTypeArray addObject:@(QAVVIDEO_SRC_TYPE_MEDIA)];
+                }
+                else{
+                }
+            }
+        }
+            break;
+        case ILVLIVE_AVEVENT_MEDIA_OFF:
+        {
+            for (NSString *user in users) {
+                if(![user isEqualToString:_host]){
+                    NSInteger index = [_identifierArray indexOfObject:user];
+                    [manager removeAVRenderView:user srcType:QAVVIDEO_SRC_TYPE_MEDIA];
                     [_identifierArray removeObjectAtIndex:index];
                     [_srcTypeArray removeObjectAtIndex:index];
                 }

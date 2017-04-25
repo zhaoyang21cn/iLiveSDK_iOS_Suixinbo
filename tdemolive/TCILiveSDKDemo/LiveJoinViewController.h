@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *upToVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *downToVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *rejectToVideoButton;
+- (IBAction)switchCamera:(id)sender;
 
 - (IBAction)exitLive:(id)sender;
 - (IBAction)upToVideo:(id)sender;

@@ -9,8 +9,12 @@
 #import "AppDelegate.h"
 
 //托管模式
-#define SDKAppID 1400013700
-#define AccountType 7285
+#define SDKAppID 1400028096
+#define AccountType 11851
+
+//老随心播
+//#define SDKAppID 1400001692
+//#define AccountType 884
 
 //pc
 //#define SDKAppID 1104062745
@@ -24,8 +28,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+//    [[[ILiveSDK getInstance] getTIMManager] setLogLevel:TIM_LOG_NONE];
     //初始化ILiveSDK
     [[ILiveSDK getInstance] initSdk:SDKAppID accountType:AccountType];
+//    [[ILiveSDK getInstance] uploadLog:@"" logDayOffset:0 uploadResult:^(int retCode, NSString *retMsg) {
+//        NSLog(@"");
+//    }];
     return YES;
 }
 

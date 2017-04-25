@@ -9,12 +9,11 @@
 #import "LiveLoginViewController.h"
 #import "LiveRegisterViewController.h"
 
-
 @implementation LiveLoginViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self getUserDefault];
+    [self getUserDefault];    
 }
 - (IBAction)login:(id)sender {
     NSString *name = self.nameTextField.text;
@@ -30,6 +29,7 @@
     
     __weak typeof(self) ws = self;
     [[ILiveLoginManager getInstance] tlsLogin:name pwd:pwd succ:^{
+        
         [ws setUserDefault];
         [ws performSegueWithIdentifier:@"toLiveUser" sender:nil];
     } failed:^(NSString *moudle, int errId, NSString *errMsg) {

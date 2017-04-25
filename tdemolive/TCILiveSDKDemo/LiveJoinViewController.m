@@ -30,8 +30,9 @@
 
 #pragma mark - TILLiveSDK相关接口
 - (void)joinLive{
-    ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption];
-    option.controlRole = @"guest";
+    TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
+    option.controlRole = @"guestTest";
+    
     TILLiveManager *manager = [TILLiveManager getInstance];
     [manager setAVListener:self];
     [manager setIMListener:self];
@@ -49,6 +50,10 @@
     } failed:^(NSString *moudle, int errId, NSString *errMsg) {
         [ws addTextToView:[NSString stringWithFormat:@"进入房间失败,moldle=%@;errid=%d;errmsg=%@",moudle,errId,errMsg]];
     }];
+}
+
+- (IBAction)switchCamera:(id)sender {
+    [[ILiveRoomManager getInstance] switchCamera:nil failed:nil];
 }
 
 - (IBAction)exitLive:(id)sender {
@@ -81,7 +86,7 @@
     
     //上麦
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] upToVideoMember:@"interact" succ:^{
+    [[TILLiveManager getInstance] upToVideoMember:@"interactTest" succ:^{
 //        int ret = [[[ILiveSDK getInstance] getAVContext].audioCtrl changeAudioCategory:QAV_AUDIO_CATEGORY_HQ];
 //        NSLog(@"dddddd:ret:%ld",(long)ret);
         NSString *tips = [[[ILiveSDK getInstance] getAVContext].audioCtrl getQualityTips];
@@ -106,7 +111,7 @@
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:nil failed:nil];
     
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] downToVideoMember:@"guest" succ:^{
+    [[TILLiveManager getInstance] downToVideoMember:@"guestTest" succ:^{
         [ws addTextToView:@"下麦成功"];
         
         ws.downToVideoButton.enabled = NO;
@@ -215,6 +220,29 @@
                 if(![user isEqualToString:_host]){
                     NSInteger index = [_identifierArray indexOfObject:user];
                     [manager removeAVRenderView:user srcType:QAVVIDEO_SRC_TYPE_SCREEN];
+                    [_identifierArray removeObjectAtIndex:index];
+                    [_srcTypeArray removeObjectAtIndex:index];
+                }
+                else{
+                }
+                [self updateRenderFrame];
+            }
+        }
+        case ILVLIVE_AVEVENT_MEDIA_ON:
+        {
+            for (NSString *user in users) {
+                [manager addAVRenderView:[self getRenderFrame:_identifierArray.count] forIdentifier:user srcType:QAVVIDEO_SRC_TYPE_MEDIA];
+                [_identifierArray addObject:user];
+                [_srcTypeArray addObject:@(QAVVIDEO_SRC_TYPE_MEDIA)];
+            }
+        }
+            break;
+        case ILVLIVE_AVEVENT_MEDIA_OFF:
+        {
+            for (NSString *user in users) {
+                if(![user isEqualToString:_host]){
+                    NSInteger index = [_identifierArray indexOfObject:user];
+                    [manager removeAVRenderView:user srcType:QAVVIDEO_SRC_TYPE_MEDIA];
                     [_identifierArray removeObjectAtIndex:index];
                     [_srcTypeArray removeObjectAtIndex:index];
                 }

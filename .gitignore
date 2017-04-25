@@ -28,3 +28,7 @@ FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/Headers/QAVCom
 suixinbo/Frameworks/
 tdemolive/Frameworks/
 
+
+suixinbo/TILLiveSDKShow/Info.plist
+
+suixinbo/TILLiveSDKShow.xcodeproj/project.pbxproj

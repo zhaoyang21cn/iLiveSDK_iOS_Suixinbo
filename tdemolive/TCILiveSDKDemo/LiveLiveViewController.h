@@ -17,6 +17,7 @@
 - (IBAction)inviteToVideo:(id)sender;
 - (IBAction)cancelInvite:(id)sender;
 - (IBAction)cancelToVideo:(id)sender;
+- (IBAction)switchCamera:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *errLabel;
 @property (weak, nonatomic) IBOutlet UITextField *textTextField;
