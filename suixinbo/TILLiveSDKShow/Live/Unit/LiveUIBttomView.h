@@ -45,4 +45,6 @@
 
 - (instancetype)initWith:(NSString *)role;
 
+- (void)setMicState:(BOOL)on;
+
 @end

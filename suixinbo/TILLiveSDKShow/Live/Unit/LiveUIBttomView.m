@@ -430,15 +430,15 @@
     if (funs.count > 1)
     {
         [self alignSubviews:funs horizontallyWithPadding:0 margin:0 inRect:rect];
-            }
+    }
     BOOL isOpenMic = [[ILiveRoomManager getInstance] getCurMicState];
     if (isOpenMic)
-            {
-        _micBtn.selected = YES;
-        }
-        else
-        {
+    {
         _micBtn.selected = NO;
+    }
+    else
+    {
+        _micBtn.selected = YES;
     }
 }
 
@@ -450,4 +450,8 @@
     }
 }
 
+- (void)setMicState:(BOOL)on
+{
+    _micBtn.selected = !on;
+}
 @end

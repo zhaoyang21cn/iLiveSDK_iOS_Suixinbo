@@ -74,24 +74,24 @@
     switch (_roomOptionType)
     {
         case RoomOptionType_CrateRoom:
-    {
-        [self createRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
-        //上报房间信息
-        [self reportRoomInfo:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
-    }
+        {
+            [self createRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
+            //上报房间信息
+            [self reportRoomInfo:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
+        }
             break;
         case RoomOptionType_JoinRoom:
-    {
-        UISwipeGestureRecognizer *downGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToNextRoom:)];
-        downGes.direction = UISwipeGestureRecognizerDirectionDown;
-        [self.view addGestureRecognizer:downGes];
-        
-        UISwipeGestureRecognizer *upGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToPreRoom:)];
-        upGes.direction = UISwipeGestureRecognizerDirectionUp;
-        [self.view addGestureRecognizer:upGes];
-        
-        [self joinRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
-    }
+        {
+            UISwipeGestureRecognizer *downGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToNextRoom:)];
+            downGes.direction = UISwipeGestureRecognizerDirectionDown;
+            [self.view addGestureRecognizer:downGes];
+            
+            UISwipeGestureRecognizer *upGes = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwitchToPreRoom:)];
+            upGes.direction = UISwipeGestureRecognizerDirectionUp;
+            [self.view addGestureRecognizer:upGes];
+            
+            [self joinRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
+        }
             break;
         default:
             break;
@@ -292,6 +292,8 @@
     }
     [[TILLiveManager getInstance] createRoom:(int)_liveItem.info.roomnum option:option succ:^{
         [createRoomWaitView removeFromSuperview];
+        
+        [_bottomView setMicState:YES];//重新设置麦克风的状态
         
         NSLog(@"createRoom succ");
         //将房间参数保存到本地，如果异常退出，下次进入app时，可提示返回这次的房间
