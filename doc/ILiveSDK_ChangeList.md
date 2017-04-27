@@ -2,7 +2,7 @@
 
 
 ###### V1.4.0(2017－4-25)
-* **特别注意：更新到ILiveSDK_1.4.0,QAVSDK1.9.0需要增加AssetsLibrary.framework**
+* **特别注意：更新到ILiveSDK_1.4.0,QAVSDK1.9.0需要增加AssetsLibrary.framework,导入QAVEffect文件夹**
 * 1、跨房连麦功能
 * 2、挂件(随心播中提供两个免费挂件体验)
 * 3、滤镜(随心播中提供若干免费滤镜体验)
