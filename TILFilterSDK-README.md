@@ -4,7 +4,7 @@
 
 [美颜滤镜SDK下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK_1.0.9.zip)
 
-TILFilterSDK是为ILiveSDK量身定做的视频帧预处理插件，目前提供美颜美白功能及其他常用滤镜功能。集成步骤如下：
+TILFilterSDK是独立于ILiveSDK和AVSDK的视频帧预处理插件，目前提供美颜美白功能及其他常用滤镜功能。集成步骤如下：
 
 ## 1. 初始化TILFilter对象
 
