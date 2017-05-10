@@ -1,5 +1,10 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.4.0.1(2017－5-10)
+* 1、修复使用Mic，Speaker回调两次的问题
+* 2、修复发送群在线消息时，实际是发送的普通消息的问题
+
+###### V1.4.0(2017－4-25)
 
 ###### V1.4.0(2017－4-25)
 * **特别注意：更新到ILiveSDK_1.4.0,QAVSDK1.9.0需要增加AssetsLibrary.framework,导入QAVEffect文件夹**
