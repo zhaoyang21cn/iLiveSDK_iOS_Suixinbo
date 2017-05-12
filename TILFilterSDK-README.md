@@ -2,7 +2,7 @@
 
 # TILFilterSDK使用文档
 
-[美颜滤镜SDK下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK_1.0.10.zip)
+[美颜滤镜SDK下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK_1.1.0.zip)
 
 [更新历史明细](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/TILFilterSDK_ChangeList.md)
 
