@@ -82,12 +82,6 @@
 		9B6F01F51E9F2DAB00CE5770 /* LiveViewController+Audio.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6F01F41E9F2DAB00CE5770 /* LiveViewController+Audio.m */; };
 		9B6F020F1E9F2F5D00CE5770 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6F01F61E9F2F5D00CE5770 /* ILiveSDK.framework */; };
 		9B6F02101E9F2F5D00CE5770 /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6F01F71E9F2F5D00CE5770 /* TILLiveSDK.framework */; };
-		9B6F02111E9F2F5D00CE5770 /* DecoRes.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F01FA1E9F2F5D00CE5770 /* DecoRes.bundle */; };
-		9B6F02121E9F2F5D00CE5770 /* FilterRes.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F01FB1E9F2F5D00CE5770 /* FilterRes.bundle */; };
-		9B6F02131E9F2F5D00CE5770 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6F01FC1E9F2F5D00CE5770 /* opencv2.framework */; };
-		9B6F02141E9F2F5D00CE5770 /* PE.dat in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F01FD1E9F2F5D00CE5770 /* PE.dat */; };
-		9B6F02151E9F2F5D00CE5770 /* QAVEffectRes.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F01FE1E9F2F5D00CE5770 /* QAVEffectRes.bundle */; };
-		9B6F02161E9F2F5D00CE5770 /* YTFaceSDK.licence in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F01FF1E9F2F5D00CE5770 /* YTFaceSDK.licence */; };
 		9B6F02171E9F2F5D00CE5770 /* QAVSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6F02001E9F2F5D00CE5770 /* QAVSDK.framework */; };
 		9B6F021A1E9F2F5D00CE5770 /* Shaderf.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F02031E9F2F5D00CE5770 /* Shaderf.glsl */; };
 		9B6F021B1E9F2F5D00CE5770 /* Shaderv.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 9B6F02041E9F2F5D00CE5770 /* Shaderv.glsl */; };
@@ -132,6 +126,12 @@
 		9BDA670B1DD41EF600E8638D /* UIView+ShakeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA670A1DD41EF600E8638D /* UIView+ShakeAnimation.m */; };
 		9BDA67151DD4C06500E8638D /* LoadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA67141DD4C06500E8638D /* LoadView.m */; };
 		9BDA93151DD05DB30026EF87 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA93141DD05DB30026EF87 /* LoginViewController.m */; };
+		9BDDE6361EC9C7E8001C94DB /* DecoRes.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9BDDE6301EC9C7E8001C94DB /* DecoRes.bundle */; };
+		9BDDE6371EC9C7E8001C94DB /* FilterRes.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9BDDE6311EC9C7E8001C94DB /* FilterRes.bundle */; };
+		9BDDE6381EC9C7E8001C94DB /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BDDE6321EC9C7E8001C94DB /* opencv2.framework */; };
+		9BDDE6391EC9C7E8001C94DB /* PE.dat in Resources */ = {isa = PBXBuildFile; fileRef = 9BDDE6331EC9C7E8001C94DB /* PE.dat */; };
+		9BDDE63A1EC9C7E8001C94DB /* QAVEffectRes.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9BDDE6341EC9C7E8001C94DB /* QAVEffectRes.bundle */; };
+		9BDDE63B1EC9C7E8001C94DB /* YTFaceSDK.licence in Resources */ = {isa = PBXBuildFile; fileRef = 9BDDE6351EC9C7E8001C94DB /* YTFaceSDK.licence */; };
 		9BE14BBB1DD04404004B77E3 /* libprotobuf.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE14BA81DD04404004B77E3 /* libprotobuf.tbd */; };
 		9BE14BBC1DD04404004B77E3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE14BA91DD04404004B77E3 /* libsqlite3.tbd */; };
 		9BE14BBD1DD04404004B77E3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE14BAA1DD04404004B77E3 /* Foundation.framework */; };
@@ -272,12 +272,6 @@
 		9B6F01F41E9F2DAB00CE5770 /* LiveViewController+Audio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LiveViewController+Audio.m"; sourceTree = "<group>"; };
 		9B6F01F61E9F2F5D00CE5770 /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		9B6F01F71E9F2F5D00CE5770 /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
-		9B6F01FA1E9F2F5D00CE5770 /* DecoRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DecoRes.bundle; sourceTree = "<group>"; };
-		9B6F01FB1E9F2F5D00CE5770 /* FilterRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterRes.bundle; sourceTree = "<group>"; };
-		9B6F01FC1E9F2F5D00CE5770 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		9B6F01FD1E9F2F5D00CE5770 /* PE.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = PE.dat; sourceTree = "<group>"; };
-		9B6F01FE1E9F2F5D00CE5770 /* QAVEffectRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QAVEffectRes.bundle; sourceTree = "<group>"; };
-		9B6F01FF1E9F2F5D00CE5770 /* YTFaceSDK.licence */ = {isa = PBXFileReference; lastKnownFileType = file; path = YTFaceSDK.licence; sourceTree = "<group>"; };
 		9B6F02001E9F2F5D00CE5770 /* QAVSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QAVSDK.framework; sourceTree = "<group>"; };
 		9B6F02021E9F2F5D00CE5770 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9B6F02031E9F2F5D00CE5770 /* Shaderf.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shaderf.glsl; sourceTree = "<group>"; };
@@ -358,6 +352,12 @@
 		9BDA93131DD05DB30026EF87 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		9BDA93141DD05DB30026EF87 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		9BDA93161DD067F80026EF87 /* ConstHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstHeader.h; sourceTree = "<group>"; };
+		9BDDE6301EC9C7E8001C94DB /* DecoRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DecoRes.bundle; sourceTree = "<group>"; };
+		9BDDE6311EC9C7E8001C94DB /* FilterRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FilterRes.bundle; sourceTree = "<group>"; };
+		9BDDE6321EC9C7E8001C94DB /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		9BDDE6331EC9C7E8001C94DB /* PE.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = PE.dat; sourceTree = "<group>"; };
+		9BDDE6341EC9C7E8001C94DB /* QAVEffectRes.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QAVEffectRes.bundle; sourceTree = "<group>"; };
+		9BDDE6351EC9C7E8001C94DB /* YTFaceSDK.licence */ = {isa = PBXFileReference; lastKnownFileType = file; path = YTFaceSDK.licence; sourceTree = "<group>"; };
 		9BE14BA81DD04404004B77E3 /* libprotobuf.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libprotobuf.tbd; path = usr/lib/libprotobuf.tbd; sourceTree = SDKROOT; };
 		9BE14BA91DD04404004B77E3 /* libsqlite3.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		9BE14BAA1DD04404004B77E3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -414,7 +414,6 @@
 				9B6F02201E9F2F5D00CE5770 /* QALSDK.framework in Frameworks */,
 				9BE14BC81DD04404004B77E3 /* UIKit.framework in Frameworks */,
 				9B6F021D1E9F2F5D00CE5770 /* IMCore.framework in Frameworks */,
-				9B6F02131E9F2F5D00CE5770 /* opencv2.framework in Frameworks */,
 				9BE14BC11DD04404004B77E3 /* CoreGraphics.framework in Frameworks */,
 				9BE14BC41DD04404004B77E3 /* SystemConfiguration.framework in Frameworks */,
 				9BE14BC51DD04404004B77E3 /* VideoToolbox.framework in Frameworks */,
@@ -433,6 +432,7 @@
 				9BE14BCC1DD04404004B77E3 /* libbz2.tbd in Frameworks */,
 				9BE14BCA1DD04404004B77E3 /* libc++.tbd in Frameworks */,
 				9BE14BBF1DD04404004B77E3 /* libstdc++.6.tbd in Frameworks */,
+				9BDDE6381EC9C7E8001C94DB /* opencv2.framework in Frameworks */,
 				9BE14BC61DD04404004B77E3 /* libiconv.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -705,7 +705,6 @@
 		9B6F01F81E9F2F5D00CE5770 /* AVSDK */ = {
 			isa = PBXGroup;
 			children = (
-				9B6F01F91E9F2F5D00CE5770 /* QAVEffect */,
 				9B6F02001E9F2F5D00CE5770 /* QAVSDK.framework */,
 				9B6F02021E9F2F5D00CE5770 /* README.md */,
 				9B6F02031E9F2F5D00CE5770 /* Shaderf.glsl */,
@@ -713,19 +712,6 @@
 				9B6F02051E9F2F5D00CE5770 /* xplatform.framework */,
 			);
 			path = AVSDK;
-			sourceTree = "<group>";
-		};
-		9B6F01F91E9F2F5D00CE5770 /* QAVEffect */ = {
-			isa = PBXGroup;
-			children = (
-				9B6F01FA1E9F2F5D00CE5770 /* DecoRes.bundle */,
-				9B6F01FB1E9F2F5D00CE5770 /* FilterRes.bundle */,
-				9B6F01FC1E9F2F5D00CE5770 /* opencv2.framework */,
-				9B6F01FD1E9F2F5D00CE5770 /* PE.dat */,
-				9B6F01FE1E9F2F5D00CE5770 /* QAVEffectRes.bundle */,
-				9B6F01FF1E9F2F5D00CE5770 /* YTFaceSDK.licence */,
-			);
-			path = QAVEffect;
 			sourceTree = "<group>";
 		};
 		9B6F02061E9F2F5D00CE5770 /* IMSDK */ = {
@@ -848,6 +834,19 @@
 			path = Publish;
 			sourceTree = "<group>";
 		};
+		9BDDE62F1EC9C7E8001C94DB /* QAVEffect */ = {
+			isa = PBXGroup;
+			children = (
+				9BDDE6301EC9C7E8001C94DB /* DecoRes.bundle */,
+				9BDDE6311EC9C7E8001C94DB /* FilterRes.bundle */,
+				9BDDE6321EC9C7E8001C94DB /* opencv2.framework */,
+				9BDDE6331EC9C7E8001C94DB /* PE.dat */,
+				9BDDE6341EC9C7E8001C94DB /* QAVEffectRes.bundle */,
+				9BDDE6351EC9C7E8001C94DB /* YTFaceSDK.licence */,
+			);
+			path = QAVEffect;
+			sourceTree = "<group>";
+		};
 		9BE14B851DD04001004B77E3 /* LiveList */ = {
 			isa = PBXGroup;
 			children = (
@@ -906,6 +905,7 @@
 		9BE39BEC1DE402A0003F1E08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BDDE62F1EC9C7E8001C94DB /* QAVEffect */,
 				9B6F01F61E9F2F5D00CE5770 /* ILiveSDK.framework */,
 				9B6F01F71E9F2F5D00CE5770 /* TILLiveSDK.framework */,
 				9B6F01F81E9F2F5D00CE5770 /* AVSDK */,
@@ -987,22 +987,22 @@
 				9B6F021A1E9F2F5D00CE5770 /* Shaderf.glsl in Resources */,
 				9B458DC41E8151CB001DDB53 /* WeiboSDK.bundle in Resources */,
 				9B458D3F1E814DC8001DDB53 /* UserProtocol.html in Resources */,
-				9B6F02111E9F2F5D00CE5770 /* DecoRes.bundle in Resources */,
 				9B458DC91E8151CB001DDB53 /* ShareSDK.bundle in Resources */,
 				9B458DC21E8151CB001DDB53 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				9B458D411E814DC8001DDB53 /* UserProtocolViewController.xib in Resources */,
 				9B458DBC1E8151CB001DDB53 /* ShareSDKUI.bundle in Resources */,
 				9B9131881E0D3F3D00B784C6 /* DailyBuild-Info.plist in Resources */,
-				9B6F02161E9F2F5D00CE5770 /* YTFaceSDK.licence in Resources */,
+				9BDDE63B1EC9C7E8001C94DB /* YTFaceSDK.licence in Resources */,
 				9B68A4DD1DD01AA30089786C /* LaunchScreen.storyboard in Resources */,
 				9B458DC61E8151CB001DDB53 /* read_me.txt in Resources */,
 				9B6F021B1E9F2F5D00CE5770 /* Shaderv.glsl in Resources */,
+				9BDDE6371EC9C7E8001C94DB /* FilterRes.bundle in Resources */,
+				9BDDE6361EC9C7E8001C94DB /* DecoRes.bundle in Resources */,
+				9BDDE63A1EC9C7E8001C94DB /* QAVEffectRes.bundle in Resources */,
 				9B6F02231E9F2F5D00CE5770 /* TILFilterResource.bundle in Resources */,
-				9B6F02151E9F2F5D00CE5770 /* QAVEffectRes.bundle in Resources */,
-				9B6F02141E9F2F5D00CE5770 /* PE.dat in Resources */,
 				9B458DB91E8151CB001DDB53 /* ShareSDKConfigFile.bundle in Resources */,
 				9B2FF6E41DD0B2F1003CD319 /* Assets.xcassets in Resources */,
-				9B6F02121E9F2F5D00CE5770 /* FilterRes.bundle in Resources */,
+				9BDDE6391EC9C7E8001C94DB /* PE.dat in Resources */,
 				9B458DC71E8151CB001DDB53 /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1220,6 +1220,7 @@
 					"$(PROJECT_DIR)/TILLiveSDKShow/ThirdSDK/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/ThirdSDK/ShareSDK/Support/Required",
 					"$(PROJECT_DIR)/Frameworks/AVSDK/QAVEffect",
+					"$(PROJECT_DIR)/Frameworks/QAVEffect",
 				);
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1259,6 +1260,7 @@
 					"$(PROJECT_DIR)/TILLiveSDKShow/ThirdSDK/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/ThirdSDK/ShareSDK/Support/Required",
 					"$(PROJECT_DIR)/Frameworks/AVSDK/QAVEffect",
+					"$(PROJECT_DIR)/Frameworks/QAVEffect",
 				);
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1361,6 +1363,7 @@
 					"$(PROJECT_DIR)/TILLiveSDKShow/ThirdSDK/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/TILLiveSDKShow/ThirdSDK/ShareSDK/Support/Required",
 					"$(PROJECT_DIR)/Frameworks/AVSDK/QAVEffect",
+					"$(PROJECT_DIR)/Frameworks/QAVEffect",
 				);
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
