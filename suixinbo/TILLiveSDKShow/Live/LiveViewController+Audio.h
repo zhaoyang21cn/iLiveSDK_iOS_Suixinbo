@@ -10,9 +10,7 @@
 #import "MoreFunView.h"
 
 //变声功能演示
-@interface LiveViewController (Audio)<QAVAudioDataDelegate, MoreFunDelegate>
-
-@property (nonatomic, strong) NSNumber *voiceType;
+@interface LiveViewController (Audio)<MoreFunDelegate>
 
 - (void)initAudio;
 
