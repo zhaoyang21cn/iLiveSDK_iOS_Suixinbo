@@ -20,7 +20,7 @@
 #### 2、下载相关SDK放入Frameworks后目录应如下所示，否则请重新下载
 Frameworks文件目录：
 
-![](http://mc.qcloudimg.com/static/img/407fccb2b2e6c9d52170a1b0450de637/image.jpg)
+![](http://mc.qcloudimg.com/static/img/f210a91073a84aa7f9c270b7f7fe033c/image.png)
 
 AVSDK文件夹目录：
 
@@ -32,7 +32,7 @@ IMSDK文件夹目录：
 
 将SDK导入后工程目录：
 
-![](http://mc.qcloudimg.com/static/img/bb9c2f9b4487f4d0acebee36587f310d/image.png)
+![](http://mc.qcloudimg.com/static/img/7f779a70089445f99f41763bcbaf88be/image.png)
 
 #### 3、开发者帐号配置
 在Team处选择自己的开发者帐号
