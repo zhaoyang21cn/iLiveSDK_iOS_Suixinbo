@@ -7,6 +7,8 @@
 [更新历史明细](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/TILFilterSDK_ChangeList.md)
 
 TILFilterSDK是独立于ILiveSDK和AVSDK的视频帧预处理插件，目前提供美颜美白功能及其他常用滤镜功能。集成步骤如下：
+**注意:** 如果是自定义采集，需要将采集格式设置为kCVPixelFormatType_420YpCbCr8BiPlanarFullRange
+
 
 ## 1. 初始化TILFilter对象
 
