@@ -12,14 +12,25 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 2、[美颜滤镜SDK(TILFilterSDK_1.1.0)下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK_1.1.0.zip)
 
-## ILiveSDK导入
-[ILiveSDK导入参考](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md),查看[版本更新说明](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
+## SDK最近更新说明
 
+###### V1.5.0(2017－6-5)
+* 1、更新QAVSDK到1.9.1，实现美颜模块插件化(不需要美颜模块，则不添加QAVEffect即可；需要内置美颜，则导入QAVEffect里面所有内容，并添加系统库AssetsLibrary.framework)
+* 2、修复频繁进退房间，crash问题
+* 3、修复频繁进退房间，报1003错误问题
+* 4、连麦画面，从4路增加到10路
+* 5、修复切换分辨率会闪绿的问题
+* 6、修复使用系统语音识别之后，观众端听不到声音的问题
+* 7、优化日志打印模块
 
-##DEMO
+[更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
+
+## [ILiveSDK导入](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md)
+
+## DEMO
 有两个示例 <br />
-1简单直播 ：直播主线流程示例  <br />
-2新随心播 ：基于ILiveSDK接口重构的随心播   
+1 随心播 ：基于ILiveSDK接口重构的随心播   
+2 简单直播 ：直播主线流程示例  <br />
 
 ## API文档
 [API文档(1.0.2)](https://zhaoyang21cn.github.io/ilivesdk_help/ios_help/)
