@@ -8,7 +8,7 @@
 
 #import "TabbarController.h"
 
-#import "LiveListViewController.h"
+#import "LiveMainViewController.h"
 #import "SettingViewController.h"
 #import "PublishViewController.h"
 
@@ -34,7 +34,7 @@
 {
     [[UITabBar appearance] setBackgroundImage:[UIImage imageWithColor:kColorWhite size:self.tabBar.frame.size]];
     
-    LiveListViewController *listVC = [[LiveListViewController alloc] init];
+    LiveMainViewController *listVC = [[LiveMainViewController alloc] init];
     UINavigationController *listNav = [[UINavigationController alloc] initWithRootViewController:listVC];
     
     UIViewController *publishVC = [[UIViewController alloc] init];
@@ -80,7 +80,7 @@
 - (void)onLiveButtonClicked
 {
     PublishViewController *publishVC = [[PublishViewController alloc] init];
-    [[AppDelegate sharedAppDelegate] pushViewController:publishVC];
+    [[AppDelegate sharedAppDelegate] presentViewController:publishVC animated:YES completion:nil];
 }
 
 - (void)setTabBarItem:(UITabBarItem *) tabBarItem withNormalImageName:(NSString *)normalImageName andSelectedImageName:(NSString *)selectedImageName andTitle:(NSString *)title

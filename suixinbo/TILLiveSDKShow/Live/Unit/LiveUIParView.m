@@ -566,7 +566,7 @@ UIAlertController *_alert;
             [AlertHelp alertWith:@"取消测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     }]];
-    [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:_alert animated:YES completion:nil];
+    [[AlertHelp topViewController] presentViewController:_alert animated:YES completion:nil];
 }
 
 //开始测速失败

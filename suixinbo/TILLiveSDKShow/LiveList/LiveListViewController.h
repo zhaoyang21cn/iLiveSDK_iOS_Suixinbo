@@ -17,4 +17,6 @@
     UILabel *_noLiveLabel;
 }
 
+- (void)loadMore:(TCIVoidBlock)complete;
+
 @end

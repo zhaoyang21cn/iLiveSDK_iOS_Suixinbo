@@ -40,9 +40,18 @@ static __weak UIAlertController *_promptAlert = nil;
                     [_promptAlert dismissViewControllerAnimated:NO completion:nil];
                     _promptAlert = nil;
                 }
-                _promptAlert = [AppDelegate showAlert:self title:@"收到视频邀请" message:msg.sendId okTitle:@"接收" cancelTitle:@"拒绝"  ok:^(UIAlertAction * _Nonnull action) {
-                    [self upToVideo:nil];
-                } cancel:^(UIAlertAction * _Nonnull action) {
+                AlertActionHandle hdBlock = ^(UIAlertAction * _Nonnull action){
+                    [self upToVideo:nil roleName:kSxbRole_InteractHD];
+                };
+                AlertActionHandle sdBlock = ^(UIAlertAction * _Nonnull action){
+                    [self upToVideo:nil roleName:kSxbRole_InteractSD];
+                };
+                AlertActionHandle ldBlock = ^(UIAlertAction * _Nonnull action){
+                    [self upToVideo:nil roleName:kSxbRole_InteractLD];
+                };
+                NSDictionary *funs = @{kSxbRole_InteractHDTitle:hdBlock,kSxbRole_InteractSDTitle:sdBlock, kSxbRole_InteractLDTitle:ldBlock};
+                NSString *title = [NSString stringWithFormat:@"收到%@视频邀请",msg.sendId];
+                _promptAlert = [AlertHelp alertWith:title message:@"接收请选择流控角色，否则点拒绝" funBtns:funs cancelBtn:@"拒绝" alertStyle:UIAlertControllerStyleActionSheet cancelAction:^(UIAlertAction * _Nonnull action) {
                     [self rejectToVideo:nil];
                 }];
             }
@@ -121,7 +130,7 @@ static __weak UIAlertController *_promptAlert = nil;
 {
     //界面上已经有3个画面了 或 自己不是主播，则回复拒绝
     NSString *loginUser = [[ILiveLoginManager getInstance] getLoginId];
-    if ([UserViewManager shareInstance].total >= 3 || ![self.liveItem.uid isEqualToString:loginUser])
+    if ([UserViewManager shareInstance].total >= kMaxUserViewCount || ![self.liveItem.uid isEqualToString:loginUser])
     {
         [[TILLiveManager getInstance] refuseLinkRoom:fromId succ:^{
             NSLog(@"refuse");
@@ -158,7 +167,7 @@ static __weak UIAlertController *_promptAlert = nil;
         return;
     }
     //界面上已经有3个画面了，则回复拒绝
-    if ([UserViewManager shareInstance].total >= 3)
+    if ([UserViewManager shareInstance].total >= kMaxUserViewCount)
     {
         NSString *msgInfo = [NSString stringWithFormat:@"%@同意了你的跨房连麦请求，但是你本身的界面视图已经达到视图显示个数的上限了",msg.sendId];
         [AlertHelp alertWith:@"超出视图个数" message:msgInfo cancelBtn:@"好的" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
@@ -215,7 +224,7 @@ static __weak UIAlertController *_promptAlert = nil;
 }
 
 //上麦
-- (void)upToVideo:(id)sender
+- (void)upToVideo:(id)sender roleName:(NSString *)role
 {
     //    [[TILLiveManager getInstance] upToVideoMember:@"user" succ:^{//kSxbRole_Interact
     //        NSLog(@"up video succ");
@@ -230,14 +239,16 @@ static __weak UIAlertController *_promptAlert = nil;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
     msg.recvId = _liveItem.uid;
     
+    __weak typeof(self) ws = self;
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
-        [roomManager changeRole:kSxbRole_Interact succ:^{
+        [roomManager changeRole:role succ:^{
             NSLog(@"changeRole");
             [roomManager enableCamera:CameraPosFront enable:YES succ:^{
                 NSLog(@"enable camera YES");
                 [roomManager enableMic:YES succ:^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:nil];
+                    ws.liveItem.info.roleName = role;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:role];
                     
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
                     NSLog(@"enable mic fail");
@@ -269,7 +280,7 @@ static __weak UIAlertController *_promptAlert = nil;
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        [manager changeRole:kSxbRole_Guest succ:^ {
+        [manager changeRole:kSxbRole_GuestHD succ:^ {
             TCILDebugLog(@"down to video: change role succ");
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
             [manager enableCamera:pos enable:NO succ:^{

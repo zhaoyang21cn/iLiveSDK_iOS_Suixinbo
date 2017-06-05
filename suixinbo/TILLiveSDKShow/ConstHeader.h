@@ -147,13 +147,35 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 #define kLinkRoomBtn_Notification       @"kLinkRoomBtn_Notification"
 
 /******************** role string **********************/
-#define kSxbRole_Host       @"LiveMaster"
-#define kSxbRole_HostHD         @"HD"
-#define kSxbRole_HostSD         @"SD"
-#define kSxbRole_HostLD         @"LD"
+//#define kSxbRole_Host       @"LiveMaster"
+#define kSxbRole_HostHD     @"HD"
+#define kSxbRole_HostSD     @"SD"
+#define kSxbRole_HostLD     @"LD"
+//主播角色标题
+#define kSxbRole_HostHDTitle @"1、高清(1280x720,25fps)"
+#define kSxbRole_HostSDTitle @"2、标清(960x540,20fps)"
+#define kSxbRole_HostLDTitle @"3、流畅(640x480,15fps)"
 
-#define kSxbRole_Guest      @"Guest"
-#define kSxbRole_Interact   @"LiveGuest"
+//连麦
+//#define kSxbRole_Interact   @"LiveGuest"
+#define kSxbRole_InteractHD @"HDGuest"
+#define kSxbRole_InteractSD @"SDGuest"
+#define kSxbRole_InteractLD @"LDGuest"
+//连麦角色标题
+#define kSxbRole_InteractHDTitle @"1、高清(1280x720,25fps)"
+#define kSxbRole_InteractSDTitle @"2、标清(960x540,20fps)"
+#define kSxbRole_InteractLDTitle @"3、流畅(640x480,15fps)"
+
+//观众
+#define kSxbRole_GuestHD    @"Guest"
+#define kSxbRole_GuestLD    @"Guest2"
+//观众标题
+#define kSxbRole_GuestHDTitle      @"1、清晰"
+#define kSxbRole_GuestLDTitle      @"2、流畅"
+
+#define kSxbRole_HostValue @"kSxbRole_HostValue"
+#define kSxbRole_GuestValue @"kSxbRole_GuestValue"
+
 
 /******************** local param **********************/
 #define kLoginParam         @"kLoginParam"
@@ -162,12 +184,15 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 #define kEnvParam           @"kEnvParam"
 #define kLogLevel           @"kLogLevel"
 #define kBeautyScheme       @"kBeautyScheme"
-#define kILiveBeauty        @"ILiveSDK美颜包"
-#define kQAVSDKBeauty       @"QAVSDK美颜包"
+#define kILiveBeauty        @"插件美颜"
+#define kQAVSDKBeauty       @"内置美颜"
 
 /******************** appstore **********************/
 #define kIsAppstoreVersion 0
 
 #define kHeartInterval 5 //心跳间隔
+
+//最大小画面数量（不包含大画面）
+#define kMaxUserViewCount 3
 
 #endif /* ConstHeader_h */

@@ -54,7 +54,7 @@
         RecordVideoItem *item = [[RecordVideoItem alloc] init];//= [NSObject parse:[RecordVideoItem class] dictionary:itemDic];// itemClass:[NSString class]
         item.uid = [itemDic objectForKey:@"uid"];
         item.name = [itemDic objectForKey:@"name"];
-        item.cover = [itemDic objectForKey:@"cover"];
+        item.cover = (NSString *)[itemDic objectForKey:@"cover"];
         item.videoId = [itemDic objectForKey:@"videoId"];
         item.playurl = [itemDic objectForKey:@"playurl"];
         

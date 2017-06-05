@@ -22,6 +22,8 @@
 @property (nonatomic, assign) NSInteger device;
 @property (nonatomic, assign) NSInteger videotype;
 
+@property (nonatomic, strong) NSString *roleName;
+
 - (NSDictionary *)toRoomDic;
 
 @end

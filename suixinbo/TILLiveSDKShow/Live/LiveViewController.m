@@ -47,6 +47,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    self.view.backgroundColor = kColorWhite;
+    
+    _isFristShow = YES;
     
     _msgDatas = [NSMutableArray array];
     _tilFilter = [[TILFilter alloc] init];
@@ -67,6 +70,18 @@
     
     //开始网络环境timer
 //    [self startEnvTimer];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self registKeyboard];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self unRegistKeyboard];
 }
 
 - (void)enterRoom
@@ -176,7 +191,7 @@
 - (void)switchRoom:(BOOL)isPreRoom
 {
     TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
-    option.controlRole = kSxbRole_Guest;
+    option.controlRole = kSxbRole_GuestHD;
     
     __weak typeof(self) ws = self;
     
@@ -241,7 +256,7 @@
         TCShowLiveListItem *item = respData.rooms[switchToIndex];
         ws.liveItem = item;
         TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
-        option.controlRole = kSxbRole_Guest;
+        option.controlRole = kSxbRole_GuestHD;
         [[ILiveRoomManager getInstance] switchRoom:(int)item.info.roomnum option:option succ:^{
             //更新当前房间
             [ws reportMemberId:item.info.roomnum operate:0];//当前房间进房
@@ -271,7 +286,7 @@
     __weak typeof(self) ws = self;
     
     TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
-    option.controlRole = kSxbRole_Host;
+    option.controlRole = _liveItem.info.roleName;
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     option.roomDisconnectListener = self;
     option.imOption.imSupport = YES;
@@ -281,15 +296,6 @@
     
     [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];
     
-    NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
-    if ([loginId isEqualToString:@"guest"])
-    {
-        _liveItem.info.roomnum = 12345;
-    }
-    else if ([loginId isEqualToString:@"green"])
-    {
-        _liveItem.info.roomnum = 12344;
-    }
     [[TILLiveManager getInstance] createRoom:(int)_liveItem.info.roomnum option:option succ:^{
         [createRoomWaitView removeFromSuperview];
         
@@ -325,7 +331,7 @@
 - (void)joinRoom:(int)roomId groupId:(NSString *)groupid
 {
     TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
-    option.controlRole = kSxbRole_Guest;
+    option.controlRole = kSxbRole_GuestHD;
 
     __weak typeof(self) ws = self;
     [[TILLiveManager getInstance] joinRoom:roomId option:option succ:^{
@@ -383,6 +389,11 @@
     [_bgAlphaView addGestureRecognizer:tap];
     [self.view addSubview:_bgAlphaView];
     
+    UITapGestureRecognizer *hiddenKeyboard = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBlankToHideKeyboard)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:hiddenKeyboard];
+    
     _reportView = [[ReportView alloc] initWithFrame:CGRectMake(0, -30, self.view.bounds.size.width, self.view.bounds.size.height)];
     _reportView.backgroundColor = [UIColor clearColor];
     _reportView.identifier.text = _liveItem.uid;
@@ -422,10 +433,11 @@
     _msgInputView.hidden = YES;
     [self.view addSubview:_msgInputView];
     
-    _bottomView = [[LiveUIBttomView alloc] initWith:kSxbRole_Host];
+    _bottomView = [[LiveUIBttomView alloc] initWith:kSxbRole_HostHD];
     _bottomView.delegate = self;
     _bottomView.isHost = _isHost;
     _bottomView.tilFilter = _tilFilter;
+    _bottomView.curRole = _liveItem.info.roleName;
     [self.view addSubview:_bottomView];
     
 //    _envInfoView = [[EnvInfoView alloc] init];
@@ -541,14 +553,12 @@
     //退出房间
     [manager quitRoom:^{
         [ws.liveItem cleanLocalData];
-        
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
-        [[AppDelegate sharedAppDelegate] popToRootViewController];
+        [ws dismissViewControllerAnimated:YES completion:nil];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSLog(@"exit room fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
-        
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
-        [[AppDelegate sharedAppDelegate] popToRootViewController];
+        [ws dismissViewControllerAnimated:YES completion:nil];
     }];
     
     

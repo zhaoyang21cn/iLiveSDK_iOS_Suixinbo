@@ -82,9 +82,10 @@
         [self downVideo];
         return;
     }
-    if ([UserViewManager shareInstance].total >= 3)
+    if ([UserViewManager shareInstance].total >= kMaxUserViewCount)
     {
-        [AlertHelp alertWith:@"提示" message:@"连麦画面不能超过4路,可以先取消一路连麦" cancelBtn:@"好吧" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        NSString *message = [NSString stringWithFormat:@"连麦画面不能超过%d路,可以先取消一路连麦",kMaxUserViewCount+1];
+        [AlertHelp alertWith:@"提示" message:message cancelBtn:@"好吧" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];

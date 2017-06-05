@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) UITextField *userNameTF;
 @property (nonatomic, strong) UITextField *passwordTF;
-@property (nonatomic, strong) UITextField *checkPasswordTF;
+//@property (nonatomic, strong) UITextField *checkPasswordTF;
 
 @end
 
@@ -55,16 +55,16 @@
     [self.view addSubview:_passwordTF];
     index++;
     
-    _checkPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(kDefaultMargin*2, kDefaultMargin*(index+2) + tfHeight*index, screenW-(kDefaultMargin*4), tfHeight)];
-    _checkPasswordTF.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kDefaultMargin, kDefaultMargin)];
-    _checkPasswordTF.leftViewMode = UITextFieldViewModeAlways;
-    _checkPasswordTF.backgroundColor = kColorWhite;
-    _checkPasswordTF.layer.borderWidth = 0.5;
-    _checkPasswordTF.layer.borderColor = kColorGray.CGColor;
-    _checkPasswordTF.layer.cornerRadius = 5.0;
-    _checkPasswordTF.placeholder = @"确认密码";
-    [self.view addSubview:_checkPasswordTF];
-    index++;
+//    _checkPasswordTF = [[UITextField alloc] initWithFrame:CGRectMake(kDefaultMargin*2, kDefaultMargin*(index+2) + tfHeight*index, screenW-(kDefaultMargin*4), tfHeight)];
+//    _checkPasswordTF.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kDefaultMargin, kDefaultMargin)];
+//    _checkPasswordTF.leftViewMode = UITextFieldViewModeAlways;
+//    _checkPasswordTF.backgroundColor = kColorWhite;
+//    _checkPasswordTF.layer.borderWidth = 0.5;
+//    _checkPasswordTF.layer.borderColor = kColorGray.CGColor;
+//    _checkPasswordTF.layer.cornerRadius = 5.0;
+//    _checkPasswordTF.placeholder = @"确认密码";
+//    [self.view addSubview:_checkPasswordTF];
+//    index++;
     
     UIButton *registBtn = [[UIButton alloc] initWithFrame:CGRectMake(kDefaultMargin*2, kDefaultMargin*(index+2) + tfHeight*index, screenW-(kDefaultMargin*4), tfHeight)];
     registBtn.backgroundColor = kColorRed;
@@ -89,26 +89,26 @@
 {
     [_userNameTF resignFirstResponder];
     [_passwordTF resignFirstResponder];
-    [_checkPasswordTF resignFirstResponder];
+//    [_checkPasswordTF resignFirstResponder];
 }
 
 - (void)onRegist:(UIButton *)button
 {
     if (!_userNameTF || _userNameTF.text.length < 1)
     {
-        [AlertHelp alertWith:@"提示" message:@"用户名无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        [AlertHelp alertWith:nil message:@"请输入用户名" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     if (!_passwordTF || _passwordTF.text.length < 1)
     {
-        [AlertHelp alertWith:@"提示" message:@"密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        [AlertHelp alertWith:nil message:@"请输入密码" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
-    if (!_checkPasswordTF || _checkPasswordTF.text.length < 1 || ![_passwordTF.text isEqualToString:_checkPasswordTF.text])
-    {
-        [AlertHelp alertWith:@"提示" message:@"重设密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-        return;
-    }
+//    if (!_checkPasswordTF || _checkPasswordTF.text.length < 1 || ![_passwordTF.text isEqualToString:_checkPasswordTF.text])
+//    {
+//        [AlertHelp alertWith:@"提示" message:@"重设密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+//        return;
+//    }
 
     LoadView *regWaitView = [LoadView loadViewWith:@"正在注册"];
     [self.view addSubview:regWaitView];

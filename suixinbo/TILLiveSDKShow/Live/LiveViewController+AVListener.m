@@ -98,21 +98,7 @@
 
 - (void)relayoutBottom
 {
-    NSString *role = [self getMainWindowRole];
-    _bottomView.mainWindowRole = role;
     [_bottomView setNeedsLayout];
-}
-
-- (NSString *)getMainWindowRole
-{
-    if ([[UserViewManager shareInstance].mainUserId isEqualToString:self.liveItem.uid])//与主播id对比,不想等则是连麦者，这里有大小界面的切换，所以不可能是普通观众
-    {
-        return kSxbRole_Host;
-    }
-    else
-    {
-        return kSxbRole_Interact;
-    }
 }
 
 @end

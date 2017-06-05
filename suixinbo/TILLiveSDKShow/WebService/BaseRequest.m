@@ -60,7 +60,6 @@
 
 - (NSString *)hostUrl
 {
-//    return @"https://sxb.qcloud.com/sxb/index.php?";
     return @"https://sxb.qcloud.com/sxb_new/index.php?";
 }
 

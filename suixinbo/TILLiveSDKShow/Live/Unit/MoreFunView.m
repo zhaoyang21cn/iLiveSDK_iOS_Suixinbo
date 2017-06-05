@@ -400,7 +400,7 @@
         }];
     };
     
-    NSDictionary *funs = @{@"高清(1280x720)":hdBlock,@"标清(960x540)":sdBlock, @"流畅(320x240)":ldBlock};
+    NSDictionary *funs = @{kSxbRole_HostHDTitle:hdBlock,kSxbRole_HostSDTitle:sdBlock, kSxbRole_HostLDTitle:ldBlock};
     NSString *message = nil;
     if (isVersionLow8_3)
     {
@@ -428,15 +428,27 @@
 {
     if ([role isEqualToString:kSxbRole_HostHD])
     {
-        return @"高清(1280x720)";
+        return kSxbRole_HostHDTitle;
     }
-    if ([role isEqualToString:kSxbRole_HostSD] || [role isEqualToString:kSxbRole_Host])
+    if ([role isEqualToString:kSxbRole_HostSD])
     {
-        return @"标清(960x540)";
+        return kSxbRole_HostSDTitle;
     }
     if ([role isEqualToString:kSxbRole_HostLD])
     {
-        return @"流畅(320x240)";
+        return kSxbRole_HostLDTitle;
+    }
+    if ([role isEqualToString:kSxbRole_InteractHD])
+    {
+        return kSxbRole_InteractHDTitle;
+    }
+    if ([role isEqualToString:kSxbRole_InteractSD])
+    {
+        return kSxbRole_InteractSDTitle;
+    }
+    if ([role isEqualToString:kSxbRole_InteractLD])
+    {
+        return kSxbRole_InteractLDTitle;
     }
     return nil;
 }
@@ -451,19 +463,28 @@
 
 - (void)onReportLog
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上报日志" message:@"输入要上报的日志的日期" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"日志上报" message:@"输入要上报日志的描述和日期" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"日志描述";
+        textField.text = @"随心播_LOG主动上报";
+    }];
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"0-当天，1-昨天，2-前天，以此类推";
         textField.text = 0;
     }];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"上报" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        int dayOffset = [alert.textFields.firstObject.text intValue];
-        [[ILiveSDK getInstance] uploadLog:@"随心播_log主动上报" logDayOffset:dayOffset uploadResult:^(int retCode, NSString *retMsg, NSString *logKey) {
+        NSString *logDesc = alert.textFields.firstObject.text;
+        int dayOffset = [alert.textFields.lastObject.text intValue];
+        [[ILiveSDK getInstance] uploadLog:logDesc logDayOffset:dayOffset uploadResult:^(int retCode, NSString *retMsg, NSString *logKey) {
             if (retCode == 0)
             {
                 NSString *logInfo = [NSString stringWithFormat:@"log上报成功，关键key=%@",logKey];
-                [AlertHelp alertWith:@"log上报成功" message:logInfo cancelBtn:@"OK" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+                ActionHandle copyKeyHandle = ^(UIAlertAction * _Nonnull action){
+                    UIPasteboard *paste = [UIPasteboard generalPasteboard];
+                    [paste setString:logKey];
+                };
+                [AlertHelp alertWith:@"log上报成功" message:logInfo funBtns:@{@"复制KEY":copyKeyHandle} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
             }
             else
             {
@@ -471,8 +492,8 @@
                 [AlertHelp alertWith:@"log上报失败" message:logErrInfo cancelBtn:@"OK" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
             }
         }];
-    }]];
-    [[AppDelegate sharedAppDelegate].navigationViewController presentViewController:alert animated:YES completion:nil];
+    }]];    
+    [[AlertHelp topViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)layoutViews

@@ -23,6 +23,7 @@
 - (UIViewController *)popViewController;
 - (NSArray *)popToViewController:(UIViewController *)viewController;
 - (void)pushViewController:(UIViewController *)viewController;
+- (void)presentViewController:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)())completion;
 
 @end
 

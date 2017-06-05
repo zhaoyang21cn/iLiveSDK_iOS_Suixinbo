@@ -24,7 +24,6 @@
 {
     if (self = [self init])
     {
-        self.mainWindowRole = role;
     }
     return self;
 }
@@ -44,16 +43,17 @@
 
 - (void)addNotification
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upVideoUpdateFuns) name:kUserUpVideo_Notification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upVideoUpdateFuns:) name:kUserUpVideo_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downVideoUpdateFuns) name:kUserDownVideo_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchRoomRefresh) name:kUserSwitchRoom_Notification object:nil];
 }
 
 //上麦之后更新界面
-- (void)upVideoUpdateFuns
+- (void)upVideoUpdateFuns:(NSNotification *)notify
 {
     _isUpVideo = YES;
-    
+    NSString *roleName = (NSString *)notify.object;
+    _curRole = roleName;
     [self setNeedsLayout];
 }
 
@@ -129,7 +129,7 @@
 
 - (void)onMoreFun:(UIButton *)button
 {
-    _curRole = _curRole.length > 0 ? _curRole : (_isHost ? kSxbRole_Host : kSxbRole_Guest);
+    _curRole = _curRole.length > 0 ? _curRole : (_isHost ? kSxbRole_HostHD : kSxbRole_GuestHD);
     CGRect rect = self.superview.bounds;
     MoreFunView *moreFunView = [[MoreFunView alloc] init];
     moreFunView.delegate = self;
@@ -205,14 +205,13 @@
     
     ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        [manager changeRole:kSxbRole_Guest succ:^ {
+        [manager changeRole:kSxbRole_GuestHD succ:^ {
             NSLog(@"down to video: change role succ");
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
             [manager enableCamera:pos enable:NO succ:^{
                 NSLog(@"down to video: disable camera succ");
                 [manager enableMic:NO succ:^{
                     NSLog(@"down to video: disable mic succ");
-                    ws.mainWindowRole = kSxbRole_Host;
                     ws.isUpVideo = NO;
                     [ws layoutSubviews];
                     
@@ -410,23 +409,23 @@
     if (_isHost)//主播
     {
         [funs addObjectsFromArray:@[_sendMsgBtn, _cameraBtn, _micBtn ,_beautyBtn, _moreFun,_pureBtn]];
-            
+        
         [self hidddenButtons:@[_downVideo,_praiseBtn] isHide:YES];
         [self hidddenButtons:@[_sendMsgBtn,_cameraBtn, _micBtn, _beautyBtn, _moreFun, _pureBtn] isHide:NO];
-        }
+    }
     else if (_isUpVideo)//连麦用户
-        {
+    {
         [funs addObjectsFromArray:@[_sendMsgBtn, _cameraBtn, _micBtn, _beautyBtn, _downVideo, _praiseBtn, _moreFun,_pureBtn]];
-            
+        
         [self hidddenButtons:@[_sendMsgBtn, _cameraBtn, _micBtn, _beautyBtn, _downVideo, _praiseBtn, _moreFun,_pureBtn] isHide:NO];
-        }
+    }
     else//观众
-        {
+    {
         [funs addObjectsFromArray:@[_sendMsgBtn, _praiseBtn, _moreFun,_pureBtn]];
-            
+        
         [self hidddenButtons:@[_downVideo,_beautyBtn, _cameraBtn, _micBtn] isHide:YES];
         [self hidddenButtons:@[_sendMsgBtn, _praiseBtn, _moreFun,_pureBtn] isHide:NO];
-        }
+    }
     if (funs.count > 1)
     {
         [self alignSubviews:funs horizontallyWithPadding:0 margin:0 inRect:rect];

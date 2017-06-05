@@ -58,6 +58,21 @@
     return [[self navigationViewController] popToViewController:viewController animated:YES];
 }
 
+- (void)presentViewController:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)())completion
+{
+    UINavigationController *nav = [self navigationViewController];
+    UIViewController *top = nav.topViewController;
+    
+    if (vc.navigationController == nil)
+    {
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        [top presentViewController:nav animated:animated completion:completion];
+    }
+    else
+    {
+        [top presentViewController:vc animated:animated completion:completion];
+    }
+}
 // 获取当前活动的navigationcontroller
 - (UINavigationController *)navigationViewController
 {

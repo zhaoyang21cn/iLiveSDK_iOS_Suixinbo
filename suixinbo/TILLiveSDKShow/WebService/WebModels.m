@@ -59,6 +59,7 @@
     [listItemDic setObject:self.info.cover ? self.info.cover : @"" forKey:@"cover"];
     [listItemDic setObject:self.info.groupid ? self.info.groupid : @"" forKey:@"groupid"];
     [listItemDic setObject:[NSNumber numberWithInteger:self.info.roomnum] forKey:@"roomnum"];
+    [listItemDic setObject:self.info.roleName ? self.info.roleName : kSxbRole_HostHD forKey:@"roleName"];
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
@@ -99,6 +100,7 @@
         item.info.cover = [listItemDic objectForKey:@"cover"];
         item.info.groupid = [listItemDic objectForKey:@"groupid"];
         item.info.roomnum = [[listItemDic objectForKey:@"roomnum"] intValue];
+        item.info.roleName = [listItemDic objectForKey:@"roleName"];
         
         //加载之后置空
         [ud setObject:nil forKey:useridKey];

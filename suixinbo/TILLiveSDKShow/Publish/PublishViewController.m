@@ -18,10 +18,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     self.title = @"发布直播";
     self.view.backgroundColor = kColorWhite;
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    _vcTitle = [[UILabel alloc] init];
+    _vcTitle.text = @"发布直播";
+    _vcTitle.textAlignment = NSTextAlignmentCenter;
+    _vcTitle.backgroundColor = kColorRed;
+    _vcTitle.textColor = kColorWhite;
+    _vcTitle.font = kAppLargeTextFont;
+    [self.view addSubview:_vcTitle];
+    
+    _closeBtn = [[UIButton alloc] init];
+    [_closeBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [_closeBtn setTitleColor:kColorWhite forState:UIControlStateNormal];
+    [_closeBtn addTarget:self action:@selector(onClose) forControlEvents:UIControlEventTouchUpInside];
+    _closeBtn.titleLabel.font = kAppMiddleTextFont;
+    [self.view addSubview:_closeBtn];
     
     _liveCover = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaul_publishcover"]];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClickPublishContent:)];
@@ -32,16 +47,106 @@
     [self.view addSubview:_liveCover];
     
     _liveTitle = [[UITextField alloc] init];
-    _liveTitle.placeholder = @"直播标题";
+    _liveTitle.placeholder = @"请输入直播标题";
     [self.view addSubview:_liveTitle];
+    
+    _roleView = [[UIView alloc] init];
+    _roleView.layer.borderColor = kColorGray.CGColor;
+    _roleView.layer.borderWidth = 1.0;
+    [self.view addSubview:_roleView];
+    
+    _roleLabel = [[UILabel alloc] init];
+    _roleLabel.text = @"分辨率";
+    _roleLabel.textAlignment = NSTextAlignmentCenter;
+    [_roleView addSubview:_roleLabel];
+    
+    _roleBtn = [UIButton buttonWithType:UIButtonTypeCustom];//[[UIButton alloc] init];
+//    NSString *title = [self getTitle:[self getRoleName]];
+//    [_roleBtn setTitle:title forState:UIControlStateNormal];
+        NSAttributedString *title = [self getTitle:[self getRoleName]];
+    [_roleBtn setAttributedTitle:title forState:UIControlStateNormal];
+    [_roleBtn addTarget:self action:@selector(onRole) forControlEvents:UIControlEventTouchUpInside];
+    _roleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [_roleView addSubview:_roleBtn];
     
     _publishBtn = [[UIButton alloc] init];
     [_publishBtn setTitle:@"开始直播" forState:UIControlStateNormal];
+    [_publishBtn setTitleColor:kColorWhite forState:UIControlStateNormal];
     [_publishBtn setBackgroundColor:kColorRed];
     [_publishBtn addTarget:self action:@selector(onPublish:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_publishBtn];
     
     [self layout];
+}
+
+- (NSString *)getRoleName
+{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *hostRole = [user objectForKey:kSxbRole_HostValue];
+    if (!(hostRole && hostRole.length > 0))
+    {
+        [user setObject:kSxbRole_HostHD forKey:kSxbRole_HostValue];
+        hostRole = kSxbRole_HostHD;
+    }
+    return hostRole;
+}
+
+- (NSAttributedString *)getTitle:(NSString *)role
+{
+    NSString *roleTitle = @"";
+    if ([role isEqualToString:kSxbRole_HostHD])
+    {
+        roleTitle = @"高清";
+    }
+    else if ([role isEqualToString:kSxbRole_HostSD])
+    {
+        roleTitle = @"标清";
+    }
+    else if ([role isEqualToString:kSxbRole_HostLD])
+    {
+        roleTitle = @"流畅";
+    }
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] init];
+    [title appendAttributedString:[[NSAttributedString alloc] initWithString:roleTitle attributes:@{NSForegroundColorAttributeName:[UIColor grayColor]}]];
+    [title appendAttributedString:[[NSAttributedString alloc] initWithString:@" > " attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]}]];
+    return title;
+}
+
+- (void)onClose
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)onRole
+{
+    //选择角色
+    __weak typeof(self) ws = self;
+    AlertActionHandle hdBlock = ^(UIAlertAction * _Nonnull action){
+        [ws setHostRole:kSxbRole_HostHD];
+    };
+    AlertActionHandle sdBlock = ^(UIAlertAction * _Nonnull action){
+        [ws setHostRole:kSxbRole_HostSD];
+    };
+    AlertActionHandle ldBlock = ^(UIAlertAction * _Nonnull action){
+        [ws setHostRole:kSxbRole_HostLD];
+    };
+    NSDictionary *funs = @{kSxbRole_HostHDTitle:hdBlock,kSxbRole_HostSDTitle:sdBlock, kSxbRole_HostLDTitle:ldBlock};
+    [AlertHelp alertWith:@"选择角色" message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+}
+
+- (void)setHostRole:(NSString *)role
+{
+    if (!(role && role.length > 0))
+    {
+        return;
+    }
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setObject:role forKey:kSxbRole_HostValue];
+    
+//    NSString *title = [self getTitle:[self getRoleName]];
+//    [_roleBtn setTitle:title forState:UIControlStateNormal];
+    NSAttributedString *title = [self getTitle:role];
+    [_roleBtn setAttributedTitle:title forState:UIControlStateNormal];
 }
 
 - (void)onPublish:(UIButton *)button
@@ -58,6 +163,12 @@
         [AppDelegate showAlert:self title:nil message:@"您没有麦克风使用权限,请到 设置->隐私->麦克风 中开启权限" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
         return;
     }
+    NSString *role = [self getRoleName];
+    [self publish:role];
+}
+
+- (void)publish:(NSString *)role
+{
 #if kIsAppstoreVersion
     if (!(_liveTitle.text && _liveTitle.text.length > 0))
     {
@@ -98,7 +209,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [reqIdWaitView removeFromSuperview];
-            [self enterLive:(int)roomData.roomnum groupId:roomData.groupid imageUrl:imageUrl];
+            [self enterLive:(int)roomData.roomnum groupId:roomData.groupid imageUrl:imageUrl roleName:role];
         });
     });
 }
@@ -264,7 +375,7 @@
     return croppedImage;
 }
 
-- (void)enterLive:(int)roomId groupId:(NSString *)groupid imageUrl:(NSString *)coverUrl
+- (void)enterLive:(int)roomId groupId:(NSString *)groupid imageUrl:(NSString *)coverUrl roleName:(NSString *)role
 {
     TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
     item.uid = [[ILiveLoginManager getInstance] getLoginId];
@@ -275,9 +386,13 @@
     item.info.groupid = groupid;
     item.info.cover = coverUrl ? coverUrl : @"";
     item.info.appid = [ShowAppId intValue];
+    item.info.roleName = role;
     
-    LiveViewController *liveVC = [[LiveViewController alloc] initWith:item roomOptionType:RoomOptionType_CrateRoom];
-    [[AppDelegate sharedAppDelegate] pushViewController:liveVC];
+    [self dismissViewControllerAnimated:NO completion:^{
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        LiveViewController *liveVC = [[LiveViewController alloc] initWith:item roomOptionType:RoomOptionType_CrateRoom];
+        [[AppDelegate sharedAppDelegate] presentViewController:liveVC animated:YES completion:nil];
+    }];
 }
 
 - (void)layout
@@ -285,14 +400,32 @@
     CGRect screenRect = [UIScreen mainScreen].bounds;
     CGFloat screenW = screenRect.size.width;
     
+    [_vcTitle sizeWith:CGSizeMake(screenW, 64)];
+    [_vcTitle alignParentTop];
+    
+    [_closeBtn sizeWith:CGSizeMake(50, 30)];
+    [_closeBtn alignParentRight];
+    [_closeBtn alignVerticalCenterOf:_vcTitle];
+    
     [_liveCover sizeWith:CGSizeMake(screenW,screenW*0.618)];
-    [_liveCover alignParentTop];
+    [_liveCover layoutBelow:_vcTitle];
     
     [_liveTitle sizeWith:CGSizeMake(screenW, 44)];
     [_liveTitle layoutBelow:_liveCover];
     
-    [_publishBtn sizeWith:CGSizeMake(screenW, 44)];
-    [_publishBtn layoutBelow:_liveTitle];
+    [_roleView sizeWith:CGSizeMake(screenW, 44)];
+    [_roleView layoutBelow:_liveTitle];
+    
+    [_roleLabel sizeWith:CGSizeMake(70, 44)];
+    [_roleLabel alignParentLeft];
+    [_roleLabel layoutParentVerticalCenter];
+    
+    [_roleBtn sizeWith:CGSizeMake(screenW-70, 44)];
+    [_roleBtn alignParentRightWithMargin:kDefaultMargin];
+    [_roleBtn layoutParentVerticalCenter];
+    
+    [_publishBtn sizeWith:CGSizeMake(screenW, 64)];
+    [_publishBtn alignParentBottom];
 }
 
 

@@ -24,8 +24,12 @@
     LiveUIParView       *_parView;
     LiveUIBttomView     *_bottomView;
     
-    //直播界面消息模块
+    //输入视图
     MsgInputView        *_msgInputView;
+    CGRect              _oldInputFrame;
+    BOOL                _isFristShow;
+    
+    //直播界面消息模块
     UITableView         *_msgTableView;     //消息列表视图
     NSMutableArray      *_msgDatas;         //消息列表数据
     CGRect              _msgRestoreRect;

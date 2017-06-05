@@ -14,6 +14,10 @@
 - (void)onTapBlankToHide;
 - (void)onTapReportViewBlankToHide;
 
+- (void)registKeyboard;
+- (void)unRegistKeyboard;
+- (void)onTapBlankToHideKeyboard;
+
 - (void)onGotupDelete:(NSNotification *)noti;
 - (void)switchRoomRefresh:(NSNotification *)noti;
 - (void)showLikeHeartStartRect:(NSNotification *)noti;

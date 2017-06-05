@@ -8,7 +8,6 @@
 
 #import "SettingViewController.h"
 #import "LoginViewController.h"
-#import "RecListTableViewController.h"
 #import "ProfileTableViewCell.h"
 #import "UploadImageHelper.h"
 
@@ -81,12 +80,6 @@
     _tableView.tableFooterView = footView;
 }
 
-- (void)onRecordList
-{
-    RecListTableViewController *recList = [[RecListTableViewController alloc] init];
-    [[AppDelegate sharedAppDelegate] pushViewController:recList];
-}
-
 - (void)onSetTestEnv:(id)param
 {
     AlertActionHandle setBlock = ^(UIAlertAction * _Nonnull action){
@@ -113,20 +106,24 @@
     _dataArray = [[NSMutableArray alloc] init];
     NSDictionary *info = @{kSettingTitle:_nickName,kSettingMethod:@"onProfile"};
     [_dataArray addObject:info];
-    NSDictionary *version = @{kSettingTitle:@"SDK版本号",kSettingMethod:@"onVersion"};
-    [_dataArray addObject:version];
+    
+    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme"};
+    [_dataArray addObject:beautyDic];
+    
+    NSDictionary *guestRole = @{kSettingTitle:@"观看模式",kSettingMethod:@"onGuestSwitch"};
+    [_dataArray addObject:guestRole];
+    
 #if kIsAppstoreVersion
 #else
     NSDictionary *logLevel = @{kSettingTitle:@"日志等级",kSettingMethod:@"onLogLevel"};
     [_dataArray addObject:logLevel];
-    NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
-    [_dataArray addObject:testEnvDic];
+//    NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
+//    [_dataArray addObject:testEnvDic];
 #endif
-    NSDictionary *recDic = @{kSettingTitle:@"录制列表", kSettingMethod:@"onRecordList"};
-    [_dataArray addObject:recDic];
-    
-    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme"};
-    [_dataArray addObject:beautyDic];
+    NSDictionary *logReport = @{kSettingTitle:@"日志上报",kSettingMethod:@"onLogReport"};
+    [_dataArray addObject:logReport];
+    NSDictionary *version = @{kSettingTitle:@"版本号",kSettingMethod:@"onVersion"};
+    [_dataArray addObject:version];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -319,7 +316,7 @@
 
 - (void)onVersion
 {
-    UIAlertController *version = [UIAlertController alertControllerWithTitle:@"SDK版本号" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *version = [UIAlertController alertControllerWithTitle:@"版本号" message:nil preferredStyle:UIAlertControllerStyleAlert];
 //    NSString *tlsSDKVer = [NSString stringWithFormat:@"tlssdk: %@",[[TLSHelper getInstance] getSDKVersion]];
 //    [version addAction:[UIAlertAction actionWithTitle:tlsSDKVer style:UIAlertActionStyleDefault handler:nil]];
     
@@ -337,6 +334,64 @@
     
     [version addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:version animated:YES completion:nil];
+}
+
+- (void)onGuestSwitch
+{
+    BOOL isVersionLow8_3 = NO;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.3)
+    {
+        isVersionLow8_3 = YES;
+    }
+    
+    AlertActionHandle guestHD = ^(UIAlertAction *_Nonnull action){
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        [user setValue:kSxbRole_GuestHD forKey:kSxbRole_GuestValue];
+    };
+    AlertActionHandle guestLD = ^(UIAlertAction *_Nonnull action){
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        [user setValue:kSxbRole_GuestLD forKey:kSxbRole_GuestValue];
+    };
+    //选中当前角色,默认kSxbRole_GuestHD
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *guestRole = [user objectForKey:kSxbRole_GuestValue];
+    if (!(guestRole && guestRole.length > 0))
+    {
+        [user setValue:kSxbRole_GuestHD forKey:kSxbRole_GuestValue];
+        guestRole = kSxbRole_GuestHD;
+    }
+    NSString *message = nil;
+    if (isVersionLow8_3)
+    {
+        NSString *title = [self titleWith:guestRole];
+        message = [NSString stringWithFormat:@"当前:%@",title];
+    }
+    UIAlertController *alert = [AlertHelp alertWith:@"观看模式切换" message:message funBtns:@{kSxbRole_GuestHDTitle:guestHD, kSxbRole_GuestLDTitle:guestLD} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+    
+    if (!isVersionLow8_3)
+    {
+        NSString *title = [self titleWith:guestRole];
+        NSArray *alertActions = alert.actions;
+        for (UIAlertAction *action in alertActions)
+        {
+            if ([action.title isEqualToString:title])
+            {
+                [action setValue:[UIColor grayColor] forKey:@"titleTextColor"];
+            }
+        }
+    }
+}
+- (NSString *)titleWith:(NSString *)role
+{
+    if ([role isEqualToString:kSxbRole_GuestHD])
+    {
+        return kSxbRole_GuestHDTitle;
+    }
+    if ([role isEqualToString:kSxbRole_GuestLD])
+    {
+        return kSxbRole_GuestLDTitle;
+    }
+    return nil;
 }
 
 - (void)onSetBeautyScheme
@@ -424,6 +479,41 @@
             return @"LOG_UNDEFINE";
             break;
     }
+}
+
+- (void)onLogReport
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"日志上报" message:@"输入要上报日志的描述和日期" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"日志描述";
+        textField.text = @"随心播_LOG主动上报";
+    }];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"0-当天，1-昨天，2-前天，以此类推";
+        textField.text = 0;
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"上报" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSString *logDesc = alert.textFields.firstObject.text;
+        int dayOffset = [alert.textFields.lastObject.text intValue];
+        [[ILiveSDK getInstance] uploadLog:logDesc logDayOffset:dayOffset uploadResult:^(int retCode, NSString *retMsg, NSString *logKey) {
+            if (retCode == 0)
+            {
+                NSString *logInfo = [NSString stringWithFormat:@"log上报成功，关键key=%@",logKey];
+                ActionHandle copyKeyHandle = ^(UIAlertAction * _Nonnull action){
+                    UIPasteboard *paste = [UIPasteboard generalPasteboard];
+                    [paste setString:logKey];
+                };
+                [AlertHelp alertWith:@"log上报成功" message:logInfo funBtns:@{@"复制KEY":copyKeyHandle} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+            }
+            else
+            {
+                NSString *logErrInfo = [NSString stringWithFormat:@"code=%d,errInfo=%@",retCode,retMsg];
+                [AlertHelp alertWith:@"log上报失败" message:logErrInfo cancelBtn:@"OK" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+            }
+        }];
+    }]];
+    [[AlertHelp topViewController] presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)onLogout:(UIButton *)button

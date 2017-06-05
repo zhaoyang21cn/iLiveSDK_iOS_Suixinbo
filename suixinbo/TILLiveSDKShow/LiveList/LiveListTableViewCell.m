@@ -97,9 +97,16 @@
                 NSURL *avatarUrl = [NSURL URLWithString:profile.faceURL];
                 NSData *avatarData = [NSData dataWithContentsOfURL:avatarUrl];
                 UIImage *image = [UIImage imageWithData:avatarData];
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                if ([NSThread isMainThread])
+                {
                     [ws.liveHost setBackgroundImage:image forState:UIControlStateNormal];
-                });
+                }
+                else
+                {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [ws.liveHost setBackgroundImage:image forState:UIControlStateNormal];
+                    });
+                }
             }
         } fail:nil];
     }

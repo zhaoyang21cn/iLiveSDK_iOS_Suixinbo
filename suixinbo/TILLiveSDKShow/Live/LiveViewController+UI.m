@@ -18,11 +18,6 @@
 
 - (void)onInteract
 {
-//    if ([UserViewManager shareInstance].total >= 3)
-//    {
-//        [AppDelegate showAlert:self title:@"提示" message:@"连麦画面不能超过4路" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-//        return;
-//    }
     __weak typeof(self) ws = self;
     RoomMemListRequest *listReq = [[RoomMemListRequest alloc] initWithHandler:^(BaseRequest *request) {
         RoomMemListRspData *listRspData = (RoomMemListRspData *)request.response.data;
@@ -280,6 +275,45 @@
         
     } completion:^(BOOL finished) {
         _bgAlphaView.hidden = YES;
+    }];
+}
+
+//输入键盘相关
+- (void)onTapBlankToHideKeyboard
+{
+    [_msgInputView resignFirstResponder];
+}
+
+- (void)registKeyboard
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onShowKebord:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onHideKebord:) name:UIKeyboardWillHideNotification object:nil];
+}
+- (void)unRegistKeyboard
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)onShowKebord:(NSNotification *)notify
+{
+    NSDictionary *dic = [notify userInfo];
+    CGRect keyRect = [[dic objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect oldFrame = _msgInputView.frame;
+    if (_isFristShow)
+    {
+        _oldInputFrame = oldFrame;
+        _isFristShow = NO;
+    }
+    [_msgInputView setFrame:CGRectMake(oldFrame.origin.x, keyRect.origin.y-oldFrame.size.height, oldFrame.size.width, oldFrame.size.height)];
+}
+
+- (void)onHideKebord:(NSNotification *)notify
+{
+    [UIView animateWithDuration:0.1 animations:^{
+        [_msgInputView alignParentBottomWithMargin:-_oldInputFrame.size.height];
+    } completion:^(BOOL finished) {
+        _msgInputView.hidden = YES;
     }];
 }
 

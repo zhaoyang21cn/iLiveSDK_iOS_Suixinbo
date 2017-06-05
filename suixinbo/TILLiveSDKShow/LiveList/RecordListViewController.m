@@ -1,26 +1,27 @@
 //
-//  LiveListViewController.m
+//  RecordListViewController.m
 //  TILLiveSDKShow
 //
-//  Created by wilderliao on 16/11/7.
-//  Copyright © 2016年 Tencent. All rights reserved.
+//  Created by wilderliao on 2017/5/17.
+//  Copyright © 2017年 Tencent. All rights reserved.
 //
 
-#import "LiveListViewController.h"
-#import "LiveListTableViewCell.h"
-#import "LiveViewController.h"
+#import "RecordListViewController.h"
+#import "RecordListTableViewCell.h"
+#import <AVKit/AVPlayerViewController.h>
 
-@interface LiveListViewController ()
+@interface RecordListViewController ()
+
 @end
 
-@implementation LiveListViewController
-
+@implementation RecordListViewController
 - (instancetype)init
 {
     if (self = [super init])
     {
         _datas = [NSMutableArray array];
         _pageItem = [[RequestPageParamItem alloc] init];
+        _pageItem.pageIndex = 1;//录制列表页号是从1开始的
     }
     return self;
 }
@@ -59,7 +60,7 @@
     //第一次进来会调用 scrollViewDidScroll，自动拉取一次
     
     _noLiveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height/2-25, self.view.bounds.size.width, 50)];
-    _noLiveLabel.text = @"暂时没有直播";
+    _noLiveLabel.text = @"暂时没有回放数据";
     _noLiveLabel.hidden = YES;
     _noLiveLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_noLiveLabel];
@@ -76,36 +77,42 @@
 
 - (void)refresh:(TCIVoidBlock)complete
 {
-    _pageItem.pageIndex = 0;
+    _pageItem.pageIndex = 1;//录制列表页号是从1开始的
     [_datas removeAllObjects];
     _isCanLoadMore = YES;
     [self loadMore:complete];
 }
-    
+
 - (void)loadMore:(TCIVoidBlock)complete
 {
     __weak typeof(self) ws = self;
-    //向业务后台请求直播间列表
-    RoomListRequest *listReq = [[RoomListRequest alloc] initWithHandler:^(BaseRequest *request) {
-        RoomListRequest *wreq = (RoomListRequest *)request;
-        [ws loadListSucc:wreq];
+    __weak RequestPageParamItem *wpi = _pageItem;
+    RecordListRequest *recListReq = [[RecordListRequest alloc] initWithHandler:^(BaseRequest *request) {
+        RecordListResponese *recordRsp = (RecordListResponese *)request.response;
+        [ws.datas addObjectsFromArray:recordRsp.videos];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ws.tableView reloadData];
+        });
+        wpi.pageIndex ++;
+        NSLog(@"--->%ld",(long)recordRsp.total);
+        if (ws.datas.count >= recordRsp.total)
+        {
+            _isCanLoadMore = NO;
+            ws.tableView.tableFooterView.hidden = YES;
+        }
         if (complete)
         {
             complete();
         }
     } failHandler:^(BaseRequest *request) {
         NSLog(@"fail");
-        if (complete)
-        {
-            complete();
-        }
     }];
-    listReq.token = [AppDelegate sharedAppDelegate].token;
-    listReq.type = @"live";
-    listReq.index = _pageItem.pageIndex;
-    listReq.size = _pageItem.pageSize;
-    listReq.appid = [ShowAppId intValue];
-    [[WebServiceEngine sharedEngine] asyncRequest:listReq wait:YES];
+    recListReq.token = [AppDelegate sharedAppDelegate].token;
+    recListReq.type = 1;
+    recListReq.index = _pageItem.pageIndex;
+    recListReq.size = _pageItem.pageSize;
+    [[WebServiceEngine sharedEngine] asyncRequest:recListReq wait:NO];
+
 }
 
 - (void)loadListSucc:(RoomListRequest *)req
@@ -142,10 +149,10 @@
 {
     // Configure the cell...
     
-    LiveListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LiveListTableViewCell"];
+    RecordListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RecordListTableViewCell"];
     if(cell == nil)
     {
-        cell = [[LiveListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LiveListTableViewCell"];
+        cell = [[RecordListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RecordListTableViewCell"];
     }
     if (_datas.count > indexPath.row)
     {
@@ -162,35 +169,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *guestRole = [user objectForKey:kSxbRole_GuestValue];
-    if (!(guestRole && guestRole.length > 0))
+    if (_datas.count > indexPath.row)
     {
-        __weak typeof(self) ws = self;
-        AlertActionHandle guestHD = ^(UIAlertAction *_Nonnull action){
-            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            [user setValue:kSxbRole_GuestHD forKey:kSxbRole_GuestValue];
-            [ws pushToLiveVC:indexPath role:kSxbRole_GuestHD];
-        };
-        AlertActionHandle guestLD = ^(UIAlertAction *_Nonnull action){
-            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            [user setValue:kSxbRole_GuestLD forKey:kSxbRole_GuestValue];
-            [ws pushToLiveVC:indexPath role:kSxbRole_GuestLD];
-        };
-        [AlertHelp alertWith:@"观众端角色选择" message:nil funBtns:@{kSxbRole_GuestHDTitle:guestHD, kSxbRole_GuestLDTitle:guestLD} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+        RecordVideoItem *item = _datas[indexPath.row];
+        if (item.playurl.count > 0)
+        {
+            NSString *urlStr = item.playurl[0];
+            NSURL *url = [NSURL URLWithString:urlStr];
+            
+            AVPlayerViewController *player = [[AVPlayerViewController alloc]init];
+            player.player = [[AVPlayer alloc] initWithURL:url];
+            [self presentViewController:player animated:YES completion:nil];
+        }
+        else
+        {
+            [AlertHelp tipWith:@"无效的播放地址" wait:0.5];
+        }
     }
     else
     {
-        [self pushToLiveVC:indexPath role:guestRole];
+        [AlertHelp tipWith:@"点击无效" wait:0.5];
     }
-}
-
-- (void)pushToLiveVC:(NSIndexPath *)indexPath role:(NSString *)roleName
-{
-    TCShowLiveListItem *item = _datas[indexPath.row];
-    item.info.roleName = roleName;
-    LiveViewController *liveVC = [[LiveViewController alloc] initWith:item roomOptionType:RoomOptionType_JoinRoom];
-    [[AppDelegate sharedAppDelegate] presentViewController:liveVC animated:YES completion:nil];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
