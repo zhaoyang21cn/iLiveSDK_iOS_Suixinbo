@@ -10,6 +10,8 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 ## SDK下载
 1、[ILiveSDK1.5.0、TILLiveSDK1.1.0、IMSDK_2.5.4、QAVSDK_1.9.1.17下载地址](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks(ILiveSDK1.5.0,TILLiveSDK1.1.0,IMSDK_2.5.4,QAVSDK_1.9.1.17.zip).zip)
 
+2、[美颜滤镜SDK(TILFilterSDK_1.1.0)下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK_1.1.0.zip)
+
 ## ILiveSDK导入
 [ILiveSDK导入参考](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md),查看[版本更新说明](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
