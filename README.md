@@ -25,7 +25,9 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
-## [ILiveSDK导入](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md)
+## ILiveSDK导入
+
+[ILiveSDK导入参考在这里](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/ILiveSDK-README.md)
 
 ## DEMO
 有两个示例 <br />
