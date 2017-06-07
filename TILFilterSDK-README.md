@@ -12,10 +12,10 @@ sdK提供美颜、美白、滤镜、大眼、瘦脸、动效贴纸、绿幕等�
 
 #### 1. 导入依赖包（framework、bundle、license、resource）
 
-#### [点击此处下载最新版本TILFilterSDK](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Suixinbo)
+[点击此处下载最新版本TILFilterSDK](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Suixinbo)
 
-> 高级版本（大眼、瘦脸、动效贴纸）需要集成p图sdk
-> 基础版本可以跳过此步骤。如需使用滤镜功能，只需加载TILFilterResource.bundle资源包
+>* 高级版本（大眼、瘦脸、动效贴纸）需要集成p图sdk
+>* 基础版本可以跳过此步骤。如需使用滤镜功能，只需加载TILFilterResource.bundle资源包
 
 | | | 
 :-----:|:-----:|
@@ -32,7 +32,8 @@ sdK提供美颜、美白、滤镜、大眼、瘦脸、动效贴纸、绿幕等�
 ### 功能调用
 
 使用TILFilterSDK前，请集成ILiveSDK并完成以下三步曲。
-> IOS需要升级到ILiveSDK1.3.2
+
+>* IOS需要升级到ILiveSDK1.3.2
 
 ```object-c
 //1.初始化对象
