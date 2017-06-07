@@ -4,9 +4,9 @@
 * 1、增加高级版本（大眼、瘦脸、动效贴纸）
 * 2、基础版本增加绿幕功能
 * 3、美颜美白滤镜接口稍作调整
-  * （1）- (void)setBeautyLevel:(NSInteger)level;
-  * （2）- (void)setWhitenessLevel:(NSInteger)level;
-  * （3）- (void)setFilterMixLevel:(NSInteger)level
+ >* - (void)setBeautyLevel:(NSInteger)level;\n
+ >* - (void)setWhitenessLevel:(NSInteger)level;
+ >* - (void)setFilterMixLevel:(NSInteger)level
  
 ###### V1.1.0(2017-05-12)
 * 1、提升1280x720 960x540高分辨率的美颜性能
