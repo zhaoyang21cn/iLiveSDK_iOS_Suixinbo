@@ -8,7 +8,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
      类似微信视频通话功能呢,支持多人同时上麦(最多4路)。[具体参考TILCallSDK](https://github.com/zhaoyang21cn/CallSDK_iOS_Demo)
 
 ## SDK下载
-1、[ILiveSDK1.5.0、TILLiveSDK1.1.0、IMSDK_2.5.4、QAVSDK_1.9.1.17下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks(ILiveSDK1.5.0,TILLiveSDK1.1.0,IMSDK_2.5.4,QAVSDK_1.9.1.17.zip).zip)
+1、[ILiveSDK1.5.0、TILLiveSDK1.1.2、IMSDK_2.5.4、QAVSDK_1.9.1.17下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/Frameworks(ILiveSDK1.5.0,TILLiveSDK1.1.2,IMSDK_2.5.4,QAVSDK_1.9.1.17.zip).zip)
 
 2、[美颜滤镜SDK(TILFilterSDK_1.2.0)下载](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Suixinbo/blob/master/TILFilterSDK-README.md)
 
