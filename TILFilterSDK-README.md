@@ -121,7 +121,7 @@ self.tilFilter = [[TIFilter alloc] init];
 - (void)setFilterMixLevel:(NSInteger)level;
 ```
 
-使用绿幕需要先准备一个用于播放的mp4文件，通过调用以下接口即可开启绿幕效果（紧张开发中，敬请期待...）
+使用绿幕需要先准备一个用于播放的mp4文件，通过调用以下接口即可开启绿幕效果
 
 ```object-c
 /*
