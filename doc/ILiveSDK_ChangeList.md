@@ -1,5 +1,8 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.5.0.1(2017－6-8)
+* 1、更新ILiveSDK，修复只创建IM群组，不创建AV房间时，无法退出房间的问题
+
 ###### V1.5.0(2017－6-5)
 
 * 1、更新QAVSDK到1.9.1，实现美颜模块插件化(不需要美颜模块，则不添加QAVEffect即可；需要内置美颜，则导入QAVEffect里面所有内容，并添加系统库AssetsLibrary.framework)
