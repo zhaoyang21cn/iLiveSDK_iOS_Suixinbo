@@ -1,5 +1,8 @@
 ## IOS_TILFilterSDK_ChangeList
 
+###### V1.2.2(2017-06-20)
+* 修复xcode版本不兼容的问题
+
 ###### V1.2.1(2017-06-19)
 * 支持armv7 i386 x86_64 arm64
  
