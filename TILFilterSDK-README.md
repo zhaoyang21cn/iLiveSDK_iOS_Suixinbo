@@ -30,7 +30,6 @@ sdK提供美颜、美白、滤镜、大眼、瘦脸、动效贴纸、绿幕等�
 
 | |
 :-----:|
-![](https://mc.qcloudimg.com/static/img/3c1f508f3eb4a123f15e3b5dbbffcf39/3.png)|
 ![](https://mc.qcloudimg.com/static/img/4e9d4875e5c837866779ddda7dbc7167/4.png)|
 
 ### 功能调用
