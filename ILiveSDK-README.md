@@ -1,4 +1,4 @@
-﻿
+
 简介：ILiveSDK(全称:Interactive Live SDK)整合了互动直播SDK(AVSDK)，即时通讯SDK(IMSDK)，登录服务(TLSSDK)等几大模块，致力于提供一套完整的音视频即时通讯解决方案，提供“连麦”，“多画面特效”，打造跨平台一对多，多对多的酷炫直播场景。ILiveSDK旨在无限可能的降低用户接入成本，从用户角度考虑问题，全方位考虑用户接入体验，并提供接入服务专业定向支持，为用户应用上线保驾护航，本文档目的在于帮助用户快速接入使用ILiveSDK,达到主播端画面本地渲染，观众端可进入房间观看主播端画面的效果。
 
 # ILiveSDK集成和使用
@@ -47,13 +47,23 @@ NSLog(@”ILiveSDK Version is %@”, ver);
 ## 5、初始化和登录
 
 ```
+//托管模式登录
 [[ILiveSDK getInstance] initSdk:[kSdkAppId intValue] accountType:[kSdkAccountType intValue]];
 [[ILiveLoginManager getInstance] tlsLogin:@"userid" pwd:password succ:^{
-  NSLog(@"-----> succ");
+    NSLog(@"-----> succ");
 } failed:^(NSString *moudle, int errId, NSString *errMsg) {
-  NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
+    NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
+}];
+//独立模式登录
+//identifier 是登录用户的账号(由用户的业务后台生成)
+//sig : 是登录鉴权（由用户的业务后台生成，可参考随心播后台(https://github.com/zhaoyang21cn/SuiXinBoPHPServer)）
+[[ILiveLoginManager getInstance] iLiveLogin:identifier sig:sig succ:^{  
+    NSLog(@"-----> succ");
+} failed:^(NSString *module, int errId, NSString *errMsg) {
+    NSLog(@"-----> fail %@,%d,%@",moudle,errId,errMsg);
 }];
 ```
+
 
 ## 6、创建房间(主播)
 
