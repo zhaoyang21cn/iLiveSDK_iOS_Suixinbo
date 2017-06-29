@@ -52,14 +52,17 @@ AccountType：对应SDKAppID的帐号类型
 ### 2.1.3 创建房间（进入房间）
 #### 主播创建房间
 ```
-ILiveRoomOption *option = [ILiveRoomOption defaultHostLiveOption]; //默认主播配置
+TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption]; //默认主播配置
 option.controlRole = @"腾讯云后台配置的主播角色";//配置spear角色
 
 TILLiveManager *manager = [TILLiveManager getInstance];
 [manager setAVListener:self];//av事件监听
 [manager setIMListener:self];//im消息监听
 [manager setAVRootView:self.view]; //设置渲染承载的视图
-[manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
+[manager addAVRenderView:viewRect forIdentifier:userIdentifier srcType:QAVVIDEO_SRC_TYPE_CAMERA]; //添加渲染位置
+//viewRect 添加的渲染视图的frame
+//userIdentifier 渲染视图渲染的是哪个用户的画面，userIdentifier就是这个用户的id
+//QAVVIDEO_SRC_TYPE_CAMERA:相机采集的画面，QAVVIDEO_SRC_TYPE_SCREEN：屏幕分享画面
 
 [manager createRoom:self.roomId option:option succ:^{
   NSLog(@"创建房间成功");
@@ -69,14 +72,17 @@ TILLiveManager *manager = [TILLiveManager getInstance];
 ```
 #### 观众进入房间
 ```
-ILiveRoomOption *option = [ILiveRoomOption defaultGuestLiveOption]; //默认观众配置
+TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption]; //默认观众配置
 option.controlRole = @"腾讯云后台配置的观众角色";//配置spear角色
 
 TILLiveManager *manager = [TILLiveManager getInstance];
 [manager setAVListener:self];
 [manager setIMListener:self];
 [manager setAVRootView:self.view]; //设置渲染承载的视图
-[manager addAVRenderView:self.view.bounds forKey:self.host]; //添加渲染位置
+[manager addAVRenderView:viewRect forIdentifier:userIdentifier srcType:QAVVIDEO_SRC_TYPE_CAMERA]; //添加渲染位置
+//viewRect 添加的渲染视图的frame
+//userIdentifier 渲染视图渲染的是哪个用户的画面，userIdentifier就是这个用户的id
+//QAVVIDEO_SRC_TYPE_CAMERA:相机采集的画面，QAVVIDEO_SRC_TYPE_SCREEN：屏幕分享画面
 
 [manager joinRoom:self.roomId option:option succ:^{
   NSLog(@"进入房间成功");
