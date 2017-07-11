@@ -38,7 +38,7 @@ http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
 2 简单直播 ：直播主线流程示例  <br />
 
 ## API文档
-[API文档(1.0.2)](https://zhaoyang21cn.github.io/iLiveSDK_Help/ios_help/)
+[API文档](https://zhaoyang21cn.github.io/iLiveSDK_Help/ios_help/)
 
 ## 错误码
 [错误码表](https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md)
