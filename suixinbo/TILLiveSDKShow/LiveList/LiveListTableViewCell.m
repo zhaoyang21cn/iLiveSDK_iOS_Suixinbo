@@ -44,22 +44,22 @@
     [_liveHostView addSubview:_liveTitle];
     
     _liveHostName = [[UILabel alloc] init];
-    _liveHostName.textColor = kColorGray;
     _liveHostName.font = kAppSmallTextFont;
+    _liveHostName.textColor = kColorBlack60;
     [_liveHostView addSubview:_liveHostName];
     
     _liveAudience = [[UIButton alloc] init];
     [_liveAudience setImage:[UIImage imageNamed:@"visitors_red"] forState:UIControlStateNormal];
     _liveAudience.titleLabel.adjustsFontSizeToFitWidth = YES;
     _liveAudience.titleLabel.font = kAppSmallTextFont;
-    [_liveAudience setTitleColor:kColorGray forState:UIControlStateNormal];
+    [_liveAudience setTitleColor:kColorBlack60 forState:UIControlStateNormal];
     [_liveHostView addSubview:_liveAudience];
     
     _livePraise = [[UIButton alloc] init];
     [_livePraise setImage:[UIImage imageNamed:@"like_red"] forState:UIControlStateNormal];
     _livePraise.titleLabel.adjustsFontSizeToFitWidth = YES;
     _livePraise.titleLabel.font = kAppSmallTextFont;
-    [_livePraise setTitleColor:kColorGray forState:UIControlStateNormal];
+    [_livePraise setTitleColor:kColorBlack60 forState:UIControlStateNormal];
     [_liveHostView addSubview:_livePraise];
 }
 

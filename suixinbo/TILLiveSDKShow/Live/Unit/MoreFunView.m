@@ -227,10 +227,10 @@
 - (void)ilivesdkFilter
 {
     __weak typeof(self) ws = self;
-//    AlertActionHandle beautyBlock = ^(UIAlertAction *_Nonnull action){
-//        [ws.item.tilFilter setFilterType:TILFilterType_Beauty];
-//        [ws dismissSelf];
-//    };
+    AlertActionHandle beautyBlock = ^(UIAlertAction *_Nonnull action){
+        [ws.item.tilFilter setFilterType:TILFilterType_white];
+        [ws dismissSelf];
+    };
     AlertActionHandle fennenBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilterType:TILFilterType_FenNen];
         [ws dismissSelf];
@@ -263,7 +263,7 @@
         [ws.item.tilFilter setFilterType:TILFilterType_WeiMei];
         [ws dismissSelf];
     };
-    NSDictionary *funs = @{@"粉嫩":fennenBlock, @"怀旧":huaijiuBlock,@"蓝调":landiaoBlock, @"浪漫":langmanBlock, @"清凉":qingliangBlock, @"清新":qingxinBlock, @"日系":rixiBlock, @"唯美":weimeiBlock};
+    NSDictionary *funs = @{@"美颜美白":beautyBlock, @"粉嫩":fennenBlock, @"怀旧":huaijiuBlock,@"蓝调":landiaoBlock, @"浪漫":langmanBlock, @"清凉":qingliangBlock, @"清新":qingxinBlock, @"日系":rixiBlock, @"唯美":weimeiBlock};
     [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
         [ws.item.tilFilter setFilterType:TILFilterType_None];
         [ws dismissSelf];

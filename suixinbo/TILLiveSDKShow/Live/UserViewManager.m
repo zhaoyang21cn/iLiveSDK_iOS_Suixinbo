@@ -255,6 +255,7 @@
         [_renderViews setObject:renderView forKey:[UserViewManager codeUser:userId type:type]];
         _total++;
     }
+    renderView.isRotate = NO;
     return renderView;
 }
 

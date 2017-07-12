@@ -11,6 +11,7 @@
 @interface RecordListTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UIImageView     *recordCover;
+@property (nonatomic, strong) UIButton        *recordUserHead;
 @property (nonatomic, strong) UILabel         *recordTitle;
 @property (nonatomic, strong) UILabel         *recordUser;
 @property (nonatomic, strong) UILabel         *recordTime;

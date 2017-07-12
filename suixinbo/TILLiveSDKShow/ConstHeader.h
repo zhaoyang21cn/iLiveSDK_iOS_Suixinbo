@@ -59,6 +59,7 @@ alpha:a]
 #define kColorPurple     [UIColor purpleColor]
 
 #define kColorBlack      [UIColor blackColor]
+#define kColorBlack60   RGBOF(0x606060)
 
 /******************** font ********************************/
 #define kAppLargeTextFont       [UIFont systemFontOfSize:17]

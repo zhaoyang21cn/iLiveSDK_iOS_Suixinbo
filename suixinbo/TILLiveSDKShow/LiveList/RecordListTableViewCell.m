@@ -24,21 +24,21 @@
 - (void)addOwnViews
 {
     _recordCover = [[UIImageView alloc] init];
-//    _recordCover.contentMode = UIViewContentModeScaleAspectFill;
     _recordCover.contentMode =  UIViewContentModeCenter;
     _recordCover.clipsToBounds  = YES;
     [self.contentView addSubview:_recordCover];
     
+    _recordUserHead = [[UIButton alloc] init];
+    _recordUserHead.layer.cornerRadius = 22;
+    _recordUserHead.layer.masksToBounds = YES;
+    [self.contentView addSubview:_recordUserHead];
+    
     _recordTitle = [[UILabel alloc] init];
-    _recordTitle.font = kAppMiddleTextFont;
     [self.contentView addSubview:_recordTitle];
     
-    _recordUser = [[UILabel alloc] init];
-    _recordUser.font = kAppMiddleTextFont;
-    [self.contentView addSubview:_recordUser];
-    
     _recordTime = [[UILabel alloc] init];
-    _recordTime.font = kAppMiddleTextFont;
+    _recordTime.font = kAppSmallTextFont;
+    _recordTime.textColor = kColorBlack60;
     [self.contentView addSubview:_recordTime];
 }
 
@@ -63,21 +63,73 @@
     });
     [_recordCover setImage:[UIImage imageNamed:@"defaul_publishcover"]];
     
+    __weak typeof(self)ws = self;
+    //设置用户头像
+    [[TIMFriendshipManager sharedInstance] GetUsersProfile:@[item.uid] succ:^(NSArray *friends) {
+        if (friends.count <= 0)
+        {
+            return ;
+        }
+        TIMUserProfile *profile = friends[0];
+        if (profile.faceURL && profile.faceURL.length > 0)
+        {
+            NSURL *avatarUrl = [NSURL URLWithString:profile.faceURL];
+            NSData *avatarData = [NSData dataWithContentsOfURL:avatarUrl];
+            UIImage *image = [UIImage imageWithData:avatarData];
+            if ([NSThread isMainThread])
+            {
+                [ws.recordUserHead setBackgroundImage:image forState:UIControlStateNormal];
+            }
+            else
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [ws.recordUserHead setBackgroundImage:image forState:UIControlStateNormal];
+                });
+            }
+        }
+    } fail:nil];
+    [_recordUserHead setBackgroundImage:[UIImage imageNamed:@"default_head"] forState:UIControlStateNormal];
+    
     NSArray *array = [item.name componentsSeparatedByString:@"_"];
-    if (array.count > 1)//录制用户
-    {
-        NSString *identifier = array[1];
-        [_recordUser setText:[NSString stringWithFormat:@"录制用户:%@",identifier]];
-    }
+    NSMutableString *recordInfo = [NSMutableString string];
     if (array.count > 2)//录制文件名
     {
         NSString *fileName = array[2];
-        [_recordTitle setText:[NSString stringWithFormat:@"录制文件名:%@",fileName]];
+        [recordInfo appendString:fileName];
+        
+        NSString *identifier = array[1];
+        [recordInfo appendFormat:@"      @%@",identifier];
+        
+        NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:recordInfo];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:kColorBlack range:NSMakeRange(0, fileName.length)];
+        [attrStr addAttribute:NSFontAttributeName value:kAppMiddleTextFont range:NSMakeRange(0, fileName.length)];
+        [attrStr addAttribute:NSForegroundColorAttributeName value:kColorBlack60 range:NSMakeRange(fileName.length, recordInfo.length-fileName.length)];
+        [attrStr addAttribute:NSFontAttributeName value:kAppSmallTextFont range:NSMakeRange(fileName.length, recordInfo.length-fileName.length)];
+        
+        [_recordTitle setAttributedText:attrStr];
     }
     if (array.count > 3)//录制时间
     {
-        NSString *recStartTime = array[3];
-        [_recordTime setText:[NSString stringWithFormat:@"录制时间:%@",recStartTime]];
+        NSString *recStartTime = array[array.count-2];//倒数第二个是开始时间
+        NSArray *recStartTimeArray = [recStartTime componentsSeparatedByString:@"-"];
+        NSMutableString *dateString = [NSMutableString string];
+        NSMutableString *timeString = [NSMutableString string];
+        if (recStartTimeArray.count >= 6)
+        {
+            for (int index = 0; index < 3; index++)
+            {
+                [dateString appendFormat:@"%@-",recStartTimeArray[index]];
+            }
+            for (int index = 3; index < 6; index++)
+            {
+                [timeString appendFormat:@"%@:",recStartTimeArray[index]];
+            }
+            NSString *resultDate = [dateString substringToIndex:dateString.length-1];
+            NSString *resultTime = [timeString substringToIndex:timeString.length-1];
+            NSString *showInfo = [NSString stringWithFormat:@"%@  %@",resultDate,resultTime];
+            [_recordTime setText:[NSString stringWithFormat:@"%@",showInfo]];
+        }
+        
     }
 }
 
@@ -132,7 +184,7 @@
     //            [image drawInRect:CGRectMake(0,0, size.width,size.height)];
     //            // 从当前context中创建一个改变大小后的图片
     //            UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    
+    CGImageRelease(cgImage);
     NSData *snapshotData = UIImageJPEGRepresentation(image, 0.75);
     if (![[NSFileManager defaultManager] createFileAtPath:path contents:snapshotData attributes:nil])
     {
@@ -167,16 +219,19 @@
     coverRect.size.height = (NSInteger)(rect.size.width * 0.618);
     _recordCover.frame = coverRect;
     
-    CGFloat labelH = (NSInteger)(rect.size.height - coverRect.size.height) / 3;
+    CGFloat labelH = (NSInteger)(rect.size.height - coverRect.size.height - kDefaultMargin * 2) / 2;
+    
+    [_recordUserHead sizeWith:CGSizeMake(44, 44)];
+    [_recordUserHead layoutBelow:_recordCover margin:kDefaultMargin];
+    [_recordUserHead alignParentLeftWithMargin:kDefaultMargin];
     
     [_recordTitle sizeWith:CGSizeMake(rect.size.width, labelH)];
-    [_recordTitle layoutBelow:_recordCover];
-    
-    [_recordUser sizeWith:CGSizeMake(rect.size.width, labelH)];
-    [_recordUser layoutBelow:_recordTitle];
+    [_recordTitle layoutToRightOf:_recordUserHead margin:kDefaultMargin];
+    [_recordTitle layoutBelow:_recordCover margin:kDefaultMargin];
     
     [_recordTime sizeWith:CGSizeMake(rect.size.width, labelH)];
-    [_recordTime layoutBelow:_recordUser];
+    [_recordTime layoutToRightOf:_recordUserHead margin:kDefaultMargin];
+    [_recordTime layoutBelow:_recordTitle];
 }
 
 

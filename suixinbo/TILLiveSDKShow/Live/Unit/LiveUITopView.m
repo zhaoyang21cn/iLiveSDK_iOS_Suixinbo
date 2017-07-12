@@ -86,7 +86,7 @@
             NSURL *avatarUrl = [NSURL URLWithString:profile.faceURL];
             NSData *avatarData = [NSData dataWithContentsOfURL:avatarUrl];
             UIImage *image = [UIImage imageWithData:avatarData];
-            dispatch_sync(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [ws.avatarView setImage:image];
             });
         }

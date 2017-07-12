@@ -430,16 +430,21 @@
     [_msgDatas addObject:msg];
     if (_msgDatas.count >= 500)
     {
-        NSRange range = NSMakeRange(400, 100);//只保留最新的100条消息
+        
+        NSRange range = NSMakeRange(_msgDatas.count - 100, 100);//只保留最新的100条消息
         NSArray *temp = [_msgDatas subarrayWithRange:range];
         [_msgDatas removeAllObjects];
         [_msgDatas addObjectsFromArray:temp];
+        [_msgTableView reloadData];
     }
-    [_msgTableView beginUpdates];
-    NSIndexPath *index = [NSIndexPath indexPathForRow:_msgDatas.count-1 inSection:0];
-    [_msgTableView insertRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationBottom];
-    [_msgTableView endUpdates];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_msgDatas.count - 1 inSection:0];
+    else
+    {
+        [_msgTableView beginUpdates];
+        NSIndexPath *index = [NSIndexPath indexPathForRow:_msgDatas.count - 1 inSection:0];
+        [_msgTableView insertRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationBottom];
+        [_msgTableView endUpdates];
+    }
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_msgDatas.count-1  inSection:0];
     if (indexPath.row < [_msgTableView numberOfRowsInSection:0])
     {
         [_msgTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];

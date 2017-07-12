@@ -60,6 +60,7 @@
             tap.codeId = [UserViewManager codeUser:user type:type];
             [renderView addGestureRecognizer:tap];
         }
+        renderView.isRotate = NO;
     }
 }
 
