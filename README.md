@@ -35,7 +35,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 ## DEMO
 有两个示例 <br />
 1 随心播 ：基于ILiveSDK接口重构的随心播[运行配置参考](https://github.com/zhaoyang21cn/iLiveSDK_iOS_Suixinbo/tree/master/suixinbo)
-2 简单直播 ：直播主线流程示例  <br />
+2 简单直播 ：直播主线流程示例(已迁移至这里)[https://github.com/zhaoyang21cn/iLiveSDK_iOS_LiveDemo]  <br />
 
 ## API文档
 [API文档](https://zhaoyang21cn.github.io/iLiveSDK_Help/ios_help/)
