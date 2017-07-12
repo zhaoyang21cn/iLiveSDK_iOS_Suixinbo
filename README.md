@@ -20,14 +20,12 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 
-###### V1.5.0(2017－6-5)
-* 1、更新QAVSDK到1.9.1，实现美颜模块插件化(不需要美颜模块，则不添加QAVEffect即可；需要内置美颜，则导入QAVEffect里面所有内容，并添加系统库AssetsLibrary.framework)
-* 2、修复频繁进退房间，crash问题
-* 3、修复频繁进退房间，报1003错误问题
-* 4、连麦画面，从4路增加到10路
-* 5、修复切换分辨率会闪绿的问题
-* 6、修复使用系统语音识别之后，观众端听不到声音的问题
-* 7、优化日志打印模块
+###### V1.5.1.11058(2017－7-12)
+* 1、异步渲染修改为同步渲染
+* 2、修复ILiveRenderView Stribuf 内存问题
+* 3、upload log增加服务器返回字段保护
+* 4、ILiveRenderView增加手动旋转功能，增加用户id和视频源属性
+* 5、内部增加日志上报
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
