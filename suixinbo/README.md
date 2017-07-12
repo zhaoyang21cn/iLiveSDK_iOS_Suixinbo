@@ -11,28 +11,28 @@
 #### 1、下载随心播目录应如下所示，否则请重新下载：
 文件目录：
 
-![](http://mc.qcloudimg.com/static/img/b72bdf41f9b840adf696926f30bcdca8/image.jpg)
+![](http://mc.qcloudimg.com/static/img/b82ccd309298da7dd2e29f0218ecd4a4/image.png)
 
 工程目录：
 
 ![](http://mc.qcloudimg.com/static/img/613e6f648797acd46ba0edb96eb98626/image.png)
 
-#### 2、下载相关SDK放入Frameworks后目录应如下所示，否则请重新下载
-Frameworks文件目录：
+#### 2、下载相关SDK放入Frameworks目录并解压，应如下图所示，否则请重新下载
+Frameworks文件夹目录：
 
-![](http://mc.qcloudimg.com/static/img/f210a91073a84aa7f9c270b7f7fe033c/image.png)
+![](http://mc.qcloudimg.com/static/img/d6c691e0fab991c7f8518e5192a4e32d/image.png)
 
 AVSDK文件夹目录：
 
-![](http://mc.qcloudimg.com/static/img/31fde827fdff1b187945068328fc84b0/image.png)
+![](http://mc.qcloudimg.com/static/img/f2f0501eff65f83304f3bf734c55512f/image.png)
 
 IMSDK文件夹目录：
 
-![](http://mc.qcloudimg.com/static/img/66852695f6bfe40e5d2158ab788adc29/image.png)
+![](http://mc.qcloudimg.com/static/img/a9abb14e2943ab67d74b5096e79b25f7/image.png)
 
 将SDK导入后工程目录：
 
-![](http://mc.qcloudimg.com/static/img/7f779a70089445f99f41763bcbaf88be/image.png)
+![](http://mc.qcloudimg.com/static/img/df3149057e84f4ca5ffb2fa57293ae33/image.png)
 
 #### 3、开发者帐号配置
 在Team处选择自己的开发者帐号
