@@ -8,12 +8,15 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
      类似微信视频通话功能呢,支持多人同时上麦(最多4路)。[具体参考TILCallSDK](https://github.com/zhaoyang21cn/CallSDK_iOS_Demo)
 
 ## SDK下载
-1、ILiveSDK1.5.1.11058,TILLiveSDK1.1.2,ImSDK:v2.5.4.10421.10420,QAVSDK:1.9.1.17.OpenSDK_1.9.1-26127
-[下载(不带美颜)](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVIMSDK.zip)
 
-2、[内置美颜包QAVEffect下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
-
-3、[美颜滤镜SDK(TILFilterSDK_1.2.3)下载](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Suixinbo/blob/master/TILFilterSDK-README.md)
+|SDK|版本号|摘要|下载地址|
+|--|--|--|--|
+|QAVSDK|1.9.1.17.OpenSDK_1.9.1-26127|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip)
+|IMSDK|v2.5.4.10421.10420|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK.zip)
+|ILiveSDK|1.5.1.11058|互动直播核心业务SDK|[下载](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK.framework.zip)
+|TILLiveSDK|1.1.2|直播业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK.framework.zip)
+|QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
+|TILFilterSDK|1.2.3|插件美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
 ## SDK最近更新说明
 
