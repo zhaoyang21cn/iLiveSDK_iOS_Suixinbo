@@ -1,5 +1,12 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.5.1.11058(2017－7-12)
+* 1、异步渲染修改为同步渲染
+* 2、修复ILiveRenderView Stribuf 内存问题
+* 3、upload log增加服务器返回字段保护
+* 4、ILiveRenderView增加手动旋转功能，增加用户id和视频源属性
+* 5、内部增加日志上报
+
 ###### V1.5.0.1(2017－6-8)
 * 1、更新ILiveSDK，修复只创建IM群组，不创建AV房间时，无法退出房间的问题
 
