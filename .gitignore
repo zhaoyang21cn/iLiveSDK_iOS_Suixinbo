@@ -25,10 +25,9 @@ FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/Headers/QAVCom
 
 *.xcuserstate
 
-tdemolive/Frameworks/
 suixinbo/Frameworks/QAVEffect/
+suixinbo/Frameworks/QAVIMSDK/
+suixinbo/Frameworks/*.zip
 
 
 suixinbo/TILLiveSDKShow/Info.plist
-
-suixinbo/TILLiveSDKShow.xcodeproj/project.pbxproj
