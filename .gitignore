@@ -25,8 +25,8 @@ FocusDemo/FocusDemo/TCAdapter/TCAVIMAdapter/Libs/QAVSDK.framework/Headers/QAVCom
 
 *.xcuserstate
 
-suixinbo/Frameworks/
 tdemolive/Frameworks/
+suixinbo/Frameworks/QAVEffect/
 
 
 suixinbo/TILLiveSDKShow/Info.plist
