@@ -107,10 +107,10 @@
     NSDictionary *info = @{kSettingTitle:_nickName,kSettingMethod:@"onProfile"};
     [_dataArray addObject:info];
     
-    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme"};
+    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme:"};
     [_dataArray addObject:beautyDic];
     
-    NSDictionary *guestRole = @{kSettingTitle:@"观看模式",kSettingMethod:@"onGuestSwitch"};
+    NSDictionary *guestRole = @{kSettingTitle:@"观看模式",kSettingMethod:@"onGuestSwitch:"};
     [_dataArray addObject:guestRole];
     
 #if kIsAppstoreVersion
@@ -169,6 +169,31 @@
     if(method.length > 0)
     {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if ([method isEqualToString:@"onSetBeautyScheme:"])
+        {
+            //选中当前方案,默认ILiveSDK美颜包
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            NSString *beautyScheme = [user objectForKey:kBeautyScheme];
+            if (!(beautyScheme && beautyScheme.length > 0))
+            {
+                [user setValue:kILiveBeauty forKey:kBeautyScheme];
+                beautyScheme = kILiveBeauty;
+            }
+            cell.detailTextLabel.text = beautyScheme;
+        }
+        if ([method isEqualToString:@"onGuestSwitch:"])
+        {
+            //选中当前角色,默认kSxbRole_GuestHD
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            NSString *guestRole = [user objectForKey:kSxbRole_GuestValue];
+            if (!(guestRole && guestRole.length > 0))
+            {
+                [user setValue:kSxbRole_GuestHD forKey:kSxbRole_GuestValue];
+                guestRole = kSxbRole_GuestHD;
+            }
+            NSString *title = [self titleWith:guestRole];
+            cell.detailTextLabel.text = title;
+        }
         if ([method isEqualToString:@"onSetTestEnv:"])
         {
             NSNumber *numEnv = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
@@ -332,11 +357,14 @@
     NSString *avSDKVer = [NSString stringWithFormat:@"avsdk: %@",[QAVContext getVersion]];
     [version addAction:[UIAlertAction actionWithTitle:avSDKVer style:UIAlertActionStyleDefault handler:nil]];
     
+    NSString *filterSDKVer = [NSString stringWithFormat:@"filter:%@",[TILFilter getVersion]];
+    [version addAction:[UIAlertAction actionWithTitle:filterSDKVer style:UIAlertActionStyleDefault handler:nil]];
+    
     [version addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:version animated:YES completion:nil];
 }
 
-- (void)onGuestSwitch
+- (void)onGuestSwitch:(id)param
 {
     BOOL isVersionLow8_3 = NO;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.3)
@@ -344,11 +372,24 @@
         isVersionLow8_3 = YES;
     }
     
+    __weak typeof(self) ws = self;
     AlertActionHandle guestHD = ^(UIAlertAction *_Nonnull action){
+        //修改cell上的文本描述
+        NSIndexPath *path = (NSIndexPath *)param;
+        UITableViewCell *cell = [_tableView cellForRowAtIndexPath:path];
+        cell.detailTextLabel.text = [ws titleWith:kSxbRole_GuestHD];
+        
+        //修改本地数据
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:kSxbRole_GuestHD forKey:kSxbRole_GuestValue];
     };
     AlertActionHandle guestLD = ^(UIAlertAction *_Nonnull action){
+        //修改cell上的文本描述
+        NSIndexPath *path = (NSIndexPath *)param;
+        UITableViewCell *cell = [_tableView cellForRowAtIndexPath:path];
+        cell.detailTextLabel.text = [ws titleWith:kSxbRole_GuestLD];
+        
+        //修改本地数据
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:kSxbRole_GuestLD forKey:kSxbRole_GuestValue];
     };
@@ -394,15 +435,27 @@
     return nil;
 }
 
-- (void)onSetBeautyScheme
+- (void)onSetBeautyScheme:(id)param
 {
     //iliveSDK美颜包
     AlertActionHandle iliveBeauty = ^(UIAlertAction *_Nonnull action){
+        //修改cell上的描述
+        NSIndexPath *path = (NSIndexPath *)param;
+        UITableViewCell *cell =  [_tableView cellForRowAtIndexPath:path];
+        cell.detailTextLabel.text = kILiveBeauty;
+        
+        //修改本地数据
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:kILiveBeauty forKey:kBeautyScheme];
     };
     //qavsdk美颜包
     AlertActionHandle avsdkBeauty = ^(UIAlertAction *_Nonnull action){
+        //修改cell上的描述
+        NSIndexPath *path = (NSIndexPath *)param;
+        UITableViewCell *cell =  [_tableView cellForRowAtIndexPath:path];
+        cell.detailTextLabel.text = kQAVSDKBeauty;
+        
+        //修改本地数据
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:kQAVSDKBeauty forKey:kBeautyScheme];
     };
@@ -461,22 +514,22 @@
     switch (level)
     {
         case TIM_LOG_NONE:
-            return @"LOG_NONE";
+            return @"NONE";
             break;
         case TIM_LOG_ERROR:
-            return @"LOG_ERROR";
+            return @"ERROR";
             break;
         case TIM_LOG_WARN:
-            return @"LOG_WARN";
+            return @"WARN";
             break;
         case TIM_LOG_INFO:
-            return @"LOG_INFO";
+            return @"INFO";
             break;
         case TIM_LOG_DEBUG:
-            return @"LOG_DEBUG";
+            return @"DEBUG";
             break;
         default:
-            return @"LOG_UNDEFINE";
+            return @"UNDEFINE";
             break;
     }
 }

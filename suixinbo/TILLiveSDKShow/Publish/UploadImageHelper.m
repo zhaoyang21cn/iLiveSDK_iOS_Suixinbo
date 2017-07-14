@@ -34,7 +34,8 @@ static UploadImageHelper *_shareInstance = nil;
 {
     if (self = [super init])
     {
-        _cosClient = [[COSClient alloc] initWithAppId:@"1251659802" withRegion:@"tj"];
+//        _cosClient = [[COSClient alloc] initWithAppId:@"1251659802" withRegion:@"tj"];
+        _cosClient = [[COSClient alloc] initWithAppId:@"1253488539" withRegion:@"gz"];
     }
     return self;
 }

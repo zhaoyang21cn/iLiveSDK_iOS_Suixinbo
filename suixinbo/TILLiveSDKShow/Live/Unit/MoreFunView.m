@@ -226,6 +226,7 @@
 
 - (void)ilivesdkFilter
 {
+    [self.item.tilFilter setFilterMixLevel:5];
     __weak typeof(self) ws = self;
     AlertActionHandle beautyBlock = ^(UIAlertAction *_Nonnull action){
         [ws.item.tilFilter setFilterType:TILFilterType_white];

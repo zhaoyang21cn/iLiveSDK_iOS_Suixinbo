@@ -25,7 +25,8 @@
     }
     NSDictionary *dic = @{@"token" : _token,
                           @"id":_identifier,
-                          @"roomnum" : [NSNumber numberWithInteger:_roomnum],
+                          @"roomnum" : [NSNumber numberWithInteger:_targetRoomnum],
+                          @"current_roomnum" : [NSNumber numberWithInteger:_selfRoomnum]
                           };
     return dic;
 }

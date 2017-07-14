@@ -10,7 +10,7 @@
 #import "RecordListTableViewCell.h"
 #import <AVKit/AVPlayerViewController.h>
 
-@interface RecordListViewController ()
+@interface RecordListViewController ()<UIGestureRecognizerDelegate>
 
 @end
 
@@ -36,34 +36,138 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = kColorLightGray;
+    _isCanLoadMore = YES;
     
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+    [self addSubViews];
+    [self layoutSubViews];
+    
+    [self addTapBlankToHideKeyboardGesture];
+}
+
+- (void)addSubViews
+{
+    _accountIdTF = [[UITextField alloc] init];
+    UILabel *leftTip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 50)];
+    leftTip.text = @"用户名";
+    _accountIdTF.leftView = leftTip;
+    _accountIdTF.leftViewMode = UITextFieldViewModeAlways;
+    _accountIdTF.text = [[ILiveLoginManager getInstance] getLoginId];
+    [self.view addSubview:_accountIdTF];
+    
+    _accountIdLine = [[UIView alloc] init];
+    _accountIdLine.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:_accountIdLine];
+    
+    _searchNumTF = [[UITextField alloc] init];
+    leftTip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    leftTip.text = @"数量";
+    _searchNumTF.leftView = leftTip;
+    _searchNumTF.leftViewMode = UITextFieldViewModeAlways;
+    _searchNumTF.text = @"15";
+    _searchNumTF.keyboardType = UIKeyboardTypeNumberPad;
+    [self.view addSubview:_searchNumTF];
+    
+    _searchNumLine = [[UIView alloc] init];
+    _searchNumLine.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:_searchNumLine];
+    
+    _tableView = [[UITableView alloc] init];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorInset = UIEdgeInsetsZero;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [self.view addSubview:_tableView];
+    
     UIView *loadMoreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
     UILabel *loadMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
     loadMoreLabel.text = @"加载更多...";
     loadMoreLabel.textAlignment = NSTextAlignmentCenter;
     [loadMoreView addSubview:loadMoreLabel];
-    self.tableView.tableFooterView = loadMoreView;
-    self.tableView.tableFooterView.hidden = YES;
-    
-    _isCanLoadMore = YES;
+    _tableView.tableFooterView = loadMoreView;
+    _tableView.tableFooterView.hidden = YES;
     
     _refreshCtl = [[UIRefreshControl alloc] init];
     _refreshCtl.attributedTitle = [[NSAttributedString alloc] initWithString:@"刷新列表" attributes:@{NSFontAttributeName:kAppMiddleTextFont}];
     _refreshCtl.tintColor = kColorRed;
     [_refreshCtl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = _refreshCtl;
+    CGFloat version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 10.0)
+    {
+        _tableView.refreshControl = _refreshCtl;
+    }
+    else
+    {
+        [self.tableView addSubview:_refreshCtl];
+    }
+
     //自动拉取一次列表
     //第一次进来会调用 scrollViewDidScroll，自动拉取一次
     
-    _noLiveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height/2-25, self.view.bounds.size.width, 50)];
+    _noLiveLabel = [[UILabel alloc] init];
     _noLiveLabel.text = @"暂时没有回放数据";
     _noLiveLabel.hidden = YES;
     _noLiveLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_noLiveLabel];
+}
+
+- (void)layoutSubViews
+{
+    CGSize selfSize = self.view.bounds.size;
+    
+    [_accountIdTF sizeWith:CGSizeMake(selfSize.width/2, 50)];
+    [_accountIdTF alignParentTop];
+    [_accountIdTF alignParentLeft];
+    
+    [_accountIdLine sizeWith:CGSizeMake(selfSize.width/2-60, 1)];
+    [_accountIdLine layoutBelow:_accountIdTF margin:-10];
+    [_accountIdLine alignParentLeftWithMargin:60];
+    
+    [_searchNumTF sizeWith:CGSizeMake(selfSize.width/2, 50)];
+    [_searchNumTF alignParentTop];
+    [_searchNumTF layoutToRightOf:_accountIdTF];
+    
+    [_searchNumLine sizeWith:CGSizeMake(selfSize.width/2-50, 1)];
+    [_searchNumLine layoutBelow:_searchNumTF margin:-10];
+    [_searchNumLine alignParentLeftWithMargin:selfSize.width/2+50];
+    
+    [_tableView sizeWith:CGSizeMake(selfSize.width, selfSize.height-50)];
+    [_tableView alignParentLeft];
+    [_tableView alignParentTopWithMargin:50];
+    
+    [_noLiveLabel sizeWith:CGSizeMake(selfSize.width, 50)];
+    [_noLiveLabel layoutParentVerticalCenter];
+}
+
+- (void)addTapBlankToHideKeyboardGesture;
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapBlankToHideKeyboard:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    tap.delegate = self;
+    [self.view addGestureRecognizer:tap];
+}
+
+- (void)onTapBlankToHideKeyboard:(UITapGestureRecognizer *)ges
+{
+    [_accountIdTF resignFirstResponder];
+    [_searchNumTF resignFirstResponder];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    //本函数主要处理手势和点击时间冲突问题
+    
+    // 若为UITableViewCellContentView（即点击了tableViewCell），则不截获Touch事件
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        //正在编辑，则收起键盘（即不相应cell点击事件）
+        if (_accountIdTF.isEditing || _searchNumTF.isEditing)
+        {
+            return YES;
+        }
+        return NO;
+    }
+    return  YES;
 }
 
 - (void)onRefresh:(UIRefreshControl *)refreshCtl
@@ -78,6 +182,7 @@
 - (void)refresh:(TCIVoidBlock)complete
 {
     _pageItem.pageIndex = 1;//录制列表页号是从1开始的
+    _pageItem.pageSize = _searchNumTF.text.length>0 ? [_searchNumTF.text integerValue] : 15;
     [_datas removeAllObjects];
     _isCanLoadMore = YES;
     [self loadMore:complete];
@@ -108,9 +213,10 @@
         NSLog(@"fail");
     }];
     recListReq.token = [AppDelegate sharedAppDelegate].token;
-    recListReq.type = 1;
+    recListReq.type = 0;
     recListReq.index = _pageItem.pageIndex;
     recListReq.size = _pageItem.pageSize;
+    recListReq.uid = _accountIdTF.text ? _accountIdTF.text : @"";
     [[WebServiceEngine sharedEngine] asyncRequest:recListReq wait:NO];
 
 }
@@ -192,20 +298,20 @@
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGFloat currentOffsetY = scrollView.contentOffset.y;
-    /*self.refreshControl.isRefreshing == NO加这个条件是为了防止下面的情况发生：
-     每次进入UITableView，表格都会沉降一段距离，这个时候就会导致currentOffsetY + scrollView.frame.size.height   > scrollView.contentSize.height 被触发，从而触发loadMore方法，而不会触发refresh方法。
-     */
-    if ( currentOffsetY + scrollView.frame.size.height  > scrollView.contentSize.height && self.refreshControl.isRefreshing == NO && self.tableView.tableFooterView.hidden == YES && _isCanLoadMore)
-    {
-        self.tableView.tableFooterView.hidden = NO;
-        __weak typeof(self) ws = self;
-        [self loadMore:^{
-            ws.tableView.tableFooterView.hidden = YES;
-        }];
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    CGFloat currentOffsetY = scrollView.contentOffset.y;
+//    /*self.refreshControl.isRefreshing == NO加这个条件是为了防止下面的情况发生：
+//     每次进入UITableView，表格都会沉降一段距离，这个时候就会导致currentOffsetY + scrollView.frame.size.height   > scrollView.contentSize.height 被触发，从而触发loadMore方法，而不会触发refresh方法。
+//     */
+//    if ( currentOffsetY + scrollView.frame.size.height  > scrollView.contentSize.height && _tableView.refreshControl.isRefreshing == NO && _tableView.tableFooterView.hidden == YES && _isCanLoadMore)
+//    {
+//        self.tableView.tableFooterView.hidden = NO;
+//        __weak typeof(self) ws = self;
+//        [self loadMore:^{
+//            ws.tableView.tableFooterView.hidden = YES;
+//        }];
+//    }
+//}
 
 @end

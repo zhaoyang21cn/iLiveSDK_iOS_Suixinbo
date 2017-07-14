@@ -218,7 +218,7 @@
         [_livePraiseBtn layoutToRightOf:_liveAudienceBtn];
     }
     
-    [_roomId sizeWith:CGSizeMake(screenW*3/16, 30)];
+    [_roomId sizeWith:CGSizeMake(screenW*3/16+10, 30)];
     [_roomId layoutToRightOf:_bgView margin:kDefaultMargin];
     [_roomId layoutParentVerticalCenter];
     

@@ -171,8 +171,8 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 #define kSxbRole_GuestHD    @"Guest"
 #define kSxbRole_GuestLD    @"Guest2"
 //观众标题
-#define kSxbRole_GuestHDTitle      @"1、清晰"
-#define kSxbRole_GuestLDTitle      @"2、流畅"
+#define kSxbRole_GuestHDTitle      @"清晰"
+#define kSxbRole_GuestLDTitle      @"流畅"
 
 #define kSxbRole_HostValue @"kSxbRole_HostValue"
 #define kSxbRole_GuestValue @"kSxbRole_GuestValue"

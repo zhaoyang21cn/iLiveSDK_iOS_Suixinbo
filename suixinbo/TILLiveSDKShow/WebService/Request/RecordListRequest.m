@@ -19,12 +19,29 @@
 
 - (NSDictionary *)packageParams
 {
-    NSDictionary *dic = @{@"token" : _token,
-                          @"type" : [NSNumber numberWithInteger:_type],
-                          @"index" : [NSNumber numberWithInteger:_index],
-                          @"size" : [NSNumber numberWithInteger:_size]
-                        };
-    return dic;
+    if (!(_token))
+    {
+        return nil;
+    }
+    if (_uid.length > 0)
+    {
+        NSDictionary *dic = @{@"token" : _token,
+                              @"type" : [NSNumber numberWithInteger:_type],
+                              @"index" : [NSNumber numberWithInteger:_index],
+                              @"size" : [NSNumber numberWithInteger:_size],
+                              @"s_uid" : _uid
+                              };
+        return dic;
+    }
+    else
+    {
+        NSDictionary *dic = @{@"token" : _token,
+                              @"type" : [NSNumber numberWithInteger:_type],
+                              @"index" : [NSNumber numberWithInteger:_index],
+                              @"size" : [NSNumber numberWithInteger:_size],
+                              };
+        return dic;
+    }
 }
 
 //- (Class)responseClass
@@ -57,6 +74,9 @@
         item.cover = (NSString *)[itemDic objectForKey:@"cover"];
         item.videoId = [itemDic objectForKey:@"videoId"];
         item.playurl = [itemDic objectForKey:@"playurl"];
+        item.createTime = [itemDic objectForKey:@"createTime"];
+        item.duration = [itemDic objectForKey:@"duration"];
+        item.fileSize = [itemDic objectForKey:@"fileSize"];
         
         [parseVideos addObject:item];
     }

@@ -15,6 +15,10 @@
 @property (nonatomic, strong) UILabel         *recordTitle;
 @property (nonatomic, strong) UILabel         *recordUser;
 @property (nonatomic, strong) UILabel         *recordTime;
+@property (nonatomic, strong) UILabel         *recordDuration;
+@property (nonatomic, strong) UILabel         *recordFileSize;
+
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @property (nonatomic, strong) RecordVideoItem *item;
 

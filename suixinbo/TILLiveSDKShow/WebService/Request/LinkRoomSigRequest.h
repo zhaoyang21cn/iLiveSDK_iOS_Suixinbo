@@ -12,7 +12,8 @@
 
 @property (nonatomic, copy) NSString  *token;
 @property (nonatomic, copy) NSString *identifier;
-@property (nonatomic, assign) NSInteger roomnum;
+@property (nonatomic, assign) NSInteger targetRoomnum;
+@property (nonatomic, assign) NSInteger selfRoomnum;
 
 @end
 
