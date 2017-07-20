@@ -20,12 +20,12 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 
-###### V1.5.1.11058(2017－7-12)
-* 1、异步渲染修改为同步渲染
-* 2、修复ILiveRenderView Stribuf 内存问题
-* 3、upload log增加服务器返回字段保护
-* 4、ILiveRenderView增加手动旋转功能，增加用户id和视频源属性
-* 5、内部增加日志上报
+###### V1.5.2.11171(2017－7-20)
+* 1、修复退出房间后，还能获取到房间号的问题
+* 2、修复内部自动请求画面无回调问题(连续两次调用requestview导致)
+* 3、推流失败时返回8052错误码(这个错误码不对，已经修正)
+* 4、增加开播前预览兼容
+* 5、增加是否自动接收屏幕分享画面的配置开关
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
