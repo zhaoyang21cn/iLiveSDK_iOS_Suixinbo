@@ -16,7 +16,7 @@
 ## 2、下载相关模块SDK解压放到目录TCILiveSDKDemo/，并导入工程
 导入之后的工程目录应该是如下图所示，如果不是，请重新导入。（Framework下载在[这里](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos)）
 
-![](http://img.blog.csdn.net/20161104162726288)
+![](http://mc.qcloudimg.com/static/img/c6c2211d2d1256703e569e02ee1c1a0f/image.png)
 
 ## 3、导入系统库
 导入系统库之后的工程目录应该是如下图所示，如果不是，请重新导入
