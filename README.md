@@ -20,12 +20,11 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 
-###### V1.5.2.11171(2017－7-20)
-* 1、修复退出房间后，还能获取到房间号的问题
-* 2、修复内部自动请求画面无回调问题(连续两次调用requestview导致)
-* 3、推流失败时返回8052错误码(这个错误码不对，已经修正)
-* 4、增加开播前预览兼容
-* 5、增加是否自动接收屏幕分享画面的配置开关
+###### V1.5.3.11240(2017－7-26)
+
+* 1、修复iOS8下google::protobuf链接错误的问题
+* 2、修复libprotobuf.tdb报私有api问题
+* 3、替换1.5.3.11240包，修复上述两个问题时，请在工程中直接移除libprotobuf.tdb库
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
