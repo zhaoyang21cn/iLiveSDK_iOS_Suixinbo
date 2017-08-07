@@ -18,11 +18,10 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 
-###### V1.5.3.11240(2017－7-26)
-
-* 1、修复iOS8下google::protobuf链接错误的问题
-* 2、修复libprotobuf.tdb报私有api问题
-* 3、替换1.5.3.11240包，修复上述两个问题时，请在工程中直接移除libprotobuf.tdb库
+###### V1.6.0.11371(2017－8-7)
+* 1、修复PC端播片时iOS端切换房间卡死问题
+* 2、SDK内部日志统一格式
+* 3、增加PC端播片支持
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
