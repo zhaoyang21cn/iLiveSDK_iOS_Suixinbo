@@ -38,14 +38,14 @@
 #import <ShareSDKConnector/ShareSDKConnector.h>
 
 //腾讯开放平台SDK头文件（对应QQ和QQ空间）
-#import <TencentOpenAPI/TencentOAuth.h>
-#import <TencentOpenAPI/QQApiInterface.h>
+//#import <TencentOpenAPI/TencentOAuth.h>
+//#import <TencentOpenAPI/QQApiInterface.h>
 
 //微信开放平台SDK头文件
 #import "WXApi.h"
 
 //新浪微博SDK头文件
-#import "WeiboSDK.h"
+//#import "WeiboSDK.h"
 
 #import "ConstHeader.h"
 

@@ -24,7 +24,7 @@
                           @"uid" : _uid,
                           @"name" : _name,
                           @"type" : [NSNumber numberWithInteger:_type],
-                          @"cover":_cover,
+                          @"cover":_cover ? _cover : @"",
                           };
     return dic;
 }

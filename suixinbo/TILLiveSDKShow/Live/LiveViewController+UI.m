@@ -44,7 +44,7 @@
     }];
 }
 
-- (void)onRecReport:(NSString *)name type:(AVRecordType)type
+- (void)onRecReport:(NSString *)name type:(ILiveRecordType)type
 {
     RecordReportRequest *req = [[RecordReportRequest alloc] initWithHandler:^(BaseRequest *request) {
         NSLog(@"rec report succ");

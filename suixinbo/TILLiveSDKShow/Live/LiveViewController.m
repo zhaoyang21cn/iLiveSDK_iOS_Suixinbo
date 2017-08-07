@@ -47,7 +47,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.navigationController setNavigationBarHidden:YES animated:YES];
-    self.view.backgroundColor = kColorWhite;
+//    self.view.backgroundColor = kColorWhite;
+    UIImageView *bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"loginbg"]];
+    bg.userInteractionEnabled = YES;
+    self.view = bg;
     
     _isFristShow = YES;
     
@@ -86,6 +89,11 @@
 
 - (void)enterRoom
 {
+    //进入房间清空美颜，如果不清空，则进入时还会保留上次房间中的美颜值
+    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+    [context.videoCtrl inputBeautyParam:0];
+    [context.videoCtrl inputWhiteningParam:0];
+    
     switch (_roomOptionType)
     {
         case RoomOptionType_CrateRoom:
@@ -257,10 +265,18 @@
         ws.liveItem = item;
         TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
         option.controlRole = kSxbRole_GuestHD;
+        _isCameraEvent = NO;
         [[ILiveRoomManager getInstance] switchRoom:(int)item.info.roomnum option:option succ:^{
             //更新当前房间
             [ws reportMemberId:item.info.roomnum operate:0];//当前房间进房
             [ws sendJoinRoomMsg];
+            
+            //如果3S都没有来相机事件，那么就显示对方没有开摄像头的字样,且把背景改成蓝色（增强体验的作用）
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (!ws.isCameraEvent) {
+                    ws.noCameraDatatalabel.hidden = NO;
+                }
+            });
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kUserSwitchRoom_Notification object:item userInfo:nil];
             
@@ -293,8 +309,6 @@
     
     LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
     [self.view addSubview:createRoomWaitView];
-    
-    [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];
     
     [[TILLiveManager getInstance] createRoom:(int)_liveItem.info.roomnum option:option succ:^{
         [createRoomWaitView removeFromSuperview];
@@ -363,6 +377,23 @@
 
 - (void)addSubviews
 {
+    __weak typeof(self) ws = self;
+    
+    CGRect selfrect = [UIScreen mainScreen].bounds;
+    _noCameraDatatalabel = [[UILabel alloc] initWithFrame:CGRectMake(0, selfrect.size.height/2-44, selfrect.size.width, 44)];
+    _noCameraDatatalabel.text = @"主播没有打开摄像头";
+    _noCameraDatatalabel.textAlignment = NSTextAlignmentCenter;
+    _noCameraDatatalabel.hidden = YES;
+    _noCameraDatatalabel.textColor = kColorWhite;
+    [self.view addSubview:_noCameraDatatalabel];
+    
+    //如果5S都没有来相机事件，那么就显示对方没有开摄像头的字样,且把背景改成蓝色（增强体验的作用）
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (!ws.isCameraEvent) {
+            ws.noCameraDatatalabel.hidden = NO;
+        }
+    });
+    
     _closeBtn = [[UIButton alloc] init];
     [_closeBtn setImage:[UIImage imageNamed:@"cancel"] forState:UIControlStateNormal];
     [_closeBtn addTarget:self action:@selector(onBtnClose:) forControlEvents:UIControlEventTouchUpInside];
@@ -445,6 +476,10 @@
 //    [self.view addSubview:_envInfoView];
 }
 
+- (LiveUIBttomView *)getBottomView
+{
+    return _bottomView;
+}
 - (void)connectVideoBegin:(NSNotification *)noti
 {
     [self onTapBlankToHide];//点击连麦时自动收起好友列表
@@ -473,6 +508,9 @@
     [manager setAVListener:self];
     [manager setIMListener:self];
     [manager setAVRootView:self.view];
+    
+    //如果要使用美颜，必须设置本地视频代理
+    [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];
 }
 
 - (void)reportRoomInfo:(int)roomId groupId:(NSString *)groupid
@@ -560,7 +598,6 @@
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [ws dismissViewControllerAnimated:YES completion:nil];
     }];
-    
     
     [[UserViewManager shareInstance] releaseManager];
     

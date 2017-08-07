@@ -203,7 +203,7 @@
     [_liveStatusBtn layoutToRightOf:_avatarView margin:5];
     [_liveStatusBtn alignParentBottomWithMargin:kDefaultMargin/2];
     
-    [_timeLabel sizeWith:CGSizeMake(15, 15)];
+    [_timeLabel sizeWith:CGSizeMake(20, 20)];
     [_timeLabel alignTop:_avatarView];
     [_timeLabel layoutToRightOf:_netStatusBtn margin:3];
     [_timeLabel scaleToParentRightWithMargin:10];

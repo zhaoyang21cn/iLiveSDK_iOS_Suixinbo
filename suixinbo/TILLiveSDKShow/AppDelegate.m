@@ -134,6 +134,9 @@
     [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
     
     [[ILiveSDK getInstance] initSdk:[ShowAppId intValue] accountType:[ShowAccountType intValue]];
+#if !kIsAppstoreVersion
+    [[ILiveSDK getInstance] setConsoleLogPrint:YES];
+#endif
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     

@@ -187,6 +187,11 @@
 
 - (void)pushToLiveVC:(NSIndexPath *)indexPath role:(NSString *)roleName
 {
+    if (_datas.count <= indexPath.row)
+    {
+        [AlertHelp tipWith:@"无效的直播间" wait:1.5];
+        return;
+    }
     TCShowLiveListItem *item = _datas[indexPath.row];
     item.info.roleName = roleName;
     LiveViewController *liveVC = [[LiveViewController alloc] initWith:item roomOptionType:RoomOptionType_JoinRoom];

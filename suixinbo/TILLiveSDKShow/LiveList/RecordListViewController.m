@@ -64,6 +64,7 @@
     _searchNumTF.leftView = leftTip;
     _searchNumTF.leftViewMode = UITextFieldViewModeAlways;
     _searchNumTF.text = @"15";
+    _searchNumTF.placeholder = @"0～100";
     _searchNumTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_searchNumTF];
     
@@ -183,6 +184,10 @@
 {
     _pageItem.pageIndex = 1;//录制列表页号是从1开始的
     _pageItem.pageSize = _searchNumTF.text.length>0 ? [_searchNumTF.text integerValue] : 15;
+    if (_pageItem.pageSize > 100 || _pageItem.pageSize < 0)//后台限制在0-100之间
+    {
+        _pageItem.pageSize = 15;
+    }
     [_datas removeAllObjects];
     _isCanLoadMore = YES;
     [self loadMore:complete];

@@ -40,7 +40,7 @@
     _userNameTF.layer.borderWidth = 0.5;
     _userNameTF.layer.borderColor = kColorGray.CGColor;
     _userNameTF.layer.cornerRadius = 5.0;
-    _userNameTF.placeholder = @"用户名为小写字母、数字、下划线";
+    _userNameTF.placeholder = @"用户名4～24个字符,不能为纯数字";
     [self.view addSubview:_userNameTF];
     index++;
     
@@ -92,6 +92,33 @@
 //    [_checkPasswordTF resignFirstResponder];
 }
 
+//用户名为4～24个字符，不能为纯数字
+- (BOOL)invalidAccount:(NSString *)account
+{
+    if (account.length < 4 || account.length > 24)
+    {
+        return YES;
+    }
+    
+    NSString *inputString = [account stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if (inputString.length <= 0) {//是纯数字
+        return YES;
+    }
+    else{
+        return NO;
+    }
+}
+
+//密码长度为8～16个字符
+- (BOOL)invalidPwd:(NSString *)pwd
+{
+    if (pwd.length < 8 || pwd.length > 16)
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)onRegist:(UIButton *)button
 {
     if (!_userNameTF || _userNameTF.text.length < 1)
@@ -109,7 +136,18 @@
 //        [AlertHelp alertWith:@"提示" message:@"重设密码无效" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 //        return;
 //    }
-
+    
+    if ([self invalidAccount:_userNameTF.text])
+    {
+        [AlertHelp alertWith:nil message:@"输入用户名格式不对" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        return;
+    }
+    if ([self invalidPwd:_passwordTF.text])
+    {
+        [AlertHelp alertWith:nil message:@"输入密码格式不对" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        return;
+    }
+    
     LoadView *regWaitView = [LoadView loadViewWith:@"正在注册"];
     [self.view addSubview:regWaitView];
     

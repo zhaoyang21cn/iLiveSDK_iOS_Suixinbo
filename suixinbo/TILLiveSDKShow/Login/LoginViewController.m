@@ -125,6 +125,33 @@
     }
 }
 
+//用户名为4～24个字符，不能为纯数字
+- (BOOL)invalidAccount:(NSString *)account
+{
+    if (account.length < 4 || account.length > 24)
+    {
+        return YES;
+    }
+    
+    NSString *inputString = [account stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if (inputString.length <= 0) {//是纯数字
+        return YES;
+    }
+    else{
+        return NO;
+    }
+}
+
+//密码长度为8～16个字符
+- (BOOL)invalidPwd:(NSString *)pwd
+{
+    if (pwd.length < 8 || pwd.length > 16)
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)onLogin:(UIButton *)button
 {
     if (!_userNameTF || _userNameTF.text.length < 1)
@@ -135,6 +162,17 @@
     if (!_passwordTF || _passwordTF.text.length < 1)
     {
         [AlertHelp alertWith:nil message:@"请输入密码" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        return;
+    }
+    
+    if ([self invalidAccount:_userNameTF.text])
+    {
+        [AlertHelp alertWith:nil message:@"输入用户名格式不对" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        return;
+    }
+    if ([self invalidPwd:_passwordTF.text])
+    {
+        [AlertHelp alertWith:nil message:@"输入密码格式不对" cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         return;
     }
     

@@ -12,10 +12,7 @@
 #import "MoreFunView.h"
 
 @interface LiveUIBttomView () <MoreFunDelegate>
-{
-    CGFloat _lastBeautyValue;
-    CGFloat _lastWhiteValue;
-}
+
 @end
 
 @implementation LiveUIBttomView
@@ -33,8 +30,8 @@
     if (self = [super init])
     {
         _isUpVideo = NO;
-        _lastBeautyValue = 0;
-        _lastWhiteValue = 0;
+        _lastBeautyValue = -1;//如果是-1，证明还没有设置过美颜，所以默认50%美颜和美白
+        _lastWhiteValue = -1;
         [self addBottomSubViews];
         [self addNotification];
     }
@@ -284,6 +281,15 @@
         }
     };
 //    [beautyView setBeauty:_lastBeautyValue];
+    
+    if (_lastBeautyValue == -1)//还没有设置过美颜
+    {
+        _lastBeautyValue = 0.5;
+    }
+    if (_lastWhiteValue == -1)
+    {
+        _lastWhiteValue = 0.5;
+    }
     [beautyView setBeautyValue:_lastBeautyValue];
     [beautyView setWhiteValue:_lastWhiteValue];
 }

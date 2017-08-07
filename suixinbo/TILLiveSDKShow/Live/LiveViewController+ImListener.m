@@ -282,24 +282,24 @@ static __weak UIAlertController *_promptAlert = nil;
     ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         [manager changeRole:kSxbRole_GuestHD succ:^ {
-            TCILDebugLog(@"down to video: change role succ");
+            NSLog(@"down to video: change role succ");
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
             [manager enableCamera:pos enable:NO succ:^{
-                TCILDebugLog(@"down to video: disable camera succ");
+                NSLog(@"down to video: disable camera succ");
                 [manager enableMic:NO succ:^{
-                    TCILDebugLog(@"down to video: disable mic succ");
+                    NSLog(@"down to video: disable mic succ");
                     [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    TCILDebugLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                    NSLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
                 }];
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                TCILDebugLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                NSLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            TCILDebugLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+            NSLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        TCILDebugLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+        NSLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
     }];
 }
 

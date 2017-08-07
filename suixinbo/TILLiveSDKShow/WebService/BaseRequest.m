@@ -132,14 +132,13 @@
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-//                        [[HUDHelper sharedInstance] tipMessage:@"返回数据格式有误" delay:2 completion:^{
-                        TCILDebugLog(@"返回数据格式有误--> %@",respJsonObject);
+                        NSString *msg = [NSString stringWithFormat:@"返回数据格式有误--> %@",respJsonObject];
+                        [[ILiveSDK getInstance] iLiveLog:@"DEV" level:ILive_LOG_DEBUG pos:@"Baserequest->parseResponse" msg:msg ext:nil];
                             // 说明返回内容有问题
                             if (_failHandler)
                             {
                                 _failHandler(self);
                             }
-//                        }];
                         NSLog(@"==========[%@]开始解析响应完成>>>>>>>>>", self);
                     });
                 }
@@ -155,27 +154,24 @@
                     }
                     else
                     {
-//                        [[HUDHelper sharedInstance] tipMessage:[_response message] delay:2 completion:^{
-                        TCILDebugLog(@"返回的数据有业务错误--> %@",[_response message]);
+                        NSString *msg = [NSString stringWithFormat:@"返回的数据有业务错误--> %@",[_response message]];
+                        [[ILiveSDK getInstance] iLiveLog:@"DEV" level:ILive_LOG_DEBUG pos:@"Baserequest->parseResponse" msg:msg ext:nil];
                             // 返回的数据有业务错误
                             if (_failHandler)
                             {
                                 _failHandler(self);
                             }
-//                        }];
                     }
                     NSLog(@"==========[%@]开始解析响应完成>>>>>>>>>", self);
                 });
             }
-//            else
-//            {
-//                DebugLog(@"_succHandler 为空, 不解析");
-//            }
         });
     }
     else
     {
-        TCILDebugLog(@"返回数据为空--> %@",[self class]);
+        NSString *msg = [NSString stringWithFormat:@"返回数据为空--> %@",[self class]];
+        [[ILiveSDK getInstance] iLiveLog:@"DEV" level:ILive_LOG_DEBUG pos:@"Baserequest->parseResponse" msg:msg ext:nil];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             // 说明返回内容有问题
             if (_failHandler)

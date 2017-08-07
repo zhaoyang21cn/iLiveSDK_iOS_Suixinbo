@@ -12,7 +12,7 @@
 
 - (void)onInteract;
 
-- (void)onRecReport:(NSString *)name type:(AVRecordType)type;
+- (void)onRecReport:(NSString *)name type:(ILiveRecordType)type;
 
 @end
 

@@ -153,6 +153,7 @@
     if (!_mainRenderView)//第一个画面当作主界面
     {
         renderView = [[TILLiveManager getInstance] addAVRenderView:[UIScreen mainScreen].bounds forIdentifier:userId srcType:type];
+        renderView.identifier = userId;
         [[TILLiveManager getInstance] sendAVRenderViewToBack:userId srcType:type];
         _mainRenderView = renderView;
         _mainCodeUserId = [UserViewManager codeUser:userId type:type];
@@ -172,6 +173,7 @@
             renderView = [[TILLiveManager getInstance] addAVRenderView:[self getRect:_total] forIdentifier:userId srcType:type];
             if (renderView)
             {
+                renderView.identifier = userId;
                 [_renderViews setObject:renderView forKey:[UserViewManager codeUser:userId type:type]];
                 NSLog(@"_total addRenderView = %d",_total);
                 _total++;
@@ -252,6 +254,7 @@
     ILiveRenderView *renderView = [[TILLiveManager getInstance] addAVRenderView:rect forIdentifier:userId srcType:type];
     if (renderView)
     {
+        renderView.identifier = userId;
         [_renderViews setObject:renderView forKey:[UserViewManager codeUser:userId type:type]];
         _total++;
     }
@@ -290,8 +293,7 @@
     {
         if ([codeId isEqualToString:codeUserId])
         {
-            ILiveRenderView *tempView = _mainRenderView;
-            _mainRenderView = [_renderViews objectForKey:codeId];
+            ILiveRenderView *tempView = [_renderViews objectForKey:codeId];
             [_renderViews removeObjectForKey:codeId];
             [_renderViews setObject:tempView forKey:_mainCodeUserId];
             break;
@@ -311,7 +313,9 @@
     for (NSString * codeId in renderKeys)
     {
         ILiveRenderView *renderView = [_renderViews objectForKey:codeId];
-        [renderView setFrame:[self getRect:index++]];
+        CGRect rect = [self getRect:index++];
+        NSLog(@"------>refresh rect=%@",NSStringFromCGRect(rect));
+        [renderView setFrame:rect];
     }
     
     //再布局占位符视图
@@ -332,14 +336,28 @@
     NSString *user;
     NSRange rangeCamera = [identifier rangeOfString:@"_camera"];
     
-    if (rangeCamera.location == NSNotFound)//screen
+    if (rangeCamera.location == NSNotFound)//screen or media
     {
+        
         NSRange rangeScreen = [identifier rangeOfString:@"_screen"];
-        user = [identifier substringWithRange:NSMakeRange(0, idLen-rangeScreen.length)];
-        if (user)
+        if (rangeScreen.location == NSNotFound)//media
         {
-            NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_SCREEN];
-            [dic setObject:type forKey:user];
+            NSRange rangeMedia = [identifier rangeOfString:@"_media"];
+            user = [identifier substringWithRange:NSMakeRange(0, idLen-rangeMedia.length)];
+            if (user)
+            {
+                NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_MEDIA];
+                [dic setObject:type forKey:user];
+            }
+        }
+        else//screen
+        {
+            user = [identifier substringWithRange:NSMakeRange(0, idLen-rangeScreen.length)];
+            if (user)
+            {
+                NSNumber *type = [NSNumber numberWithInteger:QAVVIDEO_SRC_TYPE_SCREEN];
+                [dic setObject:type forKey:user];
+            }
         }
     }
     else//camera
@@ -368,7 +386,7 @@
     }
     else if (type == QAVVIDEO_SRC_TYPE_MEDIA)
     {
-        key = [NSString stringWithFormat:@"%@_Media",identifier];
+        key = [NSString stringWithFormat:@"%@_media",identifier];
     }
     return key;
 }
@@ -382,7 +400,8 @@
     CGFloat width = height * 3/4;
     CGFloat x = screenRect.size.width - width - kDefaultMargin;
     CGFloat y = topMargin + index*height + index*kDefaultMargin;
-    NSLog(@"getrect  index = %d, rect = {%f,%f,%f,%f}",index, x,y,width,height);
+    CGRect result = CGRectMake(x, y, width, height);
+    NSLog(@"------>getRect=%@", NSStringFromCGRect(result));
     return CGRectMake(x, y, width, height);
 }
 

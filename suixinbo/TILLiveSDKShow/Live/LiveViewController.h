@@ -51,6 +51,9 @@
     NSInteger _count;
 }
 
+@property (nonatomic, strong) UILabel  *noCameraDatatalabel;//对方没有打开相机时的提示
+@property (nonatomic, assign) BOOL  isCameraEvent;//noCameraDatatalabel需要延迟显示，isNoCameraEvent用来判断是否收到了camera事件
+
 @property (nonatomic, strong) TIMUserProfile *selfProfile;//自己的信息
 @property (nonatomic, strong) TCShowLiveListItem  *liveItem;
 @property (nonatomic, strong) NSMutableArray *upVideoMembers;
@@ -60,5 +63,7 @@
 
 - (instancetype)initWith:(TCShowLiveListItem *)item roomOptionType:(RoomOptionType)type;
 - (void)onClose;
+
+- (LiveUIBttomView *)getBottomView;
 
 @end

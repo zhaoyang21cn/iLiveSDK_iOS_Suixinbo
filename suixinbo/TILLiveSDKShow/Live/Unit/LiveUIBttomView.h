@@ -37,6 +37,8 @@
 @property (nonatomic, assign) BOOL isHost; //自己是不是主播
 @property (nonatomic, assign) BOOL isUpVideo; //自己是不是上麦
 @property (nonatomic, copy) NSString *curRole;//当前角色字符串
+@property (nonatomic, assign) CGFloat lastBeautyValue; //记录美颜程度
+@property (nonatomic, assign) CGFloat lastWhiteValue;  //记录美白程度
 
 @property (nonatomic, strong) TILFilter *tilFilter;
 

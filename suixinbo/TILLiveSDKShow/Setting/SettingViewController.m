@@ -122,7 +122,7 @@
 #endif
     NSDictionary *logReport = @{kSettingTitle:@"日志上报",kSettingMethod:@"onLogReport"};
     [_dataArray addObject:logReport];
-    NSDictionary *version = @{kSettingTitle:@"版本号",kSettingMethod:@"onVersion"};
+    NSDictionary *version = @{kSettingTitle:@"当前版本",kSettingMethod:@"onVersion"};
     [_dataArray addObject:version];
 }
 
@@ -341,7 +341,7 @@
 
 - (void)onVersion
 {
-    UIAlertController *version = [UIAlertController alertControllerWithTitle:@"版本号" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *version = [UIAlertController alertControllerWithTitle:@"当前版本" message:nil preferredStyle:UIAlertControllerStyleAlert];
 //    NSString *tlsSDKVer = [NSString stringWithFormat:@"tlssdk: %@",[[TLSHelper getInstance] getSDKVersion]];
 //    [version addAction:[UIAlertAction actionWithTitle:tlsSDKVer style:UIAlertActionStyleDefault handler:nil]];
     
@@ -459,23 +459,7 @@
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:kQAVSDKBeauty forKey:kBeautyScheme];
     };
-    UIAlertController *alert = [AlertHelp alertWith:@"选择美颜方案" message:nil funBtns:@{kILiveBeauty:iliveBeauty, kQAVSDKBeauty:avsdkBeauty} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
-    //选中当前方案,默认ILiveSDK美颜包
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *beautyScheme = [user objectForKey:kBeautyScheme];
-    if (!(beautyScheme && beautyScheme.length > 0))
-    {
-        [user setValue:kILiveBeauty forKey:kBeautyScheme];
-        beautyScheme = kILiveBeauty;
-    }
-    NSArray *alertActions = alert.actions;
-    for (UIAlertAction *action in alertActions)
-    {
-        if ([action.title isEqualToString:beautyScheme])
-        {
-            [action setValue:[UIColor grayColor] forKey:@"titleTextColor"];
-        }
-    }
+    [AlertHelp alertWith:@"选择美颜方案" message:nil funBtns:@{kILiveBeauty:iliveBeauty, kQAVSDKBeauty:avsdkBeauty} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
 }
 
 - (void)onLogLevel

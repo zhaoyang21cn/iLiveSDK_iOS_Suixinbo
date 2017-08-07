@@ -279,10 +279,10 @@ UIAlertController *_alert;
     {
         __weak typeof(self) ws = self;
         AlertActionHandle hlsBlock = ^(UIAlertAction * _Nonnull action){
-            [ws pushStream:button encodeType:AV_ENCODE_HLS recordType:AV_RECORD_FILE_TYPE_MP4];
+            [ws pushStream:button encodeType:ILive_ENCODE_HLS recordType:ILive_RECORD_FILE_TYPE_MP4];
         };
         AlertActionHandle rtmpBlock = ^(UIAlertAction * _Nonnull action){
-            [ws pushStream:button encodeType:AV_ENCODE_RTMP recordType:AV_RECORD_FILE_TYPE_MP4];
+            [ws pushStream:button encodeType:ILive_ENCODE_RTMP recordType:ILive_RECORD_FILE_TYPE_MP4];
         };
         NSDictionary *funs = @{@"HLS推流":hlsBlock, @"RTMP推流":rtmpBlock};
         [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:^(UIAlertAction * _Nonnull action) {
@@ -295,7 +295,7 @@ UIAlertController *_alert;
     }
 }
 
-- (void)pushStream:(UIButton *)button encodeType:(AVEncodeType)encodeType recordType:(AVRecordFileType)recordType
+- (void)pushStream:(UIButton *)button encodeType:(ILiveEncodeType)encodeType recordType:(ILiveRecordFileType)recordType
 {
     ILiveChannelInfo *info = [[ILiveChannelInfo alloc] init];
     info.channelName = [NSString stringWithFormat:@"新随心播推流_%@",[[ILiveLoginManager getInstance] getLoginId]];
@@ -360,7 +360,9 @@ UIAlertController *_alert;
             }
             case SSDKResponseStateFail:
             {
-                [AlertHelp alertWith:@"分享失败" message:[NSString stringWithFormat:@"%@",error] cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [AlertHelp alertWith:@"分享失败" message:[NSString stringWithFormat:@"%@",error] cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+                });
                 break;
             }
             case SSDKResponseStateCancel:
@@ -399,10 +401,10 @@ UIAlertController *_alert;
     {
         __weak typeof(self) ws = self;
         AlertActionHandle videoRecordBlock = ^(UIAlertAction * _Nonnull action){
-            [ws startRecord:button type:AV_RECORD_TYPE_VIDEO];
+            [ws startRecord:button type:ILive_RECORD_TYPE_VIDEO];
         };
         AlertActionHandle audioRecordBlock = ^(UIAlertAction * _Nonnull action){
-            [ws startRecord:button type:AV_RECORD_TYPE_AUDIO];
+            [ws startRecord:button type:ILive_RECORD_TYPE_AUDIO];
         };
         NSDictionary *funs = @{@"视频录制":videoRecordBlock,@"纯音频录制":audioRecordBlock};
         [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:^(UIAlertAction * _Nonnull action) {
@@ -514,7 +516,7 @@ UIAlertController *_alert;
     [AlertHelp alertWith:@"结束跨房连麦" message:@"确定结束所有跨房连麦吗？" funBtns:@{@"确定":okBlock} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
-- (void)startRecord:(UIButton *)button type:(AVRecordType)recordType
+- (void)startRecord:(UIButton *)button type:(ILiveRecordType)recordType
 {
     __weak typeof(self) ws = self;
     [self showEditAlert:[AlertHelp topViewController] title:@"输入录制文件名" message:nil placeholder:@"录制文件名" okTitle:@"确定" cancelTitle:@"取消" ok:^(NSString * _Nonnull editString) {

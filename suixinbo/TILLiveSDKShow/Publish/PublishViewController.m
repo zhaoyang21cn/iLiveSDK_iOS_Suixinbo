@@ -167,16 +167,30 @@
     [self publish:role];
 }
 
-- (void)publish:(NSString *)role
+- (BOOL)invalidRoomTitle:(NSString *)title
 {
 #if kIsAppstoreVersion
-    if (!(_liveTitle.text && _liveTitle.text.length > 0))
+    if (title.length > 32 || title.length <= 0)
     {
-        [AppDelegate showAlert:self title:nil message:@"请输入直播标题" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        return YES;
+    }
+    return NO;
+#else
+    if (title.length > 32)
+    {
+        return YES;
+    }
+    return NO;
+#endif
+}
+
+- (void)publish:(NSString *)role
+{
+    if ([self invalidRoomTitle:_liveTitle.text])
+    {
+        [AppDelegate showAlert:self title:nil message:@"直播标题格式不对" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
         return;
     }
-#else
-#endif
     LoadView *reqIdWaitView = [LoadView loadViewWith:@"正在请求房间ID"];
     [self.view addSubview:reqIdWaitView];
     __block CreateRoomResponceData *roomData = nil;
@@ -244,9 +258,13 @@
 
 - (void)onClickPublishContent:(UITapGestureRecognizer *)tap
 {
-    if (tap.state == UIGestureRecognizerStateEnded)
+    if (_liveTitle.editing)
     {
         [_liveTitle resignFirstResponder];
+        return;
+    }
+    if (tap.state == UIGestureRecognizerStateEnded)
+    {
         __weak typeof(self) ws = self;
         AlertActionHandle cameraBlock = ^(UIAlertAction * _Nonnull action){
             [ws openCamera];

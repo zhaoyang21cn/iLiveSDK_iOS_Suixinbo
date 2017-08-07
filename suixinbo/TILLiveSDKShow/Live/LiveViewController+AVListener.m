@@ -45,6 +45,34 @@
 - (void)onFirstFrameRecved:(int)width height:(int)height identifier:(NSString *)identifier srcType:(avVideoSrcType)srcType;
 {
     NSLog(@"%d,%d,%@",width,height,identifier);
+    
+    LiveUIBttomView *bottom = [self getBottomView];
+    bottom.lastBeautyValue = 0.5;
+    bottom.lastWhiteValue = 0.5;
+    
+    //首帧来时，设置美颜
+    //选中当前方案,默认ILiveSDK美颜包
+    NSString *beautyScheme = [[NSUserDefaults standardUserDefaults] objectForKey:kBeautyScheme];
+    if (!(beautyScheme && beautyScheme.length > 0))
+    {
+        [[NSUserDefaults standardUserDefaults] setValue:kILiveBeauty forKey:kBeautyScheme];
+        beautyScheme = kILiveBeauty;
+    }
+    if ([beautyScheme isEqualToString:kILiveBeauty])
+    {
+        //TILFilterSDK美颜效果
+        [self.tilFilter setBeautyLevel:bottom.lastBeautyValue * 10];
+        [self.tilFilter setWhitenessLevel:bottom.lastWhiteValue * 10];
+    }
+    if ([beautyScheme isEqualToString:kQAVSDKBeauty])
+    {
+        //QAVSDK美颜效果
+        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+        if (context && context.videoCtrl)
+        {
+            [context.videoCtrl inputBeautyParam:bottom.lastBeautyValue * 10];
+        }
+    }
 }
 
 - (void)onVideoType:(avVideoSrcType)type users:(NSArray *)users
@@ -62,6 +90,18 @@
         }
         renderView.isRotate = NO;
     }
+    
+    NSArray *renderViews = [[TILLiveManager getInstance] getAllAVRenderViews];
+    if (renderViews.count > 0)
+    {
+        self.noCameraDatatalabel.hidden = YES;
+    }
+    else
+    {
+        self.noCameraDatatalabel.hidden = NO;
+        self.isCameraEvent = NO;
+    }
+    self.isCameraEvent = YES;
 }
 
 - (void)offVideoType:(avVideoSrcType)type users:(NSArray *)users
@@ -81,12 +121,23 @@
         [[UserViewManager shareInstance] removeRenderView:user srcType:type];
     }
     [[UserViewManager shareInstance] refreshViews];
+    
+    NSArray *renderViews = [[TILLiveManager getInstance] getAllAVRenderViews];
+    if (renderViews.count > 0)
+    {
+        self.isCameraEvent = YES;
+        self.noCameraDatatalabel.hidden = YES;
+    }
+    else
+    {
+        self.isCameraEvent = NO;
+        self.noCameraDatatalabel.hidden = NO;
+    }
 }
 
 - (void)onSwitchToMain:(MyTapGesture *)gesture
 {
     NSString *codeId = gesture.codeId;
-    TCILDebugLog(@"tilliveshow----->%s1, codeId = %@",__func__, codeId);
     NSDictionary *userDic = [UserViewManager decodeUser:codeId];
     if (userDic)
     {

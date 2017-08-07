@@ -67,7 +67,7 @@
     
     //封面
     [_recordCover setImage:[UIImage imageNamed:@"defaul_publishcover"]];
-    if (_item.cover) {
+    if (_item.cover && _item.cover.length > 0) {
         NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:_item.cover]];
         UIImage *image = [[UIImage alloc] initWithData:data];
         [_recordCover setImage:image];
@@ -127,8 +127,8 @@
     if (_item.duration) {
         NSInteger duration = [_item.duration integerValue];
         NSInteger sec = duration % 60;
-        NSInteger minu = (sec/60) % 60;
-        NSInteger hour = sec/3600;
+        NSInteger minu = (duration/60) % 60;
+        NSInteger hour = duration/3600;
         if (hour>0)
         {
             NSString *showTime = [NSString stringWithFormat:@"%2ld小时%2ld分%2ld秒",hour,minu,sec];

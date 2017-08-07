@@ -24,6 +24,7 @@
                               @"index" : [NSNumber numberWithInteger:_index],
                               @"size" : [NSNumber numberWithInteger:_size],
                               @"appid" : [NSNumber numberWithInteger:_appid],
+                              @"isIOS" : @(1),
                           };
     return dic;
 }
