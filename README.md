@@ -11,12 +11,10 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 |SDK|版本号|摘要|下载地址|
 |--|--|--|--|
-|QAVSDK|1.9.1.17.OpenSDK_1.9.1-26127|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK.zip)
-|IMSDK|v2.5.4.10421.10420|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK.zip)
-|ILiveSDK|1.5.3.11240|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK.framework.zip)
-|TILLiveSDK|1.1.2|直播业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILLiveSDK.framework.zip)
+|QAVSDK|1.9.2.17.OpenSDK_1.9.2-28736|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.2.17_28736.zip)
+|IMSDK|v2.5.6.11082.11081|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.6.11082.11081.zip)
+|ILiveSDK|1.6.0.11371|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.6.0.11371.zip)
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
-|TILFilterSDK|1.2.3|插件美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
 ## SDK最近更新说明
 
