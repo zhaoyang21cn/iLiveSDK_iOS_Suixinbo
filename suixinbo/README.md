@@ -11,7 +11,7 @@
 
 #### 1、打开随心播工程应如下图所示
 
-![](//mc.qcloudimg.com/static/img/662e79984e307883f32a236106d799b3/image.png)
+![](http://mc.qcloudimg.com/static/img/662e79984e307883f32a236106d799b3/image.png)
 
 #### 2、开发者帐号配置
 在Team处选择自己的开发者帐号，配置好之后就可以直接运行了
