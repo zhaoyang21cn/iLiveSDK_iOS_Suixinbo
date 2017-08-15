@@ -9,10 +9,20 @@ IMSDKSDKVersion="IMSDK_2.5.6.11082.11081"
 AVSDKVersion="AVSDK_1.9.2.17_28736"
 QAVEffectVersion="QAVEffect"
 
+echo $ILiveSDKVersion
+echo $IMSDKSDKVersion
+echo $AVSDKVersion
+
 #清除现有文件
 echo "|-------------------------------clear sdk dir...--------------------------------|"
-ls |grep -v LoadSDK.sh |xargs rm -rf
-#rm -rf !(down.sh|test.sh)
+# 移除 除了LoadSDK.sh这个文件以外的所有文件
+#  ls |grep -v LoadSDK.sh |xargs rm -rf
+
+# 移除SDK相关文件夹
+rm -rf AVSDK
+rm -rf ILiveSDK
+rm -rf IMSDK
+rm -rf QAVEffect
 
 #下载sdk zip文件
 echo "|-------------------------------download AVSDK----------------------------------|"
