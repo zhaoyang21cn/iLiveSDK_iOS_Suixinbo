@@ -354,7 +354,7 @@ self.preProcessor = [[TXCVideoPreprocessor alloc] init];
 //开始预处理
 [self.preProcessor processFrame:frameData.data width:frameData.frameDesc.width height:frameData.frameDesc.height orientation:TXE_ROTATION_0 inputFormat:TXE_FRAME_FORMAT_NV12 outputFormat:TXE_FRAME_FORMAT_NV12];
 //将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
-if(self.beautyByte){
+if(self.processorBytes){
 memcpy(frameData.data, self.processorBytes, frameData.frameDesc.width * frameData.frameDesc.height * 3 / 2);
 }
 }
