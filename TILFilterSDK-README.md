@@ -21,7 +21,8 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 [点击此处下载TXMVideoPreprocessor（包含基础版本、高级版本）](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_2.1.0.zip)
 
 最新版本说明
-###### V2.1.0(2017-09-05)</br>
+
+##### V2.1.0(2017-09-05)</br>
 * TILFilterSDK更名为TXMVideoPreprocessor</br>
 * 以delegate的形式返回处理结果</br>
 * 增加多套美颜方案（光滑、自然）</br>
