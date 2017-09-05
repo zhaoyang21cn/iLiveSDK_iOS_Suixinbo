@@ -1,5 +1,11 @@
 ## IOS_TILFilterSDK_ChangeList
  
+###### V2.1.0(2017-09-05)
+* TILFilterSDK更名为TXMVideoPreprocessor
+* 以delegate的形式返回处理结果
+* 增加多套美颜方案（光滑、自然）
+* 增加红润、水印、裁剪、缩放、旋转、镜像、v脸、短脸、下巴、瘦鼻功能
+
 ###### V1.2.3(2017-06-22)
 * 修复二次使用有可能导致闪屏的问题
  
