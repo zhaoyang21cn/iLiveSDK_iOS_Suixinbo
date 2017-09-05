@@ -21,27 +21,28 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 [点击此处下载TXMVideoPreprocessor（包含基础版本、高级版本）](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_2.1.0.zip)
 
 最新版本说明
-> V2.1.0(2017-09-05)
-* 1、TILFilterSDK更名为TXMVideoPreprocessor
-* 2、以delegate的形式返回处理结果
-* 3、增加多套美颜方案（光滑、自然）
-* 4、增加红润、水印、裁剪、缩放、旋转、镜像、v脸、短脸、下巴、瘦鼻功能
+> V2.1.0(2017-09-05)</br>
+* 1、TILFilterSDK更名为TXMVideoPreprocessor</br>
+* 2、以delegate的形式返回处理结果</br>
+* 3、增加多套美颜方案（光滑、自然）</br>
+* 4、增加红润、水印、裁剪、缩放、旋转、镜像、v脸、短脸、下巴、瘦鼻功能</br>
 [查看更多版本更新记录](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Suixinbo/blob/master/doc/TILFilterSDK_ChangeList.md)
 
 </br>
 
 
 引入依赖库
+
 | | | 
 :-----:|:-----:|
 ![](https://mc.qcloudimg.com/static/img/59cd6dad30234f60fc2bbb6006c98360/preprocessor_advance_project.png)|![](https://mc.qcloudimg.com/static/img/a6be8bfa51022800c8e5fb2022444d78/preprocessor_basic.png)|
 高级版本|基础版本|
 
 
-> 温馨提示：
-(1) 如果不使用滤镜，可以删除TXLiteAVVideoPreprocessorResource.bundle
-(2) 高级版本需要申请licence并拖到工程目录下，licence不能重命名，必须为YTFaceSDK.licence
-(3) 如需要更多动效资源，请联系商务，并将资源添加到Resource文件夹下
+> 温馨提示：</br>
+(1) 如果不使用滤镜，可以删除TXLiteAVVideoPreprocessorResource.bundle</br>
+(2) 高级版本需要申请licence并拖到工程目录下，licence不能重命名，必须为YTFaceSDK.licence</br>
+(3) 如需要更多动效资源，请联系商务，并将资源添加到Resource文件夹下</br>
 
 
 
