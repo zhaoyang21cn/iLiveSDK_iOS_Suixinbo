@@ -11,17 +11,17 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 |SDK|版本号|摘要|下载地址|
 |--|--|--|--|
-|QAVSDK|1.9.2.17.OpenSDK_1.9.2-28736|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.2.17_28736.zip)
+|QAVSDK|1.9.5.925.Local|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.5.925.Local.zip)
 |IMSDK|v2.5.6.11082.11081|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.6.11082.11081.zip)
-|ILiveSDK|1.6.1.11681|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.6.1.11681.zip)
+|ILiveSDK|1.7.0.11812|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.7.0.11812.zip)
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
 
 ## SDK最近更新说明
 
-###### V1.6.1.11681(2017－9-7)
-* 1、修复 被踢下线，再次登录时出现1003错误的问题
-* 2、房间失去连接时，释放内部资源
-* 3、增加内部关键日志打印
+###### V1.7.0.11812(2017－9-25)
+* 1、增加极速模式
+* 2、增加预览接口
+* 3、增加预览分辨率设置
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
