@@ -22,6 +22,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 * 1、增加极速模式
 * 2、增加预览接口
 * 3、增加预览分辨率设置
+* 4、增加OpenAL.framework
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
