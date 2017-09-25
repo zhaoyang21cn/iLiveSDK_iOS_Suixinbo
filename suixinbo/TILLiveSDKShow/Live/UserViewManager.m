@@ -193,7 +193,15 @@
     NSArray *codeUserIds = [_renderViews allKeys];
     
     NSInteger index = [codeUserIds indexOfObject:codeUserId];
-    if (index != NSNotFound)
+    if (index == NSNotFound)//是大画面
+    {
+        NSDictionary *userDic = [UserViewManager decodeUser:self.mainCodeUserId];
+        NSArray *userKeys = [userDic allKeys];
+        NSString *userId = userKeys[0];
+        NSNumber *userType = [userDic objectForKey:userId];
+        [[TILLiveManager getInstance] removeAVRenderView:userId srcType:(avVideoSrcType)[userType integerValue]];
+    }
+    else
     {
         [[TILLiveManager getInstance] removeAVRenderView:userId srcType:type];
         

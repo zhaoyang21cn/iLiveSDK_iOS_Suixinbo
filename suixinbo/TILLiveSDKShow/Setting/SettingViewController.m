@@ -113,17 +113,20 @@
     NSDictionary *guestRole = @{kSettingTitle:@"观看模式",kSettingMethod:@"onGuestSwitch:"};
     [_dataArray addObject:guestRole];
     
-#if kIsAppstoreVersion
-#else
+#if !kIsAppstoreVersion
     NSDictionary *logLevel = @{kSettingTitle:@"日志等级",kSettingMethod:@"onLogLevel"};
     [_dataArray addObject:logLevel];
 //    NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
 //    [_dataArray addObject:testEnvDic];
 #endif
+    
     NSDictionary *logReport = @{kSettingTitle:@"日志上报",kSettingMethod:@"onLogReport"};
     [_dataArray addObject:logReport];
+    
+#if !kIsAppstoreVersion
     NSDictionary *version = @{kSettingTitle:@"当前版本",kSettingMethod:@"onVersion"};
     [_dataArray addObject:version];
+#endif
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

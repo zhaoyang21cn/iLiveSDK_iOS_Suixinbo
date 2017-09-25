@@ -15,6 +15,7 @@
 @interface LiveUIParView () <ILiveSpeedTestDelegate>
 {
     UInt64  _channelId;
+    NSMutableString *_versionInfo;
 }
 @end
 
@@ -185,6 +186,18 @@ UIAlertController *_alert;
 
 - (void)onPar:(UIButton *)button
 {
+    _versionInfo = [NSMutableString string];
+    NSString *iliveSDKVer = [NSString stringWithFormat:@"ilivesdk: %@\n",[[ILiveSDK getInstance] getVersion]];
+    [_versionInfo appendString:iliveSDKVer];
+    NSString *tilliveSDKVer = [NSString stringWithFormat:@"tillivesdk: %@\n",[[TILLiveManager getInstance] getVersion]];
+    [_versionInfo appendString:tilliveSDKVer];
+    NSString *imSDKVer = [NSString stringWithFormat:@"imsdk: %@\n",[[TIMManager sharedInstance] GetVersion]];
+    [_versionInfo appendString:imSDKVer];
+    NSString *avSDKVer = [NSString stringWithFormat:@"avsdk: %@\n",[QAVContext getVersion]];
+    [_versionInfo appendString:avSDKVer];
+    NSString *filterSDKVer = [NSString stringWithFormat:@"filter:%@\n",[TILFilter getVersion]];
+    [_versionInfo appendString:filterSDKVer];
+    
     if (!button.selected)
     {
         __weak typeof(self) ws = self;
@@ -265,6 +278,8 @@ UIAlertController *_alert;
         //扬声器
         NSString *isOpenSpeaker = [[ILiveRoomManager getInstance] getCurSpeakerState] ? @"ON" : @"OFF";
         [paramString appendString:[NSString stringWithFormat:@"扬声器: %@\n",isOpenSpeaker]];
+        
+        [paramString appendString:_versionInfo];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             ws.paramTextView.text = paramString;

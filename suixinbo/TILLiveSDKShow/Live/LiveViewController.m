@@ -346,6 +346,7 @@
 {
     TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
     option.controlRole = kSxbRole_GuestHD;
+    option.avOption.autoHdAudio = YES;
 
     __weak typeof(self) ws = self;
     [[TILLiveManager getInstance] joinRoom:roomId option:option succ:^{
