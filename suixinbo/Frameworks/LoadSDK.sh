@@ -26,7 +26,7 @@ rm -rf QAVEffect
 
 #下载sdk zip文件
 echo "|-------------------------------download AVSDK----------------------------------|"
-curl -o AVSDK.zip "http://dldir1.qq.com/hudongzhibo/ILiveSDK/$AVSDKVersion.zip" --retry 5
+curl -o AVSDK.zip "http://dldir1.qq.com/hudongzhibo/ILiveSDK/$AVSDKVersion.zip" --max-time 600 --retry 5
 echo "|-------------------------------download QAVEffect------------------------------|"
 curl -o QAVEffect.zip "http://dldir1.qq.com/hudongzhibo/ILiveSDK/$QAVEffectVersion.zip" --retry 5
 echo "|-------------------------------download IMSDK----------------------------------|"
