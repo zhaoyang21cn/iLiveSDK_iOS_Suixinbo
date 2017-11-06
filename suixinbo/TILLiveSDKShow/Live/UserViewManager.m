@@ -276,7 +276,7 @@
     {
         return NO;
     }
-    if (!_mainCodeUserId || _mainCodeUserId <= 0)
+    if (!_mainCodeUserId || [_mainCodeUserId intValue] <= 0)
     {
         return NO;
     }
