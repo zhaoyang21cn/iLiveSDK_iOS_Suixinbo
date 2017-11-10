@@ -9,7 +9,7 @@
 #import "LoginViewController.h"
 #import "LiveViewController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<QAVLogger>
 @end
 
 @implementation AppDelegate
@@ -130,13 +130,10 @@
         [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
         logLevel = @(TIM_LOG_DEBUG);
     }
-    [manager initLogSettings:YES logPath:[manager getLogPath]];
+    [self disableLogPrint];//禁用日志控制台打印
     [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
     
     [[ILiveSDK getInstance] initSdk:[ShowAppId intValue] accountType:[ShowAccountType intValue]];
-#if !kIsAppstoreVersion
-    [[ILiveSDK getInstance] setConsoleLogPrint:YES];
-#endif
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
@@ -148,6 +145,25 @@
     
     [self configAppearance];
     return YES;
+}
+
+- (void)disableLogPrint
+{
+    TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
+    [manager initLogSettings:NO logPath:[manager getLogPath]];
+    [[ILiveSDK getInstance] setConsoleLogPrint:NO];
+    [QAVAppChannelMgr setExternalLogger:self];
+}
+
+#pragma mark - avsdk日志代理
+- (BOOL)isLogPrint
+{
+    return NO;
+}
+
+- (NSString *)getLogPath
+{
+    return [[TIMManager sharedInstance] getLogPath];
 }
 
 //- (void)test
@@ -224,6 +240,5 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
 
 @end
