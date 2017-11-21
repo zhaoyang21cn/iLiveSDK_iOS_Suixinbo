@@ -43,7 +43,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 (1) 如果不使用滤镜，可以删除TXLiteAVVideoPreprocessorResource.bundle</br>
 (2) 高级版本需要申请licence并同步到Copy Bundle Resources中，licence不能重命名，必须为YTFaceSDK.licence</br>
 (3) 下载的TXMVideoPreprocessor.advance中的Pitu子文件夹及YoutuBeauty子文件夹中的所有bundle，并同步到Copy Bundle Resources中，否则直接crash</br>
-(4) 如果您是AVSDK的用户，processFrame的orientation参数应该设置为frameData.frameDesc.rotate，否则无法识别到人脸，</br>
+(4) 如果您是AVSDK的用户，processFrame的orientation参数应该设置为frameData.frameDesc.rotate，否则无法识别到人脸</br>
 (5) 使用滤镜功能时，确保设置融合度setFilterMixLevel，否则默认为0</br>
 (6) 如需要更多动效资源，请联系商务，并将资源添加到Resource文件夹下</br>
 
