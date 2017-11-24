@@ -23,6 +23,8 @@
 
 ![](http://img.blog.csdn.net/20161104162855134)
 
+* 注明:最新版本还需添加 OpenAL.framework
+
 ## 4、工程配置
 4.1连接配置
 
