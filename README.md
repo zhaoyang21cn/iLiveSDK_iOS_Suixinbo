@@ -11,19 +11,20 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 |SDK|版本号|摘要|下载地址|
 |--|--|--|--|
-|QAVSDK|1.9.5.16.32893|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.5.16.32893.zip)
+|QAVSDK|1.9.6.35.33425|音视频SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.6.35.33425.zip)
 |IMSDK|v2.5.6.11389.11327|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.6.11389.11327.zip)
-|ILiveSDK|1.7.1.12078|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.7.1.12078.zip)
+|ILiveSDK|1.7.2.12519|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.7.2.12519.zip)
+|BeautySDK|--|独立美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/BeautySDK.zip)
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
+
 
 ## SDK最近更新说明
 
-###### V1.7.1.12078(2017－10-30)
-* 1、修改上麦接口，将role参数改成option参数，方便相机和麦克风配置
-* 2、推流接口参数配置，增加recordId（“客户端手动推流，自动录制” 时，录制文件在后台可以用recordId来识别），增加字段pushSvrType（推流server类型），在当前版本中使用默认值。
-* 3、修复在磁盘空间不足时，日志模块crash问题
-* 4、修复cocos2d渲染和ilivesdk渲染冲突的问题
-* 5、去掉TILLiveSDK内部的pch文件
+###### V1.7.2.12519(2017-12-06)
+* 1、更新AVSDK1.9.6版本
+* 2、修改摄像头预览内部实现
+* 3、修复在登录失败回调中，再次调用登录接口，无回调问题
+* 4、修改随心播中的美颜方案(去掉QAVEffect，增加BeautySDK文件夹实现美颜)
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
