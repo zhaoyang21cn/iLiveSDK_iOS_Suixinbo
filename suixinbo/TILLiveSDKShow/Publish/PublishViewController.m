@@ -38,13 +38,23 @@
     _closeBtn.titleLabel.font = kAppMiddleTextFont;
     [self.view addSubview:_closeBtn];
     
-    _liveCover = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaul_publishcover"]];
+    _liveCoverBg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaul_publishcover"]];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClickPublishContent:)];
     tap.numberOfTapsRequired = 1;
     tap.numberOfTouchesRequired = 1;
-    _liveCover.userInteractionEnabled = YES;
-    [_liveCover addGestureRecognizer:tap];
-    [self.view addSubview:_liveCover];
+    _liveCoverBg.userInteractionEnabled = YES;
+    [_liveCoverBg addGestureRecognizer:tap];
+    [self.view addSubview:_liveCoverBg];
+    
+    _liveCoverIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"publishcover"]];
+    _liveCoverIcon.userInteractionEnabled = YES;
+    [_liveCoverBg addSubview:_liveCoverIcon];
+    
+    _liveCoverLabel = [[UILabel alloc] init];
+    _liveCoverLabel.text = @"给你的直播设置一个满意的封面";
+    _liveCoverLabel.textColor = [UIColor lightGrayColor];
+    _liveCoverLabel.textAlignment = NSTextAlignmentCenter;
+    [_liveCoverBg addSubview:_liveCoverLabel];
     
     _liveTitle = [[UITextField alloc] init];
     _liveTitle.placeholder = @"请输入直播标题";
@@ -167,30 +177,8 @@
     [self publish:role];
 }
 
-- (BOOL)invalidRoomTitle:(NSString *)title
-{
-#if kIsAppstoreVersion
-    if (title.length > 32 || title.length <= 0)
-    {
-        return YES;
-    }
-    return NO;
-#else
-    if (title.length > 32)
-    {
-        return YES;
-    }
-    return NO;
-#endif
-}
-
 - (void)publish:(NSString *)role
 {
-    if ([self invalidRoomTitle:_liveTitle.text])
-    {
-        [AppDelegate showAlert:self title:nil message:@"直播标题格式不对" okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
-        return;
-    }
     LoadView *reqIdWaitView = [LoadView loadViewWith:@"正在请求房间ID"];
     [self.view addSubview:reqIdWaitView];
     __block CreateRoomResponceData *roomData = nil;
@@ -210,7 +198,7 @@
         createRoomReq.type = @"live";
         [[WebServiceEngine sharedEngine] asyncRequest:createRoomReq];
         
-        [[UploadImageHelper shareInstance] upload:_liveCover.image completion:^(NSString *imageSaveUrl) {
+        [[UploadImageHelper shareInstance] upload:_liveCoverBg.image completion:^(NSString *imageSaveUrl) {
             imageUrl = imageSaveUrl;
             dispatch_semaphore_signal(semaphore);
             
@@ -314,7 +302,7 @@
 {
     UIImage *image = info[UIImagePickerControllerEditedImage];
     UIImage *cutImage = [self cutImage:image];
-    _liveCover.image = cutImage;
+    _liveCoverBg.image = cutImage;
     
     //如果是相机拍照，则保存到相册
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
@@ -398,7 +386,7 @@
     TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];
     item.uid = [[ILiveLoginManager getInstance] getLoginId];
     item.info = [[ShowRoomInfo alloc] init];
-    item.info.title = self.liveTitle.text && self.liveTitle.text.length > 0 ? self.liveTitle.text : self.liveTitle.placeholder;
+    item.info.title = self.liveTitle.text && self.liveTitle.text.length > 0 ? self.liveTitle.text : @"直播间";
     item.info.type = @"live";
     item.info.roomnum = roomId;
     item.info.groupid = groupid;
@@ -425,11 +413,21 @@
     [_closeBtn alignParentRight];
     [_closeBtn alignVerticalCenterOf:_vcTitle];
     
-    [_liveCover sizeWith:CGSizeMake(screenW,screenW*0.618)];
-    [_liveCover layoutBelow:_vcTitle];
+    [_liveCoverBg sizeWith:CGSizeMake(screenW,screenW*0.618)];
+    [_liveCoverBg layoutBelow:_vcTitle];
+    
+    CGSize iconSize = _liveCoverIcon.image.size;
+    [_liveCoverIcon sizeWith:iconSize];
+    [_liveCoverIcon layoutParentHorizontalCenter];
+    CGFloat margin = (_liveCoverBg.bounds.size.height-iconSize.height-20)/2;
+    [_liveCoverIcon alignParentTopWithMargin:margin];
+    
+    [_liveCoverLabel sizeWith:CGSizeMake(screenW, 20)];
+    [_liveCoverLabel layoutParentHorizontalCenter];
+    [_liveCoverLabel layoutBelow:_liveCoverIcon margin:kDefaultMargin];
     
     [_liveTitle sizeWith:CGSizeMake(screenW, 44)];
-    [_liveTitle layoutBelow:_liveCover];
+    [_liveTitle layoutBelow:_liveCoverBg];
     
     [_roleView sizeWith:CGSizeMake(screenW, 44)];
     [_roleView layoutBelow:_liveTitle];

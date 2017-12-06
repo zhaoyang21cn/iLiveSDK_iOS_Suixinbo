@@ -50,6 +50,8 @@
 @property (nonatomic, assign) CGRect moreFunViewRect;
 @property (nonatomic, strong) UIView *bottomView;
 
-@property (nonatomic, strong) TILFilter *tilFilter;
+//声明变量
+@property (nonatomic, strong) TXCVideoPreprocessor *preProcessor;
+@property (nonatomic, assign) Byte  *processorBytes;
 
 @end

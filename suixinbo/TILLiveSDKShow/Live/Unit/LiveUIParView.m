@@ -11,15 +11,14 @@
 
 #import <ShareSDKUI/ShareSDK+SSUI.h>//用于实现社交分享
 
+#import "SpeedTest.h"
 
-@interface LiveUIParView () <ILiveSpeedTestDelegate>
+@interface LiveUIParView ()
 {
     UInt64  _channelId;
     NSMutableString *_versionInfo;
 }
 @end
-
-UIAlertController *_alert;
 
 @implementation LiveUIParView
 
@@ -30,7 +29,6 @@ UIAlertController *_alert;
     _resolutionDic = [NSMutableDictionary dictionary];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParPure:) name:kPureDelete_Notification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onParNoPure:) name:kNoPureDelete_Notification object:nil];
-    [ILiveSpeedTestManager shareInstance].delegate = self;
 }
 
 - (void)onParPure:(NSNotification *)noti
@@ -101,23 +99,10 @@ UIAlertController *_alert;
         _pushStreamBtn.layer.masksToBounds = YES;
         [self addSubview:_pushStreamBtn];
         [_funs addObject:_pushStreamBtn];
-        
-        _recBtn = [[UIButton alloc] init];
-        [_recBtn setTitle:@"REC" forState:UIControlStateNormal];
-        [_recBtn addTarget:self action:@selector(onRecord:) forControlEvents:UIControlEventTouchUpInside];
-        _recBtn.titleLabel.font = kAppSmallTextFont;
-        [_recBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
-        [_recBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
-        [_recBtn setBackgroundImage:nor forState:UIControlStateNormal];
-        [_recBtn setBackgroundImage:image forState:UIControlStateSelected];
-        _recBtn.layer.cornerRadius = 4;
-        _recBtn.layer.masksToBounds = YES;
-        [self addSubview:_recBtn];
-        [_funs addObject:_recBtn];
     }
     
     _speedBtn = [[UIButton alloc] init];
-    [_speedBtn setTitle:@"测速" forState:UIControlStateNormal];
+    [_speedBtn setTitle:@"网络测速" forState:UIControlStateNormal];
     [_speedBtn addTarget:self action:@selector(onTestSpeed:) forControlEvents:UIControlEventTouchUpInside];
     _speedBtn.titleLabel.font = kAppSmallTextFont;
     [_speedBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
@@ -130,8 +115,21 @@ UIAlertController *_alert;
     
     if (_config.isHost)
     {
+        _recBtn = [[UIButton alloc] init];
+        [_recBtn setTitle:@"录制" forState:UIControlStateNormal];
+        [_recBtn addTarget:self action:@selector(onRecord:) forControlEvents:UIControlEventTouchUpInside];
+        _recBtn.titleLabel.font = kAppSmallTextFont;
+        [_recBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+        [_recBtn setTitleColor:kColorWhite forState:UIControlStateSelected];
+        [_recBtn setBackgroundImage:nor forState:UIControlStateNormal];
+        [_recBtn setBackgroundImage:image forState:UIControlStateSelected];
+        _recBtn.layer.cornerRadius = 4;
+        _recBtn.layer.masksToBounds = YES;
+        [self addSubview:_recBtn];
+        [_funs addObject:_recBtn];
+        
         _linkRoomBtn = [[UIButton alloc] init];
-        [_linkRoomBtn setTitle:@"串 门" forState:UIControlStateNormal];
+        [_linkRoomBtn setTitle:@"主播串门" forState:UIControlStateNormal];
         [_linkRoomBtn addTarget:self action:@selector(onLinkRoomAction) forControlEvents:UIControlEventTouchUpInside];
         _linkRoomBtn.titleLabel.font = kAppSmallTextFont;
         [_linkRoomBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
@@ -195,7 +193,7 @@ UIAlertController *_alert;
     [_versionInfo appendString:imSDKVer];
     NSString *avSDKVer = [NSString stringWithFormat:@"avsdk: %@\n",[QAVContext getVersion]];
     [_versionInfo appendString:avSDKVer];
-    NSString *filterSDKVer = [NSString stringWithFormat:@"filter:%@\n",[TILFilter getVersion]];
+    NSString *filterSDKVer = [NSString stringWithFormat:@"TXCVideoPreprocessor:%@\n",[TXCVideoPreprocessor getVersion]];
     [_versionInfo appendString:filterSDKVer];
     
     if (!button.selected)
@@ -560,126 +558,9 @@ UIAlertController *_alert;
 
 - (void)onTestSpeed:(UIButton *)button
 {
-    SpeedTestRequestParam *param = [[SpeedTestRequestParam alloc] init];
-    [[ILiveSpeedTestManager shareInstance] requestSpeedTest:param succ:^{
-        
-    } fail:^(NSString *module, int errId, NSString *errMsg) {
-        NSString *string = [NSString stringWithFormat:@"module=%@,code=%d,msg=%@",module,errId,errMsg];
-        [AlertHelp alertWith:@"请求测速失败" message:string cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-    }];
+    [[SpeedTest shareInstance] startTest];
 }
 
-#pragma mark - measure speed delegate
-
-//开始测速成功
-- (void)onILiveSpeedTestStartSucc
-{
-    _alert = [UIAlertController alertControllerWithTitle:@"正在测速" message:@"0/0" preferredStyle:UIAlertControllerStyleAlert];
-    [_alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        [[ILiveSpeedTestManager shareInstance] cancelSpeedTest:^{
-            
-        } fail:^(int code, NSString *msg) {
-            NSString *string = [NSString stringWithFormat:@"code=%d,msg=%@",code,msg];
-            [AlertHelp alertWith:@"取消测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-        }];
-    }]];
-    [[AlertHelp topViewController] presentViewController:_alert animated:YES completion:nil];
-}
-
-//开始测速失败
-- (void)onILiveSpeedTestStartFail:(int)code errMsg:(NSString *)errMsg
-{
-    NSString *string = [NSString stringWithFormat:@"code=%d,msg=%@",code,errMsg];
-    [AlertHelp alertWith:@"开始测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-}
-
-//测速进度回调
-- (void)onILiveSpeedTestProgress:(SpeedTestProgressItem *)item
-{
-    if (_alert)
-    {
-        _alert.message = [NSString stringWithFormat:@"%d/%d", item.recvPkgNum, item.totalPkgNum];
-    }
-}
-
-//测速完成(超时时间30s)
-- (void)onILiveSpeedTestCompleted:(SpeedTestResult *)result code:(int)code msg:(NSString *)msg
-{
-    if (code == 0)
-    {
-//        [_alert dismissViewControllerAnimated:YES completion:nil];
-        
-        NSMutableString *text = [NSMutableString string];
-        //测试信息
-        //测速id
-        [text appendFormat:@"测速Id：%llu\n", result.testId];
-        //测速结束时间
-        [text appendFormat:@"测速结束时间：%llu\n", result.testTime];
-        //客户端类型
-        [text appendFormat:@"客户端类型：%llu.(3:iphone 4:ipad)\n", result.clientType];
-        //网络类型
-        [text appendFormat:@"网络类型：%d.(1:wifi 2,3,4(G))\n", result.netType];
-        //网络变换次数
-        [text appendFormat:@"网络变换次数：%d.\n", result.netChangeCnt];
-        //客户端ip
-        [text appendFormat:@"客户端IP：%d(%@)\n", result.clientIp,[self ip4FromUInt:result.clientIp]];
-        //通话类型
-        [text appendFormat:@"通话类型：%d(0:纯音频，1:音视频)\n", result.callType];
-        //sdkappid
-        [text appendFormat:@"SDKAPPID：%d\n", result.sdkAppid];
-        //测试结果列表
-        for (SpeedTestResultItem *item in result.results)
-        {
-            //接口机端口、ip
-            NSString *accInfo = [NSString stringWithFormat:@"%d:%u(%@)\n",item.accessPort,item.accessIp,[self ip4FromUInt:item.accessIp]];
-            [text appendString:accInfo];
-            //运营商 测试次数
-            [text appendFormat:@"%@:%@:%@; 测试次数:%d\n",item.accessCountry,item.accessProv,item.accessIsp,item.testCnt];
-            //上行、下行丢包率，平均延时
-            [text appendFormat:@"upLoss:%d,dwLoss:%d,延时:%dms.\n",item.upLoss,item.dwLoss,item.avgRtt];
-        }
-        AlertActionHandle copyBlock = ^(UIAlertAction * _Nonnull action){
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            [pasteboard setString:text];
-        };
-        [AlertHelp alertWith:@"测速结果" message:text funBtns:@{@"复制":copyBlock} cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-    }
-    else
-    {
-        //测速失败
-        NSString *str = [NSString stringWithFormat:@"%d,%@",code,msg];
-        [AlertHelp alertWith:@"测速失败" message:str cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-    }
-}
-
-- (NSString *)ip4FromUInt:(unsigned int)ipNumber
-{
-    if (sizeof (unsigned int) != 4)
-    {
-        NSLog(@"Unkown type!");
-        return @"";
-    }
-    unsigned int mask = 0xFF000000;
-    unsigned int array[sizeof(unsigned int)];
-    int steps = 8;
-    int counter;
-    for (counter = 0; counter < 4 ; counter++)
-    {
-        array[counter] = ((ipNumber & mask) >> (32-steps*(counter+1)));
-        mask >>= steps;
-    }
-    NSMutableString *mutableString = [NSMutableString string];
-    for (int index = counter-1; index >=0; index--)
-    {
-        [mutableString appendString:[NSString stringWithFormat:@"%d",array[index]]];
-        if (index != 0)
-        {
-            [mutableString appendString:@"."];
-        }
-    }
-    
-    return mutableString;
-}
 @end
 
 @implementation LiveUIParViewConfig

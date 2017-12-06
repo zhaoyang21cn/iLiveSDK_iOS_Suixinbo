@@ -226,47 +226,58 @@
 
 - (void)ilivesdkFilter
 {
-    [self.item.tilFilter setFilterMixLevel:5];
+    [self.item.preProcessor setFilterMixLevel:5];
+    NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/FilterResource/"];
     __weak typeof(self) ws = self;
     AlertActionHandle beautyBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_white];
+        NSString * tmplPath = [path stringByAppendingString:@"white.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
+        
         [ws dismissSelf];
     };
     AlertActionHandle fennenBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_FenNen];
+        NSString * tmplPath = [path stringByAppendingString:@"fennen.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle huaijiuBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_HuaiJiu];
+        NSString * tmplPath = [path stringByAppendingString:@"huaijiu.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle landiaoBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_LanDiao];
+        NSString * tmplPath = [path stringByAppendingString:@"landiao.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle langmanBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_LangMan];
+        NSString * tmplPath = [path stringByAppendingString:@"langman.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle qingliangBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_QingLiang];
+        NSString * tmplPath = [path stringByAppendingString:@"qingliang.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle qingxinBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_QingXin];
+        NSString * tmplPath = [path stringByAppendingString:@"qingxin.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle rixiBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_RiXi];
+        NSString * tmplPath = [path stringByAppendingString:@"rixi.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle weimeiBlock = ^(UIAlertAction *_Nonnull action){
-        [ws.item.tilFilter setFilterType:TILFilterType_WeiMei];
+        NSString * tmplPath = [path stringByAppendingString:@"weimei.png"];
+        [ws.item.preProcessor setFilterImage:tmplPath];
         [ws dismissSelf];
     };
     NSDictionary *funs = @{@"美颜美白":beautyBlock, @"粉嫩":fennenBlock, @"怀旧":huaijiuBlock,@"蓝调":landiaoBlock, @"浪漫":langmanBlock, @"清凉":qingliangBlock, @"清新":qingxinBlock, @"日系":rixiBlock, @"唯美":weimeiBlock};
     [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
-        [ws.item.tilFilter setFilterType:TILFilterType_None];
+        [ws.item.preProcessor setFilterType:TXE_FILTER_TYPE_NONE];
         [ws dismissSelf];
     }];
 }
@@ -274,22 +285,21 @@
 - (void)onPendant
 {
     __weak typeof(self) ws = self;
-    QAVVideoEffectCtrl *effectCtrl = [QAVVideoEffectCtrl shareContext];
     AlertActionHandle tuziBlock = ^(UIAlertAction *_Nonnull action){
-        NSString *path = [[NSBundle bundleForClass:[self class]].resourcePath stringByAppendingPathComponent:@"DecoRes.bundle"];
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"video_rabbit"];
-        [effectCtrl setPendant:tmplPath];
+        NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/BeautyResource/"];
+        NSString * tmplPath = [path stringByAppendingString:@"video_rabbit"];
+        [ws.item.preProcessor setMotionTemplate:tmplPath];
         [ws dismissSelf];
     };
     AlertActionHandle xuebaiBlock = ^(UIAlertAction *_Nonnull action){
-        NSString *path = [[NSBundle bundleForClass:[self class]].resourcePath stringByAppendingPathComponent:@"DecoRes.bundle"];
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"video_snow_white"];
-        [effectCtrl setPendant:tmplPath];
+        NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/BeautyResource/"];
+        NSString * tmplPath = [path stringByAppendingString:@"video_snow_white"];
+        [ws.item.preProcessor setMotionTemplate:tmplPath];
         [ws dismissSelf];
     };
     NSDictionary *funs = @{@"兔子":tuziBlock, @"白雪公主":xuebaiBlock};
     [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空挂件" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
-        [effectCtrl setPendant:nil];
+        [ws.item.preProcessor setMotionTemplate:nil];
         [ws dismissSelf];
     }];
 }
@@ -464,7 +474,7 @@
 
 - (void)onReportLog
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"日志上报" message:@"输入要上报日志的描述和日期" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上报日志" message:@"输入要上报日志的描述和日期" preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"日志描述";
         textField.text = @"随心播_LOG主动上报";

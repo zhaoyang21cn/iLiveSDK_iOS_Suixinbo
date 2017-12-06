@@ -254,12 +254,12 @@
 
 - (void)setTilBeauty:(float)beauty
 {
-    [self.tilFilter setBeautyLevel:beauty];
+    [self.preProcessor setBeautyLevel:beauty];
 }
 
 - (void)setTilWhite:(float)white
 {
-    [self.tilFilter setWhitenessLevel:white];
+    [self.preProcessor setWhitenessLevel:white];
 }
 
 - (void)exitRoom

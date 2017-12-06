@@ -59,7 +59,9 @@
 @property (nonatomic, strong) NSMutableArray *upVideoMembers;
 @property (nonatomic, assign) NSInteger count;
 
-@property (nonatomic, strong) TILFilter *tilFilter;
+//声明变量
+@property (nonatomic, strong) TXCVideoPreprocessor *preProcessor;
+@property (nonatomic, assign) Byte  *processorBytes;
 
 - (instancetype)initWith:(TCShowLiveListItem *)item roomOptionType:(RoomOptionType)type;
 - (void)onClose;

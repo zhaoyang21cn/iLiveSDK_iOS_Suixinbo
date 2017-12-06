@@ -61,8 +61,8 @@
     if ([beautyScheme isEqualToString:kILiveBeauty])
     {
         //TILFilterSDK美颜效果
-        [self.tilFilter setBeautyLevel:bottom.lastBeautyValue * 10];
-        [self.tilFilter setWhitenessLevel:bottom.lastWhiteValue * 10];
+        [self.preProcessor setBeautyLevel:bottom.lastBeautyValue * 10];
+        [self.preProcessor setWhitenessLevel:bottom.lastWhiteValue * 10];
     }
     if ([beautyScheme isEqualToString:kQAVSDKBeauty])
     {

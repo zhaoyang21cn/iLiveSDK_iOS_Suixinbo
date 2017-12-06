@@ -12,7 +12,12 @@
 
 @property (nonatomic, strong) UILabel       *vcTitle;
 @property (nonatomic, strong) UIButton      *closeBtn;
-@property (nonatomic, strong) UIImageView   *liveCover;
+
+//封面
+@property (nonatomic, strong) UIImageView   *liveCoverBg;
+@property (nonatomic, strong) UIImageView   *liveCoverIcon;
+@property (nonatomic, strong) UILabel       *liveCoverLabel;
+
 @property (nonatomic, strong) UITextField   *liveTitle;
 //分辨率
 @property (nonatomic, strong) UIView        *roleView;

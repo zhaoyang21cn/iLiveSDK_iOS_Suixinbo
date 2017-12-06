@@ -30,8 +30,7 @@
 #import <TILLiveSDK/TILLiveSDK.h>
 
 //美颜滤镜sdk
-#import <TILFilterSDK/TILFilter.h>
-//#import "TILFilter.h"
+#import "TXCVideoPreprocessor.h"
 
 //引入ShareSDK相关头文件
 #import <ShareSDK/ShareSDK.h>

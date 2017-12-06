@@ -18,7 +18,7 @@
 
 #import "LiveCallView.h"
 
-@interface LiveViewController ()<QAVLocalVideoDelegate, QAVRemoteVideoDelegate,ILiveRoomDisconnectListener>
+@interface LiveViewController ()<QAVLocalVideoDelegate, QAVRemoteVideoDelegate,ILiveRoomDisconnectListener,TXIVideoPreprocessorDelegate>
 
 @property (nonatomic, strong) NSTimer *heartTimer;
 @end
@@ -55,7 +55,8 @@
     _isFristShow = YES;
     
     _msgDatas = [NSMutableArray array];
-    _tilFilter = [[TILFilter alloc] init];
+    _preProcessor = [[TXCVideoPreprocessor alloc] init];
+    [_preProcessor setDelegate:self];//TXIVideoPreprocessorDelegate
     [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
     
     //初始化直播
@@ -468,7 +469,7 @@
     _bottomView = [[LiveUIBttomView alloc] initWith:kSxbRole_HostHD];
     _bottomView.delegate = self;
     _bottomView.isHost = _isHost;
-    _bottomView.tilFilter = _tilFilter;
+    _bottomView.preProcessor = _preProcessor;
     _bottomView.curRole = _liveItem.info.roleName;
     [self.view addSubview:_bottomView];
     
@@ -712,19 +713,15 @@
 
 - (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frameData
 {
-    TILDataType type = TILDataType_NV12;
-    switch (frameData.frameDesc.color_format)
+    //设置美颜、美白、红润等参数
+    [self.preProcessor setOutputSize:CGSizeMake(frameData.frameDesc.width, frameData.frameDesc.height)];
+    //开始预处理
+    [self.preProcessor processFrame:frameData.data width:frameData.frameDesc.width height:frameData.frameDesc.height orientation:TXE_ROTATION_90 inputFormat:TXE_FRAME_FORMAT_NV12 outputFormat:TXE_FRAME_FORMAT_NV12];
+    //将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
+    if(self.processorBytes)
     {
-        case AVCOLOR_FORMAT_I420:
-            type = TILDataType_I420;
-            break;
-        case AVCOLOR_FORMAT_NV12:
-            type = TILDataType_NV12;
-            break;
-        default:
-            break;
+        memcpy(frameData.data, self.processorBytes, frameData.frameDesc.width * frameData.frameDesc.height * 3 / 2);
     }
-    [_tilFilter processData:frameData.data inType:type outType:type size:frameData.dataSize width:frameData.frameDesc.width height:frameData.frameDesc.height];
 }
 
 - (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret
@@ -739,6 +736,11 @@
     desc.width = frameData.frameDesc.width;
     desc.height = frameData.frameDesc.height;
     [_parView.resolutionDic setObject:desc forKey:key];
+}
+
+- (void)didProcessFrame:(Byte *)bytes width:(NSInteger)width height:(NSInteger)height format:(TXEFrameFormat)format timeStamp:(UInt64)timeStamp
+{
+    self.processorBytes = bytes;
 }
 
 - (BOOL)onRoomDisconnect:(int)reason

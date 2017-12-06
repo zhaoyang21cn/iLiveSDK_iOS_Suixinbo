@@ -13,6 +13,8 @@
 
 #import "LiveViewController.h"
 
+#import "SpeedTest.h"
+
 #define kSettingTitle @"title"
 #define kSettingMethod @"method"
 
@@ -107,21 +109,22 @@
     NSDictionary *info = @{kSettingTitle:_nickName,kSettingMethod:@"onProfile"};
     [_dataArray addObject:info];
     
-    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme:"};
-    [_dataArray addObject:beautyDic];
+//    NSDictionary *beautyDic = @{kSettingTitle:@"美颜方案", kSettingMethod:@"onSetBeautyScheme:"};
+//    [_dataArray addObject:beautyDic];
     
     NSDictionary *guestRole = @{kSettingTitle:@"观看模式",kSettingMethod:@"onGuestSwitch:"};
     [_dataArray addObject:guestRole];
     
-#if !kIsAppstoreVersion
     NSDictionary *logLevel = @{kSettingTitle:@"日志等级",kSettingMethod:@"onLogLevel"};
     [_dataArray addObject:logLevel];
 //    NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
 //    [_dataArray addObject:testEnvDic];
-#endif
     
-    NSDictionary *logReport = @{kSettingTitle:@"日志上报",kSettingMethod:@"onLogReport"};
+    NSDictionary *logReport = @{kSettingTitle:@"上报日志",kSettingMethod:@"onLogReport"};
     [_dataArray addObject:logReport];
+    
+    NSDictionary *speedTest = @{kSettingTitle:@"网络测速",kSettingMethod:@"onSpeedTest"};
+    [_dataArray addObject:speedTest];
     
 #if !kIsAppstoreVersion
     NSDictionary *version = @{kSettingTitle:@"当前版本",kSettingMethod:@"onVersion"};
@@ -360,7 +363,7 @@
     NSString *avSDKVer = [NSString stringWithFormat:@"avsdk: %@",[QAVContext getVersion]];
     [version addAction:[UIAlertAction actionWithTitle:avSDKVer style:UIAlertActionStyleDefault handler:nil]];
     
-    NSString *filterSDKVer = [NSString stringWithFormat:@"filter:%@",[TILFilter getVersion]];
+    NSString *filterSDKVer = [NSString stringWithFormat:@"filter:%@",[TXCVideoPreprocessor getVersion]];
     [version addAction:[UIAlertAction actionWithTitle:filterSDKVer style:UIAlertActionStyleDefault handler:nil]];
     
     [version addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
@@ -523,7 +526,7 @@
 
 - (void)onLogReport
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"日志上报" message:@"输入要上报日志的描述和日期" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"上报日志" message:@"输入要上报日志的描述和日期" preferredStyle:UIAlertControllerStyleAlert];
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"日志描述";
         textField.text = @"随心播_LOG主动上报";
@@ -554,6 +557,11 @@
         }];
     }]];
     [[AlertHelp topViewController] presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)onSpeedTest
+{
+    [[SpeedTest shareInstance] startTest];
 }
 
 - (void)onLogout:(UIButton *)button

@@ -40,7 +40,9 @@
 @property (nonatomic, assign) CGFloat lastBeautyValue; //记录美颜程度
 @property (nonatomic, assign) CGFloat lastWhiteValue;  //记录美白程度
 
-@property (nonatomic, strong) TILFilter *tilFilter;
+//声明变量
+@property (nonatomic, strong) TXCVideoPreprocessor *preProcessor;
+@property (nonatomic, assign) Byte  *processorBytes;
 
 @property (nonatomic, weak) id<BottomViewDelegate> delegate;
 
