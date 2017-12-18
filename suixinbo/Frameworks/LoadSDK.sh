@@ -4,9 +4,9 @@
 # 加载各个模块SDK
 # 版本号如下
 echo "|-------------------------------sdk version--------------------------------|"
-ILiveSDKVersion="ILiveSDK_1.8.0.12629"
+ILiveSDKVersion="ILiveSDK_1.8.1.12629"
 IMSDKSDKVersion="IMSDK_2.5.6.11389.11327"
-AVSDKVersion="AVSDK_1.9.6.42.33658"
+AVSDKVersion="AVSDK_1.9.6.47.34109"
 BeautySDKVersion="BeautySDK"
 
 echo $ILiveSDKVersion
