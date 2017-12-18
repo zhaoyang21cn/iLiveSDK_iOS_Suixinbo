@@ -20,12 +20,9 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 
-###### V1.8.0.12629(2017-12-06)
-* 1、更新AVSDK1.9.6版本
-* 2、修改摄像头预览内部实现
-* 3、修复在登录失败回调中，再次调用登录接口，无回调问题
-* 4、修改随心播中的美颜方案(去掉QAVEffect，增加BeautySDK文件夹实现美颜)
-* 5、修复下麦时会再次调用首帧回调的bug
+###### V1.8.1.12629(2017-12-18)
+* 1、更新AVSDK1.9.6版本最新版版，修复内部bug
+* 2、ILiveSDK增加禁用数据上报接口(用于屏蔽数据上报crash问题)
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
