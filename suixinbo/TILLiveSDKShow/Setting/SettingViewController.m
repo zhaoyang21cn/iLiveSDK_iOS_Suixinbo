@@ -117,8 +117,8 @@
     
     NSDictionary *logLevel = @{kSettingTitle:@"日志等级",kSettingMethod:@"onLogLevel"};
     [_dataArray addObject:logLevel];
-//    NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
-//    [_dataArray addObject:testEnvDic];
+    NSDictionary *testEnvDic = @{kSettingTitle:@"测试环境", kSettingMethod:@"onSetTestEnv:"};
+    [_dataArray addObject:testEnvDic];
     
     NSDictionary *logReport = @{kSettingTitle:@"上报日志",kSettingMethod:@"onLogReport"};
     [_dataArray addObject:logReport];

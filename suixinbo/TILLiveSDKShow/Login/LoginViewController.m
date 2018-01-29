@@ -234,6 +234,31 @@
     [[WebServiceEngine sharedEngine] asyncRequest:sigReq];
 }
 
+//测试本地默认配置
+//- (void)test:(NSString *)identifier sig:(NSString *)sig pwd:(NSString *)pwd loadView:(UIView *)loadView {
+//    NSString *config =@"{\"audio\": {\"aec\": 1,\"agc\": 1,\"ans\": 1,\"anti_dropout\": 0,\"au_scheme\": 1,\"channel\": 2,\"codec_prof\": 4106,\"frame\": 40,\"kbps\": 24,\"max_antishake_max\": 1000,\"max_antishake_min\": 400,\"min_antishake\": 120,\"sample_rate\": 48000,\"silence_detect\": 0},\"is_default\": 0,\"net\": {\"rc_anti_dropout\": 1,\"rc_init_delay\":100,\"rc_max_delay\": 1000},\"role\": \"SD\",\"type\": 0,\"video\": {\"anti_dropout\": 0,\"codec_prof\": 5,\"format\": 1,\"format_fix_height\": 468,\"format_fix_width\": 640,\"format_max_height\": -1,\"format_max_width\":-1,\"fps\": 20,\"fqueue_time\": -1,\"live_adapt\": 0,\"maxkbps\": 1000,\"maxqp\": -1,\"minkbps\":800,\"minqp\": -1,\"qclear\": 1,\"small_video_upload\": 0}}";
+//
+//    __weak typeof(self) ws = self;
+//    [[ILiveLoginManager getInstance] iLiveLogin:identifier sig:sig spearCfg:config succ:^{
+//        NSLog(@"tillivesdkshow login succ");
+//        [loadView removeFromSuperview];
+//        [ws saveLoginParamToLocal:identifier passward:pwd];
+//        [ws enterMainUI];
+//
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//        [loadView removeFromSuperview];
+//        if (errId == 8050)//离线被踢,再次登录
+//        {
+//            [ws login:identifier passward:pwd];
+//        }
+//        else
+//        {
+//            NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+//            NSLog(@"login fail.%@",errInfo);
+//            [AlertHelp alertWith:@"登录失败" message:errInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+//        }
+//    }];
+//}
 - (void)saveLoginParamToLocal:(NSString *)identifier passward:(NSString *)pwd
 {
     NSMutableDictionary *loginParam = [NSMutableDictionary dictionary];
