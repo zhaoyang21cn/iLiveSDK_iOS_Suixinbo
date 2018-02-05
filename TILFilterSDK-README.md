@@ -18,14 +18,16 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 下载sdk
 
-[点击此处下载TXMVideoPreprocessor（包含基础版本、高级版本）](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip)
+[点击此处下载TXMVideoPreprocessor_3.3.1（包含基础版本、高级版本）](http://dldir1.qq.com/hudongzhibo/TXMVideoPreprocessor/IOS/3.3.1/demo_beauty_3.3.1.zip)
+
+[点击此处下载TXMVideoPreprocessor_3.3.0（包含基础版本、高级版本）](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip)
 
 最新版本说明
 
-> V3.3.0(2017-09-13)</br>
-(1) 修复使用动效或者人脸识别功能导致图像压缩问题</br>
-(2) 支持全架构</br>
-(3) 增加渲染功能（如果不需要删除对应的.a即可）</br>
+> V3.3.1(2018-02-05)</br>
+(1) 更新p图sdk到1.6.0</br>
+(2) 修复一些bug</br>
+(3) 提升处理性能</br>
 [查看更多版本更新记录](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Suixinbo/blob/master/doc/TILFilterSDK_ChangeList.md)
 
 </br>
@@ -35,7 +37,8 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 | | | 
 :-----:|:-----:|
-![](https://mc.qcloudimg.com/static/img/59cd6dad30234f60fc2bbb6006c98360/preprocessor_advance_project.png)|![](https://mc.qcloudimg.com/static/img/a6be8bfa51022800c8e5fb2022444d78/preprocessor_basic.png)|
+![](http://dldir1.qq.com/hudongzhibo/TXMVideoPreprocessor/IOS/3.3.1/doc/advance.png)|![](http://dldir1.qq.com/hudongzhibo/TXMVideoPreprocessor/IOS/3.3.1/doc/basic.png)|
+确保所有的资源都引入到Copy Bundle Resources，并且model文件夹下的资源以Create folder references方式引入||
 高级版本|基础版本|
 
  
