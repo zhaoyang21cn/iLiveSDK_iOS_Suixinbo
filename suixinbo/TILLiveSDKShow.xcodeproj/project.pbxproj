@@ -194,6 +194,7 @@
 		9BA164BC1F74BF3100ADB739 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA164B81F74BF3100ADB739 /* ILiveSDK.framework */; };
 		9BA164BF1F74BF3100ADB739 /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA164BB1F74BF3100ADB739 /* TILLiveSDK.framework */; };
 		9BA64FF91E796468007F2120 /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA64FF81E796468007F2120 /* ProfileTableViewCell.m */; };
+		9BB0E8C42074F2AC0004D22B /* ILiveLogReport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB0E8C32074F2AB0004D22B /* ILiveLogReport.framework */; };
 		9BB8232E1E1DE03500DD4076 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB8232D1E1DE03500DD4076 /* AVKit.framework */; };
 		9BDA66BD1DD1F06C00E8638D /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA66BC1DD1F06C00E8638D /* SettingViewController.m */; };
 		9BDA66D21DD1F68C00E8638D /* BaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BDA66C01DD1F68C00E8638D /* BaseRequest.m */; };
@@ -472,6 +473,7 @@
 		9BA164BB1F74BF3100ADB739 /* TILLiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILLiveSDK.framework; sourceTree = "<group>"; };
 		9BA64FF71E796468007F2120 /* ProfileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewCell.h; sourceTree = "<group>"; };
 		9BA64FF81E796468007F2120 /* ProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewCell.m; sourceTree = "<group>"; };
+		9BB0E8C32074F2AB0004D22B /* ILiveLogReport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveLogReport.framework; sourceTree = "<group>"; };
 		9BB8232D1E1DE03500DD4076 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		9BDA66BB1DD1F06C00E8638D /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		9BDA66BC1DD1F06C00E8638D /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
@@ -538,6 +540,7 @@
 				9BA164BC1F74BF3100ADB739 /* ILiveSDK.framework in Frameworks */,
 				9257D0FF200E1DF500E10EC2 /* libTXMRenderer.a in Frameworks */,
 				9B6DAD9B1F2F2C51002896E8 /* ShareSDK.framework in Frameworks */,
+				9BB0E8C42074F2AC0004D22B /* ILiveLogReport.framework in Frameworks */,
 				9B8208401EB87B7B001A62F7 /* QAVSDK.framework in Frameworks */,
 				9B6DADA61F2F2C51002896E8 /* ShareSDKConnector.framework in Frameworks */,
 				9B8208481EB87B7B001A62F7 /* QALSDK.framework in Frameworks */,
@@ -1079,6 +1082,7 @@
 		9BA164B71F74BF3100ADB739 /* ILiveSDK */ = {
 			isa = PBXGroup;
 			children = (
+				9BB0E8C32074F2AB0004D22B /* ILiveLogReport.framework */,
 				9BA164B81F74BF3100ADB739 /* ILiveSDK.framework */,
 				9BA164BB1F74BF3100ADB739 /* TILLiveSDK.framework */,
 			);
@@ -1766,9 +1770,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Tencent Technology (Shenzhen) Co., Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tencent Technology (Shenzhen) Co., Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = HKB8WPFBR9;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1799,8 +1803,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jshow.jshow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c2850e4b-a384-4f60-a57d-e4f3df49c1dc";
-				PROVISIONING_PROFILE_SPECIFIER = en_2018_05_12;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = DailyBuild;
 		};

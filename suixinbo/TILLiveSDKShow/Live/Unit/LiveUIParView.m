@@ -185,16 +185,20 @@
 - (void)onPar:(UIButton *)button
 {
     _versionInfo = [NSMutableString string];
-    NSString *iliveSDKVer = [NSString stringWithFormat:@"ilivesdk: %@\n",[[ILiveSDK getInstance] getVersion]];
+    NSString *iliveSDKVer = [NSString stringWithFormat:@"ILiveSDK: %@\n",[[ILiveSDK getInstance] getVersion]];
     [_versionInfo appendString:iliveSDKVer];
-    NSString *tilliveSDKVer = [NSString stringWithFormat:@"tillivesdk: %@\n",[[TILLiveManager getInstance] getVersion]];
-    [_versionInfo appendString:tilliveSDKVer];
-    NSString *imSDKVer = [NSString stringWithFormat:@"imsdk: %@\n",[[TIMManager sharedInstance] GetVersion]];
-    [_versionInfo appendString:imSDKVer];
-    NSString *avSDKVer = [NSString stringWithFormat:@"avsdk: %@\n",[QAVContext getVersion]];
-    [_versionInfo appendString:avSDKVer];
-    NSString *filterSDKVer = [NSString stringWithFormat:@"TXCVideoPreprocessor:%@\n",[TXCVideoPreprocessor getVersion]];
+    //TXCVideoPreprocessor
+    NSString *filterSDKVer = [NSString stringWithFormat:@"TXCVP:    %@\n",[TXCVideoPreprocessor getVersion]];
     [_versionInfo appendString:filterSDKVer];
+    NSString *imSDKVer = [NSString stringWithFormat:@"IMSDK:    %@\n",[[TIMManager sharedInstance] GetVersion]];
+    [_versionInfo appendString:imSDKVer];
+    NSString *avSDKVer = [NSString stringWithFormat:@"AVSDK:    %@\n",[QAVContext getVersion]];
+    [_versionInfo appendString:avSDKVer];
+    
+    //    NSString *tilliveSDKVer = [NSString stringWithFormat:@"TILLiveSDK:    %@\n",[[TILLiveManager getInstance] getVersion]];
+    //    [_versionInfo appendString:tilliveSDKVer];
+    
+    
     
     if (!button.selected)
     {
@@ -230,52 +234,59 @@
     {
         ILiveQualityData *qualityData = [[ILiveRoomManager getInstance] getQualityData];
         NSMutableString *paramString = [NSMutableString string];
+        //房间号
+        int roomid = [[ILiveRoomManager getInstance] getRoomId];
+        [paramString appendString:[NSString stringWithFormat:@"直播间号:    %d\n",roomid]];
+        
+        //角色
+        NSString *roleStr = _config.isHost ? @"主播" : @"非主播";
+        [paramString appendString:[NSString stringWithFormat:@"个人角色:    %@\n",roleStr]];
+        
         //FPS
-        [paramString appendString:[NSString stringWithFormat:@"FPS:%ld.\n",qualityData.interactiveSceneFPS/10]];
+        [paramString appendString:[NSString stringWithFormat:@"编码帧率:    %d\n",qualityData.interactiveSceneFPS/10]];
         //Send Recv
-        [paramString appendString:[NSString stringWithFormat:@"Send: %ldkbps, Recv: %ldkbps.\n",qualityData.sendRate,(long)qualityData.recvRate]];
+        [paramString appendString:[NSString stringWithFormat:@"发送码率:    %dkbps \n",qualityData.sendRate]];
+        [paramString appendString:[NSString stringWithFormat:@"接收码率:    %ldkbps\n",(long)qualityData.recvRate]];
+        
         //sendLossRate recvLossRate
         CGFloat sendLossRate = (CGFloat)qualityData.sendLossRate / (CGFloat)100;
         CGFloat recvLossRate = (CGFloat)qualityData.recvLossRate / (CGFloat)100;
         NSString *per = @"%";
-        [paramString appendString:[NSString stringWithFormat:@"SendLossRate: %.2f%@,   RecvLossRate: %.2f%@.\n",sendLossRate,per,recvLossRate,per]];
+        [paramString appendString:[NSString stringWithFormat:@"发送丢包率:  %.2f%@\n",sendLossRate,per]];
+        [paramString appendString:[NSString stringWithFormat:@"接收丢包率:  %.2f%@.\n",recvLossRate,per]];
+        
+        //麦克风
+        NSString *isOpen = [[ILiveRoomManager getInstance] getCurMicState] ? @"打开" : @"关闭";
+        [paramString appendString:[NSString stringWithFormat:@"麦克风状态:  %@\n",isOpen]];
+        
+        //扬声器
+        NSString *isOpenSpeaker = [[ILiveRoomManager getInstance] getCurSpeakerState] ? @"打开" : @"关闭";
+        [paramString appendString:[NSString stringWithFormat:@"扬声器状态:  %@\n",isOpenSpeaker]];
         
         //appcpu syscpu
         CGFloat appCpuRate = (CGFloat)qualityData.appCPURate / (CGFloat)100;
         CGFloat sysCpuRate = (CGFloat)qualityData.sysCPURate / (CGFloat)100;
-        [paramString appendString:[NSString stringWithFormat:@"AppCPURate:   %.2f%@,   SysCPURate:   %.2f%@.\n",appCpuRate,per,sysCpuRate,per]];
+        [paramString appendString:[NSString stringWithFormat:@"应用CPU占用率:  %.2f%@\n",appCpuRate,per]];
+        [paramString appendString:[NSString stringWithFormat:@"系统CPU占用率:  %.2f%@\n",sysCpuRate,per]];
         
+        [paramString appendString:[NSString stringWithFormat:@"主播视频分辨率:  "]];
         //分别角色的分辨率
         NSArray *keys = [_resolutionDic allKeys];
         for (NSString *key in keys)
         {
             QAVFrameDesc *desc = _resolutionDic[key];
-            [paramString appendString:[NSString stringWithFormat:@"%@---> %d * %d\n",key,desc.width,desc.height]];
+            [paramString appendString:[NSString stringWithFormat:@"%@:%ld * %ld\n",key,desc.width,desc.height]];
         }
-        //avsdk版本号
-        NSString *avSDKVer = [NSString stringWithFormat:@"AVSDK版本号: %@\n",[QAVContext getVersion]];
-        [paramString appendString:avSDKVer];
-        //房间号
-        int roomid = [[ILiveRoomManager getInstance] getRoomId];
-        [paramString appendString:[NSString stringWithFormat:@"房间号:%d\n",roomid]];
-        //角色
-        NSString *roleStr = _config.isHost ? @"主播" : @"非主播";
-        [paramString appendString:[NSString stringWithFormat:@"角色:%@\n",roleStr]];
         
-        //采集信息
-        NSString *videoParam = [context.videoCtrl getQualityTips];
-        NSArray *array = [videoParam componentsSeparatedByString:@"\n"]; //从字符A中分隔成2个元素的数组
-        if (array.count > 3)
-        {
-            NSString *resolution = [array objectAtIndex:2];
-            [paramString appendString:[NSString stringWithFormat:@"%@\n",resolution]];
-        }
-        //麦克风
-        NSString *isOpen = [[ILiveRoomManager getInstance] getCurMicState] ? @"ON" : @"OFF";
-        [paramString appendString:[NSString stringWithFormat:@"麦克风: %@\n",isOpen]];
-        //扬声器
-        NSString *isOpenSpeaker = [[ILiveRoomManager getInstance] getCurSpeakerState] ? @"ON" : @"OFF";
-        [paramString appendString:[NSString stringWithFormat:@"扬声器: %@\n",isOpenSpeaker]];
+//        //采集信息
+//        NSString *videoParam = [context.videoCtrl getQualityTips];
+//        NSArray *array = [videoParam componentsSeparatedByString:@"\n"]; //从字符A中分隔成2个元素的数组
+//        if (array.count > 3)
+//        {
+//            NSString *resolution = [array objectAtIndex:2];
+//            [paramString appendString:[NSString stringWithFormat:@"%@\n",resolution]];
+//        }
+        
         
         [paramString appendString:_versionInfo];
         

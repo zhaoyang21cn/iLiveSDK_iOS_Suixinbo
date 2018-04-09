@@ -14,7 +14,7 @@
 
 #import <ImSDK/ImSDK.h>
 #import <QAVSDK/QAVSDK.h>
-#import <QAVSDK/QAVVideoEffectCtrl.h>
+//#import <QAVSDK/QAVVideoEffectCtrl.h>
 #import <QALSDK/QalSDKProxy.h>
 #import <TLSSDK/TLSHelper.h>
 #import <IMSDKBugly/IMSDKBugly.h>

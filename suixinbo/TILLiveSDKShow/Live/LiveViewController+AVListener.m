@@ -64,15 +64,15 @@
         [self.preProcessor setBeautyLevel:bottom.lastBeautyValue * 10];
         [self.preProcessor setWhitenessLevel:bottom.lastWhiteValue * 10];
     }
-    if ([beautyScheme isEqualToString:kQAVSDKBeauty])
-    {
-        //QAVSDK美颜效果
-        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-        if (context && context.videoCtrl)
-        {
-            [context.videoCtrl inputBeautyParam:bottom.lastBeautyValue * 10];
-        }
-    }
+//    else if ([beautyScheme isEqualToString:kQAVSDKBeauty])
+//    {
+//        //QAVSDK美颜效果
+//        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+//        if (context && context.videoCtrl)
+//        {
+//            [context.videoCtrl inputBeautyParam:bottom.lastBeautyValue * 10];
+//        }
+//    }
 }
 
 - (void)onVideoType:(avVideoSrcType)type users:(NSArray *)users

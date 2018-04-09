@@ -454,18 +454,20 @@
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         [user setValue:kILiveBeauty forKey:kBeautyScheme];
     };
-    //qavsdk美颜包
-    AlertActionHandle avsdkBeauty = ^(UIAlertAction *_Nonnull action){
-        //修改cell上的描述
-        NSIndexPath *path = (NSIndexPath *)param;
-        UITableViewCell *cell =  [_tableView cellForRowAtIndexPath:path];
-        cell.detailTextLabel.text = kQAVSDKBeauty;
-        
-        //修改本地数据
-        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        [user setValue:kQAVSDKBeauty forKey:kBeautyScheme];
-    };
-    [AlertHelp alertWith:@"选择美颜方案" message:nil funBtns:@{kILiveBeauty:iliveBeauty, kQAVSDKBeauty:avsdkBeauty} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+    
+     [AlertHelp alertWith:@"选择美颜方案" message:nil funBtns:@{kILiveBeauty:iliveBeauty} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+//    //qavsdk美颜包
+//    AlertActionHandle avsdkBeauty = ^(UIAlertAction *_Nonnull action){
+//        //修改cell上的描述
+//        NSIndexPath *path = (NSIndexPath *)param;
+//        UITableViewCell *cell =  [_tableView cellForRowAtIndexPath:path];
+//        cell.detailTextLabel.text = kQAVSDKBeauty;
+//
+//        //修改本地数据
+//        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//        [user setValue:kQAVSDKBeauty forKey:kBeautyScheme];
+//    };
+//    [AlertHelp alertWith:@"选择美颜方案" message:nil funBtns:@{kILiveBeauty:iliveBeauty, kQAVSDKBeauty:avsdkBeauty} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
 }
 
 - (void)onLogLevel

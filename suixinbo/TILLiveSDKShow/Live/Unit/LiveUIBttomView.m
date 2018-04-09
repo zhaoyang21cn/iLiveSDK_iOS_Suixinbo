@@ -312,15 +312,15 @@
             [self.delegate setTilBeauty:be];
         }
     }
-    if ([beautyScheme isEqualToString:kQAVSDKBeauty])
-    {
-        //QAVSDK美颜效果
-        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-        if (context && context.videoCtrl)
-        {
-            [context.videoCtrl inputBeautyParam:be];
-        }
-    }
+//    else if ([beautyScheme isEqualToString:kQAVSDKBeauty])
+//    {
+//        //QAVSDK美颜效果
+//        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+//        if (context && context.videoCtrl)
+//        {
+//            [context.videoCtrl inputBeautyParam:be];
+//        }
+//    }
 }
 
 - (void)onWhiteChanged:(CGFloat)value
@@ -337,15 +337,15 @@
             [self.delegate setTilWhite:be];
         }
     }
-    if ([beautyScheme isEqualToString:kQAVSDKBeauty])
-    {
-        //QAVSDK美白效果
-        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-        if (context && context.videoCtrl)
-        {
-            [context.videoCtrl inputWhiteningParam:be];
-        }
-    }
+//    else if ([beautyScheme isEqualToString:kQAVSDKBeauty])
+//    {
+//        //QAVSDK美白效果
+//        QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+//        if (context && context.videoCtrl)
+//        {
+//            [context.videoCtrl inputWhiteningParam:be];
+//        }
+//    }
 }
 
 - (void)onMic:(UIButton *)button

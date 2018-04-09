@@ -160,69 +160,69 @@
         //TILFilterSDK滤镜
         [self ilivesdkFilter];
     }
-    if ([beautyScheme isEqualToString:kQAVSDKBeauty])
-    {
-        //QAVSDK滤镜
-        [self qavsdkFilter];
-    }
+//    else if ([beautyScheme isEqualToString:kQAVSDKBeauty])
+//    {
+//        //QAVSDK滤镜
+//        [self qavsdkFilter];
+//    }
 }
 
-- (void)qavsdkFilter
-{
-    __weak typeof(self) ws = self;
-    NSString *path = [[NSBundle bundleForClass:[self class]].resourcePath stringByAppendingPathComponent:@"FilterRes.bundle"];
-    QAVVideoEffectCtrl *effectCtrl = [QAVVideoEffectCtrl shareContext];
-    AlertActionHandle comicBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"COMIC"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle geseBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"GESE"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle btightfireBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"BRIGHTFIRE"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle skylineBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"SKYLINE"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle g1Block = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"G1"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle orchidBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"ORCHID"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle shengdaiBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"SHENGDAI"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle amaroBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"AMARO"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    AlertActionHandle fenbiBlock = ^(UIAlertAction *_Nonnull action){
-        NSString * tmplPath = [path stringByAppendingPathComponent:@"FENBI"];
-        [effectCtrl setFilter:tmplPath];
-        [ws dismissSelf];
-    };
-    NSDictionary *funs = @{@"漫画(COMIC)":comicBlock, @"盛夏(GESE)":geseBlock, @"暖阳(BRIGHTFIRE)":btightfireBlock,@"月光(SKYLINE)":skylineBlock, @"蔷薇(G1)":g1Block, @"幽兰(ORCHID)":orchidBlock, @"圣代(SHENGDAI)":shengdaiBlock, @"薄荷(AMARO)":amaroBlock, @"浪漫(FENBI)":fenbiBlock};
-    [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
-        [effectCtrl setFilter:nil];
-        [ws dismissSelf];
-    }];
-}
+//- (void)qavsdkFilter
+//{
+//    __weak typeof(self) ws = self;
+//    NSString *path = [[NSBundle bundleForClass:[self class]].resourcePath stringByAppendingPathComponent:@"FilterRes.bundle"];
+//    QAVVideoEffectCtrl *effectCtrl = [QAVVideoEffectCtrl shareContext];
+//    AlertActionHandle comicBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"COMIC"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle geseBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"GESE"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle btightfireBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"BRIGHTFIRE"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle skylineBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"SKYLINE"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle g1Block = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"G1"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle orchidBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"ORCHID"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle shengdaiBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"SHENGDAI"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle amaroBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"AMARO"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    AlertActionHandle fenbiBlock = ^(UIAlertAction *_Nonnull action){
+//        NSString * tmplPath = [path stringByAppendingPathComponent:@"FENBI"];
+//        [effectCtrl setFilter:tmplPath];
+//        [ws dismissSelf];
+//    };
+//    NSDictionary *funs = @{@"漫画(COMIC)":comicBlock, @"盛夏(GESE)":geseBlock, @"暖阳(BRIGHTFIRE)":btightfireBlock,@"月光(SKYLINE)":skylineBlock, @"蔷薇(G1)":g1Block, @"幽兰(ORCHID)":orchidBlock, @"圣代(SHENGDAI)":shengdaiBlock, @"薄荷(AMARO)":amaroBlock, @"浪漫(FENBI)":fenbiBlock};
+//    [AlertHelp alertWith:nil message:nil funBtns:funs cancelBtn:@"取消" destructiveBtn:@"清空滤镜" alertStyle:UIAlertControllerStyleAlert cancelAction:nil destrutiveAction:^(UIAlertAction * _Nonnull action) {
+//        [effectCtrl setFilter:nil];
+//        [ws dismissSelf];
+//    }];
+//}
 
 - (void)ilivesdkFilter
 {

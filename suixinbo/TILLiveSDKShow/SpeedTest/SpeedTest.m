@@ -30,8 +30,8 @@ UIAlertController *_alert;
     [[ILiveSpeedTestManager shareInstance] requestSpeedTest:param succ:^{
         
     } fail:^(NSString *module, int errId, NSString *errMsg) {
-        NSString *string = [NSString stringWithFormat:@"module=%@,code=%d,msg=%@",module,errId,errMsg];
-        [AlertHelp alertWith:@"请求测速失败" message:string cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+//        NSString *string = [NSString stringWithFormat:@"module=%@,code=%d,msg=%@",module,errId,errMsg];
+//        [AlertHelp alertWith:@"请求测速失败" message:string cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
 }
 
