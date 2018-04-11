@@ -21,11 +21,12 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 
-###### V1.8.4.13385(2018-4-4)
+###### V1.8.4.13473(2018-4-4)
 * 1、修复日志上报导致的crash问题
 * 2、更新avsdk1.9.8
 * 3、分离日志上报模块，单独成立ILiveLogReport.Framework
 * 4、调整ILiveSDK内部日志上报机制
+* 5、修复登录时crash问题
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
