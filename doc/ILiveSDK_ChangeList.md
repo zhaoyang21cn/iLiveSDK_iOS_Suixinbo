@@ -1,5 +1,8 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.8.4.13565(2018-6-11)
+* 1、修复日志上报引起的ILiveCabstructThread crash问题
+
 ###### V1.8.4.13487(2018-4-16)
 * 1、修复日志上报字段appname值错误问题
 * 2、ILiveSDK中默认初始化日志上报SDK
