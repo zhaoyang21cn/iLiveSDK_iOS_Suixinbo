@@ -219,11 +219,9 @@
 - (void)reportRoomInfo:(int)roomId groupId:(NSString *)groupid imageUrl:(NSString *)imageUrl
 {
     ReportRoomRequest *reportReq = [[ReportRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
-        NSLog(@"-----> 上传成功");
         
     } failHandler:^(BaseRequest *request) {
         // 上传失败
-        NSLog(@"-----> 上传失败");
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];

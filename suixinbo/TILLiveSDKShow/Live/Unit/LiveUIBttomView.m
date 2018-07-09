@@ -187,9 +187,7 @@
         video.type = ILVLIVE_IMTYPE_GROUP;
         video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
         [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
-            NSLog(@"send succ");
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
         }];
         return;
     }
@@ -203,26 +201,23 @@
     ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         [manager changeRole:kSxbRole_GuestHD succ:^ {
-            NSLog(@"down to video: change role succ");
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
             [manager enableCamera:pos enable:NO succ:^{
-                NSLog(@"down to video: disable camera succ");
                 [manager enableMic:NO succ:^{
-                    NSLog(@"down to video: disable mic succ");
                     ws.isUpVideo = NO;
                     [ws layoutSubviews];
                     
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    NSLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                    
                 }];
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                NSLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+                
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+            
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
+        
     }];
 }
 
@@ -243,9 +238,14 @@
 
 - (void)onCamera:(UIButton *)button
 {
+//    [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:YES succ:^{
+//
+//    } failed:^(NSString *module, int errId, NSString *errMsg) {
+//
+//    }];
+    
     [[ILiveRoomManager getInstance] switchCamera:^{
-        NSLog(@"switch camera succ");
-        
+
 //        cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
 //        if (pos == CameraPosFront && _flashBtn.selected == YES)
 //        {
@@ -253,7 +253,6 @@
 //        }
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSString *errInfo = [NSString stringWithFormat:@"switch camera fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"%@",errInfo);
     }];
 }
 
@@ -353,10 +352,10 @@
     button.selected = !button.selected;
     BOOL curMic = [[ILiveRoomManager getInstance] getCurMicState];
     [[ILiveRoomManager getInstance] enableMic:!curMic succ:^{
-        NSLog(@"enable succ");
+        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSString *errInfo = [NSString stringWithFormat:@"switch camera fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"%@",errInfo);
+        
     }];
 }
 

@@ -550,7 +550,6 @@
                 NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error];
                 if(error)
                 {
-                    NSLog(@"存储失败");
                 }
                 NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 [ud setObject:str forKey:key];
@@ -596,7 +595,6 @@
         }
     }
     
-    NSLog(@"[%@] can't convert to vaild Json", self);
     return nil;
 }
 

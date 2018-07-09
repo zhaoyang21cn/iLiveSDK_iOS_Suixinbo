@@ -638,7 +638,6 @@
             isSameParent = isSameParent && (view.superview == self);
             if (!isSameParent)
             {
-                NSLog(@"所排列的View的父控件不同");
                 return self;
                 break;
             }

@@ -43,7 +43,7 @@
                 ws.avatar = [UIImage imageWithData:imageData];
             }
         } fail:^(int code, NSString *msg) {
-            NSLog(@"GetSelfProfile fail");
+
         }];
         _nickName = [[ILiveLoginManager getInstance] getLoginId];
         _avatar = [UIImage imageNamed:@"default_user"];
@@ -123,10 +123,10 @@
     NSDictionary *logReport = @{kSettingTitle:@"上报日志",kSettingMethod:@"onLogReport"};
     [_dataArray addObject:logReport];
     
+#if !kIsAppstoreVersion
     NSDictionary *speedTest = @{kSettingTitle:@"网络测速",kSettingMethod:@"onSpeedTest"};
     [_dataArray addObject:speedTest];
     
-#if !kIsAppstoreVersion
     NSDictionary *version = @{kSettingTitle:@"当前版本",kSettingMethod:@"onVersion"};
     [_dataArray addObject:version];
 #endif
@@ -257,7 +257,7 @@
                 UITableViewCell *cell = [ws.tableView cellForRowAtIndexPath:path];
                 cell.textLabel.text = nickName;
             } fail:^(int code, NSString *msg) {
-                NSLog(@"设置昵称失败%d%@",code,msg);
+
             }];
         }
     }]];
@@ -584,12 +584,12 @@
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             [logoutWaitView removeFromSuperview];
             NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%ld,errmsg=%@",module,(long)request.response.errorCode,request.response.errorInfo];
-            NSLog(@"regist fail.%@",errinfo);
+
             [AlertHelp alertWith:@"退出失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     } failHandler:^(BaseRequest *request) {
         NSString *errinfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo];
-        NSLog(@"regist fail.%@",errinfo);
+
         [logoutWaitView removeFromSuperview];
         [AlertHelp alertWith:@"退出失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];

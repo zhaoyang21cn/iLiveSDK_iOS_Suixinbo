@@ -133,9 +133,9 @@ static __weak UIAlertController *_promptAlert = nil;
     if ([UserViewManager shareInstance].total >= kMaxUserViewCount || ![self.liveItem.uid isEqualToString:loginUser])
     {
         [[TILLiveManager getInstance] refuseLinkRoom:fromId succ:^{
-            NSLog(@"refuse");
+            
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"refuse");
+            
         }];
         return;
     }
@@ -143,16 +143,16 @@ static __weak UIAlertController *_promptAlert = nil;
     NSString *title = [NSString stringWithFormat:@"收到来自%@的跨房连麦邀请",fromId];
     AlertActionHandle accpetBlock = ^(UIAlertAction * _Nonnull action){
         [[TILLiveManager getInstance] acceptLinkRoom:fromId succ:^{
-            NSLog(@"accpet");
+            
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"accpet");
+            
         }];
     };
     AlertActionHandle refuseBlock = ^(UIAlertAction * _Nonnull action){
         [[TILLiveManager getInstance] refuseLinkRoom:fromId succ:^{
-            NSLog(@"refuse");
+            
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"refuse");
+            
         }];
     };
     [AlertHelp alertWith:title message:nil funBtns:@{@"拒绝":refuseBlock, @"同意":accpetBlock} cancelBtn:nil alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
@@ -183,7 +183,7 @@ static __weak UIAlertController *_promptAlert = nil;
         NSString *roomId = [[NSString alloc] initWithData:msg.data encoding:NSUTF8StringEncoding];
         LinkRoomSigRequest *linkSigReq = [[LinkRoomSigRequest alloc] initWithHandler:^(BaseRequest *request) {
             LinkRoomSigResponseData *sigData = (LinkRoomSigResponseData *)request.response.data;
-            NSLog(@"code=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo);
+            
             [[TILLiveManager getInstance] linkRoom:[roomId intValue] identifier:msg.sendId authBuff:sigData.linksig succ:^{
                 [AlertHelp tipWith:@"连接成功" wait:0.5];
             } failed:^(NSString *module, int errId, NSString *errMsg) {
@@ -244,24 +244,24 @@ static __weak UIAlertController *_promptAlert = nil;
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
         [roomManager changeRole:role succ:^{
-            NSLog(@"changeRole");
+            
             [roomManager enableCamera:CameraPosFront enable:YES succ:^{
-                NSLog(@"enable camera YES");
+                
                 [roomManager enableMic:YES succ:^{
                     ws.liveItem.info.roleName = role;
                     [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:role];
                     
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    NSLog(@"enable mic fail");
+                    
                 }];
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                NSLog(@"enable camera fail");
+                
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"change role fail");
+            
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"fail");
+        
     }];
 }
 
@@ -282,24 +282,18 @@ static __weak UIAlertController *_promptAlert = nil;
     ILiveRoomManager *manager = [ILiveRoomManager getInstance];
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         [manager changeRole:kSxbRole_GuestHD succ:^ {
-            NSLog(@"down to video: change role succ");
+            
             cameraPos pos = [[ILiveRoomManager getInstance] getCurCameraPos];
             [manager enableCamera:pos enable:NO succ:^{
-                NSLog(@"down to video: disable camera succ");
                 [manager enableMic:NO succ:^{
-                    NSLog(@"down to video: disable mic succ");
                     [[NSNotificationCenter defaultCenter] postNotificationName:kUserDownVideo_Notification object:nil];
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
-                    NSLog(@"down to video: disable mic fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
                 }];
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                NSLog(@"down to video: disable camera fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
             }];
         } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"down to video: change role fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
         }];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"down to video: change auth fail: module=%@,errId=%d,errMsg=%@",module, errId, errMsg);
     }];
 }
 
@@ -311,9 +305,9 @@ static __weak UIAlertController *_promptAlert = nil;
     msg.recvId = _liveItem.uid;
     msg.type = ILVLIVE_IMTYPE_C2C;
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        NSLog(@"refuse video succ");
+
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"refuse video  fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+
     }];
 }
 

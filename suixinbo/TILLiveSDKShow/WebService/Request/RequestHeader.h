@@ -41,4 +41,6 @@
 
 #import "LinkRoomSigRequest.h"
 
+#import "AuthRequest.h"
+
 #endif /* RequestHeader_h */

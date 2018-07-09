@@ -73,11 +73,8 @@ static WebServiceEngine *_sharedEngine = nil;
         
         if (url == nil || url.length < 1)
         {
-            NSLog(@"[%@]请求出错了", [req class]);
             return;
         }
-        
-        NSLog(@"reqest url = %@", url);
     
         NSURL *URL = [NSURL URLWithString:url];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -115,8 +112,6 @@ static WebServiceEngine *_sharedEngine = nil;
             
             if (error != nil)
             {
-                NSLog(@"Request = %@, Error = %@", req, error);
-                
                 
                 if (req.failHandler)
                 {
@@ -133,20 +128,15 @@ static WebServiceEngine *_sharedEngine = nil;
             }
             else
             {
-                NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"sxbparse responseString--> %@",responseString);
-                NSLog(@"[%@] request's responseString is :\n================================\n %@ \n================================" , [req class], responseString);
+//                NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 //TODO
                 NSObject *jsonObj = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];//[responseString objectFromJSONString];
                 if (jsonObj)
                 {
-                    NSLog(@"sxbparse --> %@",jsonObj);
                     [req parseResponse:jsonObj];
                 }
                 else
                 {
-                    NSLog(@"sxbparse fail --> %@",jsonObj);
-                    NSLog(@"请求出错");
                     if (req.failHandler)
                     {
                         dispatch_async(dispatch_get_main_queue(), ^{

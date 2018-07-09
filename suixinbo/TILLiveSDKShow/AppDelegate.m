@@ -123,7 +123,7 @@
     
     NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
     [manager setEnv:[evn intValue]];
-    
+//    [manager setEnv:1];
     NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];
     if (!logLevel)//默认debug等级
     {

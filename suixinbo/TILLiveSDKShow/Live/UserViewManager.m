@@ -175,7 +175,6 @@
             {
                 renderView.identifier = userId;
                 [_renderViews setObject:renderView forKey:[UserViewManager codeUser:userId type:type]];
-                NSLog(@"_total addRenderView = %d",_total);
                 _total++;
             }
         }
@@ -322,7 +321,6 @@
     {
         ILiveRenderView *renderView = [_renderViews objectForKey:codeId];
         CGRect rect = [self getRect:index++];
-        NSLog(@"------>refresh rect=%@",NSStringFromCGRect(rect));
         [renderView setFrame:rect];
     }
     
@@ -409,7 +407,6 @@
     CGFloat x = screenRect.size.width - width - kDefaultMargin;
     CGFloat y = topMargin + index*height + index*kDefaultMargin;
     CGRect result = CGRectMake(x, y, width, height);
-    NSLog(@"------>getRect=%@", NSStringFromCGRect(result));
     return CGRectMake(x, y, width, height);
 }
 

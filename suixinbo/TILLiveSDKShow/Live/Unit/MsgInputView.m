@@ -164,10 +164,10 @@
     msg.text = _textField.text;
     __weak typeof(_liveUI) wLiveUI = _liveUI;
     [[TILLiveManager getInstance] sendTextMessage:msg succ:^{
-        NSLog(@"send msg succ");
+        
         [wLiveUI onMessage:msg];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"createRoom fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        
     }];
     _textField.text = nil;
     [_textField resignFirstResponder];

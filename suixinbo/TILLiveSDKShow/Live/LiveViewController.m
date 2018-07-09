@@ -100,8 +100,6 @@
         case RoomOptionType_CrateRoom:
         {
             [self createRoom:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
-            //上报房间信息
-            [self reportRoomInfo:(int)_liveItem.info.roomnum groupId:_liveItem.info.groupid];
         }
             break;
         case RoomOptionType_JoinRoom:
@@ -286,7 +284,7 @@
         }];
         
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"get room list fail");
+        
     }];
     
     listReq.token = [AppDelegate sharedAppDelegate].token;
@@ -302,34 +300,51 @@
 {
     __weak typeof(self) ws = self;
     
-    TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
-    option.controlRole = _liveItem.info.roleName;
-    option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
-    option.roomDisconnectListener = self;
-    option.imOption.imSupport = YES;
-    
-    LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
-    [self.view addSubview:createRoomWaitView];
-    
-    [[TILLiveManager getInstance] createRoom:(int)_liveItem.info.roomnum option:option succ:^{
-        [createRoomWaitView removeFromSuperview];
+    AuthRequest *authReq = [[AuthRequest alloc] initWithHandler:^(BaseRequest *request) {
+        TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
+        option.controlRole = ws.liveItem.info.roleName;
+        option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
+        option.roomDisconnectListener = ws;
+        AuthResponseData *data = (AuthResponseData *)request.response.data;
+        option.avOption.authBuffer = [data.privMapEncrypt dataUsingEncoding:NSUTF8StringEncoding];
+
+        [AppDelegate sharedAppDelegate].token = data.token;
         
-        [_bottomView setMicState:YES];//重新设置麦克风的状态
-        
-        NSLog(@"createRoom succ");
-        //将房间参数保存到本地，如果异常退出，下次进入app时，可提示返回这次的房间
-        [ws.liveItem saveToLocal];
-        [ws setSelfInfo];
-        
-        [ws initAudio];
-        
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        [createRoomWaitView removeFromSuperview];
-        
-        NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"createRoom fail.%@",errinfo);
-        [AppDelegate showAlert:ws title:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        LoadView *createRoomWaitView = [LoadView loadViewWith:@"正在创建房间"];
+        [ws.view addSubview:createRoomWaitView];
+        [[TILLiveManager getInstance] createRoom:(int)ws.liveItem.info.roomnum option:option succ:^{
+            [createRoomWaitView removeFromSuperview];
+            
+            [_bottomView setMicState:YES];//重新设置麦克风的状态
+            
+            //将房间参数保存到本地，如果异常退出，下次进入app时，可提示返回这次的房间
+            [ws.liveItem saveToLocal];
+            [ws setSelfInfo];
+            
+            [ws initAudio];
+            
+            //上报房间信息
+            [ws reportRoomInfo:(int)ws.liveItem.info.roomnum groupId:ws.liveItem.info.groupid];
+            
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            [createRoomWaitView removeFromSuperview];
+            
+            NSString *errinfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+            [AppDelegate showAlert:ws title:@"创建房间失败" message:errinfo okTitle:@"确定" cancelTitle:nil ok:nil cancel:nil];
+        }];
+    } failHandler:^(BaseRequest *request) {
+        NSString *errLog = [NSString stringWithFormat:@"get authbuff fail. errid=%ld,errmsg=%@",request.response.errorCode,request.response.errorInfo];
+        [AppDelegate showAlert:self title:@"创建房间失败" message:errLog okTitle:nil cancelTitle:@"退出" ok:nil cancel:^(UIAlertAction * _Nonnull action) {
+            [ws dismissViewControllerAnimated:YES completion:nil];
+        }];
     }];
+    authReq.identifier = [[ILiveLoginManager getInstance] getLoginId];
+    authReq.pwd = [AppDelegate sharedAppDelegate].pwd;
+    authReq.appid = [ShowAppId intValue];
+    authReq.accountType = [ShowAccountType intValue];
+    authReq.roomNum = roomId;
+    authReq.privMap = 255;
+    [[WebServiceEngine sharedEngine] asyncRequest:authReq];
 }
 
 - (void)setSelfInfo
@@ -338,29 +353,46 @@
     [[TIMFriendshipManager sharedInstance] GetSelfProfile:^(TIMUserProfile *profile) {
         ws.selfProfile = profile;
     } fail:^(int code, NSString *msg) {
-        NSLog(@"GetSelfProfile fail");
         ws.selfProfile = nil;
     }];
 }
 
 - (void)joinRoom:(int)roomId groupId:(NSString *)groupid
 {
-    TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
-    option.controlRole = kSxbRole_GuestHD;
-    option.avOption.autoHdAudio = YES;
-
     __weak typeof(self) ws = self;
-    [[TILLiveManager getInstance] joinRoom:roomId option:option succ:^{
-        NSLog(@"join room succ");
-        [ws sendJoinRoomMsg];
-        [ws setSelfInfo];
-
-    } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSString *errLog = [NSString stringWithFormat:@"join room fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+    AuthRequest *authReq = [[AuthRequest alloc] initWithHandler:^(BaseRequest *request) {
+        TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
+        option.controlRole = kSxbRole_GuestHD;
+        option.avOption.autoHdAudio = YES;
+        AuthResponseData *data = (AuthResponseData *)request.response.data;
+        option.avOption.authBuffer = [data.privMapEncrypt dataUsingEncoding:NSUTF8StringEncoding];
+        
+        [AppDelegate sharedAppDelegate].token = data.token;
+        
+        [[TILLiveManager getInstance] joinRoom:roomId option:option succ:^{
+            [ws sendJoinRoomMsg];
+            [ws setSelfInfo];
+            
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            NSString *errLog = [NSString stringWithFormat:@"join room fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+            [AppDelegate showAlert:self title:@"加入房间失败" message:errLog okTitle:nil cancelTitle:@"退出" ok:nil cancel:^(UIAlertAction * _Nonnull action) {
+                [ws dismissViewControllerAnimated:YES completion:nil];
+            }];
+        }];
+    } failHandler:^(BaseRequest *request) {
+        NSString *errLog = [NSString stringWithFormat:@"get authbuff fail. errid=%ld,errmsg=%@",request.response.errorCode,request.response.errorInfo];
         [AppDelegate showAlert:self title:@"加入房间失败" message:errLog okTitle:nil cancelTitle:@"退出" ok:nil cancel:^(UIAlertAction * _Nonnull action) {
             [ws dismissViewControllerAnimated:YES completion:nil];
         }];
     }];
+    authReq.identifier = [[ILiveLoginManager getInstance] getLoginId];
+    authReq.pwd = [AppDelegate sharedAppDelegate].pwd;
+    authReq.appid = [ShowAppId intValue];
+    authReq.accountType = [ShowAccountType intValue];
+    authReq.roomNum = roomId;
+    authReq.privMap = 255;
+    [[WebServiceEngine sharedEngine] asyncRequest:authReq];
+
 }
 
 - (void)sendJoinRoomMsg
@@ -371,9 +403,9 @@
     msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        NSLog(@"succ");
+        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"fail");
+        
     }];
 }
 
@@ -518,11 +550,11 @@
 - (void)reportRoomInfo:(int)roomId groupId:(NSString *)groupid
 {
     ReportRoomRequest *reportReq = [[ReportRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
-        NSLog(@"-----> 上传成功");
+        
         
     } failHandler:^(BaseRequest *request) {
         // 上传失败
-        NSLog(@"-----> 上传失败");
+
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *errinfo = [NSString stringWithFormat:@"code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
@@ -547,11 +579,11 @@
 {
     __weak typeof(self) ws = self;
     ReportMemIdRequest *req = [[ReportMemIdRequest alloc] initWithHandler:^(BaseRequest *request) {
-        NSLog(@"report memeber id succ");
+        
         [ws onRefreshMemberList];
         
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"report memeber id fail");
+        
     }];
     req.token = [AppDelegate sharedAppDelegate].token;
     req.userId = [[ILiveLoginManager getInstance] getLoginId];
@@ -573,9 +605,9 @@
     {
         //通知业务服务器，退房
         ExitRoomRequest *exitReq = [[ExitRoomRequest alloc] initWithHandler:^(BaseRequest *request) {
-            NSLog(@"上报退出房间成功");
+            
         } failHandler:^(BaseRequest *request) {
-            NSLog(@"上报退出房间失败");
+            
         }];
         
         exitReq.token = [AppDelegate sharedAppDelegate].token;
@@ -596,7 +628,7 @@
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [ws dismissViewControllerAnimated:YES completion:nil];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"exit room fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        
         [ws.navigationController setNavigationBarHidden:NO animated:YES];
         [ws dismissViewControllerAnimated:YES completion:nil];
     }];
@@ -631,9 +663,8 @@
 {
     HostHeartBeatRequest *heartReq = [[HostHeartBeatRequest alloc] initWithHandler:^(BaseRequest *request) {
         
-        NSLog(@"---->heart beat succ");
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"---->heart beat fail");
+        
     }];
     heartReq.token = [AppDelegate sharedAppDelegate].token;
     heartReq.roomnum = _liveItem.info.roomnum;
@@ -671,7 +702,7 @@
         [ws freshAudience:listRspData.idlist];
         
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo);
+        
     }];
     listReq.token = [AppDelegate sharedAppDelegate].token;
     listReq.roomnum = _liveItem.info.roomnum;

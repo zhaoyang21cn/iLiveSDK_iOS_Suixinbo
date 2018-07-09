@@ -24,7 +24,7 @@
         [ws popMemberList:listRspData.idlist];
         
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo);
+        
         NSString *logInfo = [NSString stringWithFormat:@"get group member fail ,code=%ld,msg=%@",(long)request.response.errorCode, request.response.errorInfo];
         [AlertHelp alertWith:@"获取成员列表失败" message:logInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
@@ -47,10 +47,9 @@
 - (void)onRecReport:(NSString *)name type:(ILiveRecordType)type
 {
     RecordReportRequest *req = [[RecordReportRequest alloc] initWithHandler:^(BaseRequest *request) {
-        NSLog(@"rec report succ");
         
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"rec report fail %ld,%@", (long)request.response.errorCode,request.response.errorInfo);
+        
     }];
     req.token = [AppDelegate sharedAppDelegate].token;
     req.roomnum = _liveItem.info.roomnum;
@@ -338,11 +337,9 @@
             customMsg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
             customMsg.cmd = (ILVLiveIMCmd)AVIMCMD_ExitLive;
             [[TILLiveManager getInstance] sendCustomMessage:customMsg succ:^{
-                NSLog(@"succ");
                 [ws onClose];
                 
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                NSLog(@"fail");
                 [ws onClose];
             }];
         }
@@ -377,7 +374,6 @@
     if (tableView == _msgTableView)
     {
         MsgTableViewCell *cell = (MsgTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-        NSLog(@"index = %ld, height = %f", (long)indexPath.row, cell.frame.size.height);
         return cell.height;
     }
     else if (tableView == _memberListView)

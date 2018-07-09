@@ -164,7 +164,6 @@
     } failHandler:^(BaseRequest *request) {
         [regWaitView removeFromSuperview];
         NSString *errinfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo];
-        NSLog(@"regist fail.%@",errinfo);
         [AlertHelp alertWith:@"注册失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
     registReq.identifier = _userNameTF.text;

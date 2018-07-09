@@ -204,8 +204,10 @@
     LoginRequest *sigReq = [[LoginRequest alloc] initWithHandler:^(BaseRequest *request) {
         LoginResponceData *responseData = (LoginResponceData *)request.response.data;
         [AppDelegate sharedAppDelegate].token = responseData.token;
+        [AppDelegate sharedAppDelegate].pwd = pwd;
         [[ILiveLoginManager getInstance] iLiveLogin:identifier sig:responseData.userSig succ:^{
-            NSLog(@"tillivesdkshow login succ");
+            //wilder4
+            //eJxlj0FvgjAAhe-8CsLZaCkUZMkO2hjHppuKLuqlIbZgh0JtC3Mu**9zzGRNdv6*917ep2XbtrOcJN10t6vqUhP9IZhj39kOcDp-UAhOSaqJJ*k-yM6CS0bSTDPZQhchBAEwHU5ZqXnGb8Y7P1AmfUNQtCDtym*Df43DsO9HpsLzFk5HKxzPcQ83QfS0YKckPAUgHjUPKN-IaTVPX5sXccnix3GIn9UMq0Gcb9b70BsWYvY2BONtX*kyS7eyd17CQ7GAk3VxCeq9lxwH9eremNT8yG6XPAAiCF1o0IZJxauyFSBwkQuv0s9v68v6BugfXdY_
             [loginWaitView removeFromSuperview];
             [ws saveLoginParamToLocal:identifier passward:pwd];
             [ws enterMainUI];
@@ -219,14 +221,12 @@
             else
             {
                 NSString *errInfo = [NSString stringWithFormat:@"module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-                NSLog(@"login fail.%@",errInfo);
                 [AlertHelp alertWith:@"登录失败" message:errInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
             }
         }];
     } failHandler:^(BaseRequest *request) {
         [loginWaitView removeFromSuperview];
         NSString *errInfo = [NSString stringWithFormat:@"errid=%ld,errmsg=%@",(long)request.response.errorCode, request.response.errorInfo];
-        NSLog(@"login fail.%@",errInfo);
         [AlertHelp alertWith:@"登录失败" message:errInfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
     sigReq.identifier = identifier;

@@ -59,9 +59,7 @@
             customMsg.recvId = restoreItem.info.groupid;
             customMsg.cmd = (ILVLiveIMCmd)AVIMCMD_ExitLive;
             [[TILLiveManager getInstance] sendCustomMessage:customMsg succ:^{
-                NSLog(@"succ");
             } failed:^(NSString *module, int errId, NSString *errMsg) {
-                NSLog(@"");
             }];
             [restoreItem cleanLocalData];
         }];

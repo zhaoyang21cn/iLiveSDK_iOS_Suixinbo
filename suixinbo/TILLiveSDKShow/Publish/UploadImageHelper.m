@@ -100,7 +100,6 @@ static UploadImageHelper *_shareInstance = nil;
                 }
             };
             _cosClient.progressHandler = ^(int64_t bytesWritten,int64_t totalBytesWritten,int64_t totalBytesExpectedToWrite){
-                NSLog(@"Image upload %lld / %lld", totalBytesWritten, totalBytesExpectedToWrite);
             };
             [_cosClient putObject:task];
         });

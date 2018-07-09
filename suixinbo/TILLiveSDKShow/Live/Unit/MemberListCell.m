@@ -94,9 +94,9 @@
     video.type = ILVLIVE_IMTYPE_C2C;
     video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
     [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
-        NSLog(@"send succ");
+        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        
     }];
     [[NSNotificationCenter defaultCenter] postNotificationName:kClickConnect_Notification object:_identifier.text];
 }
@@ -109,9 +109,9 @@
     video.type = ILVLIVE_IMTYPE_GROUP;
     video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
     [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
-        NSLog(@"send succ");
+        
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
+        
     }];
     [[NSNotificationCenter defaultCenter] postNotificationName:kClickDownVideo_Notification object:_identifier.text];
 }

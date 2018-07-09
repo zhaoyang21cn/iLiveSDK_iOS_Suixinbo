@@ -42,10 +42,21 @@
             break;
     }
 }
+
+- (void)test {
+    [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:NO succ:^{
+        [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:YES succ:^{
+            
+        } failed:^(NSString *module, int errId, NSString *errMsg) {
+            
+        }];
+    } failed:^(NSString *module, int errId, NSString *errMsg) {
+        
+    }];
+}
+
 - (void)onFirstFrameRecved:(int)width height:(int)height identifier:(NSString *)identifier srcType:(avVideoSrcType)srcType;
 {
-    NSLog(@"%d,%d,%@",width,height,identifier);
-    
     LiveUIBttomView *bottom = [self getBottomView];
     bottom.lastBeautyValue = 0.5;
     bottom.lastWhiteValue = 0.5;

@@ -91,7 +91,6 @@ UIAlertController *_alert;
 {
     if (sizeof (unsigned int) != 4)
     {
-        NSLog(@"Unkown type!");
         return @"";
     }
     unsigned int mask = 0xFF000000;

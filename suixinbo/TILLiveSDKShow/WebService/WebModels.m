@@ -88,7 +88,6 @@
         {
             return nil;
         }
-        NSLog(@"%@", listItemDic);
         NSMutableDictionary *tcShowUserDic = [listItemDic objectForKey:@"host"];
         
         TCShowLiveListItem *item = [[TCShowLiveListItem alloc] init];

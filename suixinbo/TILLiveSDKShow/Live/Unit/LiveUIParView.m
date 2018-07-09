@@ -100,7 +100,7 @@
         [self addSubview:_pushStreamBtn];
         [_funs addObject:_pushStreamBtn];
     }
-    
+#if !kIsAppstoreVersion
     _speedBtn = [[UIButton alloc] init];
     [_speedBtn setTitle:@"网络测速" forState:UIControlStateNormal];
     [_speedBtn addTarget:self action:@selector(onTestSpeed:) forControlEvents:UIControlEventTouchUpInside];
@@ -113,6 +113,7 @@
     [self addSubview:_speedBtn];
     [_funs addObject:_speedBtn];
     
+#endif
     if (_config.isHost)
     {
         _recBtn = [[UIButton alloc] init];
@@ -333,7 +334,7 @@
     __weak typeof(self) ws = self;
     [[ILiveRoomManager getInstance] startPushStream:option succ:^(id selfPtr) {
         AVStreamerResp *resp = (AVStreamerResp *)selfPtr;
-        NSLog(@"--->resp %@",resp);
+        
         [ws setChannelId:resp.channelID];
         AVLiveUrl *url = nil;
         if (resp && resp.urls && resp.urls.count > 0)
@@ -356,7 +357,7 @@
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         button.selected = !button.selected;
         NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"%@",errinfo);
+        
         [AlertHelp alertWith:@"推流失败" message:errinfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
 }
@@ -408,7 +409,7 @@
         
     } failed:^(NSString *module, int errId, NSString *errMsg) {
         NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-        NSLog(@"%@",errinfo);
+        
         [AlertHelp alertWith:@"停止推流失败" message:errinfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     }];
 }
@@ -443,7 +444,7 @@
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             button.selected = !button.selected;
             NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-            NSLog(@"%@",errinfo);
+            
             [AlertHelp alertWith:@"停止录制失败" message:errinfo cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     }
@@ -559,7 +560,7 @@
         } failed:^(NSString *module, int errId, NSString *errMsg) {
             button.selected = !button.selected;
             NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-            NSLog(@"%@",errinfo);
+            
             [AlertHelp alertWith:@"开始录制失败" message:errinfo cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
         }];
     } cancel:^(UIAlertAction * _Nonnull action) {

@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, copy) NSString *token;
+@property (nonatomic, copy) NSString *pwd;
 
 + (instancetype)sharedAppDelegate;
 

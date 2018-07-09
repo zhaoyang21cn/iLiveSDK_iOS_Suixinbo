@@ -204,7 +204,6 @@
             [ws.tableView reloadData];
         });
         wpi.pageIndex ++;
-        NSLog(@"--->%ld",(long)recordRsp.total);
         if (ws.datas.count >= recordRsp.total)
         {
             _isCanLoadMore = NO;
@@ -215,7 +214,6 @@
             complete();
         }
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"fail");
     }];
     recListReq.token = [AppDelegate sharedAppDelegate].token;
     recListReq.type = 0;

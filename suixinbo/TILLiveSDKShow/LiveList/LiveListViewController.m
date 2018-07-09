@@ -94,7 +94,6 @@
             complete();
         }
     } failHandler:^(BaseRequest *request) {
-        NSLog(@"fail");
         if (complete)
         {
             complete();
