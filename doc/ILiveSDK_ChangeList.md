@@ -1,10 +1,11 @@
 ## iOS_ILiveSDK_ChangeList
 
-###### V1.9.0.13639(2018-7-9)
-* 1、修改SDK内部默认通道为云上环境(**老用户需要在初始化SDK后将通道设置为IMSDK通道，否则无法与旧版本互通**)
+###### V1.9.0.13800(2018-7-11)
+* 1、修改SDK内部默认通道为云上环境(**老用户需要在 初始化SDK之前 将通道设置为IMSDK通道，否则无法与旧版本互通**)
     `[[ILiveSDK getInstance] setChannelMode:E_ChannelIMSDK withHost:@""];`
 * 2、ILiveSDK增加通道设置接口setChannelMode
 * 3、修复日志上报模块，设置为NSNumber时crash问题
+* 4、将authBuff字段更名为privateMapKey
 
 ###### V1.8.4.13565(2018-6-11)
 * 1、修复日志上报引起的ILiveCabstructThread crash问题
