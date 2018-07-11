@@ -306,7 +306,7 @@
         option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
         option.roomDisconnectListener = ws;
         AuthResponseData *data = (AuthResponseData *)request.response.data;
-        option.avOption.authBuffer = [data.privMapEncrypt dataUsingEncoding:NSUTF8StringEncoding];
+        option.avOption.privateMapKey = [data.privMapEncrypt dataUsingEncoding:NSUTF8StringEncoding];
 
         [AppDelegate sharedAppDelegate].token = data.token;
         
@@ -365,7 +365,7 @@
         option.controlRole = kSxbRole_GuestHD;
         option.avOption.autoHdAudio = YES;
         AuthResponseData *data = (AuthResponseData *)request.response.data;
-        option.avOption.authBuffer = [data.privMapEncrypt dataUsingEncoding:NSUTF8StringEncoding];
+        option.avOption.privateMapKey = [data.privMapEncrypt dataUsingEncoding:NSUTF8StringEncoding];
         
         [AppDelegate sharedAppDelegate].token = data.token;
         

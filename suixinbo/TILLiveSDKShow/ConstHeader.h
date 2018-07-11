@@ -193,6 +193,8 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 
 #define kHeartInterval 5 //心跳间隔
 
+#define kShieldMapKey @"kShieldMapKey"  //被屏蔽的id保存在map中，kShieldMapKey是这个map的key
+
 //最大小画面数量（不包含大画面）
 #define kMaxUserViewCount 3
 

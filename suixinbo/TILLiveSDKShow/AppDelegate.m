@@ -132,8 +132,12 @@
     }
     [self disableLogPrint];//禁用日志控制台打印
     [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
+
+    // 设置非云上环境(必须在初始化sdk之前设置)
+    [[ILiveSDK getInstance] setChannelMode:E_ChannelIMSDK withHost:@""];
     
     [[ILiveSDK getInstance] initSdk:[ShowAppId intValue] accountType:[ShowAccountType intValue]];
+
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     

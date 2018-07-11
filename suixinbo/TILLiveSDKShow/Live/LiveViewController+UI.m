@@ -60,6 +60,25 @@
     [[WebServiceEngine sharedEngine] asyncRequest:req];
 }
 
+- (void)onReport {
+    __weak typeof(self) ws = self;
+    AlertActionHandle reportBlock = ^(UIAlertAction * _Nonnull action){
+        [ws showReportSucc];
+    };
+    NSDictionary *funs = @{@"垃圾营销":reportBlock,@"不实信息":reportBlock,@"有害信息":reportBlock,@"违法信息":reportBlock,@"淫秽信息":reportBlock};
+    [AlertHelp alertWith:@"举报原因" message:nil funBtns:funs cancelBtn:@"取消" alertStyle:UIAlertControllerStyleActionSheet cancelAction:nil];
+}
+
+- (void)showReportSucc {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"举报成功,系统将在24小时内处理" preferredStyle:UIAlertControllerStyleAlert];
+    [[AlertHelp topViewController] presentViewController:alert animated:YES completion:nil];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert dismissViewControllerAnimated:YES completion:nil];
+    });
+}
+
+
 - (void)popMemberList:(NSArray *)members
 {
     //群成员很大时，次处存在性能问题，可以单独维护房间成员，不用每次都获取。

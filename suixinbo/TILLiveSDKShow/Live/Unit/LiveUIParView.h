@@ -14,6 +14,7 @@
 
 - (void)onRecReport:(NSString *)name type:(ILiveRecordType)type;
 
+- (void)onReport;//举报
 @end
 
 @interface LiveUIParViewConfig : NSObject
@@ -28,6 +29,8 @@
     UIButton    *_pushStreamBtn;     //推流
     UIButton    *_recBtn;            //录制
     UIButton    *_speedBtn;          //测速
+    UIButton    *_reportBtn;         //举报
+    UIButton    *_shieldBtn;         //拉黑
     
     UIButton    *_linkRoomBtn;       //串门
     UIButton    *_unlinkRoomBtn;     //取消串门

@@ -15,6 +15,8 @@
 
 #import "SpeedTest.h"
 
+#import "BlackListTableVC.h"
+
 #define kSettingTitle @"title"
 #define kSettingMethod @"method"
 
@@ -64,13 +66,13 @@
 {
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationItem.title = @"设置";
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     _tableView.backgroundColor = kColorLightGray;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     
-    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width, 60)];
+    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width, 180)];
     UIButton *logoutBtn = [[UIButton alloc] initWithFrame:CGRectMake(kDefaultMargin,kDefaultMargin,footView.frame.size.width - 2 * kDefaultMargin, 44)];
     logoutBtn.backgroundColor = kColorRed;
     logoutBtn.layer.cornerRadius = 5.0;
@@ -130,6 +132,12 @@
     NSDictionary *version = @{kSettingTitle:@"当前版本",kSettingMethod:@"onVersion"};
     [_dataArray addObject:version];
 #endif
+    
+    NSDictionary *blackList = @{kSettingTitle:@"黑名单",kSettingMethod:@"onBalcklist"};
+    [_dataArray addObject:blackList];
+    
+    NSDictionary *contact = @{kSettingTitle:@"联系我们",kSettingMethod:@"onContactUs"};
+    [_dataArray addObject:contact];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -524,6 +532,21 @@
             return @"UNDEFINE";
             break;
     }
+}
+
+- (void)onBalcklist {
+    BlackListTableVC *balcklistTVC = [[BlackListTableVC alloc] init];
+//    [self.navigationController presentViewController:balcklistTVC animated:YES completion:nil];
+    [self.navigationController pushViewController:balcklistTVC animated:YES];
+}
+
+- (void)onContactUs {
+    NSString *contactType = @"3339797286@qq.com";
+    ActionHandle copyKeyHandle = ^(UIAlertAction * _Nonnull action){
+        UIPasteboard *paste = [UIPasteboard generalPasteboard];
+        [paste setString:contactType];
+    };
+    [AlertHelp alertWith:@"联系邮箱" message:contactType funBtns:@{@"复制":copyKeyHandle} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
 - (void)onLogReport

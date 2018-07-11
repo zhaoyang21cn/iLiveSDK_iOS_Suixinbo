@@ -110,7 +110,18 @@
 - (void)loadListSucc:(RoomListRequest *)req
 {
     RoomListRspData *respData = (RoomListRspData *)req.response.data;
-    [_datas addObjectsFromArray:respData.rooms];
+//    [_datas addObjectsFromArray:respData.rooms];
+    
+    //将黑名单中的uid过滤掉
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *blacklist = [user objectForKey:kShieldMapKey];
+    
+    [respData.rooms enumerateObjectsUsingBlock:^(TCShowLiveListItem *  _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (![blacklist objectForKey:item.uid]) {
+            [_datas addObject:item];
+        }
+    }];
+    
     _pageItem.pageIndex += respData.rooms.count;
     _isCanLoadMore = respData.total > _pageItem.pageIndex;
     [self.tableView reloadData];

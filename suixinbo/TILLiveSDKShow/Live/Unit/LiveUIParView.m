@@ -153,6 +153,29 @@
         [self addSubview:_unlinkRoomBtn];
         [_funs addObject:_unlinkRoomBtn];
     }
+    _reportBtn = [[UIButton alloc] init];
+    [_reportBtn setTitle:@"举报" forState:UIControlStateNormal];
+    [_reportBtn addTarget:self action:@selector(onReport:) forControlEvents:UIControlEventTouchUpInside];
+    _reportBtn.titleLabel.font = kAppSmallTextFont;
+    [_reportBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+    [_reportBtn setBackgroundImage:nor forState:UIControlStateNormal];
+    [_reportBtn setBackgroundImage:image forState:UIControlStateSelected];
+    _reportBtn.layer.cornerRadius = 4;
+    _reportBtn.layer.masksToBounds = YES;
+    [self addSubview:_reportBtn];
+    [_funs addObject:_reportBtn];
+    
+    _shieldBtn = [[UIButton alloc] init];
+    [_shieldBtn setTitle:@"拉黑" forState:UIControlStateNormal];
+    [_shieldBtn addTarget:self action:@selector(onShield:) forControlEvents:UIControlEventTouchUpInside];
+    _shieldBtn.titleLabel.font = kAppSmallTextFont;
+    [_shieldBtn setTitleColor:kColorBlack forState:UIControlStateNormal];
+    [_shieldBtn setBackgroundImage:nor forState:UIControlStateNormal];
+    [_shieldBtn setBackgroundImage:image forState:UIControlStateSelected];
+    _shieldBtn.layer.cornerRadius = 4;
+    _shieldBtn.layer.masksToBounds = YES;
+    [self addSubview:_shieldBtn];
+    [_funs addObject:_shieldBtn];
 }
 
 - (void)layoutSubviews
@@ -571,6 +594,29 @@
 - (void)onTestSpeed:(UIButton *)button
 {
     [[SpeedTest shareInstance] startTest];
+}
+
+//举报
+- (void)onReport:(UIButton *)button {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onReport)]) {
+        [self.delegate onReport];
+    }
+}
+
+- (void)onShield:(UIButton *)button {
+    AlertActionHandle okBlock = ^(UIAlertAction *_Nonnull action){
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *blacklist = [NSMutableDictionary dictionaryWithDictionary:[user objectForKey:kShieldMapKey]];
+        if (blacklist) {
+            [blacklist setValue:@(1) forKey:_config.item.uid];
+        } else {
+            blacklist = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@(1),_config.item.uid,nil];
+        }
+        [user setObject:blacklist forKey:kShieldMapKey];
+        
+        [AlertHelp tipWith:@"已加入黑名单" wait:1.0];
+    };
+    [AlertHelp alertWith:@"提示" message:@"确定要拉黑吗" funBtns:@{@"确定":okBlock} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
 }
 
 @end
