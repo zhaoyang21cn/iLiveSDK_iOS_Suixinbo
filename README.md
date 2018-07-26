@@ -44,7 +44,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 [API文档](https://zhaoyang21cn.github.io/iLiveSDK_Help/ios_help/)
 
 ## 错误码
-[错误码表](https://github.com/zhaoyang21cn/ILiveSDK_Android_Demos/blob/master/doc/ILiveSDK/error.md)
+[错误码表](https://github.com/zhaoyang21cn/iLiveSDK_Android_LiveDemo/blob/master/doc/ILiveSDK/error.md)
 
 ## 直播外延
 
