@@ -20,6 +20,10 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 
 ## SDK最近更新说明
+###### V1.9.2.13880(2018-8-02)
+* 1、房间和摄像头接口去时序化
+* 2、ILiveSDK添加[统一事件回调](https://github.com/zhaoyang21cn/iLiveSDK_Android_LiveDemo/blob/master/doc/ILiveSDK/EventListener.md)
+* 3、添加成员进出房间(群组)事件通知以及群组解散事件通知
 ###### V1.9.1.13841(2018-7-18)
 * 修复推流和录制视频画面方向错误的问题
 ###### V1.9.0.13800(2018-7-11)
