@@ -746,6 +746,7 @@
 {
     //设置美颜、美白、红润等参数
     [self.preProcessor setOutputSize:CGSizeMake(frameData.frameDesc.width, frameData.frameDesc.height)];
+    [self.preProcessor setCropRect:CGRectMake(0, 0,frameData.frameDesc.width, frameData.frameDesc.height)];
     //开始预处理
     [self.preProcessor processFrame:frameData.data width:frameData.frameDesc.width height:frameData.frameDesc.height orientation:TXE_ROTATION_90 inputFormat:TXE_FRAME_FORMAT_NV12 outputFormat:TXE_FRAME_FORMAT_NV12];
     //将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
