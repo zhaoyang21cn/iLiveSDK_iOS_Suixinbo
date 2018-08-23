@@ -1,4 +1,7 @@
 ## iOS_ILiveSDK_ChangeList
+###### V1.9.3.13966(2018-8-23)
+* 1、更新AVSDK到1.9.9.1014，兼容IOS12
+* 2、添加测速类ILiveSpeedTest，可通过startSpeedTest接口进行测试
 
 ###### V1.9.2.13880(2018-8-02)
 * 1、房间和摄像头接口去时序化
