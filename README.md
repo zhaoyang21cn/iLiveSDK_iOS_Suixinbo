@@ -18,7 +18,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
 |TILFilterSDK|--|插件美颜包(不在维护，请尽快替换成BeautySDK)|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
-
+> 备注导入QAVSDK中的libFDKAAC_iOS.a文件，需要在xcodeproject的主工程Build Settings->Other Linker Flags加-force_load libFDKAAC_iOS.a
 ## SDK最近更新说明
 ###### V1.9.4.14021(2018-9-6)
 * 1、修改角色不存在时进房失败
