@@ -13,16 +13,17 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 |--|--|--|--|
 |<a name="#avsdk_download">QAVSDK</a>|1.9.9.1020.39998|音视频SDK|[下载](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.9.1020.39998.zip)
 |IMSDK|v2.5.6.11389.11327|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.6.11389.11327.zip)
-|ILiveSDK|1.9.4.14021|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.4.14021.zip)
+|ILiveSDK|1.9.4.14037|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.4.14037.zip)
 |BeautySDK|--|独立美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/BeautySDK.zip)
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
 |TILFilterSDK|--|插件美颜包(不在维护，请尽快替换成BeautySDK)|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
 > 备注导入QAVSDK中的libFDKAAC_iOS.a文件，需要在xcodeproject的主工程-force_load libFDKAAC_iOS.a
 ## SDK最近更新说明
-###### V1.9.4.14021(2018-9-6)
+###### V1.9.4.14037(2018-9-6)
 * 1、修改角色不存在时进房失败
 * 2、更新QAVSDK1.9.9.1020，增加libFDKAAC_iOS.a文件，修复新老版本互通无声问题
+* 3、修复进IM群组失败的问题
 
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
