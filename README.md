@@ -4,8 +4,6 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 支持以下场景     
 >* [视频直播类]
 类似now直播,映客 一人直播,多人观看,发文本消息,赞,送礼物。[具体参考TILLiveSDK](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/TILLiveSDK-README.md)
->* [视频聊天类]
-     类似微信视频通话功能呢,支持多人同时上麦(最多4路)。[具体参考TILCallSDK](https://github.com/zhaoyang21cn/CallSDK_iOS_Demo)
 
 ## <a name="#sdk_download">SDK下载</a>
 
