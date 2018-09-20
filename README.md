@@ -20,7 +20,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 ###### V1.9.4.14037(2018-9-6)
 * 1、修改角色不存在时进房失败
 * 2、修复进IM群组失败的问题
-* 3、更新QAVSDK,修复新老版本音频不互通问题
+* 3、更新QAVSDK到1.9.9.1025.40090,修复新老版本音频不互通问题
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
