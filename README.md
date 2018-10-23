@@ -10,13 +10,15 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 |SDK|版本号|摘要|下载地址|
 |--|--|--|--|
 |<a name="#avsdk_download">QAVSDK</a>|1.9.9.1025.40090|音视频SDK|[下载](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.9.1025.40090.zip)
-|IMSDK|v2.5.6.11389.11327|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.5.6.11389.11327.zip)
-|ILiveSDK|1.9.4.14088|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.4.14088.zip)
+|IMSDK|v2.7.2.14067.13860|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.7.2.14067.13860.zip)
+|ILiveSDK|1.9.4.14105|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.4.14105.zip)
 |BeautySDK|--|独立美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/BeautySDK.zip)
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
 |TILFilterSDK|--|插件美颜包(不在维护，请尽快替换成BeautySDK)|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
 ## SDK最近更新说明
+###### V1.9.4.14105(2018-10-23)
+* ilivesdk版本更新支持imsdk V2/V3版本切换(备注：升级ilivesdk版本时，需要同时更新imsdk为最新版)
 ###### V1.9.4.14088(2018-10-19)
 * 云上环境支持手动推流
 
