@@ -18,9 +18,9 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 ###### V1.9.6.14202(2018-11-30)
-* 1. 修复本地日志上报配置文件损坏导致无法初始化问题
-* 2. 初始化接口增加回调
-* 3. 更新QAVSDK，支持音频优先传输
+* 1、 修复本地日志上报配置文件损坏导致无法初始化问题
+* 2、 初始化接口增加回调
+* 3、 更新QAVSDK，支持音频优先传输
 
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
