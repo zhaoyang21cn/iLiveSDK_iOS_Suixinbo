@@ -1,4 +1,9 @@
 ## iOS_ILiveSDK_ChangeList
+
+###### V1.9.6.14255(2018-12-14)
+* 1、 支持[自定义Spear配置功能](https://github.com/zhaoyang21cn/iLiveSDK_Android_LiveDemo/blob/master/doc/ILiveSDK/def_role.md)
+* 2、 更新avsdk1.9.9.1069
+
 ###### V1.9.6.14202(2018-11-30)
 * 1、修复本地日志上报配置文件损坏导致无法初始化问题
 * 2、 初始化接口增加回调
