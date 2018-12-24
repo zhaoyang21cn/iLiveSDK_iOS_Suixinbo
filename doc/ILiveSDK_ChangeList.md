@@ -1,4 +1,7 @@
 ## iOS_ILiveSDK_ChangeList
+###### V1.9.6.14277(2018-12-14)
+* 1、 修复canclelistView接口无效的问题
+* 2、 修复超时断开连接退房时，设置option的isReserved属性无效问题
 
 ###### V1.9.6.14255(2018-12-14)
 * 1、 支持[自定义Spear配置功能](https://github.com/zhaoyang21cn/iLiveSDK_Android_LiveDemo/blob/master/doc/ILiveSDK/def_role.md)
