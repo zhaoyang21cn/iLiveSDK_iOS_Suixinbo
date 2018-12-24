@@ -11,16 +11,17 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 |--|--|--|--|
 |<a name="#avsdk_download">QAVSDK</a>|1.9.9.1069.40554|音视频SDK|[下载](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.9.1069.40554.zip)
 |IMSDK|v2.7.2.14191.14187|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.7.2.14191.14187.zip)
-|ILiveSDK|1.9.6.14277|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.6.14277.zip)
+|ILiveSDK|1.9.6.14288|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.6.14288.zip)
 |BeautySDK|--|独立美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/BeautySDK.zip)
 |QAVEffect|--|QAVSDK的内置美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/QAVEffect.zip)
 |TILFilterSDK|--|插件美颜包(不在维护，请尽快替换成BeautySDK)|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
 ## SDK最近更新说明
 
-###### V1.9.6.14277(2018-12-14)
+###### V1.9.6.14288(2018-12-24)
 * 1、 修复canclelistView接口无效的问题
 * 2、 修复超时断开连接退房时，设置option的isReserved属性无效问题
+* 3、 修复相机权限关闭时，调用打开相机回调不正确问题
 
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
