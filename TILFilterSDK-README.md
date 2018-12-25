@@ -335,7 +335,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 #import "TXCVideoPreprocessor.h"
 //声明变量
 @property (nonatomic, strong) TXCVideoPreprocessor *preProcessor;
-@property (nonatomic, assign) Byte  *processorBytes;
+@property (nonatomic, assign) CMSampleBufferRef ret;
 //创建变量
 self.preProcessor = [[TXCVideoPreprocessor alloc] init];
 [self.preProcessor setDelegate:self];//TXIVideoPreprocessorDelegate
@@ -351,7 +351,7 @@ self.preProcessor = [[TXCVideoPreprocessor alloc] init];
 3.调用处理接口
 
 ```object-c
-- (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frameData
+- (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret
 {
 //设置美颜、美白、红润等参数
 [self.preProcessor setBeautyLevel:5];
@@ -359,19 +359,17 @@ self.preProcessor = [[TXCVideoPreprocessor alloc] init];
 [self.preProcessor setWhitenessLevel:8];
 [self.preProcessor setOutputSize:CGSizeMake(frameData.frameDesc.width, frameData.frameDesc.height)];
 //开始预处理
-[self.preProcessor processFrame:frameData.data width:frameData.frameDesc.width height:frameData.frameDesc.height orientation:TXE_ROTATION_0 inputFormat:TXE_FRAME_FORMAT_NV12 outputFormat:TXE_FRAME_FORMAT_NV12];
+[self.preProcessor processFrame:buf orientation:TXE_ROTATION_90 outputFormat:TXE_FRAME_FORMAT_NV12];
 //将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
-if(self.processorBytes){
-memcpy(frameData.data, self.processorBytes, frameData.frameDesc.width * frameData.frameDesc.height * 3 / 2);
-}
+*ret = self.ret;
 }
 ```
 
 4.回调中保存数据
 
 ```object-c
-- (void)didProcessFrame:(Byte *)bytes width:(NSInteger)width height:(NSInteger)height format:(TXEFrameFormat)format timeStamp:(UInt64)timeStamp
+- (void)didProcessFrame:(CMSampleBufferRef)sampleBuffer timeStamp:(UInt64)timeStamp
 {
-self.processorBytes = bytes;
+self.ret = sampleBuffer;
 }
 ```
