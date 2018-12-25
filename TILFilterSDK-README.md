@@ -66,7 +66,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 预处理接口调用
 
-```object-c
+```objc
 /*
 * 预处理数据
 * @param   sampleBuffer 帧数据（420f和y420）
@@ -91,7 +91,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 数据处理完回调
 
-```object-c
+```objc
 /*
 * 设置代理
 * @param   delegate   代理
@@ -151,7 +151,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 > 美颜风格、美颜、美白、红润、滤镜、水印、裁剪、旋转、缩放、镜像
 
 
-```object-c
+```objc
 /*
 * 设置输入裁剪区域
 */
@@ -221,7 +221,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 可以使用sdk自带的滤镜资源，也可以自定义滤镜资源，通过设置融合度调整滤镜资源和图像的融合程度
 
-```object-c
+```objc
 /*
 * 设置滤镜
 * @param   type  滤镜类型
@@ -248,7 +248,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 > 大眼、瘦脸、v脸、短脸、下巴、瘦鼻、绿幕、动效
 
 
-```object-c
+```objc
 /*
 * 设置绿幕
 * @param   file  绿幕文件路径
@@ -307,7 +307,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 将动效资源解压在Resource目录下，通过资源路径设置动效
 
-```object-c
+```objc
 /*
 * 设置动效
 * @param   templatePath  动效资源路径
@@ -317,7 +317,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 使用绿幕需要先准备一个用于播放的mp4文件，通过调用以下接口即可开启绿幕效果
 
-```object-c
+```objc
 /*
 * 设置绿幕
 * @param   file  绿幕文件路径
@@ -330,7 +330,7 @@ sdK提供美颜、美白、红润、滤镜、大眼、瘦脸、动效贴纸、�
 
 1.对象创建
 
-```object-c
+```objc
 //引入头文件
 #import "TXCVideoPreprocessor.h"
 //声明变量
@@ -343,33 +343,33 @@ self.preProcessor = [[TXCVideoPreprocessor alloc] init];
 
 2.设置ILiveSDK数据回调
 
-```object-c
+```objc
 // 进房前设置数据帧回调
 [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];//QAVLocalVideoDelegate
 ```
 
 3.调用处理接口
 
-```object-c
+```objc
 - (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret
 {
-//设置美颜、美白、红润等参数
-[self.preProcessor setBeautyLevel:5];
-[self.preProcessor setRuddinessLevel:8];
-[self.preProcessor setWhitenessLevel:8];
-[self.preProcessor setOutputSize:CGSizeMake(frameData.frameDesc.width, frameData.frameDesc.height)];
-//开始预处理
-[self.preProcessor processFrame:buf orientation:TXE_ROTATION_90 outputFormat:TXE_FRAME_FORMAT_NV12];
-//将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
-*ret = self.ret;
+  //设置美颜、美白、红润等参数
+  [self.preProcessor setBeautyLevel:5];
+  [self.preProcessor setRuddinessLevel:8];
+  [self.preProcessor setWhitenessLevel:8];
+  [self.preProcessor setOutputSize:CGSizeMake(frameData.frameDesc.width,  frameData.frameDesc.height)];
+  //开始预处理
+  [self.preProcessor processFrame:buf orientation:TXE_ROTATION_90   outputFormat:TXE_FRAME_FORMAT_NV12];
+  //将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
+  *ret = self.ret;
 }
 ```
 
 4.回调中保存数据
 
-```object-c
+```objc
 - (void)didProcessFrame:(CMSampleBufferRef)sampleBuffer timeStamp:(UInt64)timeStamp
 {
-self.ret = sampleBuffer;
+  self.ret = sampleBuffer;
 }
 ```
