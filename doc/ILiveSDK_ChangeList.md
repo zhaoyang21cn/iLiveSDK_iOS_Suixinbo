@@ -1,5 +1,9 @@
 ## iOS_ILiveSDK_ChangeList
 
+###### V1.9.6.14321(2019-01-03)
+* 1、 ilivesdk封装音视频测试接口
+* 2、 进房option增加enableMuteBag参数，YES时会发送静音包，默认关闭
+
 ###### V1.9.6.14296(2018-12-24)
 * 1、 修复canclelistView接口无效的问题
 * 2、 修复超时断开连接退房时，设置option的isReserved属性无效问题
