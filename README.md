@@ -17,7 +17,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 |TILFilterSDK|--|插件美颜包(不在维护，请尽快替换成BeautySDK)|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TILFilterSDK.zip)
 
 ## SDK最近更新说明
-###### V1.9.6.14326(2019-01-04)
+###### V1.9.6.14326(2019-03-11)
 * 更新QAVSDK版本
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
