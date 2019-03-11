@@ -9,7 +9,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 |SDK|版本号|摘要|下载地址|
 |--|--|--|--|
-|<a name="#avsdk_download">QAVSDK</a>|1.9.9.1069.40554|音视频SDK|[下载](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.9.1069.40554.zip)
+|<a name="#avsdk_download">QAVSDK</a>|1.9.9.1096.40962|音视频SDK|[下载](	http://dldir1.qq.com/hudongzhibo/ILiveSDK/AVSDK_1.9.9.1096.40962.zip)
 |IMSDK|v2.7.2.14191.14187|即时通讯SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/IMSDK_2.7.2.14191.14187.zip)
 |ILiveSDK|1.9.6.14326|互动直播核心业务SDK|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/ILiveSDK_1.9.6.14326.zip)
 |BeautySDK|--|独立美颜包|[下载](http://dldir1.qq.com/hudongzhibo/ILiveSDK/BeautySDK.zip)
@@ -18,9 +18,7 @@ ILiveSDK 提供了账号登录，音视频互动，文本互动等基础功能�
 
 ## SDK最近更新说明
 ###### V1.9.6.14326(2019-01-04)
-* ilivesdk视频质量数据增加时延参数rtt
-
-
+* 更新QAVSDK版本
 
 [更多版本更新信息](https://github.com/zhaoyang21cn/ILiveSDK_iOS_Demos/blob/master/doc/ILiveSDK_ChangeList.md)
 
