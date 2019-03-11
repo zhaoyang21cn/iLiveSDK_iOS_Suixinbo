@@ -1,6 +1,6 @@
 ## iOS_ILiveSDK_ChangeList
 ###### V1.9.6.14326(2019-01-04)
-* ilivesdk视频质量数据增加时延参数rtt
+* 更新QAVSDK版本
 
 ###### V1.9.6.14321(2019-01-03)
 * 1、 ilivesdk封装音视频测试接口
